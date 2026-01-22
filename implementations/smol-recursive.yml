@@ -3,9 +3,41 @@ name: Smol Protocol - Recursive AIML-Based Optimization
 on:
   workflow_dispatch:
     inputs:
-      target_file:
-        description: 'Path to the file to optimize'
+      target_selection:
+        description: 'File target selection strategy'
         required: true
+        type: choice
+        default: 'manual'
+        options:
+          - manual
+          - largest
+          - most_whitespace
+          - most_comments
+          - highest_potential
+          - all_matching
+      target_file:
+        description: 'Path to file (required if target_selection=manual)'
+        required: false
+        type: string
+      file_patterns:
+        description: 'File patterns to consider (e.g., "*.js,*.ts,*.py")'
+        required: false
+        default: '*.js,*.ts'
+        type: string
+      search_path:
+        description: 'Directory to search for files'
+        required: false
+        default: '.'
+        type: string
+      min_file_size:
+        description: 'Minimum file size in bytes to consider'
+        required: false
+        default: '100'
+        type: string
+      max_files:
+        description: 'Maximum number of files to optimize (for non-manual modes)'
+        required: false
+        default: '5'
         type: string
       threshold_bytes:
         description: 'Minimum byte reduction to continue (threshold)'
@@ -13,7 +45,7 @@ on:
         default: '1'
         type: string
       max_iterations:
-        description: 'Maximum recursive iterations'
+        description: 'Maximum recursive iterations per file'
         required: false
         default: '50'
         type: string
@@ -42,16 +74,175 @@ jobs:
           if [ -f package.json ]; then
             npm install
           fi
-          
+
+      - name: Select Optimal File Targets
+        id: select_targets
+        run: |
+          echo "=== Selecting Optimal File Targets ==="
+
+          SELECTION_MODE="${{ inputs.target_selection }}"
+          MANUAL_TARGET="${{ inputs.target_file }}"
+          FILE_PATTERNS="${{ inputs.file_patterns }}"
+          SEARCH_PATH="${{ inputs.search_path }}"
+          MIN_SIZE=${{ inputs.min_file_size }}
+          MAX_FILES=${{ inputs.max_files }}
+
+          echo "Selection mode: $SELECTION_MODE"
+          echo "File patterns: $FILE_PATTERNS"
+          echo "Search path: $SEARCH_PATH"
+          echo "Min file size: $MIN_SIZE bytes"
+          echo "Max files: $MAX_FILES"
+
+          # Create temporary file for candidates
+          CANDIDATES_FILE=$(mktemp)
+          SELECTED_FILE=$(mktemp)
+
+          if [ "$SELECTION_MODE" = "manual" ]; then
+            # Manual mode: use specified file
+            if [ -z "$MANUAL_TARGET" ]; then
+              echo "Error: target_file is required when target_selection=manual"
+              exit 1
+            fi
+            if [ ! -f "$MANUAL_TARGET" ]; then
+              echo "Error: Target file not found: $MANUAL_TARGET"
+              exit 1
+            fi
+            echo "$MANUAL_TARGET" > "$SELECTED_FILE"
+            echo "Manual target: $MANUAL_TARGET"
+          else
+            # Automatic mode: discover and rank files
+            echo ""
+            echo "Discovering candidate files..."
+
+            # Convert comma-separated patterns to find arguments
+            IFS=',' read -ra PATTERNS <<< "$FILE_PATTERNS"
+            FIND_ARGS=""
+            for i in "${!PATTERNS[@]}"; do
+              PATTERN="${PATTERNS[$i]}"
+              PATTERN=$(echo "$PATTERN" | xargs) # trim whitespace
+              if [ $i -eq 0 ]; then
+                FIND_ARGS="-name \"$PATTERN\""
+              else
+                FIND_ARGS="$FIND_ARGS -o -name \"$PATTERN\""
+              fi
+            done
+
+            # Find all matching files
+            eval "find \"$SEARCH_PATH\" -type f \( $FIND_ARGS \) 2>/dev/null" | while read -r file; do
+              # Skip node_modules, .git, vendor, etc.
+              if [[ "$file" == *"/node_modules/"* ]] || \
+                 [[ "$file" == *"/.git/"* ]] || \
+                 [[ "$file" == *"/vendor/"* ]] || \
+                 [[ "$file" == *"/dist/"* ]] || \
+                 [[ "$file" == *"/build/"* ]] || \
+                 [[ "$file" == *".min."* ]]; then
+                continue
+              fi
+
+              # Get file size
+              SIZE=$(wc -c < "$file" 2>/dev/null || echo "0")
+
+              # Skip files below minimum size
+              if [ "$SIZE" -lt "$MIN_SIZE" ]; then
+                continue
+              fi
+
+              # Calculate metrics for ranking
+              WHITESPACE_COUNT=$(tr -cd '[:space:]' < "$file" 2>/dev/null | wc -c || echo "0")
+              COMMENT_COUNT=0
+
+              # Count comments based on file type
+              if [[ "$file" == *.js ]] || [[ "$file" == *.ts ]]; then
+                COMMENT_COUNT=$(grep -c -E '^\s*(//|/\*|\*)' "$file" 2>/dev/null || echo "0")
+              elif [[ "$file" == *.py ]]; then
+                COMMENT_COUNT=$(grep -c -E '^\s*#' "$file" 2>/dev/null || echo "0")
+              fi
+
+              # Calculate optimization potential score
+              # Higher score = more optimization potential
+              if [ "$SIZE" -gt 0 ]; then
+                WHITESPACE_RATIO=$((100 * WHITESPACE_COUNT / SIZE))
+              else
+                WHITESPACE_RATIO=0
+              fi
+
+              POTENTIAL_SCORE=$((SIZE + WHITESPACE_COUNT * 2 + COMMENT_COUNT * 10))
+
+              echo "$file|$SIZE|$WHITESPACE_COUNT|$COMMENT_COUNT|$POTENTIAL_SCORE" >> "$CANDIDATES_FILE"
+            done
+
+            # Check if we found any candidates
+            if [ ! -s "$CANDIDATES_FILE" ]; then
+              echo "Error: No candidate files found matching patterns: $FILE_PATTERNS"
+              exit 1
+            fi
+
+            echo ""
+            echo "Found $(wc -l < "$CANDIDATES_FILE") candidate files"
+            echo ""
+
+            # Sort and select based on strategy
+            case "$SELECTION_MODE" in
+              "largest")
+                echo "Selecting by largest file size..."
+                sort -t'|' -k2 -nr "$CANDIDATES_FILE" | head -n "$MAX_FILES" | cut -d'|' -f1 > "$SELECTED_FILE"
+                ;;
+              "most_whitespace")
+                echo "Selecting by most whitespace..."
+                sort -t'|' -k3 -nr "$CANDIDATES_FILE" | head -n "$MAX_FILES" | cut -d'|' -f1 > "$SELECTED_FILE"
+                ;;
+              "most_comments")
+                echo "Selecting by most comments..."
+                sort -t'|' -k4 -nr "$CANDIDATES_FILE" | head -n "$MAX_FILES" | cut -d'|' -f1 > "$SELECTED_FILE"
+                ;;
+              "highest_potential")
+                echo "Selecting by highest optimization potential..."
+                sort -t'|' -k5 -nr "$CANDIDATES_FILE" | head -n "$MAX_FILES" | cut -d'|' -f1 > "$SELECTED_FILE"
+                ;;
+              "all_matching")
+                echo "Selecting all matching files (up to $MAX_FILES)..."
+                head -n "$MAX_FILES" "$CANDIDATES_FILE" | cut -d'|' -f1 > "$SELECTED_FILE"
+                ;;
+            esac
+
+            echo ""
+            echo "=== Selected Files for Optimization ==="
+            cat "$SELECTED_FILE"
+            echo ""
+          fi
+
+          # Output the selected files as JSON array for matrix strategy
+          # For now, we'll use the first file for single-file optimization
+          FIRST_TARGET=$(head -n1 "$SELECTED_FILE")
+          echo "target_file=$FIRST_TARGET" >> $GITHUB_OUTPUT
+
+          # Store all targets for potential matrix usage
+          TARGETS_JSON=$(cat "$SELECTED_FILE" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "target_files=$TARGETS_JSON" >> $GITHUB_OUTPUT
+          echo "target_count=$(wc -l < "$SELECTED_FILE" | tr -d ' ')" >> $GITHUB_OUTPUT
+
+          # Display selection summary
+          echo ""
+          echo "=== Target Selection Summary ==="
+          echo "Strategy: $SELECTION_MODE"
+          echo "Primary target: $FIRST_TARGET"
+          echo "Total targets: $(wc -l < "$SELECTED_FILE" | tr -d ' ')"
+
+          # Cleanup
+          rm -f "$CANDIDATES_FILE"
+
       - name: Initialize AIML Protocol State
         id: init
         run: |
           echo "=== Initializing Smol Protocol with AIML Patterns ==="
-          
-          TARGET_FILE="${{ inputs.target_file }}"
+
+          # Use the selected target file from the selection step
+          TARGET_FILE="${{ steps.select_targets.outputs.target_file }}"
           THRESHOLD=${{ inputs.threshold_bytes }}
           MAX_ITERATIONS=${{ inputs.max_iterations }}
-          
+
+          echo "Target file: $TARGET_FILE"
+
           if [ ! -f "$TARGET_FILE" ]; then
             echo "Error: Target file not found: $TARGET_FILE"
             exit 1
