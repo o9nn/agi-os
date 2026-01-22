@@ -1,16 +1,10 @@
 import daisyuiThemes from 'daisyui/theme/object';
 import { isNumeric } from './utils/misc';
-
 export const isDev = import.meta.env.MODE === 'development';
-
-// constants
 export const BASE_URL = new URL('.', document.baseURI).href
   .toString()
   .replace(/\/$/, '');
-
 export const CONFIG_DEFAULT = {
-  // Note: in order not to introduce breaking changes, please keep the same data type (number, string, etc) if you want to change the default value. Do not use null or undefined for default value.
-  // Do not use nested objects, keep it single level. Prefix the key if you need to group them.
   apiKey: '',
   systemMessage: '',
   showTokensPerSecond: false,
@@ -18,7 +12,6 @@ export const CONFIG_DEFAULT = {
   excludeThoughtOnReq: true,
   pasteLongTextToFileLen: 2500,
   pdfAsImage: false,
-  // make sure these default values are in sync with `common.h`
   samplers: 'edkypmxt',
   temperature: 0.8,
   dynatemp_range: 0.0,
@@ -38,8 +31,7 @@ export const CONFIG_DEFAULT = {
   dry_allowed_length: 2,
   dry_penalty_last_n: -1,
   max_tokens: -1,
-  custom: '', // custom json-stringified object
-  // experimental features
+  custom: '', 
   pyIntepreterEnabled: false,
 };
 export const CONFIG_INFO: Record<string, string> = {
@@ -82,15 +74,12 @@ export const CONFIG_INFO: Record<string, string> = {
   dry_penalty_last_n:
     'DRY sampling reduces repetition in generated text even across long contexts. This parameter sets DRY penalty for the last n tokens.',
   max_tokens: 'The maximum number of token per output.',
-  custom: '', // custom json-stringified object
+  custom: '', 
 };
-// config keys having numeric value (i.e. temperature, top_k, top_p, etc)
 export const CONFIG_NUMERIC_KEYS = Object.entries(CONFIG_DEFAULT)
   .filter((e) => isNumeric(e[1]))
   .map((e) => e[0]);
-// list of themes supported by daisyui
 export const THEMES = ['light', 'dark']
-  // make sure light & dark are always at the beginning
   .concat(
     Object.keys(daisyuiThemes).filter((t) => t !== 'light' && t !== 'dark')
   );

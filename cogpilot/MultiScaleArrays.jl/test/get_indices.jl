@@ -1,27 +1,25 @@
 using MultiScaleArrays
 using OrdinaryDiffEq, DiffEqBase, Test, StochasticDiffEq
-
 #=
 struct Cell{B} <: AbstractMultiScaleArrayLeaf{B}
-    values::Vector{B}
+values::Vector{B}
 end
 struct Population{T<:AbstractMultiScaleArray,B<:Number} <: AbstractMultiScaleArray{B}
-    nodes::Vector{T}
-    values::Vector{B}
-    end_idxs::Vector{Int}
+nodes::Vector{T}
+values::Vector{B}
+end_idxs::Vector{Int}
 end
 struct Tissue{T<:AbstractMultiScaleArray,B<:Number} <: AbstractMultiScaleArray{B}
-    nodes::Vector{T}
-    values::Vector{B}
-    end_idxs::Vector{Int}
+nodes::Vector{T}
+values::Vector{B}
+end_idxs::Vector{Int}
 end
 struct Embryo{T<:AbstractMultiScaleArray,B<:Number} <: AbstractMultiScaleArrayHead{B}
-    nodes::Vector{T}
-    values::Vector{B}
-    end_idxs::Vector{Int}
+nodes::Vector{T}
+values::Vector{B}
+end_idxs::Vector{Int}
 end
 =#
-
 cell1 = Cell([1.0; 2.0; 3.0])
 cell2 = Cell([4.0; 5])
 population = construct(Population, deepcopy([cell1, cell2])) # Make a Population from cells
@@ -31,7 +29,6 @@ population2 = construct(Population, deepcopy([cell3, cell4]))
 tissue1 = construct(Tissue, deepcopy([population, population2])) # Make a Tissue from Populations
 tissue2 = construct(Tissue, deepcopy([population2, population]))
 embryo = construct(Embryo, deepcopy([tissue1, tissue2])) # Make an embryo from Tissues
-
 @test getindices(embryo) == 1:20
 @test getindices(embryo, 1) == 1:10
 @test getindices(embryo, 2) == 11:20

@@ -1,21 +1,16 @@
 package main
-
 import (
 	"context"
 	"fmt"
 	"log"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func main() {
 	client, err := api.ClientFromEnvironment()
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	ctx := context.Background()
-
 	req := &api.PullRequest{
 		Model: "mistral",
 	}
@@ -23,7 +18,6 @@ func main() {
 		fmt.Printf("Progress: status=%v, total=%v, completed=%v\n", resp.Status, resp.Total, resp.Completed)
 		return nil
 	}
-
 	err = client.Pull(ctx, req, progressFunc)
 	if err != nil {
 		log.Fatal(err)

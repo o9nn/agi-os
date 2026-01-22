@@ -1,5 +1,4 @@
 package handlers
-
 import (
 	"bytes"
 	"context"
@@ -10,16 +9,13 @@ import (
 	"net/http"
 	"net/url"
 	galateav1 "shared/go/pb/galatea/v1"
-
 	connect "github.com/bufbuild/connect-go"
 )
-
 type Auth struct {
 	*auth.JWT
 	gotrueURL string
 }
 type ClaimContext string
-
 func WithUserClaims(a *auth.JWT) connect.UnaryInterceptorFunc {
 	fn := func(next connect.UnaryFunc) connect.UnaryFunc {
 		return connect.UnaryFunc(func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
@@ -41,7 +37,6 @@ func WithUserClaims(a *auth.JWT) connect.UnaryInterceptorFunc {
 	}
 	return fn
 }
-
 func UserClaimsFromContext(ctx context.Context) (*auth.TokenData, error) {
 	claims, ok := ctx.Value(ClaimContext("claims")).(*auth.TokenData)
 	if !ok {
@@ -49,7 +44,6 @@ func UserClaimsFromContext(ctx context.Context) (*auth.TokenData, error) {
 	}
 	return claims, nil
 }
-
 func (a *Auth) SignIn(ctx context.Context, r *connect.Request[galateav1.SignInRequest]) (*connect.Response[galateav1.SignInResponse], error) {
 	b, err := json.Marshal(map[string]interface{}{
 		"email":    r.Msg.Email,
@@ -58,7 +52,7 @@ func (a *Auth) SignIn(ctx context.Context, r *connect.Request[galateav1.SignInRe
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	u, err := url.Parse(fmt.Sprintf("http://%s/token?grant_type=password", a.gotrueURL))
+	u, err := url.Parse(fmt.Sprintf("http:
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -78,7 +72,6 @@ func (a *Auth) SignIn(ctx context.Context, r *connect.Request[galateav1.SignInRe
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-
 	return connect.NewResponse(resp), nil
 }
 func (a *Auth) SignUp(ctx context.Context, r *connect.Request[galateav1.SignUpRequest]) (*connect.Response[galateav1.SignUpResponse], error) {
@@ -89,16 +82,14 @@ func (a *Auth) SignUp(ctx context.Context, r *connect.Request[galateav1.SignUpRe
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	u, err := url.Parse(fmt.Sprintf("http://%s/signup", a.gotrueURL))
+	u, err := url.Parse(fmt.Sprintf("http:
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-
 	result, err := http.DefaultClient.Post(u.String(), "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-
 	respb, err := io.ReadAll(result.Body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
@@ -122,7 +113,7 @@ func (a *Auth) Verify(ctx context.Context, r *connect.Request[galateav1.VerifyRe
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	u, err := url.Parse(fmt.Sprintf("http://%s/verify", a.gotrueURL))
+	u, err := url.Parse(fmt.Sprintf("http:
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -154,6 +145,5 @@ func (a *Auth) Check(ctx context.Context, r *connect.Request[galateav1.CheckRequ
 		UserId:    claims.UserID,
 		SessionId: claims.SessionID,
 	}
-
 	return connect.NewResponse(resp), nil
 }

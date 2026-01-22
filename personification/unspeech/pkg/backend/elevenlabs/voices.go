@@ -1,11 +1,9 @@
 package elevenlabs
-
 import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
 	"strings"
-
 	"github.com/labstack/echo/v4"
 	"github.com/moeru-ai/unspeech/pkg/apierrors"
 	"github.com/moeru-ai/unspeech/pkg/backend/types"
@@ -13,9 +11,7 @@ import (
 	"github.com/samber/lo"
 	"github.com/samber/mo"
 )
-
 type VoiceLabelKey = string
-
 const (
 	VoiceLabelKeyAccent      VoiceLabelKey = "accent"
 	VoiceLabelKeyAge         VoiceLabelKey = "age"
@@ -23,7 +19,6 @@ const (
 	VoiceLabelKeyUseCase     VoiceLabelKey = "use_case"
 	VoiceLabelKeyDescription VoiceLabelKey = "description"
 )
-
 type VoiceSample struct {
 	SampleID  string `json:"sample_id"`
 	FileName  string `json:"file_name"`
@@ -31,7 +26,6 @@ type VoiceSample struct {
 	SizeBytes int    `json:"size_bytes"`
 	Hash      string `json:"hash"`
 }
-
 type VoiceFineTuning struct {
 	IsAllowedToFineTune bool `json:"is_allowed_to_fine_tune"`
 	State               struct {
@@ -41,9 +35,7 @@ type VoiceFineTuning struct {
 	VerificationAttemptsCount   int      `json:"verification_attempts_count"`
 	ManualVerificationRequested bool     `json:"manual_verification_requested"`
 }
-
 type VoiceSettingsKey = string
-
 const (
 	VoiceSettingKeyStability       VoiceSettingsKey = "stability"
 	VoiceSettingKeySimilarityBoost VoiceSettingsKey = "similarity_boost"
@@ -51,13 +43,11 @@ const (
 	VoiceSettingKeyUseSpeakerBoost VoiceSettingsKey = "use_speaker_boost"
 	VoiceSettingKeySpeed           VoiceSettingsKey = "speed"
 )
-
 type VoiceVerifiedLanguage struct {
 	Language string `json:"language"`
 	ModelID  string `json:"model_id"`
 	Accent   string `json:"accent"`
 }
-
 type Voice struct {
 	VoiceID                 string                   `json:"voice_id"`
 	Name                    string                   `json:"name"`
@@ -73,14 +63,10 @@ type Voice struct {
 	VerifiedLanguages       []VoiceVerifiedLanguage  `json:"verified_languages"`
 	SafetyControl           string                   `json:"safety_control"`
 }
-
 type ListVoicesResponse struct {
 	Voices []Voice `json:"voices"`
 }
-
 var (
-	// Text to Speech — ElevenLabs Documentation
-	// https://elevenlabs.io/docs/capabilities/text-to-speech#supported-languages
 	languages = []types.VoiceLanguage{
 		{Code: "en-US", Title: "English (USA)"},
 		{Code: "en-GB", Title: "English (UK)"},
@@ -119,61 +105,42 @@ var (
 		{Code: "uk-UA", Title: "Ukrainian"},
 		{Code: "ru-RU", Title: "Russian"},
 	}
-
-	// Flash v2.5 additional languages
 	flashV25Languages = []types.VoiceLanguage{
 		{Code: "hu-HU", Title: "Hungarian"},
 		{Code: "no-NO", Title: "Norwegian"},
 		{Code: "vi-VN", Title: "Vietnamese"},
 	}
-
-	// Create speech — ElevenLabs Documentation
-	// https://elevenlabs.io/docs/api-reference/text-to-speech/convert
-	//
-	// Text to Speech — ElevenLabs Documentation
-	// https://elevenlabs.io/docs/capabilities/text-to-speech#supported-formats
 	formats = []types.VoiceFormat{
-		// MP3 formats
-		{Name: "MP3 22.05kHz 32kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 22050, Bitrate: 32, FormatCode: "mp3_22050_32"},   //nolint:mnd
-		{Name: "MP3 44.1kHz 32kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 32, FormatCode: "mp3_44100_32"},    //nolint:mnd
-		{Name: "MP3 44.1kHz 64kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 64, FormatCode: "mp3_44100_64"},    //nolint:mnd
-		{Name: "MP3 44.1kHz 96kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 96, FormatCode: "mp3_44100_96"},    //nolint:mnd
-		{Name: "MP3 44.1kHz 128kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 128, FormatCode: "mp3_44100_128"}, //nolint:mnd
-		{Name: "MP3 44.1kHz 192kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 192, FormatCode: "mp3_44100_192"}, //nolint:mnd
-
-		// PCM formats (S16LE)
-		{Name: "PCM 8kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 8000, FormatCode: "pcm_8000"},       //nolint:mnd
-		{Name: "PCM 16kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 16000, FormatCode: "pcm_16000"},    //nolint:mnd
-		{Name: "PCM 22.05kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 22050, FormatCode: "pcm_22050"}, //nolint:mnd
-		{Name: "PCM 24kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 24000, FormatCode: "pcm_24000"},    //nolint:mnd
-		{Name: "PCM 44.1kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 44100, FormatCode: "pcm_44100"},  //nolint:mnd
-
-		// μ-law format
-		{Name: "μ-law 8kHz", Extension: ".ulaw", MimeType: "audio/basic", SampleRate: 8000, FormatCode: "ulaw_8000"}, //nolint:mnd
+		{Name: "MP3 22.05kHz 32kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 22050, Bitrate: 32, FormatCode: "mp3_22050_32"},   
+		{Name: "MP3 44.1kHz 32kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 32, FormatCode: "mp3_44100_32"},    
+		{Name: "MP3 44.1kHz 64kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 64, FormatCode: "mp3_44100_64"},    
+		{Name: "MP3 44.1kHz 96kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 96, FormatCode: "mp3_44100_96"},    
+		{Name: "MP3 44.1kHz 128kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 128, FormatCode: "mp3_44100_128"}, 
+		{Name: "MP3 44.1kHz 192kbps", Extension: ".mp3", MimeType: "audio/mpeg", SampleRate: 44100, Bitrate: 192, FormatCode: "mp3_44100_192"}, 
+		{Name: "PCM 8kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 8000, FormatCode: "pcm_8000"},       
+		{Name: "PCM 16kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 16000, FormatCode: "pcm_16000"},    
+		{Name: "PCM 22.05kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 22050, FormatCode: "pcm_22050"}, 
+		{Name: "PCM 24kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 24000, FormatCode: "pcm_24000"},    
+		{Name: "PCM 44.1kHz", Extension: ".wav", MimeType: "audio/wav", SampleRate: 44100, FormatCode: "pcm_44100"},  
+		{Name: "μ-law 8kHz", Extension: ".ulaw", MimeType: "audio/basic", SampleRate: 8000, FormatCode: "ulaw_8000"}, 
 	}
 )
-
 func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions]) mo.Result[any] {
-	req, err := http.NewRequestWithContext(c.Request().Context(), http.MethodGet, "https://api.elevenlabs.io/v1/voices", nil)
+	req, err := http.NewRequestWithContext(c.Request().Context(), http.MethodGet, "https:
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithError(err).WithCaller())
 	}
-
 	if c.Request().Header.Get("Authorization") != "" {
-		//nolint:canonicalheader
 		req.Header.Set("xi-api-key", strings.TrimPrefix(
 			c.Request().Header.Get("Authorization"),
 			"Bearer ",
 		))
 	}
-
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrBadGateway().WithError(err).WithCaller())
 	}
-
 	defer func() { _ = res.Body.Close() }()
-
 	if res.StatusCode >= 400 && res.StatusCode < 600 {
 		switch {
 		case strings.HasPrefix(res.Header.Get("Content-Type"), "application/json"):
@@ -192,16 +159,12 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 			)
 		}
 	}
-
 	var response ListVoicesResponse
-
 	err = json.NewDecoder(res.Body).Decode(&response)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrBadGateway().WithError(err).WithCaller())
 	}
-
 	voices := make([]types.Voice, len(response.Voices))
-
 	for i, voice := range response.Voices {
 		voices[i] = types.Voice{
 			ID:          voice.VoiceID,
@@ -219,12 +182,10 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 			PredefinedOptions: voice.Settings,
 			PreviewAudioURL:   voice.PreviewURL,
 		}
-
 		if lo.Contains(voice.HighQualityBaseModelIds, "eleven_flash_v2_5") {
 			voices[i].Languages = append(voices[i].Languages, flashV25Languages...)
 		}
 	}
-
 	return mo.Ok[any](types.ListVoicesResponse{
 		Voices: voices,
 	})

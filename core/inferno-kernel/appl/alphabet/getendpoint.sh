@@ -1,7 +1,7 @@
 #!/dis/sh -n
 autoload=std
 load std
-if{! ~ $#* 1}{
+if{! ~ $
 	echo usage: getendpoint addr >[1=2]
 	raise usage
 }

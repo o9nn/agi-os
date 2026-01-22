@@ -1,6 +1,4 @@
 import { DeepTreeEchoBot } from '../DeepTreeEchoBot'
-
-// Mock dependencies
 jest.mock('../../../../shared/logger', () => ({
   getLogger: jest.fn(() => ({
     info: jest.fn(),
@@ -9,7 +7,6 @@ jest.mock('../../../../shared/logger', () => ({
     debug: jest.fn(),
   })),
 }))
-
 jest.mock('../RAGMemoryStore', () => {
   return {
     RAGMemoryStore: jest.fn().mockImplementation(() => ({
@@ -22,7 +19,6 @@ jest.mock('../RAGMemoryStore', () => {
     })),
   }
 })
-
 jest.mock('../LLMService', () => {
   return {
     LLMService: jest.fn().mockImplementation(() => ({
@@ -34,7 +30,6 @@ jest.mock('../LLMService', () => {
     })),
   }
 })
-
 jest.mock('../VisionCapabilities', () => {
   return {
     VisionCapabilities: jest.fn().mockImplementation(() => ({
@@ -48,7 +43,6 @@ jest.mock('../VisionCapabilities', () => {
     })),
   }
 })
-
 jest.mock('../PlaywrightAutomation', () => {
   return {
     PlaywrightAutomation: jest.fn().mockImplementation(() => ({
@@ -72,7 +66,6 @@ jest.mock('../PlaywrightAutomation', () => {
     })),
   }
 })
-
 jest.mock('../ProprioceptiveEmbodiment', () => {
   return {
     ProprioceptiveEmbodiment: jest.fn().mockImplementation(() => ({
@@ -108,10 +101,8 @@ jest.mock('../ProprioceptiveEmbodiment', () => {
     })),
   }
 })
-
 describe('DeepTreeEchoBot', () => {
   let bot: DeepTreeEchoBot
-
   beforeEach(() => {
     bot = new DeepTreeEchoBot({
       enabled: true,
@@ -124,7 +115,6 @@ describe('DeepTreeEchoBot', () => {
       embodimentEnabled: true,
     })
   })
-
   describe('processMessage', () => {
     it('should process regular messages and return a response', async () => {
       const message = {
@@ -132,55 +122,40 @@ describe('DeepTreeEchoBot', () => {
         text: 'Hello bot',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toBeTruthy()
       expect(typeof response).toBe('string')
     })
-
     it('should return an empty string if bot is disabled', async () => {
       bot.updateOptions({ enabled: false })
-
       const message = {
         id: 123,
         text: 'Hello bot',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toBe('')
     })
-
     it('should handle command messages', async () => {
       const message = {
         id: 123,
         text: '/help',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('commands')
     })
-
     it('should handle errors gracefully', async () => {
-      // Force an error
       jest.spyOn(console, 'error').mockImplementation(() => {})
-
       const message = {
         id: 123,
         text: null,
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('Sorry')
     })
   })
-
   describe('Command Handlers', () => {
     it('should handle the /help command', async () => {
       const message = {
@@ -188,49 +163,37 @@ describe('DeepTreeEchoBot', () => {
         text: '/help',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('Available commands')
     })
-
     it('should handle the /vision command', async () => {
       const message = {
         id: 123,
         text: '/vision',
         file: 'test-file-path.jpg',
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('Image Analysis')
     })
-
     it('should handle the /search command', async () => {
       const message = {
         id: 123,
         text: '/search test query',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('Search results')
     })
-
     it('should handle the /memory command', async () => {
       const message = {
         id: 123,
         text: '/memory status',
         file: null,
       }
-
       const response = await bot.processMessage(1, 100, message as any)
-
       expect(response).toContain('Memory Status')
     })
   })
-
   describe('updateOptions', () => {
     it('should update options', () => {
       bot.updateOptions({
@@ -238,14 +201,11 @@ describe('DeepTreeEchoBot', () => {
         apiKey: 'new-api-key',
         visionEnabled: false,
       })
-
-      // We can't directly check the private options, but we can test functionality
       const message = {
         id: 123,
         text: 'Hello bot',
         file: null,
       }
-
       return bot.processMessage(1, 100, message as any).then(response => {
         expect(response).toBe('')
       })

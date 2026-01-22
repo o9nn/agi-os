@@ -1,5 +1,4 @@
 import type { AdaptiveTrait } from './types'
-
 export function createAdaptiveTrait(
   baseline: number,
   adaptationBound = 0.15,
@@ -11,7 +10,6 @@ export function createAdaptiveTrait(
     max: Math.min(1, baseline + Math.abs(baseline * adaptationBound)),
   }
 }
-
 export function adaptTrait(
   trait: AdaptiveTrait,
   target: number,
@@ -20,20 +18,17 @@ export function adaptTrait(
   const delta = (target - trait.value) * rate
   const newValue = trait.value + delta
   const clampedValue = Math.max(trait.min, Math.min(trait.max, newValue))
-
   return {
     ...trait,
     value: clampedValue,
   }
 }
-
 export function canAdaptTo(
   trait: AdaptiveTrait,
   value: number,
 ): boolean {
   return value >= trait.min && value <= trait.max
 }
-
 export function getAdaptationCapacity(
   trait: AdaptiveTrait,
 ): { upward: number, downward: number } {
@@ -42,7 +37,6 @@ export function getAdaptationCapacity(
     downward: trait.value - trait.min,
   }
 }
-
 export function resetToBaseline(
   trait: AdaptiveTrait,
 ): AdaptiveTrait {
@@ -51,7 +45,6 @@ export function resetToBaseline(
     value: trait.baseline,
   }
 }
-
 export function isAtExtreme(
   trait: AdaptiveTrait,
   tolerance = 0.01,

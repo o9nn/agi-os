@@ -4,13 +4,7 @@ import {
   createModelProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
 import type { TogetheraiModels } from '../../generated/types'
-
-/**
- * Create a Together AI Provider
- * @see {@link https://docs.together.ai/docs/serverless-models}
- */
 export const createTogetherAI = (apiKey: string, baseURL = 'https://api.together.xyz/v1/') => merge(
   createChatProvider<TogetheraiModels>({ apiKey, baseURL }),
   createEmbedProvider({ apiKey, baseURL }),

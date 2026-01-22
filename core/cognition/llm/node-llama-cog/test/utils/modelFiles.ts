@@ -6,9 +6,7 @@ import chalk from "chalk";
 import withStatusLogs from "../../src/utils/withStatusLogs.js";
 import {withLockfile} from "../../src/utils/withLockfile.js";
 import {isCI} from "../../src/config.js";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const modelsFolder = path.join(__dirname, "..", ".models");
 const supportedModels = {
     "functionary-small-v2.5.Q4_0.gguf": "https://huggingface.co/meetkai/functionary-small-v2.5-GGUF/resolve/main/functionary-small-v2.5.Q4_0.gguf?download=true",
@@ -23,18 +21,13 @@ const supportedModels = {
     "bge-reranker-v2-m3-Q8_0.gguf": "https://huggingface.co/gpustack/bge-reranker-v2-m3-GGUF/resolve/main/bge-reranker-v2-m3-Q8_0.gguf?download=true",
     "Qwen3-0.6B-Q8_0.gguf": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q8_0.gguf?download=true"
 } as const;
-
 export async function getModelFile(modelName: keyof typeof supportedModels) {
     if (supportedModels[modelName] == null)
         throw new Error(`Model "${modelName}" is not supported`);
-
     const modelFilePath = path.join(modelsFolder, modelName);
-
     if (await fs.pathExists(modelFilePath))
         return modelFilePath;
-
     await fs.ensureDir(modelsFolder);
-
     return await withStatusLogs({
         loading: chalk.blue(`Downloading model "${modelName}"`),
         success: chalk.blue(`Downloaded model "${modelName}"`),
@@ -44,7 +37,6 @@ export async function getModelFile(modelName: keyof typeof supportedModels) {
             resourcePath: modelFilePath
         }, async () => {
             const modelUrl = supportedModels[modelName];
-
             const downloader = await downloadFile({
                 url: modelUrl,
                 directory: path.dirname(modelFilePath),
@@ -53,27 +45,21 @@ export async function getModelFile(modelName: keyof typeof supportedModels) {
                 cliStyle: isCI ? "ci" : "fancy"
             });
             await downloader.download();
-
             return modelFilePath;
         });
     });
 }
-
 export async function downloadAllModels() {
     const existingModels = new Set<string>();
     const pendingDownloads: ReturnType<typeof downloadFile>[] = [];
-
     for (const modelName of Object.keys(supportedModels)) {
         if (supportedModels[modelName as keyof typeof supportedModels] == null)
             continue;
-
         const modelFilePath = path.join(modelsFolder, modelName);
-
         if (await fs.pathExists(modelFilePath)) {
             existingModels.add(modelName);
             continue;
         }
-
         const modelUrl = supportedModels[modelName as keyof typeof supportedModels];
         pendingDownloads.push(
             downloadFile({
@@ -83,14 +69,12 @@ export async function downloadAllModels() {
             })
         );
     }
-
     if (existingModels.size > 0) {
         if (pendingDownloads.length === 0)
             console.info("All models are already downloaded");
         else
             console.info(`Already downloaded ${existingModels.size} model${existingModels.size === 1 ? "" : "s"}\n`);
     }
-
     if (pendingDownloads.length > 0) {
         console.info(`Downloading ${pendingDownloads.length} model${pendingDownloads.length === 1 ? "" : "s"}`);
         const downloader = await downloadSequence({

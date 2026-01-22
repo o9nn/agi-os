@@ -1,33 +1,27 @@
 package libs
-
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 	"time"
-
 	"github.com/nekomeowww/xo"
 	"github.com/nekomeowww/xo/logger"
 	"github.com/nekomeowww/xo/logger/loki"
 	"github.com/samber/lo"
 	"go.uber.org/zap/zapcore"
 )
-
 func NewLogger() func() (*logger.Logger, error) {
 	return func() (*logger.Logger, error) {
 		logLevel, err := logger.ReadLogLevelFromEnv()
 		if err != nil {
 			logLevel = zapcore.InfoLevel
 		}
-
 		var isFatalLevel bool
 		if logLevel == zapcore.FatalLevel {
 			isFatalLevel = true
 			logLevel = zapcore.InfoLevel
 		}
-
 		logFormat, readFormatError := logger.ReadLogFormatFromEnv()
-
 		logger, err := logger.NewLogger(
 			logger.WithLevel(logLevel),
 			logger.WithAppName("inventory"),
@@ -36,8 +30,8 @@ func NewLogger() func() (*logger.Logger, error) {
 			logger.WithFormat(logFormat),
 			logger.WithLokiRemoteConfig(lo.Ternary(os.Getenv("LOG_LOKI_REMOTE_URL") != "", &loki.Config{
 				Url:          os.Getenv("LOG_LOKI_REMOTE_URL"),
-				BatchMaxSize: 2000,             //nolint:mnd
-				BatchMaxWait: 10 * time.Second, //nolint:mnd
+				BatchMaxSize: 2000,             
+				BatchMaxWait: 10 * time.Second, 
 				PrintErrors:  true,
 				Labels:       map[string]string{},
 			}, nil)),
@@ -51,11 +45,9 @@ func NewLogger() func() (*logger.Logger, error) {
 		if readFormatError != nil {
 			logger.Error("failed to read log format from env, fallbacks to json")
 		}
-
 		logger = logger.WithAndSkip(
 			1,
 		)
-
 		return logger, nil
 	}
 }

@@ -1,13 +1,6 @@
-/*
- * other
- */
 int	pclose(FILE*);
 long	filesize(int fd);
 int	getpid(void);
-
-/*
- * c1.c
- */
 void	init0(void);
 void	init2(void);
 void	cvtime(void);
@@ -34,10 +27,6 @@ void	getline(char *s, int n);
 void	casesy(void);
 void	getpn(char *a);
 void	setrpt(void);
-
-/*
- * n2.c
- */
 int	pchar(Tchar i);
 void	pchar1(Tchar i);
 int	pchar2(Tchar i);
@@ -50,10 +39,6 @@ void	done2(int x);
 void	done3(int x);
 void	edone(int x);
 void	casepi(void);
-
-/*
- * c3.c
- */
 void	blockinit(void);
 char*	grow(char *, int, int);
 void	mnspace(void);
@@ -92,10 +77,6 @@ void	casetl(void);
 void	casepc(void);
 void	casepm(void);
 void	stackdump(void);
-
-/*
- * c4.c
- */
 void	setn(void);
 int	wrc(Tchar i);
 void	setn1(int i, int form, Tchar bits);
@@ -121,10 +102,6 @@ int	vnumb(int *i);
 int	hnumb(int *i);
 int	inumb(int *n);
 int	quant(int n, int m);
-
-/*
- * c5.c
- */
 void	casead(void);
 void	casena(void);
 void	casefi(void);
@@ -195,10 +172,6 @@ void	restore_tty(void);
 void	set_tty(void);
 void	echo_off(void);
 void	echo_on(void);
-
-/*
- * t6.c
- */
 int	t_width(Tchar j);
 void	zapwcache(int s);
 int	onfont(int n, int f);
@@ -234,10 +207,6 @@ void	casess(void);
 Tchar	t_xlss(void);
 Uchar*	unpair(int i);
 void	outascii(Tchar i);
-
-/*
- * c7.c
- */
 void	tbreak(void);
 void	donum(void);
 void	text(void);
@@ -257,10 +226,6 @@ void	setnel(void);
 int	getword(int x);
 void	storeword(Tchar c, int w);
 Tchar	gettch(void);
-
-/*
- * c8.c
- */
 void	hyphen(Tchar *wp);
 int	punct(Tchar i);
 int	alph(int i);
@@ -274,10 +239,6 @@ int	vowel(int i);
 Tchar*	chkvow(Tchar *w);
 void	digram(void);
 int	dilook(int a, int b, char t[26][13]);
-
-/*
- * c9.c
- */
 Tchar	setz(void);
 void	setline(void);
 int	eat(int c);
@@ -287,10 +248,6 @@ void	setvline(void);
 void	setdraw(void);
 void	casefc(void);
 Tchar	setfield(int x);
-
-/*
- * t10.c
- */
 void	t_ptinit(void);
 void	t_specnames(void);
 void	t_ptout(Tchar i);
@@ -306,19 +263,11 @@ void	ptpage(int n);
 void	pttrailer(void);
 void	ptstop(void);
 void	t_ptpause(void);
-
-/*
- * t11.c
- */
 int	getdesc(char *name);
 int	getfont(char *name, int pos);
 int	chadd(char *s, int, int);
 char*	chname(int n);
 int	getlig(FILE *fin);
-
-/*
- * n6.c
- */
 int	n_width(Tchar j);
 Tchar	n_setch(int c);
 Tchar	n_setabs(void);
@@ -339,10 +288,6 @@ void	n_casefp(void);
 void	n_casebd(void);
 void	n_casevs(void);
 Tchar	n_xlss(void);
-
-/*
- * n10.c
- */
 void	n_ptinit(void);
 char*	skipstr(char *s);
 char*	getstr(char *s, char *t);
@@ -356,10 +301,6 @@ char*	plot(char *x);
 void	move(void);
 void	n_ptlead(void);
 void	n_ptpause(void);
-
-/*
- * indirect calls on TROFF/!TROFF.  these are variables!
- */
 extern Tchar	(*hmot)(void);
 extern Tchar	(*makem)(int i);
 extern Tchar	(*setabs)(void);

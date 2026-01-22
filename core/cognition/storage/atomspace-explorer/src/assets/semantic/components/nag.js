@@ -1,32 +1,17 @@
-/*!
- * # Semantic UI 2.2.10 - Nag
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.nag = function(parameters) {
   var
     $allModules    = $(this),
     moduleSelector = $allModules.selector || '',
-
     time           = new Date().getTime(),
     performance    = [],
-
     query          = arguments[0],
     methodInvoked  = (typeof query == 'string'),
     queryArguments = [].slice.call(arguments, 1),
@@ -38,38 +23,28 @@ $.fn.nag = function(parameters) {
         settings          = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.nag.settings, parameters)
           : $.extend({}, $.fn.nag.settings),
-
         className       = settings.className,
         selector        = settings.selector,
         error           = settings.error,
         namespace       = settings.namespace,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = namespace + '-module',
-
         $module         = $(this),
-
         $close          = $module.find(selector.close),
         $context        = (settings.context)
           ? $(settings.context)
           : $('body'),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
-
         moduleOffset,
         moduleHeight,
-
         contextWidth,
         contextHeight,
         contextOffset,
-
         yOffset,
         yPosition,
-
         timer,
         module,
-
         requestAnimationFrame = window.requestAnimationFrame
           || window.mozRequestAnimationFrame
           || window.webkitRequestAnimationFrame
@@ -77,28 +52,23 @@ $.fn.nag = function(parameters) {
           || function(callback) { setTimeout(callback, 0); }
       ;
       module = {
-
         initialize: function() {
           module.verbose('Initializing element');
-
           $module
             .on('click' + eventNamespace, selector.close, module.dismiss)
             .data(moduleNamespace, module)
           ;
-
           if(settings.detachable && $module.parent()[0] !== $context[0]) {
             $module
               .detach()
               .prependTo($context)
             ;
           }
-
           if(settings.displayTime > 0) {
             setTimeout(module.hide, settings.displayTime);
           }
           module.show();
         },
-
         destroy: function() {
           module.verbose('Destroying instance');
           $module
@@ -106,7 +76,6 @@ $.fn.nag = function(parameters) {
             .off(eventNamespace)
           ;
         },
-
         show: function() {
           if( module.should.show() && !$module.is(':visible') ) {
             module.debug('Showing nag', settings.animation.show);
@@ -122,7 +91,6 @@ $.fn.nag = function(parameters) {
             }
           }
         },
-
         hide: function() {
           module.debug('Showing nag', settings.animation.hide);
           if(settings.animation.show == 'fade') {
@@ -136,7 +104,6 @@ $.fn.nag = function(parameters) {
             ;
           }
         },
-
         onHide: function() {
           module.debug('Removing nag', settings.animation.hide);
           $module.remove();
@@ -144,7 +111,6 @@ $.fn.nag = function(parameters) {
             settings.onHide();
           }
         },
-
         dismiss: function(event) {
           if(settings.storageMethod) {
             module.storage.set(settings.key, settings.value);
@@ -153,7 +119,6 @@ $.fn.nag = function(parameters) {
           event.stopImmediatePropagation();
           event.preventDefault();
         },
-
         should: {
           show: function() {
             if(settings.persist) {
@@ -168,7 +133,6 @@ $.fn.nag = function(parameters) {
             return false;
           }
         },
-
         get: {
           storageOptions: function() {
             var
@@ -186,11 +150,9 @@ $.fn.nag = function(parameters) {
             return options;
           }
         },
-
         clear: function() {
           module.storage.remove(settings.key);
         },
-
         storage: {
           set: function(key, value) {
             var
@@ -223,7 +185,6 @@ $.fn.nag = function(parameters) {
             else if(settings.storageMethod == 'sessionstorage' && window.sessionStorage !== undefined) {
               storedValue = window.sessionStorage.getItem(key);
             }
-            // get by cookie
             else if($.cookie !== undefined) {
               storedValue = $.cookie(key);
             }
@@ -245,7 +206,6 @@ $.fn.nag = function(parameters) {
             else if(settings.storageMethod == 'sessionstorage' && window.sessionStorage !== undefined) {
               window.sessionStorage.removeItem(key);
             }
-            // store by cookie
             else if($.cookie !== undefined) {
               $.removeCookie(key, options);
             }
@@ -254,7 +214,6 @@ $.fn.nag = function(parameters) {
             }
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -417,7 +376,6 @@ $.fn.nag = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -432,76 +390,51 @@ $.fn.nag = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.fn.nag.settings = {
-
   name        : 'Nag',
-
   silent      : false,
   debug       : false,
   verbose     : false,
   performance : true,
-
   namespace   : 'Nag',
-
-  // allows cookie to be overridden
   persist     : false,
-
-  // set to zero to require manually dismissal, otherwise hides on its own
   displayTime : 0,
-
   animation   : {
     show : 'slide',
     hide : 'slide'
   },
-
   context       : false,
   detachable    : false,
-
   expires       : 30,
   domain        : false,
   path          : '/',
-
-  // type of storage to use
   storageMethod : 'cookie',
-
-  // value to store in dismissed localstorage/cookie
   key           : 'nag',
   value         : 'dismiss',
-
   error: {
     noCookieStorage : '$.cookie is not included. A storage solution is required.',
     noStorage       : 'Neither $.cookie or store is defined. A storage solution is required for storing state',
     method          : 'The method you called is not defined.'
   },
-
   className     : {
     bottom : 'bottom',
     fixed  : 'fixed'
   },
-
   selector      : {
     close : '.close.icon'
   },
-
   speed         : 500,
   easing        : 'easeOutQuad',
-
   onHide: function() {}
-
 };
-
-// Adds easing
 $.extend( $.easing, {
   easeOutQuad: function (x, t, b, c, d) {
     return -c *(t/=d)*(t-2) + b;
   }
 });
-
 })( jQuery, window, document );

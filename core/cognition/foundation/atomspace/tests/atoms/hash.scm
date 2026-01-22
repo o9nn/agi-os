@@ -1,10 +1,3 @@
-;; Atoms for testing hash collisions
-
-;; Scope links
-
-;; These 2 bind links are not alpha-equivalent and should ideally have
-;; different hash values.
-
 (define bl-1
 (BindLink
   (VariableList
@@ -241,7 +234,6 @@
   )
 )
 )
-
 (define bl-2
 (BindLink
   (VariableList
@@ -478,7 +470,6 @@
   )
 )
 )
-
 (define bl-3
 (BindLink
   (TypedVariableLink
@@ -502,7 +493,6 @@
   )
 )
 )
-
 (define bl-4
 (BindLink
   (ListLink
@@ -519,7 +509,6 @@
   )
 )
 )
-
 (define bl-5
 (BindLink
   (TypedVariableLink
@@ -540,7 +529,6 @@
   )
 )
 )
-
 (define bl-6
 (BindLink
   (ListLink
@@ -557,10 +545,6 @@
   )
 )
 )
-
-;; These 2 get links are not alpha-equivalent and should ideally have
-;; different hash values.
-
 (define gl-1
 (GetLink
   (VariableList
@@ -687,7 +671,6 @@
   )
 )
 )
-
 (define gl-2
 (GetLink
   (VariableList
@@ -814,7 +797,6 @@
   )
 )
 )
-
 (define ll-1
 (LambdaLink
     (VariableList
@@ -833,7 +815,6 @@
     )
 )
 )
-
 (define ll-2
 (LambdaLink
     (VariableList
@@ -852,7 +833,6 @@
     )
 )
 )
-
 (define ll-3
 (LambdaLink
     (VariableList
@@ -872,7 +852,6 @@
     )
 )
 )
-
 (define ll-4
 (LambdaLink
     (VariableList
@@ -892,7 +871,6 @@
     )
 )
 )
-
 (define ll-5
 (LambdaLink
     (VariableList
@@ -911,7 +889,6 @@
     )
 )
 )
-
 (define ll-6
 (LambdaLink
     (VariableList
@@ -930,9 +907,6 @@
     )
 )
 )
-
-;; Non scope links
-
 (define sal
 (SequentialAndLink
   (AbsentLink
@@ -950,7 +924,6 @@
   )
 )
 )
-
 (define sol
 (SequentialOrLink
   (PresentLink
@@ -968,7 +941,6 @@
   )
 )
 )
-
 (define tl
 (TimesLink
   (NumberNode "5.000000")
@@ -981,7 +953,6 @@
   )
 )
 )
-
 (define pl
 (PlusLink
   (NumberNode "5.000000")

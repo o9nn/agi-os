@@ -1,61 +1,51 @@
 #define	SAMTERM
-
 #define	RUNESIZE	sizeof(Rune)
 #define	MAXFILES	256
 #define	READBUFSIZE 8192
 #define	NL	5
-
 enum{
-	Up,
-	Down
+Up,
+Down
 };
-
 typedef struct Text	Text;
 typedef struct Section	Section;
 typedef struct Rasp	Rasp;
 typedef struct Readbuf Readbuf;
-
 struct Section
 {
-	long	nrunes;
-	Rune	*text;		/* if null, we haven't got it */
-	Section	*next;
+long	nrunes;
+Rune	*text;
+Section	*next;
 };
-
 struct Rasp
 {
-	long	nrunes;
-	Section	*sect;
+long	nrunes;
+Section	*sect;
 };
-
 #define	Untagged	((ushort)65535)
-
 struct Text
 {
-	Rasp	rasp;
-	short	nwin;
-	short	front;		/* input window */
-	ushort	tag;
-	char	lock;
-	Flayer	l[NL];		/* screen storage */
+Rasp	rasp;
+short	nwin;
+short	front;
+ushort	tag;
+char	lock;
+Flayer	l[NL];
 };
-
 struct Readbuf
 {
-	short	n;					/* # bytes in buf */
-	uchar	data[READBUFSIZE];		/* data bytes */
+short	n;
+uchar	data[READBUFSIZE];
 };
-
 enum Resource
 {
-	RHost,
-	RKeyboard,
-	RMouse,
-	RPlumb,
-	RResize,
-	NRes,
+RHost,
+RKeyboard,
+RMouse,
+RPlumb,
+RResize,
+NRes,
 };
-
 extern Text	**text;
 extern uchar	**name;
 extern ushort	*tag;
@@ -78,18 +68,16 @@ extern Keyboardctl* keyboardctl;
 extern Mouse*	mousep;
 extern long	modified;
 extern int	maxtab;
-extern Readbuf	hostbuf[2];	/* double buffer; it's synchronous communication */
-extern Readbuf	plumbbuf[2];	/* double buffer; it's synchronous communication */
+extern Readbuf	hostbuf[2];
+extern Readbuf	plumbbuf[2];
 extern Channel *plumbc;
 extern Channel *hostc;
 extern int	hversion;
 extern int	plumbfd;
 extern int	exiting;
 extern int	autoindent;
-
 Rune	*gettext(Flayer*, long, ulong*);
 void	*alloc(ulong n);
-
 void	iconinit(void);
 void	getscreen(int, char**);
 void	initio(void);
@@ -160,9 +148,7 @@ void	flushtyping(int);
 void	dumperrmsg(int, int, int, int);
 int	screensize(int*,int*);
 void	getmouse(void);
-
 #include "mesg.h"
-
 void	outTs(Tmesg, int);
 void	outT0(Tmesg);
 void	outTl(Tmesg, long);

@@ -5,9 +5,7 @@ import {minAllowedContextSizeInCalculations} from "../../../config.js";
 import {getDefaultContextBatchSize, getDefaultModelContextSize} from "../../../evaluator/LlamaContext/LlamaContext.js";
 import {InsufficientMemoryError} from "../../../utils/InsufficientMemoryError.js";
 import {getRamUsageFromUnifiedVram} from "./getRamUsageFromUnifiedVram.js";
-
 const defaultMaxContextSizeSwapUse = 2048;
-
 export async function resolveContextContextSizeOption({
     contextSize, batchSize, sequences, modelFileInsights, modelGpuLayers, modelTrainContextSize, flashAttention, swaFullCache,
     getVramState, getRamState, getSwapState, ignoreMemorySafetyChecks = false, isEmbeddingContext = false,
@@ -31,13 +29,10 @@ export async function resolveContextContextSizeOption({
 }): Promise<number> {
     if (contextSize == null)
         contextSize = "auto";
-
     if (typeof contextSize === "number") {
         const resolvedContextSize = Math.max(1, Math.floor(contextSize));
-
         if (ignoreMemorySafetyChecks)
             return resolvedContextSize;
-
         const [
             vramState,
             ramState,
@@ -56,14 +51,12 @@ export async function resolveContextContextSizeOption({
             swaFullCache,
             isEmbeddingContext
         });
-
         if (contextResourceRequirements.gpuVram > vramState.free)
             throw new InsufficientMemoryError(`A context size of ${resolvedContextSize}${sequences > 1 ? ` with ${sequences} sequences` : ""} is too large for the available VRAM`);
         else if (contextResourceRequirements.cpuRam > (
             ramState.free + swapState.free - getRamUsageFromUnifiedVram(contextResourceRequirements.gpuVram, vramState)
         ))
             throw new InsufficientMemoryError(`A context size of ${resolvedContextSize}${sequences > 1 ? ` with ${sequences} sequences` : ""} is too large for the available RAM${swapState.total > 0 ? " (including swap)" : ""}`);
-
         return resolvedContextSize;
     } else if (contextSize === "auto" || typeof contextSize === "object") {
         const [
@@ -75,21 +68,18 @@ export async function resolveContextContextSizeOption({
             getRamState(),
             getSwapState()
         ]);
-
         const maxContextSize = contextSize === "auto"
             ? getDefaultModelContextSize({trainContextSize: modelTrainContextSize})
             : Math.min(
                 contextSize.max ?? getDefaultModelContextSize({trainContextSize: modelTrainContextSize}),
                 getDefaultModelContextSize({trainContextSize: modelTrainContextSize})
             );
-
         const minContextSize = contextSize === "auto"
             ? minAllowedContextSizeInCalculations
             : Math.max(
                 contextSize.min ?? minAllowedContextSizeInCalculations,
                 minAllowedContextSizeInCalculations
             );
-
         let highestCompatibleContextSize: number | null = null;
         let step = -Math.max(1, Math.floor((maxContextSize - minContextSize) / 4));
         for (let testContextSize = maxContextSize; testContextSize >= minContextSize && testContextSize <= maxContextSize;) {
@@ -102,7 +92,6 @@ export async function resolveContextContextSizeOption({
                 swaFullCache,
                 isEmbeddingContext
             });
-
             if (contextResourceRequirements.gpuVram <= vramState.free &&
                 contextResourceRequirements.cpuRam <= (
                     ramState.free - getRamUsageFromUnifiedVram(contextResourceRequirements.gpuVram, vramState) + (
@@ -114,7 +103,6 @@ export async function resolveContextContextSizeOption({
             ) {
                 if (highestCompatibleContextSize == null || testContextSize >= highestCompatibleContextSize) {
                     highestCompatibleContextSize = testContextSize;
-
                     if (step === -1)
                         break;
                     else if (step < 0)
@@ -122,10 +110,8 @@ export async function resolveContextContextSizeOption({
                 }
             } else if (step > 0)
                 step = -Math.max(1, Math.floor(step / 2));
-
             if (testContextSize == minContextSize && step === -1)
                 break;
-
             testContextSize += step;
             if (testContextSize < minContextSize) {
                 testContextSize = minContextSize;
@@ -135,13 +121,10 @@ export async function resolveContextContextSizeOption({
                 step = -Math.max(1, Math.floor(Math.abs(step) / 2));
             }
         }
-
         if (highestCompatibleContextSize != null)
             return highestCompatibleContextSize;
-
         if (ignoreMemorySafetyChecks)
             return minContextSize;
-
         const minContextSizeResourceRequirements = modelFileInsights.estimateContextResourceRequirements({
             contextSize: minContextSize,
             batchSize: batchSize ?? getDefaultContextBatchSize({contextSize: minContextSize, sequences}),
@@ -151,7 +134,6 @@ export async function resolveContextContextSizeOption({
             swaFullCache,
             isEmbeddingContext
         });
-
         const unifiedRamUsage = getRamUsageFromUnifiedVram(minContextSizeResourceRequirements.gpuVram, vramState);
         if (minContextSizeResourceRequirements.gpuVram > vramState.free &&
             minContextSizeResourceRequirements.cpuRam > ramState.free + swapState.free - unifiedRamUsage
@@ -166,6 +148,5 @@ export async function resolveContextContextSizeOption({
         else
             throw new InsufficientMemoryError(`A context size of ${minContextSize}${sequences > 1 ? ` with ${sequences} sequences` : ""} is too large for the available resources`);
     }
-
     throw new Error(`Invalid context size: "${contextSize}"`);
 }

@@ -1,14 +1,10 @@
 #include	<lib9.h>
 #include	<bio.h>
 #include	"../5c/5.out.h"
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
-/* do not undefine this - code will be removed eventually */
 #define	CALLEEBX
-
 typedef	struct	Adr	Adr;
 typedef	struct	Sym	Sym;
 typedef	struct	Autom	Auto;
@@ -18,241 +14,210 @@ typedef	struct	Oprang	Oprang;
 typedef	uchar	Opcross[32][2][32];
 typedef	struct	Count	Count;
 typedef	struct	Use	Use;
-
 #define	P		((Prog*)0)
 #define	S		((Sym*)0)
 #define	U		((Use*)0)
 #define	TNAME		(curtext&&curtext->from.sym?curtext->from.sym->name:noname)
-
 struct	Adr
 {
-	union
-	{
-		long	u0offset;
-		char*	u0sval;
-		Ieee*	u0ieee;
-	} u0;
-	union
-	{
-		Auto*	u1autom;
-		Sym*	u1sym;
-	} u1;
-	char	type;
-	char	reg;
-	char	name;
-	char	class;
+union
+{
+long	u0offset;
+char*	u0sval;
+Ieee*	u0ieee;
+} u0;
+union
+{
+Auto*	u1autom;
+Sym*	u1sym;
+} u1;
+char	type;
+char	reg;
+char	name;
+char	class;
 };
-
 #define	offset	u0.u0offset
 #define	sval	u0.u0sval
 #define	ieee	u0.u0ieee
-
 #define	autom	u1.u1autom
 #define	sym	u1.u1sym
-
 struct	Prog
 {
-	Adr	from;
-	Adr	to;
-	union
-	{
-		long	u0regused;
-		Prog*	u0forwd;
-	} u0;
-	Prog*	cond;
-	Prog*	link;
-	long	pc;
-	long	line;
-	uchar	mark;
-	uchar	optab;
-	uchar	as;
-	uchar	scond;
-	uchar	reg;
-	uchar	align;
+Adr	from;
+Adr	to;
+union
+{
+long	u0regused;
+Prog*	u0forwd;
+} u0;
+Prog*	cond;
+Prog*	link;
+long	pc;
+long	line;
+uchar	mark;
+uchar	optab;
+uchar	as;
+uchar	scond;
+uchar	reg;
+uchar	align;
 };
 #define	regused	u0.u0regused
 #define	forwd	u0.u0forwd
-
 struct	Sym
 {
-	char	*name;
-	short	type;
-	short	version;
-	short	become;
-	short	frame;
-	uchar	subtype;
-	ushort	file;
-	long	value;
-	long	sig;
-	uchar	used;
-	uchar	thumb;	// thumb code
-	uchar	foreign;	// called by arm if thumb, by thumb if arm
-	uchar	fnptr;	// used as fn ptr
-	Use*		use;
-	Sym*	link;
-	long	base;
+char	*name;
+short	type;
+short	version;
+short	become;
+short	frame;
+uchar	subtype;
+ushort	file;
+long	value;
+long	sig;
+uchar	used;
+uchar	thumb;
+uchar	foreign;
+uchar	fnptr;
+Use*		use;
+Sym*	link;
+long	base;
 };
-
 #define SIGNINTERN	(1729*325*1729)
-
 struct	Autom
 {
-	Sym*	asym;
-	Auto*	link;
-	long	aoffset;
-	short	type;
+Sym*	asym;
+Auto*	link;
+long	aoffset;
+short	type;
 };
 struct	Optab
 {
-	char	as;
-	char	a1;
-	char	a2;
-	char	a3;
-	char	type;
-	char	size;
-	char	param;
-	char	flag;
+char	as;
+char	a1;
+char	a2;
+char	a3;
+char	type;
+char	size;
+char	param;
+char	flag;
 };
 struct	Oprang
 {
-	Optab*	start;
-	Optab*	stop;
+Optab*	start;
+Optab*	stop;
 };
 struct	Count
 {
-	long	count;
-	long	outof;
+long	count;
+long	outof;
 };
 struct	Use
 {
-	Prog*	p;	/* use */
-	Prog*	ct;	/* curtext */
-	Use*		link;
+Prog*	p;
+Prog*	ct;
+Use*		link;
 };
-
 enum
 {
-	STEXT		= 1,
-	SDATA,
-	SBSS,
-	SDATA1,
-	SXREF,
-	SLEAF,
-	SFILE,
-	SCONST,
-	SSTRING,
-	SUNDEF,
-	SREMOVED,
-
-	SIMPORT,
-	SEXPORT,
-
-	LFROM		= 1<<0,
-	LTO		= 1<<1,
-	LPOOL		= 1<<2,
-	V4		= 1<<3,	/* arm v4 arch */
-
-	C_NONE		= 0,
-	C_REG,
-	C_REGREG,
-	C_SHIFT,
-	C_FREG,
-	C_PSR,
-	C_FCR,
-
-	C_RCON,		/* 0xff rotated */
-	C_NCON,		/* ~RCON */
-	C_SCON,		/* 0xffff */
-	C_BCON,		/* thumb */
-	C_LCON,
-	C_FCON,
-	C_GCON,		/* thumb */
-
-	C_RACON,
-	C_SACON,	/* thumb */
-	C_LACON,
-	C_GACON,	/* thumb */
-
-	C_RECON,
-	C_LECON,
-
-	C_SBRA,
-	C_LBRA,
-	C_GBRA,		/* thumb */
-
-	C_HAUTO,	/* halfword insn offset (-0xff to 0xff) */
-	C_FAUTO,	/* float insn offset (0 to 0x3fc, word aligned) */
-	C_HFAUTO,	/* both H and F */
-	C_SAUTO,	/* -0xfff to 0xfff */
-	C_LAUTO,
-
-	C_HEXT,
-	C_FEXT,
-	C_HFEXT,
-	C_SEXT,
-	C_LEXT,
-
-	C_HOREG,
-	C_FOREG,
-	C_HFOREG,
-	C_SOREG,
-	C_ROREG,
-	C_SROREG,	/* both S and R */
-	C_LOREG,
-	C_GOREG,		/* thumb */
-
-	C_PC,
-	C_SP,
-	C_HREG,
-	C_OFFPC,		/* thumb */
-
-	C_ADDR,		/* relocatable address */
-
-	C_GOK,
-
-/* mark flags */
-	FOLL		= 1<<0,
-	LABEL		= 1<<1,
-	LEAF		= 1<<2,
-
-	BIG		= (1<<12)-4,
-	STRINGSZ	= 200,
-	NHASH		= 10007,
-	NHUNK		= 100000,
-	MINSIZ		= 64,
-	NENT		= 100,
-	MAXIO		= 8192,
-	MAXHIST		= 20,	/* limit of path elements for history symbols */
-
-	Roffset	= 22,		/* no. bits for offset in relocation address */
-	Rindex	= 10,		/* no. bits for index in relocation address */
+STEXT		= 1,
+SDATA,
+SBSS,
+SDATA1,
+SXREF,
+SLEAF,
+SFILE,
+SCONST,
+SSTRING,
+SUNDEF,
+SREMOVED,
+SIMPORT,
+SEXPORT,
+LFROM		= 1<<0,
+LTO		= 1<<1,
+LPOOL		= 1<<2,
+V4		= 1<<3,
+C_NONE		= 0,
+C_REG,
+C_REGREG,
+C_SHIFT,
+C_FREG,
+C_PSR,
+C_FCR,
+C_RCON,
+C_NCON,
+C_SCON,
+C_BCON,
+C_LCON,
+C_FCON,
+C_GCON,
+C_RACON,
+C_SACON,
+C_LACON,
+C_GACON,
+C_RECON,
+C_LECON,
+C_SBRA,
+C_LBRA,
+C_GBRA,
+C_HAUTO,
+C_FAUTO,
+C_HFAUTO,
+C_SAUTO,
+C_LAUTO,
+C_HEXT,
+C_FEXT,
+C_HFEXT,
+C_SEXT,
+C_LEXT,
+C_HOREG,
+C_FOREG,
+C_HFOREG,
+C_SOREG,
+C_ROREG,
+C_SROREG,
+C_LOREG,
+C_GOREG,
+C_PC,
+C_SP,
+C_HREG,
+C_OFFPC,
+C_ADDR,
+C_GOK,
+FOLL		= 1<<0,
+LABEL		= 1<<1,
+LEAF		= 1<<2,
+BIG		= (1<<12)-4,
+STRINGSZ	= 200,
+NHASH		= 10007,
+NHUNK		= 100000,
+MINSIZ		= 64,
+NENT		= 100,
+MAXIO		= 8192,
+MAXHIST		= 20,
+Roffset	= 22,
+Rindex	= 10,
 };
-
 EXTERN union
 {
-	struct
-	{
-		uchar	obuf[MAXIO];			/* output buffer */
-		uchar	ibuf[MAXIO];			/* input buffer */
-	} u;
-	char	dbuf[1];
+struct
+{
+uchar	obuf[MAXIO];
+uchar	ibuf[MAXIO];
+} u;
+char	dbuf[1];
 } buf;
-
 #define	cbuf	u.obuf
 #define	xbuf	u.ibuf
-
 #define	setarch(p)		if((p)->as==ATEXT) thumb=(p)->reg&ALLTHUMBS
 #define	setthumb(p)	if((p)->as==ATEXT) seenthumb|=(p)->reg&ALLTHUMBS
-
 #ifndef COFFCVT
-
-EXTERN	long	HEADR;			/* length of header */
-EXTERN	int	HEADTYPE;		/* type of header */
-EXTERN	long	INITDAT;		/* data location */
-EXTERN	long	INITRODAT;		/* read-only data location */
-EXTERN	long	INITRND;		/* data round above text location */
-EXTERN	long	INITTEXT;		/* text location */
-EXTERN	char*	INITENTRY;		/* entry point */
+EXTERN	long	HEADR;
+EXTERN	int	HEADTYPE;
+EXTERN	long	INITDAT;
+EXTERN	long	INITRODAT;
+EXTERN	long	INITRND;
+EXTERN	long	INITTEXT;
+EXTERN	char*	INITENTRY;
 EXTERN	long	autosize;
 EXTERN	Biobuf	bso;
 EXTERN	long	bsssize;
@@ -307,30 +272,24 @@ EXTERN	int	armv4;
 EXTERN	int	thumb;
 EXTERN	int	seenthumb;
 EXTERN	int	armsize;
-
 EXTERN	int	doexp, dlm;
 EXTERN	int	imports, nimports;
 EXTERN	int	exports, nexports;
 EXTERN	char*	EXPTAB;
 EXTERN	Prog	undefp;
-
 #define	UP	(&undefp)
-
 extern	char*	anames[];
 extern	Optab	optab[];
 extern	Optab	thumboptab[];
-
 void	addpool(Prog*, Adr*);
 EXTERN	Prog*	blitrl;
 EXTERN	Prog*	elitrl;
-
 #pragma	varargck	type	"A"	int
 #pragma	varargck	type	"C"	int
 #pragma	varargck	type	"D"	Adr*
 #pragma	varargck	type	"N"	Adr*
 #pragma	varargck	type	"P"	Prog*
 #pragma	varargck	type	"S"	char*
-
 int	Aconv(Fmt*);
 int	Cconv(Fmt*);
 int	Dconv(Fmt*);
@@ -435,5 +394,4 @@ int	fninc(Sym *);
 void	thumbcount(void);
 void reachable(void);
 void fnptrs(void);
-
 #endif

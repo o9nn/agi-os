@@ -22,7 +22,6 @@ import {withCliCommandDescriptionDocsUrl} from "../utils/withCliCommandDescripti
 import {documentationPageUrls} from "../../config.js";
 import {ConsoleInteraction, ConsoleInteractionKey} from "../utils/ConsoleInteraction.js";
 import {DraftSequenceTokenPredictor} from "../../evaluator/LlamaContext/tokenPredictors/DraftSequenceTokenPredictor.js";
-
 type InfillCommand = {
     modelPath?: string,
     header?: string[],
@@ -58,7 +57,6 @@ type InfillCommand = {
     noMmap: boolean,
     printTimings: boolean
 };
-
 export const InfillCommand: CommandModule<object, InfillCommand> = {
     command: "infill [modelPath]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -80,13 +78,10 @@ export const InfillCommand: CommandModule<object, InfillCommand> = {
             })
             .option("gpu", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return undefined;
-
                     return parseNodeLlamaCppGpuOption(value);
                 },
                 defaultDescription: "Uses the latest local build, and fallbacks to \"auto\"",
@@ -232,13 +227,10 @@ export const InfillCommand: CommandModule<object, InfillCommand> = {
             })
             .option("numa", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: llamaNumaOptions as any as Exclude<typeof llamaNumaOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return false;
-
                     return parseNumaOption(value);
                 },
                 defaultDescription: "false",
@@ -281,14 +273,12 @@ export const InfillCommand: CommandModule<object, InfillCommand> = {
                 tokenPredictionDraftModel, tokenPredictionModelContextSize, debug, numa, meter, timing, noMmap, printTimings
             });
         } catch (err) {
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+            await new Promise((accept) => setTimeout(accept, 0)); 
             console.error(err);
             process.exit(1);
         }
     }
 };
-
-
 async function RunInfill({
     modelPath: modelArg, header: headerArg, gpu, systemInfo, prefix, prefixFile, suffix, suffixFile, contextSize, batchSize, flashAttention,
     swaFullCache, threads, temperature, minP, topK, topP, seed, gpuLayers,
@@ -297,12 +287,9 @@ async function RunInfill({
 }: InfillCommand) {
     if (contextSize === -1) contextSize = undefined;
     if (gpuLayers === -1) gpuLayers = undefined;
-
     const headers = resolveHeaderFlag(headerArg);
-
     if (debug)
         console.info(`${chalk.yellow("Log level:")} debug`);
-
     const llamaLogLevel = debug
         ? LlamaLogLevel.debug
         : LlamaLogLevel.warn;
@@ -318,7 +305,6 @@ async function RunInfill({
         });
     const logBatchSize = batchSize != null;
     const useMmap = !noMmap && llama.supportsMmap;
-
     const resolvedModelPath = await resolveCommandGgufPath(modelArg, llama, headers, {
         flashAttention,
         swaFullCache,
@@ -332,37 +318,28 @@ async function RunInfill({
             consoleTitle: "Draft model file"
         })
         : undefined;
-
     if (systemInfo)
         console.log(llama.systemInfo);
-
     if (prefixFile != null && prefixFile !== "") {
         if (prefix != null && prefix !== "")
             console.warn(chalk.yellow("Both `prefix` and `prefixFile` were specified. `prefixFile` will be used."));
-
         prefix = await fs.readFile(path.resolve(process.cwd(), prefixFile), "utf8");
     }
-
     if (suffixFile != null && suffixFile !== "") {
         if (suffix != null && suffix !== "")
             console.warn(chalk.yellow("Both `suffix` and `suffixFile` were specified. `suffixFile` will be used."));
-
         suffix = await fs.readFile(path.resolve(process.cwd(), suffixFile), "utf8");
     }
-
     if (suffix != null && prefix == null) {
         console.warn(chalk.yellow("Suffix was specified but no prefix was specified. Suffix will be ignored."));
         suffix = undefined;
     }
-
     if (batchSize != null && contextSize != null && batchSize > contextSize) {
         console.warn(chalk.yellow("Batch size is greater than the context size. Batch size will be set to the context size."));
         batchSize = contextSize;
     }
-
     let initialPrefix = prefix ?? null;
     let initialSuffix = suffix ?? null;
-
     const model = await withProgressLog({
         loadingText: chalk.blue.bold("Loading model"),
         successText: chalk.blue("Model loaded"),
@@ -391,11 +368,10 @@ async function RunInfill({
         } catch (err) {
             if (err === progressUpdater.abortSignal?.reason)
                 process.exit(0);
-
             throw err;
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
@@ -424,16 +400,14 @@ async function RunInfill({
             } catch (err) {
                 if (err === progressUpdater.abortSignal?.reason)
                     process.exit(0);
-
                 throw err;
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
         });
-
     const draftContext = draftModel == null
         ? undefined
         : await withOra({
@@ -448,7 +422,7 @@ async function RunInfill({
                 });
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
@@ -469,12 +443,11 @@ async function RunInfill({
             });
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
     });
-
     const draftContextSequence = draftContext?.getSequence();
     const contextSequence = draftContextSequence != null
         ? context.getSequence({
@@ -487,9 +460,7 @@ async function RunInfill({
     let lastDraftTokenMeterState = draftContextSequence?.tokenMeter.getState();
     let lastTokenMeterState = contextSequence.tokenMeter.getState();
     let lastTokenPredictionsStats = contextSequence.tokenPredictions;
-
-    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+    await new Promise((accept) => setTimeout(accept, 0)); 
     const padTitle = await printCommonInfoLines({
         context,
         draftContext,
@@ -521,18 +492,13 @@ async function RunInfill({
             value: "enabled"
         }]
     });
-
-    // this is for ora to not interfere with readline
     await new Promise((resolve) => setTimeout(resolve, 1));
-
     if (!completion.infillSupported) {
         console.log(chalk.red("Infill is not supported for this model"));
         process.exit(1);
     }
-
     const replPrefixHistory: string[] = [];
     const replSuffixHistory: string[] = [];
-
     async function getInput(name: "Prefix" | "Suffix") {
         const rl = readline.createInterface({
             input: process.stdin,
@@ -541,51 +507,39 @@ async function RunInfill({
                 ? replPrefixHistory.slice()
                 : replSuffixHistory.slice()
         });
-
         const res: string = await new Promise((accept) => rl.question(chalk.yellow(name + "> "), accept));
         rl.close();
-
         return res;
     }
-
     while (true) {
         const prefixInput = initialPrefix != null
             ? initialPrefix
             : await getInput("Prefix");
-
         if (initialPrefix != null) {
             console.log(chalk.green("Prefix> ") + initialPrefix);
             initialPrefix = null;
         } else
             await replPrefixHistory.push(prefixInput);
-
         if (prefixInput === ".exit")
             break;
-
         const suffixInput = initialSuffix != null
             ? initialSuffix
             : await getInput("Suffix");
-
         if (initialSuffix != null) {
             console.log(chalk.green("Suffix> ") + initialSuffix);
             initialSuffix = null;
         } else
             await replSuffixHistory.push(suffixInput);
-
         if (suffixInput === ".exit")
             break;
-
         process.stdout.write(chalk.yellow("Infill: "));
-
         const [startColor, endColor] = chalk.blue("MIDDLE").split("MIDDLE");
-
         const abortController = new AbortController();
         const consoleInteraction = new ConsoleInteraction();
         consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, async () => {
             abortController.abort();
             consoleInteraction.stop();
         });
-
         const timeBeforePrompt = Date.now();
         try {
             process.stdout.write(startColor!);
@@ -618,26 +572,20 @@ async function RunInfill({
                 throw err;
         } finally {
             consoleInteraction.stop();
-
             if (abortController.signal.aborted)
                 process.stdout.write(endColor! + chalk.yellow("[generation aborted by user]"));
             else
                 process.stdout.write(endColor!);
-
             console.log();
         }
         const timeAfterPrompt = Date.now();
-
         if (printTimings) {
             if (LlamaLogLevelGreaterThan(llama.logLevel, LlamaLogLevel.info))
                 llama.logLevel = LlamaLogLevel.info;
-
             await context.printTimings();
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+            await new Promise((accept) => setTimeout(accept, 0)); 
             llama.logLevel = llamaLogLevel;
         }
-
         if (timing)
             console.info(
                 chalk.dim("Response duration: ") +
@@ -648,21 +596,17 @@ async function RunInfill({
                     compact: false
                 })
             );
-
         if (meter) {
             const newTokenMeterState = contextSequence.tokenMeter.getState();
             const tokenMeterDiff = TokenMeter.diff(newTokenMeterState, lastTokenMeterState);
             lastTokenMeterState = newTokenMeterState;
-
             const showDraftTokenMeterDiff = lastDraftTokenMeterState != null && draftContextSequence != null;
-
             const tokenPredictionsStats = contextSequence.tokenPredictions;
             const validatedTokenPredictions = tokenPredictionsStats.validated - lastTokenPredictionsStats.validated;
             const refutedTokenPredictions = tokenPredictionsStats.refuted - lastTokenPredictionsStats.refuted;
             const usedTokenPredictions = tokenPredictionsStats.used - lastTokenPredictionsStats.used;
             const unusedTokenPredictions = tokenPredictionsStats.unused - lastTokenPredictionsStats.unused;
             lastTokenPredictionsStats = tokenPredictionsStats;
-
             console.info([
                 showDraftTokenMeterDiff && (
                     chalk.yellow("Main".padEnd("Drafter".length))
@@ -682,12 +626,10 @@ async function RunInfill({
                     chalk.dim("Unused predictions:") + " " + String(unusedTokenPredictions).padEnd(5, " ")
                 )
             ].filter(Boolean).join("  "));
-
             if (lastDraftTokenMeterState != null && draftContextSequence != null) {
                 const newDraftTokenMeterState = draftContextSequence.tokenMeter.getState();
                 const draftTokenMeterDiff = TokenMeter.diff(newDraftTokenMeterState, lastDraftTokenMeterState);
                 lastDraftTokenMeterState = newDraftTokenMeterState;
-
                 console.info([
                     chalk.yellow("Drafter"),
                     chalk.dim("Input tokens:") + " " + String(draftTokenMeterDiff.usedInputTokens).padEnd(5, " "),

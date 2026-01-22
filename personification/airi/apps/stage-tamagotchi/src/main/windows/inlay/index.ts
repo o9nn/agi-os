@@ -1,14 +1,10 @@
 import { join, resolve } from 'node:path'
-
 import { BrowserWindow, shell } from 'electron'
 import { isMacOS } from 'std-env'
-
 import icon from '../../../../resources/icon.png?asset'
-
 import { baseUrl, getElectronMainDirname, load, withHashRoute } from '../../libs/electron/location'
 import { currentDisplayBounds, mapForBreakpoints, resolutionBreakpoints, widthFrom } from '../shared/display'
 import { spotlightLikeWindowConfig } from '../shared/window'
-
 export async function setupInlayWindow() {
   const window = new BrowserWindow({
     title: 'Inlay',
@@ -22,11 +18,9 @@ export async function setupInlayWindow() {
     },
     ...spotlightLikeWindowConfig(),
   })
-
   if (isMacOS) {
     window.setWindowButtonVisibility(false)
   }
-
   const displayBounds = currentDisplayBounds(window)
   const width = mapForBreakpoints(
     displayBounds.width,
@@ -39,28 +33,24 @@ export async function setupInlayWindow() {
     { breakpoints: resolutionBreakpoints },
   )
   const height = width / 4
-
   window.setBounds({
     width,
     height: width / 4,
-    x: displayBounds.x + (displayBounds.width - width) / 2, // Center horizontally
+    x: displayBounds.x + (displayBounds.width - width) / 2, 
     y: mapForBreakpoints(
       displayBounds.height,
       {
-        sm: displayBounds.height / 4 * 3 - height, // Bottom quarter, minus window height
-        md: displayBounds.height / 5 * 4 - height, // Center vertically
-        lg: displayBounds.height / 6 * 5 - height, // Top quarter, minus half window height
+        sm: displayBounds.height / 4 * 3 - height, 
+        md: displayBounds.height / 5 * 4 - height, 
+        lg: displayBounds.height / 6 * 5 - height, 
       },
     ),
   })
-
   window.on('ready-to-show', () => window.show())
   window.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
-
   await load(window, withHashRoute(baseUrl(resolve(getElectronMainDirname(), '..', 'renderer')), '/inlay'))
-
   return window
 }

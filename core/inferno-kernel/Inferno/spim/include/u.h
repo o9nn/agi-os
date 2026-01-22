@@ -12,13 +12,11 @@ typedef long	jmp_buf[2];
 #define	JMPBUFSP	0
 #define	JMPBUFPC	1
 #define	JMPBUFDPC	0
-typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
-typedef unsigned int	u32int;		/* for /sys/include/libsec.h */
+typedef unsigned int	mpdigit;
+typedef unsigned int	u32int;
 typedef unsigned char u8int;
 typedef unsigned short u16int;
 typedef unsigned long uintptr;
-
-/* FCR */
 #define	FPINEX	(1<<7)
 #define	FPUNFL	(1<<8)
 #define	FPOVFL	(1<<9)
@@ -33,7 +31,6 @@ typedef unsigned long uintptr;
 #define	FPPSGL	0
 #define	FPPDBL	0
 #define	FPPMASK	0
-/* FSR */
 #define	FPAINEX	(1<<2)
 #define	FPAOVFL	(1<<4)
 #define	FPAUNFL	(1<<3)
@@ -41,14 +38,12 @@ typedef unsigned long uintptr;
 #define	FPAINVAL	(1<<6)
 union FPdbleword
 {
-	double	x;
-	struct {	/* little endian */
-		ulong lo;
-		ulong hi;
-	};
+double	x;
+struct {
+ulong lo;
+ulong hi;
 };
-
-/* stdarg */
+};
 typedef char *va_list;
 #define va_start(list, start) list = (sizeof(start)<4 ? (char *)((int *)&(start)+1) : \
 (char *)(&(start)+1))

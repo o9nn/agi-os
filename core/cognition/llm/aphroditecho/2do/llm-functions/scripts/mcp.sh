@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
-
 ROOT_DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd)"
 BIN_DIR="$ROOT_DIR/bin"
 MCP_DIR="$ROOT_DIR/cache/__mcp__"
@@ -8,9 +7,6 @@ MCP_LOG_FILE="$MCP_DIR/mcp-bridge.log"
 MCP_JSON_PATH="$ROOT_DIR/mcp.json"
 FUNCTIONS_JSON_PATH="$ROOT_DIR/functions.json"
 MCP_BRIDGE_PORT="${MCP_BRIDGE_PORT:-8808}"
-
-# @cmd Start/restart the mcp bridge server
-# @alias restart
 start() {
     if [[ ! -f "$MCP_JSON_PATH" ]]; then
         _die "error: not found mcp.json"
@@ -32,8 +28,6 @@ start() {
     "$0" merge-functions -S
     build-bin
 }
-
-# @cmd Stop the mcp bridge server
 stop() {
     pid="$(get-server-pid)"
     if [[ -n "$pid" ]]; then
@@ -45,8 +39,6 @@ stop() {
     fi
     "$0" recovery-functions -S
 }
-
-# @cmd Check the mcp bridge server is running
 check() {
     if [[ -f "$MCP_JSON_PATH" ]]; then
         echo "Check mcp/bridge" 
@@ -57,10 +49,6 @@ check() {
         fi
     fi
 }
-
-# @cmd Run the mcp tool
-# @arg tool![`_choice_tool`] The tool name
-# @arg json The json data
 run@tool() {
     if [[ -z "$argc_json" ]]; then
         declaration="$(generate-declarations | jq --arg tool "$argc_tool" -r '.[] | select(.name == $tool)')"
@@ -73,9 +61,6 @@ run@tool() {
     fi
     bash "$ROOT_DIR/scripts/run-mcp-tool.sh" "$argc_tool" "$argc_json"
 }
-
-# @cmd Show the logs
-# @flag -f --follow Follow mode
 logs() {
     if [[ ! -f "$MCP_LOG_FILE" ]]; then
         _die "error: not found log file at '$MCP_LOG_FILE'"
@@ -86,8 +71,6 @@ logs() {
         cat "$MCP_LOG_FILE"
     fi
 }
-
-# @cmd Build tools to bin
 build-bin() {
     mkdir -p "$BIN_DIR"
     tools=( $(generate-declarations | jq -r '.[].name') )
@@ -102,9 +85,6 @@ build-bin() {
         echo "Build bin/$tool"
     done
 }
-
-# @cmd Merge mcp tools into functions.json
-# @flag -S --save Save to functions.json
 merge-functions() {
     local tmpdir="$(mktemp -d)"
     "$0" recovery-functions > "$tmpdir/1.json"
@@ -116,9 +96,6 @@ merge-functions() {
         printf "%s" "$result"
     fi
 }
-
-# @cmd Unmerge mcp tools from functions.json
-# @flag -S --save Save to functions.json
 recovery-functions() {
     functions="[]"
     if [[ -f  "$FUNCTIONS_JSON_PATH" ]]; then
@@ -131,8 +108,6 @@ recovery-functions() {
         printf "%s" "$result"
     fi
 }
-
-# @cmd Generate function declarations for the mcp tools
 generate-declarations() {
     pid="$(get-server-pid)"
     if [[ -n "$pid" ]]; then
@@ -141,8 +116,6 @@ generate-declarations() {
         echo "[]"
     fi
 }
-
-# @cmd Wait for the mcp bridge server to ready
 wait-for-server() {
     while true; do
         if [[ "$(curl -fsS --max-time 5 http://localhost:$MCP_BRIDGE_PORT/health 2>&1)" == "OK" ]]; then
@@ -151,12 +124,9 @@ wait-for-server() {
         sleep 1
     done
 }
-
-# @cmd Get the server pid
 get-server-pid() {
     curl -fsS --max-time 5 http://localhost:$MCP_BRIDGE_PORT/pid 2>/dev/null || true
 }
-
 _ask_json_data() {
     declaration="$1"
     echo 'Missing the JSON data but here are its properties:'
@@ -171,25 +141,20 @@ _ask_json_data() {
         argc_json="$res"
     fi
 }
-
 _declarations_json_data() {
    ./scripts/declarations-util.sh generate-json | tail -n +2
 }
-
 _build_win_shim() {
     run="\"$(argc --argc-shell-path)\" --noprofile --norc"
     cat <<-EOF
 @echo off
 setlocal
-
 set "bin_dir=%~dp0"
 for %%i in ("%bin_dir:~0,-1%") do set "script_dir=%%~dpi"
 set "script_name=%~n0"
-
 $run "%script_dir%scripts\run-mcp-tool.sh" "%script_name%" %*
 EOF
 }
-
 _is_win() {
     if [[ "$OS" == "Windows_NT" ]]; then
         return 0
@@ -197,15 +162,11 @@ _is_win() {
         return 1
     fi
 }
-
 _choice_tool() {
     generate-declarations | jq -r '.[].name'
 }
-
 _die() {
     echo "$*" >&2
     exit 1
 }
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

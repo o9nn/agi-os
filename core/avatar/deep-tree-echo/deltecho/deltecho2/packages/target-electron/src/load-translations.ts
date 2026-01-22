@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
 import { ipcMain } from 'electron'
-
 import { getLogger } from '../../shared/logger.js'
 import {
   getMessageFunction,
@@ -10,11 +9,8 @@ import {
 } from '../../shared/localize.js'
 import { refresh as refreshMenu } from './menu.js'
 import { getLocaleDirectoryPath } from './getLocaleDirectory.js'
-
 const log = getLogger('load-translations')
-
 let currentlocaleData: LocaleData | null = null
-
 export function getCurrentLocaleDate(): LocaleData {
   if (currentlocaleData === null) {
     log.error('tried to get locale data before init')
@@ -22,7 +18,6 @@ export function getCurrentLocaleDate(): LocaleData {
   }
   return currentlocaleData
 }
-
 let translateFunction: getMessageFunction | null = null
 export const tx: getMessageFunction = function (key, substitutions, raw_opts) {
   if (translateFunction === null) {
@@ -31,7 +26,6 @@ export const tx: getMessageFunction = function (key, substitutions, raw_opts) {
   }
   return translateFunction(key, substitutions, raw_opts)
 }
-
 export default function setLanguage(locale: string) {
   const localeData = loadTranslations(locale)
   currentlocaleData = localeData
@@ -40,18 +34,12 @@ export default function setLanguage(locale: string) {
     localeData.messages
   )
 }
-
 export function loadTranslations(locale: string) {
   const messagesEnglish = getLocaleMessages(retrieveLocaleFile('en'))
-
   let messages
-
   let localeFile = retrieveLocaleFile(locale)
   let localeMessages = getLocaleMessages(localeFile)
-
   if (!localeMessages && locale.indexOf('-') !== -1) {
-    // We couldn't load the file for the locale but it's a dialect. Try to fall
-    // back to the main language (example: de-CH -> de)
     locale = locale.split('-')[0]
     localeFile = retrieveLocaleFile(locale)
     localeMessages = getLocaleMessages(localeFile)
@@ -60,11 +48,9 @@ export function loadTranslations(locale: string) {
     locale = 'en'
     messages = messagesEnglish
   }
-
   if (localeMessages) {
     messages = Object.assign({}, messagesEnglish, localeMessages)
   }
-
   const experimentalFile = retrieveLocaleFile('_untranslated_en')
   const experimentalMessages = getLocaleMessages(experimentalFile)
   if (experimentalMessages) {
@@ -72,16 +58,13 @@ export function loadTranslations(locale: string) {
   } else {
     log.debug(`No experimental language file (${experimentalFile}) found`)
   }
-
   log.debug(messages['no_chat_selected_suggestion_desktop'])
   return { messages, locale }
 }
-
 function retrieveLocaleFile(locale: string) {
   const onDiskLocale = locale.replace('-', '_')
   return path.join(getLocaleDirectoryPath(), onDiskLocale + '.json')
 }
-
 function getLocaleMessages(file: string) {
   if (!fs.existsSync(file)) return false
   try {
@@ -91,14 +74,12 @@ function getLocaleMessages(file: string) {
     throw err
   }
 }
-
 ipcMain.handle('getLocaleData', (_ev, locale?: string): LocaleData => {
   if (locale) {
     loadTranslations(locale)
   }
   return getCurrentLocaleDate()
 })
-
 ipcMain.handle('setLocale', (_ev, locale: string) => {
   setLanguage(locale)
   refreshMenu()

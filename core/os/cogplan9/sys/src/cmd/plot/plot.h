@@ -1,6 +1,3 @@
-/*
- * Prototypes for libplot functions.
- */
 void rarc(double, double, double, double, double, double, double);
 void box(double, double, double, double);
 void cfill(char *);

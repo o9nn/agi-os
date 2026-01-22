@@ -1,5 +1,4 @@
 #include "headers.h"
-
 SmbOpTableEntry smboptable[256] = {
 [SMB_COM_CREATE_DIRECTORY] { "SMB_COM_CREATE_DIRECTORY", smbcomcreatedirectory },
 [SMB_COM_DELETE_DIRECTORY] { "SMB_COM_DELETE_DIRECTORY", smbcomdeletedirectory },
@@ -74,7 +73,6 @@ SmbOpTableEntry smboptable[256] = {
 [SMB_COM_WRITE_BULK] { "SMB_COM_WRITE_BULK", nil },
 [SMB_COM_NO_ANDX_COMMAND] { "SMB_COM_NO_ANDX_COMMAND", nil },
 };
-
 SmbTrans2OpTableEntry
 smbtrans2optable[] = {
 [SMB_TRANS2_OPEN] { "SMB_TRANS2_OPEN", nil },

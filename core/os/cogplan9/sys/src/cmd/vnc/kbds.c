@@ -3,45 +3,36 @@
 #include	"compat.h"
 #include	"kbd.h"
 #include   "ksym2utf.h"
-
 enum
 {
-	VKSpecial = 0xff00,
-
-	/*
-	 * plan 9 key mappings
-	 */
-	Spec=		0xF800,
-
-	PF=		Spec|0x20,	/* num pad function key */
-	View=		Spec|0x00,	/* view (shift window up) */
-	KF=		0xF000,	/* function key (begin Unicode private space) */
-	Shift=		Spec|0x60,
-	Break=		Spec|0x61,
-	Ctrl=		Spec|0x62,
-	Latin=		Spec|0x63,
-	Caps=		Spec|0x64,
-	Num=		Spec|0x65,
-	Middle=		Spec|0x66,
-	No=		0x00,		/* peter */
-
-	Home=		KF|13,
-	Up=		KF|14,
-	Pgup=		KF|15,
-	Print=		KF|16,
-	Left=		KF|17,
-	Right=		KF|18,
-	End=		'\r',
-	Down=		View,
-	Pgdown=		KF|19,
-	Ins=		KF|20,
-	Del=		0x7F,
-	Scroll=		KF|21,
-
-	Esc = 0x1b,
-	Delete = 0x7f,
+VKSpecial = 0xff00,
+Spec=		0xF800,
+PF=		Spec|0x20,
+View=		Spec|0x00,
+KF=		0xF000,
+Shift=		Spec|0x60,
+Break=		Spec|0x61,
+Ctrl=		Spec|0x62,
+Latin=		Spec|0x63,
+Caps=		Spec|0x64,
+Num=		Spec|0x65,
+Middle=		Spec|0x66,
+No=		0x00,
+Home=		KF|13,
+Up=		KF|14,
+Pgup=		KF|15,
+Print=		KF|16,
+Left=		KF|17,
+Right=		KF|18,
+End=		'\r',
+Down=		View,
+Pgdown=		KF|19,
+Ins=		KF|20,
+Del=		0x7F,
+Scroll=		KF|21,
+Esc = 0x1b,
+Delete = 0x7f,
 };
-
 static Rune vnckeys[] =
 {
 [0x00]	No,	No,	No,	No,	No,	No,	No,	No,
@@ -77,97 +68,77 @@ static Rune vnckeys[] =
 [0xf0]	No,	No,	No,	No,	No,	No,	No,	No,
 [0xf8]	No,	No,	No,	No,	No,	No,	No,	Delete,
 };
-
-/*
- *  keyboard interrupt
- */
 void
 vncputc(int keyup, int c)
 {
-	int i;
-	static int esc1, esc2;
-	static int alt, caps, ctl, num, shift;
-	static int collecting, nk;
-	static Rune kc[5];
-
-	if(caps && c<='z' && c>='a')
-		c += 'A' - 'a';
-
-	/*
- 	 *  character mapping
-	 */
-	if((c & VKSpecial) == VKSpecial){
-		c = vnckeys[c & 0xff];
-		if(c == No)
-			return;
-	}
-	/*
-	 * map an xkeysym onto a utf-8 char
-	 */
-	if((c & 0xff00) && c < nelem(ksym2utf) && ksym2utf[c] != 0)
-			c = ksym2utf[c];
-
-	/*
-	 *  keyup only important for shifts
-	 */
-	if(keyup){
-		switch(c){
-		case Latin:
-			alt = 0;
-			break;
-		case Shift:
-			shift = 0;
-			break;
-		case Ctrl:
-			ctl = 0;
-			break;
-		}
-		return;
-	}
-
-	/*
- 	 *  normal character
-	 */
-	if(!(c & (Spec|KF))){
-		if(ctl){
-			c &= 0x1f;
-		}
-		if(!collecting){
-			kbdputc(c);
-			return;
-		}
-		kc[nk++] = c;
-		c = latin1(kc, nk);
-		if(c < -1)	/* need more keystrokes */
-			return;
-		if(c != -1)	/* valid sequence */
-			kbdputc(c);
-		else	/* dump characters */
-			for(i=0; i<nk; i++)
-				kbdputc(kc[i]);
-		nk = 0;
-		collecting = 0;
-		return;
-	}else{
-		switch(c){
-		case Caps:
-			caps ^= 1;
-			return;
-		case Num:
-			num ^= 1;
-			return;
-		case Shift:
-			shift = 1;
-			return;
-		case Latin:
-			alt = 1;
-			collecting = 1;
-			nk = 0;
-			return;
-		case Ctrl:
-			ctl = 1;
-			return;
-		}
-	}
-	kbdputc(c);
+int i;
+static int esc1, esc2;
+static int alt, caps, ctl, num, shift;
+static int collecting, nk;
+static Rune kc[5];
+if(caps && c<='z' && c>='a')
+c += 'A' - 'a';
+if((c & VKSpecial) == VKSpecial){
+c = vnckeys[c & 0xff];
+if(c == No)
+return;
+}
+if((c & 0xff00) && c < nelem(ksym2utf) && ksym2utf[c] != 0)
+c = ksym2utf[c];
+if(keyup){
+switch(c){
+case Latin:
+alt = 0;
+break;
+case Shift:
+shift = 0;
+break;
+case Ctrl:
+ctl = 0;
+break;
+}
+return;
+}
+if(!(c & (Spec|KF))){
+if(ctl){
+c &= 0x1f;
+}
+if(!collecting){
+kbdputc(c);
+return;
+}
+kc[nk++] = c;
+c = latin1(kc, nk);
+if(c < -1)
+return;
+if(c != -1)
+kbdputc(c);
+else
+for(i=0; i<nk; i++)
+kbdputc(kc[i]);
+nk = 0;
+collecting = 0;
+return;
+}else{
+switch(c){
+case Caps:
+caps ^= 1;
+return;
+case Num:
+num ^= 1;
+return;
+case Shift:
+shift = 1;
+return;
+case Latin:
+alt = 1;
+collecting = 1;
+nk = 0;
+return;
+case Ctrl:
+ctl = 1;
+return;
+}
+}
+kbdputc(c);
 }

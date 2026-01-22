@@ -2,97 +2,83 @@ typedef struct Event Event;
 typedef struct Exec Exec;
 typedef struct Message Message;
 typedef struct Window Window;
-
 enum
 {
-	STACK		= 8192,
-	EVENTSIZE	= 256,
-	NEVENT		= 5,
+STACK		= 8192,
+EVENTSIZE	= 256,
+NEVENT		= 5,
 };
-
 struct Event
 {
-	int	c1;
-	int	c2;
-	int	q0;
-	int	q1;
-	int	flag;
-	int	nb;
-	int	nr;
-	char	b[EVENTSIZE*UTFmax+1];
-	Rune	r[EVENTSIZE+1];
+int	c1;
+int	c2;
+int	q0;
+int	q1;
+int	flag;
+int	nb;
+int	nr;
+char	b[EVENTSIZE*UTFmax+1];
+Rune	r[EVENTSIZE+1];
 };
-
 struct Window
 {
-	/* file descriptors */
-	int		ctl;
-	int		event;
-	int		addr;
-	int		data;
-	Biobuf	*body;
-
-	/* event input */
-	char		buf[512];
-	char		*bufp;
-	int		nbuf;
-	Event	e[NEVENT];
-
-	int		id;
-	int		open;
-	Channel	*cevent;
+int		ctl;
+int		event;
+int		addr;
+int		data;
+Biobuf	*body;
+char		buf[512];
+char		*bufp;
+int		nbuf;
+Event	e[NEVENT];
+int		id;
+int		open;
+Channel	*cevent;
 };
-
 struct Message
 {
-	Window	*w;
-	int		ctlfd;
-	char		*name;
-	char		*replyname;
-	uchar	opened;
-	uchar	dirty;
-	uchar	isreply;
-	uchar	deleted;
-	uchar	writebackdel;
-	uchar	tagposted;
-	uchar	recursed;
-	uchar	level;
-
-	/* header info */
-	char		*fromcolon;	/* from header file; all rest are from info file */
-	char		*from;
-	char		*to;
-	char		*cc;
-	char		*replyto;
-	char		*date;
-	char		*subject;
-	char		*type;
-	char		*disposition;
-	char		*filename;
-	char		*digest;
-
-	Message	*next;	/* next in this mailbox */
-	Message	*prev;	/* prev in this mailbox */
-	Message	*head;	/* first subpart */
-	Message	*tail;		/* last subpart */
+Window	*w;
+int		ctlfd;
+char		*name;
+char		*replyname;
+uchar	opened;
+uchar	dirty;
+uchar	isreply;
+uchar	deleted;
+uchar	writebackdel;
+uchar	tagposted;
+uchar	recursed;
+uchar	level;
+char		*fromcolon;
+char		*from;
+char		*to;
+char		*cc;
+char		*replyto;
+char		*date;
+char		*subject;
+char		*type;
+char		*disposition;
+char		*filename;
+char		*digest;
+Message	*next;
+Message	*prev;
+Message	*head;
+Message	*tail;
 };
-
 enum
 {
-	NARGS		= 100,
-	NARGCHAR	= 8*1024,
-	EXECSTACK 	= STACK+(NARGS+1)*sizeof(char*)+NARGCHAR
+NARGS		= 100,
+NARGCHAR	= 8*1024,
+EXECSTACK 	= STACK+(NARGS+1)*sizeof(char*)+NARGCHAR
 };
-
 struct Exec
 {
-	char		*prog;
-	char		**argv;
-	int		p[2];	/* p[1] is write to program; p[0] set to prog fd 0*/
-	int		q[2];	/* q[0] is read from program; q[1] set to prog fd 1 */
-	Channel	*sync;
+char		*prog;
+char		**argv;
+int		p[2];
+int		q[2];
+Channel	*sync;
 };
-
 extern	Window*	newwindow(void);
 extern	int		winopenfile(Window*, char*);
 extern	void		winopenbody(Window*, int);
@@ -112,13 +98,10 @@ extern	int		winsetaddr(Window*, char*, int);
 extern	char*	winreadbody(Window*, int*);
 extern	void		windormant(Window*);
 extern	void		winsetdump(Window*, char*, char*);
-
 extern	void		readmbox(Message*, char*, char*);
 extern	void		rewritembox(Window*, Message*);
-
 extern	void		mkreply(Message*, char*, char*, Plumbattr*, char*);
 extern	void		delreply(Message*);
-
 extern	int		mesgadd(Message*, char*, Dir*, char*);
 extern	void		mesgmenu(Window*, Message*);
 extern	void		mesgmenunew(Window*, Message*);
@@ -132,7 +115,6 @@ extern	void		mesgmenumarkdel(Window*, Message*, Message*, int);
 extern	Message*	mesglookup(Message*, char*, char*);
 extern	Message*	mesglookupfile(Message*, char*, char*);
 extern	void		mesgfreeparts(Message*);
-
 extern	char*	readfile(char*, char*, int*);
 extern	char*	readbody(char*, char*, int*);
 extern	void		ctlprint(int, char*, ...);
@@ -145,10 +127,8 @@ extern	char*	eappend(char*, char*, char*);
 extern	void		error(char*, ...);
 extern	int		tokenizec(char*, char**, int, char*);
 extern	void		execproc(void*);
-
 #pragma	varargck	argpos	error	1
 #pragma	varargck	argpos	ctlprint	2
-
 extern	Window	*wbox;
 extern	Message	mbox;
 extern	Message	replies;

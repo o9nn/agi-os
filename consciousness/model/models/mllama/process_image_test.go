@@ -1,12 +1,9 @@
 package mllama
-
 import (
 	"image"
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
 )
-
 func TestSupportedAspectRatios(t *testing.T) {
 	cases := []struct {
 		p    ImageProcessor
@@ -50,7 +47,6 @@ func TestSupportedAspectRatios(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		actual := tt.p.supportedAspectRatios()
 		if diff := cmp.Diff(actual, tt.want, cmp.AllowUnexported(supportedAspectRatio{})); diff != "" {
@@ -58,7 +54,6 @@ func TestSupportedAspectRatios(t *testing.T) {
 		}
 	}
 }
-
 func TestFitToCanvas(t *testing.T) {
 	cases := []struct {
 		p      ImageProcessor
@@ -103,7 +98,6 @@ func TestFitToCanvas(t *testing.T) {
 			expect: image.Point{667, 1000},
 		},
 	}
-
 	for _, tt := range cases {
 		actual := tt.p.fitToCanvas(tt.image, tt.canvas)
 		if diff := cmp.Diff(actual, tt.expect); diff != "" {
@@ -111,7 +105,6 @@ func TestFitToCanvas(t *testing.T) {
 		}
 	}
 }
-
 func TestOptimalTiledCanvas(t *testing.T) {
 	cases := []struct {
 		p      ImageProcessor
@@ -189,7 +182,6 @@ func TestOptimalTiledCanvas(t *testing.T) {
 			expect: image.Point{1120, 1120},
 		},
 	}
-
 	for _, tt := range cases {
 		actual := tt.p.optimalTiledCanvas(tt.image)
 		if diff := cmp.Diff(actual, tt.expect); diff != "" {
@@ -197,7 +189,6 @@ func TestOptimalTiledCanvas(t *testing.T) {
 		}
 	}
 }
-
 func TestSplitToTiles(t *testing.T) {
 	cases := []struct {
 		imageMax image.Point
@@ -228,16 +219,12 @@ func TestSplitToTiles(t *testing.T) {
 			},
 		},
 	}
-
 	var p ImageProcessor
-
 	for _, tt := range cases {
 		actual := p.splitToTiles(image.NewRGBA(image.Rectangle{Max: tt.imageMax}), tt.numTiles)
-
 		if len(actual) != len(tt.expect) {
 			t.Errorf("incorrect number of images '%d': expect: '%d'", len(actual), len(tt.expect))
 		}
-
 		for i := range actual {
 			if actual[i].Bounds() != tt.expect[i].Bounds() {
 				t.Errorf("image size incorrect: '%#v': expect: '%#v'", actual[i].Bounds(), tt.expect[i].Bounds())
@@ -245,7 +232,6 @@ func TestSplitToTiles(t *testing.T) {
 		}
 	}
 }
-
 func TestResize(t *testing.T) {
 	cases := []struct {
 		p                 ImageProcessor
@@ -284,20 +270,16 @@ func TestResize(t *testing.T) {
 			expectAspectRatio: image.Point{2, 2},
 		},
 	}
-
 	for _, tt := range cases {
 		actualImage, actualAspectRatio := tt.p.resize(image.Rectangle{Max: tt.imageMax})
-
 		if actualImage.Bounds() != tt.expectImage.Bounds() {
 			t.Errorf("image size incorrect: '%#v': expect: '%#v'", actualImage.Bounds(), tt.expectImage.Bounds())
 		}
-
 		if actualAspectRatio != tt.expectAspectRatio {
 			t.Errorf("aspect ratio incorrect: '%#v': expect: '%#v'", actualAspectRatio, tt.expectAspectRatio)
 		}
 	}
 }
-
 func TestPad(t *testing.T) {
 	cases := []struct {
 		p           ImageProcessor
@@ -312,16 +294,13 @@ func TestPad(t *testing.T) {
 			expect:      image.NewRGBA(image.Rect(0, 0, 1120, 1120)),
 		},
 	}
-
 	for _, tt := range cases {
 		actual := tt.p.pad(image.Rectangle{Max: tt.imageMax}, tt.aspectRatio)
-
 		if actual.Bounds() != tt.expect.Bounds() {
 			t.Errorf("image size incorrect: '%#v': expect: '%#v'", actual.Bounds(), tt.expect.Bounds())
 		}
 	}
 }
-
 func TestPackImages(t *testing.T) {
 	cases := []struct {
 		imageMax    image.Point
@@ -344,7 +323,6 @@ func TestPackImages(t *testing.T) {
 			expectVals:  1 * 2 * 3 * 560 * 560,
 		},
 	}
-
 	for _, tt := range cases {
 		var p ImageProcessor
 		actualVals := p.pack(image.NewRGBA(image.Rectangle{Max: tt.imageMax}), tt.aspectRatio)
@@ -353,7 +331,6 @@ func TestPackImages(t *testing.T) {
 		}
 	}
 }
-
 func TestPreprocess(t *testing.T) {
 	cases := []struct {
 		imageMax            image.Point
@@ -368,18 +345,15 @@ func TestPreprocess(t *testing.T) {
 			expectAspectRatioID: 6,
 		},
 	}
-
 	p := ImageProcessor{imageSize: 560, maxNumTiles: 4}
 	for _, tt := range cases {
 		img, aspectRatio, err := p.ProcessImage(image.NewRGBA(image.Rectangle{Max: tt.imageMax}))
 		if err != nil {
 			t.Fatalf("error processing: %q", err)
 		}
-
 		if len(img) == 0 {
 			t.Errorf("no image data returned")
 		}
-
 		if aspectRatio.rank != tt.expectAspectRatioID {
 			t.Errorf("aspect ratio incorrect: '%d': expect: '%d'", aspectRatio, tt.expectAspectRatioID)
 		}

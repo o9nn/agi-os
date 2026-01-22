@@ -1,8 +1,7 @@
-#include <gwenhywfar/gwenhywfar.h>  /* based on gwenhywfar.pc */
-
+#include <gwenhywfar/gwenhywfar.h>
 int main()
 {
-    int result = GWEN_Init();
-    GWEN_Fini();
-    return result;
+int result = GWEN_Init();
+GWEN_Fini();
+return result;
 }

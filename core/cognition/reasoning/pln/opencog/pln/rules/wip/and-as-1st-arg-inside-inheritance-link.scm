@@ -1,22 +1,4 @@
-;; =============================================================================
-;; And as 1st arg inside inheritance link rule
-;;
-;; InheritanceLink
-;;   A
-;;   C
-;; InheritanceLink
-;;   B
-;;   C
-;; |-
-;; InheritanceLink
-;;   AndLink
-;;       A
-;;       B
-;;   C
-;;
-;; -----------------------------------------------------------------------------
 (load "formulas.scm")
-
 (define and-as-1st-arg-inside-inheritance-link-rule
     (BindLink
         (VariableList
@@ -54,7 +36,6 @@
                         (VariableNode "$A")
                         (VariableNode "$B"))
                     (VariableNode "$C"))))))
-
 (define (and-as-1st-arg-formula A B C AC BC AB ABC)
     (
         (cog-set-tv! 
@@ -76,4 +57,3 @@
                     (cog-confidence C)
                     (cog-confidence AC)
                     (cog-confidence BC))))))
-

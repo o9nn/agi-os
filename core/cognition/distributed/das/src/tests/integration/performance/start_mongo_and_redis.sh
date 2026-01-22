@@ -1,9 +1,5 @@
 #!/bin/bash
-
 set -eou pipefail
-
-# This script is used to start MongoDB and Redis for performance testing.
-
 function stop_container() {
   CONTAINER_NAME="$1"
   echo "===== Removing existing container ${CONTAINER_NAME} if it exists ====="
@@ -15,13 +11,9 @@ function stop_container() {
     echo "No existing container found with name: ${CONTAINER_NAME}"
   fi
 }
-
-# Set up MongoDB ===================================================================================
-
 MONGO_CONTAINER_NAME="mongodb-perf-tests-38000"
 stop_container "${MONGO_CONTAINER_NAME}"
 echo
-
 MONGO_TMP_DATA="/tmp/mongodb-data"
 MONGO_TMP_CONFIGDB="/tmp/mongodb-configdb"
 echo "===== Setting up MongoDB data on ${MONGO_TMP_DATA} ====="
@@ -30,7 +22,6 @@ sudo mkdir -p "${MONGO_TMP_DATA}" "${MONGO_TMP_CONFIGDB}"
 sudo pv /opt/das/data/perf-test/mongodb-data.tar | tar xf - -C "${MONGO_TMP_DATA}/"
 sudo chown -R 999:999 "${MONGO_TMP_DATA}" "${MONGO_TMP_CONFIGDB}"
 echo
-
 echo "===== Starting MongoDB on port 38000 ====="
 docker run \
   --name "mongodb-perf-tests-38000" \
@@ -59,18 +50,12 @@ docker run \
   --entrypoint "docker-entrypoint.sh" \
   "mongo:6.0.13-jammy" \
   "mongod"
-
 echo "MongoDB started on port 38000 (container: ${MONGO_CONTAINER_NAME})"
-
 echo
 echo
-
-# Set up Redis =====================================================================================
-
 REDIS_CONTAINER_NAME="redis-perf-tests-39000"
 stop_container "${REDIS_CONTAINER_NAME}"
 echo
-
 REDIS_TMP_DATA="/tmp/redis-data"
 echo "===== Setting up Redis data on ${REDIS_TMP_DATA} ====="
 sudo rm -rf "${REDIS_TMP_DATA}"
@@ -78,7 +63,6 @@ sudo mkdir -p "${REDIS_TMP_DATA}"
 sudo pv /opt/das/data/perf-test/redis-data.tar | tar xf - -C "${REDIS_TMP_DATA}/"
 sudo chown -R 999:1000 "${REDIS_TMP_DATA}"
 echo
-
 echo "===== Starting Redis on port 39000 ====="  
 docker run \
   --name "redis-perf-tests-39000" \
@@ -98,5 +82,4 @@ docker run \
   --entrypoint "docker-entrypoint.sh" \
   "redis:7.2.3-alpine" \
   "redis-server" "--port" "39000" "--appendonly" "yes" "--protected-mode" "no"
-
 echo "Redis started on port 39000 (container: ${REDIS_CONTAINER_NAME})"

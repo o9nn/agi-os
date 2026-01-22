@@ -1,19 +1,14 @@
 #define checkmmu(a, b)
 #define countpagerefs(a, b)
-
 #include "../port/portfns.h"
-
 typedef struct Ether Ether;
 struct Ether;
-
 extern int led(int, int);
 extern void ledexit(int);
 extern void delay(int);
 extern void _uartputs(char*, int);
 extern int _uartprint(char*, ...);
-
 #pragma	varargck argpos	_uartprint 1
-
 extern long ainc(long *);
 extern long adec(long *);
 extern void allcacheinfo(Memcache *);
@@ -88,8 +83,8 @@ extern void machoff(uint cpu);
 extern void machon(uint cpu);
 extern void memdiag(ulong *);
 extern void mmuidmap(uintptr phys, int mbs);
-extern void mmuinvalidate(void);		/* 'mmu' or 'tlb'? */
-extern void mmuinvalidateaddr(u32int);		/* 'mmu' or 'tlb'? */
+extern void mmuinvalidate(void);
+extern void mmuinvalidateaddr(u32int);
 extern void mousectl(Cmdbuf *cb);
 extern ulong pcibarsize(Pcidev*, int);
 extern void pcibussize(Pcidev*, ulong*, ulong*);
@@ -144,17 +139,12 @@ extern void _vrst(void);
 extern void wakewfi(void);
 extern void watchdoginit(void);
 extern void wfi(void);
-
 extern int irqenable(uint, void (*)(Ureg*, void*), void*, char*);
 extern int irqdisable(uint, void (*)(Ureg*, void*), void*, char*);
 #define intrenable(i, f, a, b, n)	irqenable((i), (f), (a), (n))
 #define intrdisable(i, f, a, b, n)	irqdisable((i), (f), (a), (n))
 extern void vectors(void);
 extern void vtable(void);
-
-/*
- * Things called in main.
- */
 extern void archconfinit(void);
 extern void clockinit(void);
 extern int i8250console(void);
@@ -162,8 +152,6 @@ extern void links(void);
 extern void mmuinit(void);
 extern void touser(uintptr);
 extern void trapinit(void);
-
-
 extern int fpiarm(Ureg*);
 extern int fpudevprocio(Proc*, void*, long, uintptr, int);
 extern void fpuinit(void);
@@ -175,10 +163,6 @@ extern void fpusysprocsetup(Proc*);
 extern void fpusysrfork(Ureg*);
 extern void fpusysrforkchild(Proc*, Ureg*, Proc*);
 extern int fpuemu(Ureg*);
-
-/*
- * Miscellaneous machine dependent stuff.
- */
 extern int cas(int *, int, int);
 extern char* getenv(char*, char*, int);
 char*	getconf(char*);
@@ -190,44 +174,27 @@ extern Block* ucallocb(int);
 extern void* ucallocalign(usize size, int align, int span);
 extern void ucfree(void*);
 extern void ucfreeb(Block*);
-
-/*
- * Things called from port.
- */
-extern void delay(int);				/* only scheddump() */
+extern void delay(int);
 extern int islo(void);
-extern void microdelay(int);			/* only edf.c */
+extern void microdelay(int);
 extern void evenaddr(uintptr);
 extern void idlehands(void);
-extern void setkernur(Ureg*, Proc*);		/* only devproc.c */
+extern void setkernur(Ureg*, Proc*);
 extern void syscallfmt(int syscallno, ulong pc, va_list list);
 extern void sysretfmt(int syscallno, va_list list, long ret, uvlong start, uvlong stop);
 extern void* sysexecregs(uintptr, ulong, int);
 extern void sysprocsetup(Proc*);
-
-/* libc */
 long labs(long);
-
-/*
- * PCI stuff.
- */
-
 extern void forkret(void);
 extern int userureg(Ureg*);
 void*	vmap(uintptr, usize);
 void vunmap(void*, usize);
-
 extern void kexit(Ureg*);
-
 #define	getpgcolor(a)	0
 #define	kmapinval()
-
 #define PTR2UINT(p)	((uintptr)(p))
 #define UINT2PTR(i)	((void*)(i))
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-
 #define KADDR(pa)	UINT2PTR(KZERO    | ((uintptr)(pa) & ~KSEGM))
 #define PADDR(va)	PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
-
-#define MASK(v)	((1UL << (v)) - 1)	/* mask `v' bits wide */
+#define MASK(v)	((1UL << (v)) - 1)

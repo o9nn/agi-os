@@ -7,12 +7,9 @@ export function includesText(
         return value.some((v) => includesText(v, textToCheckFor, strictCase));
     else if (typeof value !== "string")
         return false;
-
     if (textToCheckFor instanceof Array)
         return textToCheckFor.some((t) => includesText(value, t, strictCase));
-
     if (strictCase)
         return value.includes(textToCheckFor);
-
     return value.toLowerCase().includes(textToCheckFor.toLowerCase());
 }

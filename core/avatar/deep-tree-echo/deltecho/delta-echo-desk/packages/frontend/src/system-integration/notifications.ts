@@ -6,27 +6,13 @@ import { isImage } from '../components/attachment/Attachment'
 import { runtime } from '@deltachat-desktop/runtime-interface'
 import SettingsStoreInstance from '../stores/settings'
 import AccountNotificationStoreInstance from '../stores/accountNotifications'
-
 import { C, type T } from '@deltachat/jsonrpc-client'
-
 const log = getLogger('renderer/notifications')
-
-/**
- * Notification handling:
- *
- * - listens for incoming notifications
- * - reflects notification settings
- * - prepares notification data (DcNotification)
- * - queues notifications if needed to avoid "mass" notifications
- * - sends notifications to runtime (which invokes ipcBackend)
- */
-
 export function initNotifications() {
   BackendRemote.on('IncomingMsg', (accountId, { chatId, msgId }) => {
     log.debug('IncomingMsg', { accountId, msgId, chatId })
     incomingMessageHandler(accountId, chatId, msgId, NOTIFICATION_TYPE.MESSAGE)
   })
-
   BackendRemote.on(
     'IncomingWebxdcNotify',
     (accountId, { msgId, text, chatId }) => {
@@ -39,7 +25,6 @@ export function initNotifications() {
       )
     }
   )
-
   BackendRemote.on(
     'IncomingReaction',
     (accountId, { contactId, chatId, msgId, reaction }) => {
@@ -54,28 +39,23 @@ export function initNotifications() {
       )
     }
   )
-
   BackendRemote.on('IncomingMsgBunch', accountId => {
     flushNotifications(accountId)
   })
 }
-
 function isMuted(accountId: number, chatId: number) {
   return BackendRemote.rpc.isChatMuted(accountId, chatId)
 }
-
 type QueuedNotification = {
   chatId: number
   messageId: number
   notificationType: NOTIFICATION_TYPE
-  eventText: string // for webxdc-info notifications or reactions
-  contactId?: number // for reactions
+  eventText: string 
+  contactId?: number 
 }
-
 let queuedNotifications: {
   [accountId: number]: QueuedNotification[]
 } = {}
-
 function incomingMessageHandler(
   accountId: number,
   chatId: number,
@@ -85,32 +65,25 @@ function incomingMessageHandler(
   contactId?: number
 ) {
   log.debug('incomingMessageHandler: ', { chatId, messageId })
-
   if (
     SettingsStoreInstance.state &&
     !SettingsStoreInstance.state.desktopSettings.notifications
   ) {
-    // notifications are turned off for whole app
     log.debug(
       'notification ignored: notifications are turned off for whole app'
     )
     return
   }
-
   if (AccountNotificationStoreInstance.isAccountMuted(accountId)) {
-    // notifications are turned off for account
     log.debug('notification ignored: notifications are turned off for account')
     return
   }
-
   if (document.hasFocus() && accountId === window.__selectedAccountId) {
-    // window has focus don't send notification for the selected account
     log.debug(
       'notification ignored: window has focus and account of the notification is selected'
     )
     return
   }
-
   if (typeof queuedNotifications[accountId] === 'undefined') {
     queuedNotifications[accountId] = []
   }
@@ -122,7 +95,6 @@ function incomingMessageHandler(
     contactId,
   })
 }
-
 async function showNotification(
   accountId: number,
   chatId: number,
@@ -132,7 +104,6 @@ async function showNotification(
   contactId?: number
 ) {
   const tx = window.static_translate
-
   if (!SettingsStoreInstance.state?.desktopSettings.showNotificationContent) {
     runtime.showNotification({
       title: appName,
@@ -154,19 +125,11 @@ async function showNotification(
       let icon = nIcon[0]
       const iconIsAvatar = nIcon[1]
       if (notificationType === NOTIFICATION_TYPE.WEBXDC_INFO) {
-        /**
-         * messageId may refer to a webxdc message OR a wexdc-info-message!
-         *
-         * a notification might be sent even when no webxdc-info-message was
-         * added to the chat; in that case the msg_id refers to the webxdc instance
-         */
         let message = await BackendRemote.rpc.getMessage(accountId, messageId)
         if (
           message.systemMessageType === 'WebxdcInfoMessage' &&
           message.parentId
         ) {
-          // we have to get the parent message
-          // (the webxdc message which holds the webxdcInfo)
           message = await BackendRemote.rpc.getMessage(
             accountId,
             message.parentId
@@ -182,7 +145,6 @@ async function showNotification(
               message.id,
               iconName
             )
-            // needed for valid dataUrl
             const imageExtension = iconName.split('.').pop()
             icon = `data:image/${imageExtension};base64,${iconBlob}`
           }
@@ -200,7 +162,7 @@ async function showNotification(
             eventText,
             summaryText,
           ])}`
-          summaryPrefix = '' // not needed, sender name is included in summaryText
+          summaryPrefix = '' 
         }
       }
       runtime.showNotification({
@@ -218,13 +180,11 @@ async function showNotification(
     }
   }
 }
-
 async function showGroupedNotification(
   accountId: number,
   notifications: QueuedNotification[]
 ) {
   const tx = window.static_translate
-
   if (!SettingsStoreInstance.state?.desktopSettings.showNotificationContent) {
     runtime.showNotification({
       title: appName,
@@ -238,13 +198,8 @@ async function showGroupedNotification(
   } else {
     const chatIds = [...new Set(notifications.map(({ chatId }) => chatId))]
     const msgCount = notifications.length
-
     try {
       if (chatIds.length === 1) {
-        // all messages are from the same chat
-        // can show profile image of chat
-        // title: chatName
-        // body: "5 new Messages in ChatName"
         const notificationInfo =
           await BackendRemote.rpc.getMessageNotificationInfo(
             accountId,
@@ -258,22 +213,19 @@ async function showGroupedNotification(
           }),
           icon: chatProfileImage || null,
           chatId: chatIds[0],
-          messageId: 0, // just select chat on click, no specific message
+          messageId: 0, 
           accountId,
           notificationType: NOTIFICATION_TYPE.MESSAGE,
         })
       } else {
-        // messages from diffent chats
-        // title: "new messages"
-        // body: "324 new messages in 6 chats"
         const chatCount = chatIds.length
         runtime.showNotification({
-          title: tx('new_messages'), // IDEA: when we support notifications from multiple accounts, then show account displayname here?
+          title: tx('new_messages'), 
           body: tx('n_messages_in_m_chats', [
             String(msgCount),
             String(chatCount),
           ]),
-          icon: null, // IDEA: when we support notifications from multiple accounts, then show account profile image here?
+          icon: null, 
           chatId: 0,
           messageId: 0,
           accountId,
@@ -285,22 +237,15 @@ async function showGroupedNotification(
     }
   }
 }
-
-// how many notifications can be shown without being grouped
 const STARTUP_LIMIT = 1
 const NORMAL_LIMIT = 3
-
 let notificationLimit = STARTUP_LIMIT
-
 async function flushNotifications(accountId: number) {
   if (typeof queuedNotifications[accountId] === 'undefined') {
-    // make it work even if there is nothing
     queuedNotifications[accountId] = []
   }
   const notifications = [...queuedNotifications[accountId]]
   queuedNotifications = []
-
-  // filter out muted chats:
   const uniqueChats = [...new Set(notifications.map(n => n.chatId))]
   const mutedChats = (
     await Promise.all(
@@ -311,15 +256,12 @@ async function flushNotifications(accountId: number) {
   )
     .filter(e => e.muted)
     .map(e => e.id)
-
   const filteredNotifications = (
     await Promise.all(
       notifications.map(async notification => {
         if (!mutedChats.includes(notification.chatId)) {
           return notification
         }
-        // muted chat - only show if it's a mention and mentions are enabled
-        // see  https://github.com/deltachat/interface/pull/78#issuecomment-2536719734
         if (SettingsStoreInstance.state?.desktopSettings.isMentionsEnabled) {
           const isMention = await notificationIsMention(accountId, notification)
           if (isMention) {
@@ -328,7 +270,6 @@ async function flushNotifications(accountId: number) {
               notification.chatId
             )
             if (chat.chatType === C.DC_CHAT_TYPE_GROUP) {
-              // only show mentions for group chats
               return notification
             }
           }
@@ -337,7 +278,6 @@ async function flushNotifications(accountId: number) {
       })
     )
   ).filter(notification => notification !== null)
-
   if (filteredNotifications.length > notificationLimit) {
     showGroupedNotification(accountId, notifications)
   } else {
@@ -360,11 +300,6 @@ async function flushNotifications(accountId: number) {
   }
   notificationLimit = NORMAL_LIMIT
 }
-
-/**
- * returns true if the notification is a mention. See
- * https://github.com/deltachat/deltachat-desktop/issues/4461
- */
 async function notificationIsMention(
   accountId: number,
   notification: QueuedNotification
@@ -373,17 +308,14 @@ async function notificationIsMention(
     log.info('mention detected: webxdc-info notification')
     return true
   }
-
   if (notification.notificationType === NOTIFICATION_TYPE.REACTION) {
     log.info('mention detected: reaction to own message')
     return true
   }
-
   const message = await BackendRemote.rpc.getMessage(
     accountId,
     notification.messageId
   )
-
   if (message.quote && message.quote.kind === 'WithMessage') {
     const quote = await BackendRemote.rpc.getMessage(
       accountId,
@@ -397,18 +329,13 @@ async function notificationIsMention(
   log.debug('ignoring notification on muted chat')
   return false
 }
-
 export function clearNotificationsForChat(accountId: number, chatId: number) {
   log.debug('clearNotificationsForChat', accountId, chatId)
-  // ask runtime to delete the notifications
   runtime.clearNotifications(accountId, chatId)
 }
-
 export function clearAllNotifications() {
-  // ask runtime to delete the notifications
   runtime.clearAllNotifications()
 }
-
 function getNotificationIcon(
   notification: T.MessageNotificationInfo
 ): [icon: string | null, iconIsAvatar: boolean] {

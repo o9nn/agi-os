@@ -1,5 +1,4 @@
 (use-modules (opencog) (opencog ure))
-
 (EvaluationLink (stv 1 1)
    (PredicateNode "URE:BC:preproof-of")
    (ListLink

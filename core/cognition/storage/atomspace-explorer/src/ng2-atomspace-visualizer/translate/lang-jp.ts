@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
-// Japanese
 export const LANG_JP_NAME = 'jp';
-
 export const LANG_JP_TRANS = {
   'Play-TT': '遊びます  (一時停止キー)',
   'Pause-TT': '一時停止  (一時停止キー)',

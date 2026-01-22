@@ -1,20 +1,9 @@
-// When you change this file, then run `pnpm migration-test` afterwards
-// to ensure that it still works with all old formats
-
 import { startDeltaChat } from '@deltachat/stdio-rpc-server'
 import { existsSync, lstatSync } from 'fs'
 import { join } from 'path'
 import { Logger } from '../../../shared/logger.js'
 import { mkdir, readdir, rename, rm, rmdir, stat } from 'fs/promises'
 import { DcEvent } from '@deltachat/jsonrpc-client'
-
-/**
- *
- * @param cwd
- * @param log
- * @param treatFailedMigrationAsError used for the automated testing
- * @returns {Promise<boolean>} whether something was migrated
- */
 export async function migrateAccountsIfNeeded(
   cwd: string,
   log: Logger,
@@ -29,15 +18,11 @@ export async function migrateAccountsIfNeeded(
       log.debug('migration not needed: accounts.toml already exists')
       return false
     }
-
     log.debug('accounts.toml not found, checking if there is previous data')
-
     const configPath = join(cwd, '..')
-
     const accountFoldersFormat1 = (await readdir(configPath)).filter(
       folderName => {
         const path = join(configPath, folderName)
-        // isDeltaAccountFolder
         try {
           const db_path = join(path, 'db.sqlite')
           return (
@@ -52,50 +37,34 @@ export async function migrateAccountsIfNeeded(
         }
       }
     )
-
     const migrateFromFormat1 = accountFoldersFormat1.length !== 0
     const migrateFromFormat2 = existsSync(cwd)
-
     if (!migrateFromFormat1 && !migrateFromFormat2) {
       log.info('migration not needed: nothing to migrate')
       return false
     }
-
-    // this is the same as cwd, but for clarity added ../accounts
     const path_accounts = join(cwd, '..', 'accounts')
     const pathAccountsOld = join(cwd, '..', 'accounts_old')
-
     if (migrateFromFormat2) {
       log.info(`found old some accounts (format 2), we need to migrate...`)
-
-      // First, rename accounts folder to accounts_old
       await rename(path_accounts, pathAccountsOld)
     }
-
-    // Next, create temporary account manager to migrate accounts
     tmpDC = await startDeltaChat(path_accounts, {
       muteStdErr: false,
     })
     tmpDC.on('ALL', eventLogger)
-
     const oldFoldersToDelete = []
-
     if (migrateFromFormat1) {
       log.info(
         `found old ${accountFoldersFormat1.length} legacy accounts (1), we need to migrate...`
       )
-
-      // Next, iterate over all folders in accounts_old
       for (const folder of accountFoldersFormat1) {
         log.debug(`migrating legacy account "${folder}"`)
         const pathDBFile = join(configPath, folder, 'db.sqlite')
-
-        // fix import account without blobs folder (not all of them are unconfigured it seems)
         const blobsFolder = join(configPath, folder, 'db.sqlite-blobs')
         if (!existsSync(blobsFolder)) {
           await mkdir(blobsFolder, { recursive: true })
         }
-
         try {
           await tmpDC.rpc.migrateAccount(pathDBFile)
           oldFoldersToDelete.push(folder)
@@ -107,9 +76,7 @@ export async function migrateAccountsIfNeeded(
         }
       }
     }
-
     if (migrateFromFormat2) {
-      // Next, iterate over all folders in accounts_old
       for (const entry of await readdir(pathAccountsOld)) {
         const stat_result = await stat(join(pathAccountsOld, entry))
         if (!stat_result.isDirectory()) continue
@@ -121,15 +88,12 @@ export async function migrateAccountsIfNeeded(
           )
           continue
         }
-
-        // fix import account without blobs folder (not all of them are unconfigured)
         const blobsFolder = join(pathAccountsOld, entry, 'db.sqlite-blobs')
         if (!existsSync(blobsFolder)) {
           await mkdir(blobsFolder, { recursive: true })
         }
         try {
           const account_id = await tmpDC.rpc.migrateAccount(path_dbfile)
-          // check if there are stickers
           const old_sticker_folder = join(pathAccountsOld, entry, 'stickers')
           if (existsSync(old_sticker_folder)) {
             log.debug('found stickers, migrating them', old_sticker_folder)
@@ -147,7 +111,6 @@ export async function migrateAccountsIfNeeded(
               }
             }
           }
-          // if successful remove old account folder too
           oldFoldersToDelete.push(join(pathAccountsOld, entry))
         } catch (error) {
           log.error(
@@ -157,7 +120,6 @@ export async function migrateAccountsIfNeeded(
         }
       }
     }
-    // cleanup
     tmpDC.off('ALL', eventLogger)
     tmpDC.close()
     for (const oldFolder of oldFoldersToDelete.map(f => join(configPath, f))) {
@@ -165,7 +127,6 @@ export async function migrateAccountsIfNeeded(
         try {
           await rm(join(oldFolder, '.DS_Store'))
         } catch (error) {
-          /* ignore */
         }
         await rmdir(oldFolder)
       } catch (error) {
@@ -173,7 +134,6 @@ export async function migrateAccountsIfNeeded(
       }
     }
     log.info('migration completed')
-
     return true
   } catch (err) {
     tmpDC?.off('ALL', eventLogger)

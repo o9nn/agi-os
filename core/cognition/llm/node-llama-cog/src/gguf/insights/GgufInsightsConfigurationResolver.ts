@@ -8,32 +8,16 @@ import {resolveContextContextSizeOption} from "./utils/resolveContextContextSize
 import {scoreLevels} from "./utils/scoreLevels.js";
 import {getRamUsageFromUnifiedVram} from "./utils/getRamUsageFromUnifiedVram.js";
 import type {GgufInsights} from "./GgufInsights.js";
-
 export const defaultTrainContextSizeForEstimationPurposes = 4096;
 const defaultContextSizeForUnfitContextSizeConfiguration = 2048;
-
-
 export class GgufInsightsConfigurationResolver {
-    /** @internal */ private readonly _ggufInsights: GgufInsights;
-
+     private readonly _ggufInsights: GgufInsights;
     private constructor(ggufInsights: GgufInsights) {
         this._ggufInsights = ggufInsights;
     }
-
     public get ggufInsights() {
         return this._ggufInsights;
     }
-
-    /**
-     * Resolve the best configuration for loading a model and creating a context using the current hardware.
-     *
-     * Specifying a `targetGpuLayers` and/or `targetContextSize` will ensure the resolved configuration matches those values,
-     * but note it can lower the compatibility score if the hardware doesn't support it.
-     *
-     * Overriding hardware values it possible by configuring `hardwareOverrides`.
-     * @param options
-     * @param hardwareOverrides
-     */
     public async resolveAndScoreConfig({
         targetGpuLayers,
         targetContextSize,
@@ -79,31 +63,8 @@ export class GgufInsightsConfigurationResolver {
             llamaGpu,
             llamaSupportsGpuOffloading
         });
-
         return compatibilityScore;
     }
-
-    /**
-     * Score the compatibility of the model configuration with the current GPU and VRAM state.
-     * Assumes a model is loaded with the default `"auto"` configurations.
-     * Scored based on the following criteria:
-     * - The number of GPU layers that can be offloaded to the GPU (only if there's a GPU. If there's no GPU then by how small the model is)
-     * - Whether all layers can be offloaded to the GPU (gives additional points)
-     * - Whether the resolved context size is at least as large as the specified `contextSize`
-     *
-     * If the resolved context size is larger than the specified context size, for each multiplier of the specified `contextSize`
-     * that the resolved context size is larger by, 1 bonus point is given in the `bonusScore`.
-     *
-     * `maximumFittedContextSizeMultiplier` is used to improve the proportionality of the bonus score between models.
-     * Set this to any value higher than `<max compared model context size> / contextSize`.
-     * Defaults to `100`.
-     *
-     * `maximumUnfitConfigurationResourceMultiplier` is used to improve the proportionality of the bonus score between unfit models.
-     * Set this to any value higher than `<max compared model resource usage> / <total available resources>`.
-     * Defaults to `100`.
-     *
-     * `contextSize` defaults to `4096` (if the model train context size is lower than this, the model train context size is used instead).
-     */
     public async scoreModelConfigurationCompatibility({
         contextSize = Math.min(4096, this._ggufInsights.trainContextSize ?? 4096),
         embeddingContext = false,
@@ -121,14 +82,7 @@ export class GgufInsightsConfigurationResolver {
         swaFullCache?: boolean,
         maximumFittedContextSizeMultiplier?: number,
         maximumUnfitConfigurationResourceMultiplier?: number,
-
-        /**
-         * Do not resolve a context size larger than the specified `contextSize`.
-         *
-         * Defaults to `false`.
-         */
         forceStrictContextSize?: boolean,
-
         forceGpuLayers?: number | "max",
         useMmap?: boolean
     } = {}, {
@@ -146,33 +100,15 @@ export class GgufInsightsConfigurationResolver {
         llamaGpu?: BuildGpu,
         llamaSupportsGpuOffloading?: boolean
     } = {}): Promise<{
-        /**
-         * A number between `0` (inclusive) and `1` (inclusive) representing the compatibility score.
-         */
         compatibilityScore: number,
-
-        /**
-         * A number starting at `0` with no upper limit representing the bonus score.
-         * For each multiplier of the specified `contextSize` that the resolved context size is larger by, 1 bonus point is given.
-         */
         bonusScore: number,
-
-        /**
-         * The total score, which is the sum of the compatibility and bonus scores.
-         */
         totalScore: number,
-
-        /**
-         * The resolved values used to calculate the scores.
-         */
         resolvedValues: {
             gpuLayers: number,
             contextSize: number,
-
             modelRamUsage: number,
             contextRamUsage: number,
             totalRamUsage: number,
-
             modelVramUsage: number,
             contextVramUsage: number,
             totalVramUsage: number
@@ -191,7 +127,6 @@ export class GgufInsightsConfigurationResolver {
             ? this.ggufInsights.totalLayers
             : forceGpuLayers;
         let gpuLayersFitMemory = false;
-
         try {
             resolvedGpuLayers = await this.resolveModelGpuLayers(
                 forceGpuLayers != null
@@ -224,13 +159,11 @@ export class GgufInsightsConfigurationResolver {
             if (!(err instanceof InsufficientMemoryError))
                 throw err;
         }
-
         const canUseGpu = llamaSupportsGpuOffloading && llamaGpu !== false;
         const estimatedModelResourceUsage = this._ggufInsights.estimateModelResourceRequirements({
             gpuLayers: resolvedGpuLayers,
             useMmap
         });
-
         let resolvedContextSize = forceStrictContextSize
             ? contextSize
             : Math.min(
@@ -238,7 +171,6 @@ export class GgufInsightsConfigurationResolver {
                 defaultContextSizeForUnfitContextSizeConfiguration
             );
         let contextFitsMemory = false;
-
         try {
             resolvedContextSize = await this.resolveContextContextSize("auto", {
                 getVramState: async () => ({
@@ -275,7 +207,6 @@ export class GgufInsightsConfigurationResolver {
                 swaFullCache
             });
             contextFitsMemory = true;
-
             if (forceStrictContextSize && resolvedContextSize < contextSize) {
                 contextFitsMemory = false;
                 resolvedContextSize = contextSize;
@@ -286,7 +217,6 @@ export class GgufInsightsConfigurationResolver {
             if (!(err instanceof InsufficientMemoryError))
                 throw err;
         }
-
         const estimatedContextResourceUsage = this._ggufInsights.estimateContextResourceRequirements({
             contextSize: resolvedContextSize,
             isEmbeddingContext: embeddingContext,
@@ -294,16 +224,14 @@ export class GgufInsightsConfigurationResolver {
             flashAttention,
             swaFullCache
         });
-
         const rankPoints = {
             gpuLayers: 60,
             allLayersAreOffloaded: 10,
             contextSize: 30,
             ramUsageFitsInRam: 10,
-            cpuOnlySmallModelSize: 70, // also defined inside `scoreModelSizeForCpuOnlyUsage`
+            cpuOnlySmallModelSize: 70, 
             bonusContextSize: 10
         } as const;
-
         const gpuLayersPoints = rankPoints.gpuLayers * Math.min(1, resolvedGpuLayers / this._ggufInsights.totalLayers);
         const allLayersAreOffloadedPoints = rankPoints.allLayersAreOffloaded * (
             resolvedGpuLayers === this._ggufInsights.totalLayers ? 1 : 0
@@ -337,7 +265,6 @@ export class GgufInsightsConfigurationResolver {
                 )
             )
             : 0;
-
         let compatibilityScore = canUseGpu
             ? (
                 (gpuLayersPoints + allLayersAreOffloadedPoints + contextSizePoints + ramUsageFitsInRamPoints) /
@@ -347,41 +274,34 @@ export class GgufInsightsConfigurationResolver {
                 (contextSizePoints + ramUsageFitsInRamPoints + scoreModelSizeForCpuOnlyUsage(this._ggufInsights.modelSize)) /
                 (rankPoints.contextSize + rankPoints.ramUsageFitsInRam + rankPoints.cpuOnlySmallModelSize));
         let bonusScore = bonusContextSizePoints / rankPoints.bonusContextSize;
-
         if (!gpuLayersFitMemory || !contextFitsMemory ||
             estimatedModelResourceUsage.gpuVram + estimatedContextResourceUsage.gpuVram > vramState.total ||
             estimatedModelResourceUsage.cpuRam + estimatedContextResourceUsage.cpuRam > ramState.total + swapState.total
         ) {
             const totalVramRequirement = estimatedModelResourceUsage.gpuVram + estimatedContextResourceUsage.gpuVram;
             const totalRamRequirement = estimatedModelResourceUsage.cpuRam + estimatedContextResourceUsage.cpuRam;
-
             compatibilityScore = 0;
             bonusScore = (
                 (1 - (totalVramRequirement / (vramState.total * maximumUnfitConfigurationResourceMultiplier))) +
                 (1 - (totalRamRequirement / ((ramState.total + swapState.total) * maximumUnfitConfigurationResourceMultiplier)))
             ) / 2;
         }
-
         return {
             compatibilityScore,
             bonusScore,
             totalScore: compatibilityScore + bonusScore,
-
             resolvedValues: {
                 gpuLayers: resolvedGpuLayers,
                 contextSize: resolvedContextSize,
-
                 modelRamUsage: estimatedModelResourceUsage.cpuRam,
                 contextRamUsage: estimatedContextResourceUsage.cpuRam,
                 totalRamUsage: estimatedModelResourceUsage.cpuRam + estimatedContextResourceUsage.cpuRam,
-
                 modelVramUsage: estimatedModelResourceUsage.gpuVram,
                 contextVramUsage: estimatedContextResourceUsage.gpuVram,
                 totalVramUsage: estimatedModelResourceUsage.gpuVram + estimatedContextResourceUsage.gpuVram
             }
         };
     }
-
     public async resolveModelGpuLayers(gpuLayers?: LlamaModelOptions["gpuLayers"], {
         ignoreMemorySafetyChecks = false,
         getVramState = (() => this._ggufInsights._llama._vramOrchestrator.getMemoryState()),
@@ -407,12 +327,6 @@ export class GgufInsightsConfigurationResolver {
             useMmap
         });
     }
-
-    /**
-     * Resolve a context size option for the given options and constraints.
-     *
-     * If there's no context size that can fit the available resources, an `InsufficientMemoryError` is thrown.
-     */
     public async resolveContextContextSize(contextSize: LlamaContextOptions["contextSize"], {
         modelGpuLayers,
         batchSize,
@@ -457,13 +371,10 @@ export class GgufInsightsConfigurationResolver {
             isEmbeddingContext
         });
     }
-
-    /** @internal */
     public static _create(ggufInsights: GgufInsights) {
         return new GgufInsightsConfigurationResolver(ggufInsights);
     }
 }
-
 function scoreModelSizeForCpuOnlyUsage(modelSize: number) {
     const s1GB = Math.pow(1024, 3);
     return 70 - scoreLevels(modelSize, [{

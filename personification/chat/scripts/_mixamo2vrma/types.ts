@@ -3,7 +3,6 @@ export interface GLTF {
     name: string
   }[]
 }
-
 export interface GLTFExtensions {
   extensions: {
     VRMC_vrm_animation: {

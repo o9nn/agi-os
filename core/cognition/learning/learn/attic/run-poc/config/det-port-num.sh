@@ -1,20 +1,9 @@
 #!/bin/bash
-#
-# det-port-num.sh <mode> <lang>
-#
-# Determines port given mode and language
-#
-# Example usage:
-#    ./det-port-num.sh pair en
-
-if [ $# -ne 2 ]
+if [ $
 then 
   echo "Usage: ./det-port-num.sh <mode> <language>"
   exit 0
 fi
-
-
-# Gets processing mode for the cogserver
 case $1 in
    pairs)
       port_ini=17000
@@ -30,8 +19,6 @@ case $1 in
       echo "<mode> must be either pairs, cmi or mst"
       exit 0
 esac
-
-# Assign port value according to language
 case $2 in
    en)
       port_end=5

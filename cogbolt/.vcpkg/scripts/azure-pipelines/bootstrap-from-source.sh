@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-
 git clone --depth 1 https://github.com/microsoft/vcpkg-tool vcpkg-tool
 git -C vcpkg-tool fetch --depth 1 origin $1
 git -C vcpkg-tool switch -d FETCH_HEAD

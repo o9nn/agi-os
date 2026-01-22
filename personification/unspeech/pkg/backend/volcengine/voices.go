@@ -1,20 +1,15 @@
 package volcengine
-
 import (
 	_ "embed"
 	"encoding/json"
-
 	"github.com/labstack/echo/v4"
 	"github.com/moeru-ai/unspeech/pkg/apierrors"
 	"github.com/moeru-ai/unspeech/pkg/backend/types"
 	"github.com/samber/mo"
 )
-
 var (
-	//go:embed voices.json
 	voicesJSON string
 )
-
 type VoicesResponseDataResourcePackDetails struct {
 	DemoLink            string `json:"demo_link"`
 	Language            string `json:"language"`
@@ -22,7 +17,6 @@ type VoicesResponseDataResourcePackDetails struct {
 	ToneNumber          string `json:"tone_number"`
 	VoiceType           string `json:"voice_type"`
 }
-
 type VoicesResponseDataResourcePack struct {
 	InstanceNumber    string                                `json:"instance_number"`
 	IsShareable       bool                                  `json:"is_shareable"`
@@ -41,27 +35,21 @@ type VoicesResponseDataResourcePack struct {
 	TrainID           string                                `json:"train_id"`
 	State             string                                `json:"state"`
 }
-
 type VoicesResponseData struct {
 	ResourcePacks []VoicesResponseDataResourcePack `json:"resource_packs"`
 }
-
 type VoicesResponse struct {
 	Status string             `json:"status"`
 	Error  any                `json:"error,omitempty"`
 	Data   VoicesResponseData `json:"data"`
 }
-
 func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions]) mo.Result[any] {
 	var voicesData VoicesResponse
-
 	err := json.Unmarshal([]byte(voicesJSON), &voicesData)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithCaller())
 	}
-
 	voices := make([]types.Voice, 0, len(voicesData.Data.ResourcePacks))
-
 	for _, voice := range voicesData.Data.ResourcePacks {
 		voices = append(voices, types.Voice{
 			ID:          voice.Code,
@@ -76,11 +64,10 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 			},
 			Tags: make([]string, 0),
 			Formats: []types.VoiceFormat{
-				// https://www.volcengine.com/docs/6561/1257584
-				{Name: "WAV", Extension: ".wav", MimeType: "audio/wav", SampleRate: 24000, Bitrate: 16, FormatCode: "wav"},         //nolint:mnd
-				{Name: "PCM", Extension: ".pcm", MimeType: "audio/pcm", SampleRate: 24000, Bitrate: 16, FormatCode: "pcm"},         //nolint:mnd
-				{Name: "Opus", Extension: ".opus", MimeType: "audio/opus", SampleRate: 24000, Bitrate: 16, FormatCode: "ogg_opus"}, //nolint:mnd
-				{Name: "MP3", Extension: ".mp3", MimeType: "audio/mp3", SampleRate: 24000, Bitrate: 16, FormatCode: "mp3"},         //nolint:mnd
+				{Name: "WAV", Extension: ".wav", MimeType: "audio/wav", SampleRate: 24000, Bitrate: 16, FormatCode: "wav"},         
+				{Name: "PCM", Extension: ".pcm", MimeType: "audio/pcm", SampleRate: 24000, Bitrate: 16, FormatCode: "pcm"},         
+				{Name: "Opus", Extension: ".opus", MimeType: "audio/opus", SampleRate: 24000, Bitrate: 16, FormatCode: "ogg_opus"}, 
+				{Name: "MP3", Extension: ".mp3", MimeType: "audio/mp3", SampleRate: 24000, Bitrate: 16, FormatCode: "mp3"},         
 			},
 			CompatibleModels: []string{"v1"},
 			PreviewAudioURL:  voice.Details.DemoLink,
@@ -92,7 +79,6 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 			},
 		})
 	}
-
 	return mo.Ok[any](types.ListVoicesResponse{
 		Voices: voices,
 	})

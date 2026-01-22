@@ -11,5 +11,4 @@ void	addcatparent(Object *, Object *);
 void	inittokenlist(void);
 void	initparse(void);
 void	exit(int);
-
 extern char *startdir;

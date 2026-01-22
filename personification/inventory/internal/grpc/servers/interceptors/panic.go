@@ -1,17 +1,14 @@
 package interceptors
-
 import (
 	"context"
 	"runtime/debug"
-
 	"github.com/moeru-ai/inventory/internal/pkg/apierrors"
 	"github.com/nekomeowww/xo/logger"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
-
 func PanicInterceptor(logger *logger.Logger) grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) { //nolint:nonamedreturns
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) { 
 		defer func() {
 			r := recover()
 			if r != nil {
@@ -20,7 +17,6 @@ func PanicInterceptor(logger *logger.Logger) grpc.UnaryServerInterceptor {
 				resp = nil
 			}
 		}()
-
 		return handler(ctx, req)
 	}
 }

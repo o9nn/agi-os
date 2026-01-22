@@ -1,7 +1,3 @@
-/*
-	local limits
-*/
-
 #undef	ARG_MAX
 #define	ARG_MAX		16384
 #undef	CHILD_MAX
@@ -22,7 +18,6 @@
 #define	MAX_INPUT	1023
 #undef	PIPE_BUF
 #define	PIPE_BUF	8192
-
 #define	_POSIX_SAVED_IDS		1
 #define	_POSIX_CHOWN_RESTRICTED		1
 #define	_POSIX_NO_TRUNC			1

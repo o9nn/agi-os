@@ -1,4 +1,4 @@
-#define		FPinit() fpinit() /* remove this if math lib is linked */
+#define		FPinit() fpinit()
 void		FPrestore(void*);
 void		FPsave(void*);
 Timer*		addclock0link(void (*)(void), int);
@@ -198,7 +198,7 @@ void		procctl(Proc*);
 void		procdump(void);
 void		procinit(void);
 Proc*		proctab(int);
-void	(*proctrace)(Proc*, int, vlong); 
+void	(*proctrace)(Proc*, int, vlong);
 int		progfdprint(Chan*, int, int, char*, int);
 int		pullblock(Block**, int);
 Block*		pullupblock(Block*, int);
@@ -307,7 +307,6 @@ void		xinit(void);
 int		xmerge(void*, void*);
 void*		xspanalloc(ulong, int, ulong);
 void		xsummary(void);
- 
 void		validaddr(void*, ulong, int);
 void*	vmemchr(void*, int, int);
 void		hnputv(void*, vlong);
@@ -316,10 +315,6 @@ void		hnputs(void*, ushort);
 vlong		nhgetv(void*);
 ulong		nhgetl(void*);
 ushort		nhgets(void*);
-
-/*
- * OpenCog Kernel-based AGI Functions
- */
 void		opencoginit(void);
 AtomSpace*	atomspace_create(int);
 Atom*		atom_create(AtomSpace*, int, char*, TruthValue*);

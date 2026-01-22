@@ -1,12 +1,7 @@
 #!/bin/bash
-
 set -e
-
 BAZEL_CMD="/opt/bazel/bazelisk"
-
 $BAZEL_CMD $([ ${BAZEL_JOBS:-x} != x ] && echo --jobs=${BAZEL_JOBS}) "$@"
-
-
 if [ "$LIB_DIR" != "" ]; then
     find bazel-bin/ -type f -name "*.so" | while IFS= read -r sofile; do
         cp -f "$sofile" "$LIB_DIR"
@@ -17,11 +12,9 @@ if [ "$LIB_DIR" != "" ]; then
         done
     done
 fi
-
 if [ "$BIN_DIR" != "" ]; then
     find bazel-bin/ -type f ! -name "*.*" | while IFS= read -r file; do
         cp -f "$file" "$BIN_DIR"
     done
 fi
-
 echo $?

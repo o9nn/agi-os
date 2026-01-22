@@ -5,7 +5,7 @@ void	archinit(void);
 void	bootargs(ulong);
 int	cistrcmp(char*, char*);
 int	cistrncmp(char*, char*, int);
-#define	clearmmucache()				/* x86 doesn't have one */
+#define	clearmmucache()
 void	clockintr(Ureg*, void*);
 void	(*coherence)(void);
 void	cpuid(char*, int*, int*);
@@ -19,7 +19,7 @@ void	dmaend(int);
 int	dmainit(int, int);
 long	dmasetup(int, void*, long, int);
 void	dumpregs(Ureg*);
-#define	evenaddr(x)				/* x86 doesn't care */
+#define	evenaddr(x)
 void	fpinit(void);
 void	fpoff(void);
 void	fprestore(FPU*);
@@ -131,7 +131,7 @@ void	putcr4(ulong);
 void	rdmsr(int, vlong*);
 ulong rdtsc32(void);
 void	screeninit(void);
-int	screenprint(char*, ...);			/* debugging */
+int	screenprint(char*, ...);
 void	(*screenputs)(char*, int);
 int	segflush(void*, ulong);
 void	syncclock(void);
@@ -153,12 +153,10 @@ int	xchgw(ushort*, int);
 ulong	kzeromap(ulong, ulong, int);
 void	nmiscreen(void);
 int	kbdinready(void);
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 #define getcallerpc(x)	(((ulong*)(x))[-1])
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	((ulong)(a)&~KZERO)
-
 #define	dcflush(a, b)
 #define	clockcheck();
 #define 	dumplongs(x, y, z)

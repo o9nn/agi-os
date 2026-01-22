@@ -1,7 +1,3 @@
-;-----------------------------------------------------------------
-; Define behavior actions
-
-; happy
 (DefineLink
     (DefinedPredicateNode "be happy")
     (EvaluationLink
@@ -9,7 +5,6 @@
         (ListLink
           (ConceptNode "imperative")
           (ConceptNode "happy"))))
-
 (DefineLink
     (DefinedPredicateNode "happy")
     (EvaluationLink
@@ -17,8 +12,6 @@
         (ListLink
           (ConceptNode "imperative")
           (ConceptNode "happy"))))
-
-; yawn
 (DefineLink
     (DefinedPredicateNode "yawn")
     (EvaluationLink
@@ -26,4 +19,3 @@
         (ListLink
             (ConceptNode "imperative")
             (ConceptNode "yawn-1"))))
-

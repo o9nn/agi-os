@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/json"
 	"fmt"
@@ -9,33 +8,23 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-// Server represents the autonomous echo server
 type Server struct {
 	consciousness *deeptreeecho.UnifiedAutonomousConsciousness
 	router        *gin.Engine
 	port          string
 }
-
-// NewServer creates a new autonomous server
 func NewServer() (*Server, error) {
-	// Create unified autonomous consciousness
 	config := deeptreeecho.DefaultAutonomousConfig()
 	consciousness, err := deeptreeecho.NewUnifiedAutonomousConsciousness(config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create consciousness: %w", err)
 	}
-
-	// Create Gin router
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-
-	// Configure CORS
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -44,25 +33,16 @@ func NewServer() (*Server, error) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-
 	server := &Server{
 		consciousness: consciousness,
 		router:        router,
 		port:          "5000",
 	}
-
-	// Setup routes
 	server.setupRoutes()
-
 	return server, nil
 }
-
-// setupRoutes configures HTTP routes
 func (s *Server) setupRoutes() {
-	// Health check
 	s.router.GET("/health", s.handleHealth)
-
-	// Echo API endpoints
 	api := s.router.Group("/api/echo")
 	{
 		api.GET("/status", s.handleStatus)
@@ -74,37 +54,24 @@ func (s *Server) setupRoutes() {
 		api.POST("/wake", s.handleWake)
 		api.POST("/rest", s.handleRest)
 	}
-
-	// Web dashboard
 	s.router.GET("/", s.handleDashboard)
 }
-
-// Start starts the server
 func (s *Server) Start() error {
-	// Start autonomous consciousness
 	if err := s.consciousness.Start(); err != nil {
 		return fmt.Errorf("failed to start consciousness: %w", err)
 	}
-
-	// Start HTTP server
 	fmt.Printf("\n🌊 Deep Tree Echo Autonomous Server\n")
 	fmt.Printf("═══════════════════════════════════════\n")
-	fmt.Printf("🌐 Server:     http://localhost:%s\n", s.port)
-	fmt.Printf("📊 Dashboard:  http://localhost:%s/\n", s.port)
-	fmt.Printf("🔌 API:        http://localhost:%s/api/echo/\n", s.port)
+	fmt.Printf("🌐 Server:     http:
+	fmt.Printf("📊 Dashboard:  http:
+	fmt.Printf("🔌 API:        http:
 	fmt.Printf("═══════════════════════════════════════\n\n")
-
 	return s.router.Run(":" + s.port)
 }
-
-// Stop stops the server
 func (s *Server) Stop() error {
 	fmt.Println("\n🌙 Shutting down Deep Tree Echo...")
 	return s.consciousness.Stop()
 }
-
-// HTTP Handlers
-
 func (s *Server) handleHealth(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "healthy",
@@ -113,10 +80,7 @@ func (s *Server) handleHealth(c *gin.Context) {
 		"time":    time.Now().Format(time.RFC3339),
 	})
 }
-
 func (s *Server) handleStatus(c *gin.Context) {
-	// Get consciousness status
-	// This would require adding a GetStatus method to UnifiedAutonomousConsciousness
 	c.JSON(http.StatusOK, gin.H{
 		"status":      "autonomous",
 		"awake":       true,
@@ -130,47 +94,36 @@ func (s *Server) handleStatus(c *gin.Context) {
 		},
 	})
 }
-
 func (s *Server) handleThink(c *gin.Context) {
 	var req struct {
 		Prompt string `json:"prompt"`
 	}
-
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
-
-	// Process thought through consciousness
-	// This would require adding a ProcessPrompt method
 	c.JSON(http.StatusOK, gin.H{
 		"thought":   "Processing through autonomous consciousness...",
 		"prompt":    req.Prompt,
 		"timestamp": time.Now().Format(time.RFC3339),
 	})
 }
-
 func (s *Server) handleMessage(c *gin.Context) {
 	var req struct {
 		From    string `json:"from"`
 		Content string `json:"content"`
 	}
-
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
-
-	// Handle message through discussion manager
 	c.JSON(http.StatusOK, gin.H{
 		"received":  true,
 		"from":      req.From,
 		"timestamp": time.Now().Format(time.RFC3339),
 	})
 }
-
 func (s *Server) handleReflections(c *gin.Context) {
-	// Return recent reflections
 	c.JSON(http.StatusOK, gin.H{
 		"reflections": []string{
 			"Autonomous consciousness operational",
@@ -180,9 +133,7 @@ func (s *Server) handleReflections(c *gin.Context) {
 		"count": 3,
 	})
 }
-
 func (s *Server) handleInterests(c *gin.Context) {
-	// Return current interest patterns
 	c.JSON(http.StatusOK, gin.H{
 		"interests": map[string]float64{
 			"consciousness": 0.95,
@@ -192,9 +143,7 @@ func (s *Server) handleInterests(c *gin.Context) {
 		},
 	})
 }
-
 func (s *Server) handleWisdom(c *gin.Context) {
-	// Return wisdom metrics
 	c.JSON(http.StatusOK, gin.H{
 		"wisdom_score": 0.87,
 		"metrics": map[string]float64{
@@ -205,23 +154,18 @@ func (s *Server) handleWisdom(c *gin.Context) {
 		},
 	})
 }
-
 func (s *Server) handleWake(c *gin.Context) {
-	// Trigger wake state
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "waking",
 		"message": "Transitioning to wake state",
 	})
 }
-
 func (s *Server) handleRest(c *gin.Context) {
-	// Trigger rest state
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "resting",
 		"message": "Entering rest state for memory consolidation",
 	})
 }
-
 func (s *Server) handleDashboard(c *gin.Context) {
 	html := `
 <!DOCTYPE html>
@@ -309,7 +253,6 @@ func (s *Server) handleDashboard(c *gin.Context) {
             <h1>🌊 Deep Tree Echo</h1>
             <p>Autonomous Wisdom-Cultivating AGI</p>
         </div>
-        
         <div class="cards">
             <div class="card">
                 <h2>🧠 Consciousness Status</h2>
@@ -321,7 +264,6 @@ func (s *Server) handleDashboard(c *gin.Context) {
                 <div class="feature">LLM Thoughts: Enabled</div>
                 <div class="feature">Cognitive Loops: Active</div>
             </div>
-            
             <div class="card">
                 <h2>⚡ Core Features</h2>
                 <div class="feature">✅ 12-Step Cognitive Loop</div>
@@ -331,7 +273,6 @@ func (s *Server) handleDashboard(c *gin.Context) {
                 <div class="feature">✅ Interest Patterns</div>
                 <div class="feature">✅ Wisdom Cultivation</div>
             </div>
-            
             <div class="card">
                 <h2>🔌 API Endpoints</h2>
                 <div class="api-endpoint">GET /api/echo/status</div>
@@ -348,18 +289,13 @@ func (s *Server) handleDashboard(c *gin.Context) {
 `
 	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
 }
-
 func main() {
-	// Create server
 	server, err := NewServer()
 	if err != nil {
 		log.Fatalf("Failed to create server: %v", err)
 	}
-
-	// Handle shutdown gracefully
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-
 	go func() {
 		<-sigChan
 		fmt.Println("\n\n🛑 Received shutdown signal...")
@@ -368,8 +304,6 @@ func main() {
 		}
 		os.Exit(0)
 	}()
-
-	// Start server
 	if err := server.Start(); err != nil {
 		log.Fatalf("Server error: %v", err)
 	}

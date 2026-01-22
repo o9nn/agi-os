@@ -2,27 +2,18 @@
 #include <libc.h>
 #include <plumb.h>
 #include "errors.h"
-
-/*
- * BLOCKSIZE is relatively small to keep memory consumption down.
- */
-
 #define	BLOCKSIZE	2048
 #define	RUNESIZE	sizeof(Rune)
 #define	NDISC		5
-#define	NBUFFILES	3+2*NDISC	/* plan 9+undo+snarf+NDISC*(transcript+buf) */
+#define	NBUFFILES	3+2*NDISC
 #define NSUBEXP	10
-
 #define	TRUE		1
 #define	FALSE		0
-
 #define	INFINITY	0x7FFFFFFFL
 #define	INCR		25
 #define	STRSIZE		(2*BLOCKSIZE)
-
-typedef long		Posn;		/* file position or address */
-typedef	ushort		Mod;		/* modification number */
-
+typedef long		Posn;
+typedef	ushort		Mod;
 typedef struct Address	Address;
 typedef struct Block	Block;
 typedef struct Buffer	Buffer;
@@ -33,111 +24,96 @@ typedef struct List	List;
 typedef struct Range	Range;
 typedef struct Rangeset	Rangeset;
 typedef struct String	String;
-
 enum State
 {
-	Clean =		' ',
-	Dirty =		'\'',
-	Unread =	'-',
+Clean =		' ',
+Dirty =		'\'',
+Unread =	'-',
 };
-
 struct Range
 {
-	Posn	p1, p2;
+Posn	p1, p2;
 };
-
 struct Rangeset
 {
-	Range	p[NSUBEXP];
+Range	p[NSUBEXP];
 };
-
 struct Address
 {
-	Range	r;
-	File	*f;
+Range	r;
+File	*f;
 };
-
 struct String
 {
-	short	n;
-	short	size;
-	Rune	*s;
+short	n;
+short	size;
+Rune	*s;
 };
-
 struct List
 {
-	int	type;	/* 'p' for pointer, 'P' for Posn */
-	int	nalloc;
-	int	nused;
-	union{
-		void*	listp;
-		void**	voidp;
-		Posn*	posnp;
-		String**stringp;
-		File**	filep;
-	}g;
+int	type;
+int	nalloc;
+int	nused;
+union{
+void*	listp;
+void**	voidp;
+Posn*	posnp;
+String**stringp;
+File**	filep;
+}g;
 };
-
 #define	listptr		g.listp
 #define	voidpptr	g.voidp
 #define	posnptr		g.posnp
 #define	stringpptr	g.stringp
 #define	filepptr	g.filep
-
 enum
 {
-	Blockincr =	256,
-	Maxblock = 	8*1024,
-
-	BUFSIZE = Maxblock,	/* size from fbufalloc() */
-	RBUFSIZE = BUFSIZE/sizeof(Rune),
+Blockincr =	256,
+Maxblock = 	8*1024,
+BUFSIZE = Maxblock,
+RBUFSIZE = BUFSIZE/sizeof(Rune),
 };
-
-
 enum
 {
-	Null		= '-',
-	Delete		= 'd',
-	Insert		= 'i',
-	Filename	= 'f',
-	Dot		= 'D',
-	Mark		= 'm',
+Null		= '-',
+Delete		= 'd',
+Insert		= 'i',
+Filename	= 'f',
+Dot		= 'D',
+Mark		= 'm',
 };
-
 struct Block
 {
-	uint		addr;	/* disk address in bytes */
-	union
-	{
-		uint	n;	/* number of used runes in block */
-		Block	*next;	/* pointer to next in free list */
-	};
+uint		addr;
+union
+{
+uint	n;
+Block	*next;
 };
-
+};
 struct Disk
 {
-	int		fd;
-	uint		addr;	/* length of temp file */
-	Block		*free[Maxblock/Blockincr+1];
+int		fd;
+uint		addr;
+Block		*free[Maxblock/Blockincr+1];
 };
-
 Disk*		diskinit(void);
 Block*		disknewblock(Disk*, uint);
 void		diskrelease(Disk*, Block*);
 void		diskread(Disk*, Block*, Rune*, uint);
 void		diskwrite(Disk*, Block**, Rune*, uint);
-
 struct Buffer
 {
-	uint		nc;
-	Rune		*c;	/* cache */
-	uint		cnc;	/* bytes in cache */
-	uint		cmax;	/* size of allocated cache */
-	uint		cq;	/* position of cache */
-	int		cdirty;	/* cache needs to be written */
-	uint		cbi;	/* index of cache Block */
-	Block		**bl;	/* array of blocks */
-	uint		nbl;	/* number of blocks */
+uint		nc;
+Rune		*c;
+uint		cnc;
+uint		cmax;
+uint		cq;
+int		cdirty;
+uint		cbi;
+Block		**bl;
+uint		nbl;
 };
 void		bufinsert(Buffer*, uint, Rune*, uint);
 void		bufdelete(Buffer*, uint, uint);
@@ -145,46 +121,36 @@ uint		bufload(Buffer*, uint, int, int*);
 void		bufread(Buffer*, uint, Rune*, uint);
 void		bufclose(Buffer*);
 void		bufreset(Buffer*);
-
 struct File
 {
-	Buffer;				/* the data */
-	Buffer		delta;		/* transcript of changes */
-	Buffer		epsilon;	/* inversion of delta for redo */
-	String		name;		/* name of associated file */
-	uvlong		qidpath;	/* of file when read */
-	uint		mtime;		/* of file when read */
-	int		dev;		/* of file when read */
-	int		unread;		/* file has not been read from disk */
-
-	long		seq;		/* if seq==0, File acts like Buffer */
-	long		cleanseq;	/* f->seq at last read/write of file */
-	int		mod;		/* file appears modified in menu */
-	char		rescuing;	/* sam exiting; this file unusable */
-
-//	Text		*curtext;	/* most recently used associated text */
-//	Text		**text;		/* list of associated texts */
-//	int		ntext;
-//	int		dumpid;		/* used in dumping zeroxed windows */
-
-	Posn		hiposn;		/* highest address touched this Mod */
-	Address		dot;		/* current position */
-	Address		ndot;		/* new current position after update */
-	Range		tdot;		/* what terminal thinks is current range */
-	Range		mark;		/* tagged spot in text (don't confuse with Mark) */
-	List		*rasp;		/* map of what terminal's got */
-	short		tag;		/* for communicating with terminal */
-	char		closeok;	/* ok to close file? */
-	char		deleted;	/* delete at completion of command */
-	Range		prevdot;	/* state before start of change */
-	Range		prevmark;
-	long		prevseq;
-	int		prevmod;
+Buffer;
+Buffer		delta;
+Buffer		epsilon;
+String		name;
+uvlong		qidpath;
+uint		mtime;
+int		dev;
+int		unread;
+long		seq;
+long		cleanseq;
+int		mod;
+char		rescuing;
+Posn		hiposn;
+Address		dot;
+Address		ndot;
+Range		tdot;
+Range		mark;
+List		*rasp;
+short		tag;
+char		closeok;
+char		deleted;
+Range		prevdot;
+Range		prevmark;
+long		prevseq;
+int		prevmod;
 };
-//File*		fileaddtext(File*, Text*);
 void		fileclose(File*);
 void		filedelete(File*, uint, uint);
-//void		filedeltext(File*, Text*);
 void		fileinsert(File*, uint, Rune*, uint);
 uint		fileload(File*, uint, int, int*);
 void		filemark(File*);
@@ -195,7 +161,6 @@ void		fileuninsert(File*, Buffer*, uint, uint);
 void		fileunsetname(File*, Buffer*);
 void		fileundo(File*, int, int, uint*, uint*, int);
 int		fileupdate(File*, int, int);
-
 int		filereadc(File*, uint);
 File		*fileopen(void);
 void		loginsert(File*, uint, Rune*, uint);
@@ -204,26 +169,19 @@ void		logsetname(File*, String*);
 int		fileisdirty(File*);
 long		undoseq(File*, int);
 long		prevseq(Buffer*);
-
 void		raspload(File*);
 void		raspstart(File*);
 void		raspdelete(File*, uint, uint, int);
 void		raspinsert(File*, uint, Rune*, uint, int);
 void		raspdone(File*, int);
 void		raspflush(File*);
-
-/*
- * acme fns
- */
 void*	fbufalloc(void);
 void	fbuffree(void*);
 uint	min(uint, uint);
 void	cvttorunes(char*, int, Rune*, int*, int*, int*);
-
 #define	runemalloc(a)		(Rune*)emalloc((a)*sizeof(Rune))
 #define	runerealloc(a, b)	(Rune*)realloc((a), (b)*sizeof(Rune))
 #define	runemove(a, b, c)	memmove((a), (b), (c)*sizeof(Rune))
-
 int	alnum(int);
 int	Read(int, void*, int);
 void	Seek(int, long, int);
@@ -330,12 +288,10 @@ int	whichmenu(File*);
 void	writef(File*);
 Posn	writeio(File*);
 Discdesc *Dstart(void);
-
-extern Rune	samname[];	/* compiler dependent */
+extern Rune	samname[];
 extern Rune	*left[];
 extern Rune	*right[];
-
-extern char	RSAM[];		/* system dependent */
+extern char	RSAM[];
 extern char	SAMTERM[];
 extern char	HOME[];
 extern char	TMPDIR[];
@@ -344,14 +300,9 @@ extern char	SHPATH[];
 extern char	RX[];
 extern char	RXPATH[];
 extern char	SAMSAVECMD[];
-
-/*
- * acme globals
- */
 extern long		seq;
 extern Disk		*disk;
-
-extern char	*rsamname;	/* globals */
+extern char	*rsamname;
 extern char	*samterm;
 extern Rune	genbuf[];
 extern char	*genc;
@@ -383,9 +334,7 @@ extern int	panicking;
 extern Rune	empty[];
 extern int	termlocked;
 extern int	outbuffered;
-
 #include "mesg.h"
-
 void	outTs(Hmesg, int);
 void	outT0(Hmesg);
 void	outTl(Hmesg, long);

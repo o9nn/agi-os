@@ -1,14 +1,10 @@
-
 package quantum
-
 import (
 	"fmt"
 	"math"
 	"sync"
 	"time"
 )
-
-// EntangledCognitionNetwork manages quantum-inspired cognitive entanglement
 type EntangledCognitionNetwork struct {
 	mu                    sync.RWMutex
 	entanglements         map[string]Entanglement
@@ -21,8 +17,6 @@ type EntangledCognitionNetwork struct {
 	maxEntanglementDist   float64
 	lastSync              time.Time
 }
-
-// Entanglement represents quantum-inspired cognitive entanglement
 type Entanglement struct {
 	ID                   string
 	NodeA                string
@@ -36,8 +30,6 @@ type Entanglement struct {
 	QuantumState         EntanglementState
 	MessageHistory       []EntangledMessage
 }
-
-// CognitiveNode represents an entangleable cognitive entity
 type CognitiveNode struct {
 	ID               string
 	Name             string
@@ -48,8 +40,6 @@ type CognitiveNode struct {
 	LastUpdate       time.Time
 	IsActive         bool
 }
-
-// CognitiveNodeState represents the state of a cognitive node
 type CognitiveNodeState struct {
 	Thoughts         []string
 	Emotions         map[string]float64
@@ -59,8 +49,6 @@ type CognitiveNodeState struct {
 	Coherence        float64
 	QuantumSignature []complex128
 }
-
-// EntanglementState represents quantum entanglement state
 type EntanglementState struct {
 	BellState       BellStateType
 	Fidelity        float64
@@ -70,18 +58,13 @@ type EntanglementState struct {
 	JointState      []complex128
 	MeasurementBasis string
 }
-
-// BellStateType defines types of Bell states
 type BellStateType string
-
 const (
 	PhiPlus  BellStateType = "phi+"
 	PhiMinus BellStateType = "phi-"
 	PsiPlus  BellStateType = "psi+"
 	PsiMinus BellStateType = "psi-"
 )
-
-// EntangledMessage represents instantaneous message
 type EntangledMessage struct {
 	ID              string
 	FromNode        string
@@ -92,32 +75,24 @@ type EntangledMessage struct {
 	CorrelationData map[string]interface{}
 	Verified        bool
 }
-
-// CorrelationMonitor tracks entanglement correlations
 type CorrelationMonitor interface {
 	MonitorCorrelation(entanglement Entanglement) CorrelationReport
 	DetectNonLocalEffects(nodeA, nodeB CognitiveNode) []NonLocalEffect
 	ValidateQuantumCorrelation(entanglement Entanglement) bool
 	MeasureEntanglementStrength(entanglement Entanglement) float64
 }
-
-// InstantMessenger handles quantum-inspired instant communication
 type InstantMessenger interface {
 	SendEntangledMessage(message EntangledMessage) error
 	ReceiveEntangledMessage(nodeID string) (EntangledMessage, bool)
 	VerifyQuantumChannel(entanglementID string) bool
 	EstablishQuantumChannel(nodeA, nodeB string) (string, error)
 }
-
-// CoherenceMaintainer maintains network coherence
 type CoherenceMaintainer interface {
 	MaintainCoherence(network *EntangledCognitionNetwork) error
 	PreventDecoherence(entanglementID string) error
 	RestoreEntanglement(entanglementID string) error
 	OptimizeCoherence(network *EntangledCognitionNetwork) CoherenceOptimization
 }
-
-// NetworkTopology manages network structure
 type NetworkTopology struct {
 	Nodes        []string
 	Connections  []NetworkConnection
@@ -127,8 +102,6 @@ type NetworkTopology struct {
 	Connectivity float64
 	LastUpdate   time.Time
 }
-
-// NetworkConnection represents network connections
 type NetworkConnection struct {
 	NodeA      string
 	NodeB      string
@@ -138,8 +111,6 @@ type NetworkConnection struct {
 	Latency    time.Duration
 	IsQuantum  bool
 }
-
-// CorrelationReport describes correlation measurements
 type CorrelationReport struct {
 	EntanglementID    string
 	CorrelationValue  float64
@@ -149,8 +120,6 @@ type CorrelationReport struct {
 	Timestamp         time.Time
 	Confidence        float64
 }
-
-// NonLocalEffect represents quantum non-local effects
 type NonLocalEffect struct {
 	Type        string
 	Description string
@@ -159,8 +128,6 @@ type NonLocalEffect struct {
 	Evidence    map[string]interface{}
 	Timestamp   time.Time
 }
-
-// CoherenceOptimization represents coherence optimization results
 type CoherenceOptimization struct {
 	OptimizationActions []string
 	ImprovedEntanglements []string
@@ -168,8 +135,6 @@ type CoherenceOptimization struct {
 	EstimatedDuration   time.Duration
 	Success             bool
 }
-
-// NewEntangledCognitionNetwork creates new entangled cognition network
 func NewEntangledCognitionNetwork() *EntangledCognitionNetwork {
 	return &EntangledCognitionNetwork{
 		entanglements:       make(map[string]Entanglement),
@@ -181,12 +146,9 @@ func NewEntangledCognitionNetwork() *EntangledCognitionNetwork {
 		lastSync:           time.Now(),
 	}
 }
-
-// CreateCognitiveNode adds new cognitive node to network
 func (ecn *EntangledCognitionNetwork) CreateCognitiveNode(id, name string, position []float64) error {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()
-	
 	node := CognitiveNode{
 		ID:       id,
 		Name:     name,
@@ -203,32 +165,22 @@ func (ecn *EntangledCognitionNetwork) CreateCognitiveNode(id, name string, posit
 		LastUpdate: time.Now(),
 		IsActive:   true,
 	}
-	
 	ecn.cognitiveNodes[id] = node
 	return nil
 }
-
-// CreateEntanglement creates quantum entanglement between nodes
 func (ecn *EntangledCognitionNetwork) CreateEntanglement(nodeA, nodeB string) (string, error) {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()
-	
-	// Validate nodes exist
 	nodeAObj, existsA := ecn.cognitiveNodes[nodeA]
 	nodeBObj, existsB := ecn.cognitiveNodes[nodeB]
 	if !existsA || !existsB {
 		return "", fmt.Errorf("nodes do not exist: %s, %s", nodeA, nodeB)
 	}
-	
-	// Calculate distance
 	distance := ecn.calculateDistance(nodeAObj.Position, nodeBObj.Position)
 	if distance > ecn.maxEntanglementDist {
 		return "", fmt.Errorf("nodes too distant for entanglement: %f", distance)
 	}
-	
-	// Create entanglement
 	entanglementID := fmt.Sprintf("ent_%s_%s_%d", nodeA, nodeB, time.Now().UnixNano())
-	
 	entanglement := Entanglement{
 		ID:                   entanglementID,
 		NodeA:                nodeA,
@@ -242,34 +194,24 @@ func (ecn *EntangledCognitionNetwork) CreateEntanglement(nodeA, nodeB string) (s
 		QuantumState:         ecn.createBellState(PhiPlus),
 		MessageHistory:       make([]EntangledMessage, 0),
 	}
-	
 	ecn.entanglements[entanglementID] = entanglement
-	
-	// Update nodes
 	nodeAObj.Entanglements = append(nodeAObj.Entanglements, entanglementID)
 	nodeBObj.Entanglements = append(nodeBObj.Entanglements, entanglementID)
 	ecn.cognitiveNodes[nodeA] = nodeAObj
 	ecn.cognitiveNodes[nodeB] = nodeBObj
-	
 	return entanglementID, nil
 }
-
-// calculateDistance calculates distance between node positions
 func (ecn *EntangledCognitionNetwork) calculateDistance(posA, posB []float64) float64 {
 	if len(posA) != len(posB) {
 		return math.Inf(1)
 	}
-	
 	sum := 0.0
 	for i := 0; i < len(posA); i++ {
 		diff := posA[i] - posB[i]
 		sum += diff * diff
 	}
-	
 	return math.Sqrt(sum)
 }
-
-// createBellState creates initial Bell state for entanglement
 func (ecn *EntangledCognitionNetwork) createBellState(bellType BellStateType) EntanglementState {
 	switch bellType {
 	case PhiPlus:
@@ -308,24 +250,17 @@ func (ecn *EntangledCognitionNetwork) createBellState(bellType BellStateType) En
 		return EntanglementState{}
 	}
 }
-
-// SendInstantMessage sends message via quantum entanglement
 func (ecn *EntangledCognitionNetwork) SendInstantMessage(fromNode, toNode string, content interface{}) error {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()
-	
-	// Find entanglement between nodes
 	entanglementID := ecn.findEntanglement(fromNode, toNode)
 	if entanglementID == "" {
 		return fmt.Errorf("no entanglement between nodes %s and %s", fromNode, toNode)
 	}
-	
 	entanglement, exists := ecn.entanglements[entanglementID]
 	if !exists || !entanglement.IsActive {
 		return fmt.Errorf("entanglement not active: %s", entanglementID)
 	}
-	
-	// Create entangled message
 	message := EntangledMessage{
 		ID:              fmt.Sprintf("msg_%d", time.Now().UnixNano()),
 		FromNode:        fromNode,
@@ -339,8 +274,6 @@ func (ecn *EntangledCognitionNetwork) SendInstantMessage(fromNode, toNode string
 		},
 		Verified: false,
 	}
-	
-	// Use instant messenger if available
 	for _, messenger := range ecn.instantMessengers {
 		err := messenger.SendEntangledMessage(message)
 		if err == nil {
@@ -348,16 +281,11 @@ func (ecn *EntangledCognitionNetwork) SendInstantMessage(fromNode, toNode string
 			break
 		}
 	}
-	
-	// Update entanglement history
 	entanglement.MessageHistory = append(entanglement.MessageHistory, message)
 	entanglement.LastCorrelation = time.Now()
 	ecn.entanglements[entanglementID] = entanglement
-	
 	return nil
 }
-
-// findEntanglement finds entanglement between two nodes
 func (ecn *EntangledCognitionNetwork) findEntanglement(nodeA, nodeB string) string {
 	for id, entanglement := range ecn.entanglements {
 		if (entanglement.NodeA == nodeA && entanglement.NodeB == nodeB) ||
@@ -367,73 +295,46 @@ func (ecn *EntangledCognitionNetwork) findEntanglement(nodeA, nodeB string) stri
 	}
 	return ""
 }
-
-// ProcessNetworkDynamics processes all network quantum dynamics
 func (ecn *EntangledCognitionNetwork) ProcessNetworkDynamics() error {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()
-	
-	// Process all entanglements
 	for id, entanglement := range ecn.entanglements {
 		if !entanglement.IsActive {
 			continue
 		}
-		
-		// Monitor correlations
 		ecn.monitorEntanglementCorrelations(&entanglement)
-		
-		// Update decoherence
 		ecn.updateEntanglementDecoherence(&entanglement)
-		
-		// Maintain coherence if needed
 		if entanglement.CorrelationLevel < 0.5 {
 			ecn.attemptCoherenceRecovery(&entanglement)
 		}
-		
 		ecn.entanglements[id] = entanglement
 	}
-	
-	// Update network topology
 	ecn.updateNetworkTopology()
-	
 	ecn.lastSync = time.Now()
 	return nil
 }
-
-// monitorEntanglementCorrelations monitors quantum correlations
 func (ecn *EntangledCognitionNetwork) monitorEntanglementCorrelations(entanglement *Entanglement) {
 	for _, monitor := range ecn.correlationMonitors {
 		report := monitor.MonitorCorrelation(*entanglement)
 		entanglement.CorrelationLevel = report.CorrelationValue
-		
-		// Check for non-local effects
 		if len(report.NonLocalEffects) > 0 {
-			// Non-local effects detected - strengthen entanglement
 			entanglement.EntanglementStrength = math.Min(1.0, entanglement.EntanglementStrength+0.1)
 		}
 	}
 }
-
-// updateEntanglementDecoherence updates quantum decoherence
 func (ecn *EntangledCognitionNetwork) updateEntanglementDecoherence(entanglement *Entanglement) {
 	timeDelta := time.Since(entanglement.LastCorrelation).Seconds()
 	decoherenceAmount := entanglement.DecoherenceRate * timeDelta
-	
-	// Reduce correlation level
 	entanglement.CorrelationLevel -= decoherenceAmount
 	if entanglement.CorrelationLevel < 0 {
 		entanglement.CorrelationLevel = 0
 		entanglement.IsActive = false
 	}
-	
-	// Update quantum state fidelity
 	entanglement.QuantumState.Fidelity -= decoherenceAmount * 0.1
 	if entanglement.QuantumState.Fidelity < 0 {
 		entanglement.QuantumState.Fidelity = 0
 	}
 }
-
-// attemptCoherenceRecovery attempts to recover entanglement coherence
 func (ecn *EntangledCognitionNetwork) attemptCoherenceRecovery(entanglement *Entanglement) {
 	if ecn.coherenceMaintainer != nil {
 		err := ecn.coherenceMaintainer.RestoreEntanglement(entanglement.ID)
@@ -443,45 +344,37 @@ func (ecn *EntangledCognitionNetwork) attemptCoherenceRecovery(entanglement *Ent
 		}
 	}
 }
-
-// updateNetworkTopology updates network structure
 func (ecn *EntangledCognitionNetwork) updateNetworkTopology() {
 	nodes := make([]string, 0, len(ecn.cognitiveNodes))
 	for id := range ecn.cognitiveNodes {
 		nodes = append(nodes, id)
 	}
-	
 	connections := make([]NetworkConnection, 0, len(ecn.entanglements))
 	for _, entanglement := range ecn.entanglements {
 		if entanglement.IsActive {
 			nodeA := ecn.cognitiveNodes[entanglement.NodeA]
 			nodeB := ecn.cognitiveNodes[entanglement.NodeB]
-			
 			connection := NetworkConnection{
 				NodeA:     entanglement.NodeA,
 				NodeB:     entanglement.NodeB,
 				Distance:  ecn.calculateDistance(nodeA.Position, nodeB.Position),
 				Strength:  entanglement.EntanglementStrength,
-				Bandwidth: 1e9, // Quantum bandwidth
-				Latency:   0,   // Instant
+				Bandwidth: 1e9, 
+				Latency:   0,   
 				IsQuantum: true,
 			}
 			connections = append(connections, connection)
 		}
 	}
-	
 	ecn.networkTopology = NetworkTopology{
 		Nodes:       nodes,
 		Connections: connections,
 		LastUpdate:  time.Now(),
 	}
 }
-
-// GetNetworkMetrics returns network performance metrics
 func (ecn *EntangledCognitionNetwork) GetNetworkMetrics() NetworkMetrics {
 	ecn.mu.RLock()
 	defer ecn.mu.RUnlock()
-	
 	metrics := NetworkMetrics{
 		ActiveNodes:         len(ecn.cognitiveNodes),
 		ActiveEntanglements: 0,
@@ -489,7 +382,6 @@ func (ecn *EntangledCognitionNetwork) GetNetworkMetrics() NetworkMetrics {
 		TotalMessages:      0,
 		LastUpdate:         ecn.lastSync,
 	}
-	
 	totalCorrelation := 0.0
 	for _, entanglement := range ecn.entanglements {
 		if entanglement.IsActive {
@@ -498,15 +390,11 @@ func (ecn *EntangledCognitionNetwork) GetNetworkMetrics() NetworkMetrics {
 		}
 		metrics.TotalMessages += len(entanglement.MessageHistory)
 	}
-	
 	if metrics.ActiveEntanglements > 0 {
 		metrics.AverageCorrelation = totalCorrelation / float64(metrics.ActiveEntanglements)
 	}
-	
 	return metrics
 }
-
-// NetworkMetrics tracks network performance
 type NetworkMetrics struct {
 	ActiveNodes         int
 	ActiveEntanglements int
@@ -514,15 +402,11 @@ type NetworkMetrics struct {
 	TotalMessages       int
 	LastUpdate          time.Time
 }
-
-// RegisterCorrelationMonitor adds correlation monitor
 func (ecn *EntangledCognitionNetwork) RegisterCorrelationMonitor(id string, monitor CorrelationMonitor) {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()
 	ecn.correlationMonitors[id] = monitor
 }
-
-// RegisterInstantMessenger adds instant messenger
 func (ecn *EntangledCognitionNetwork) RegisterInstantMessenger(id string, messenger InstantMessenger) {
 	ecn.mu.Lock()
 	defer ecn.mu.Unlock()

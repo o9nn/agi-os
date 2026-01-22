@@ -1,18 +1,14 @@
 import { basename, join } from 'path'
 import { DIST_DIR } from './config'
 import { readdir, readFile } from 'fs/promises'
-
 import { Theme } from '@deltachat-desktop/shared/shared-types'
 import { getLogger } from '@deltachat-desktop/shared/logger'
 import {
   HIDDEN_THEME_PREFIX,
   parseThemeMetaData,
 } from '@deltachat-desktop/shared/themes'
-
 const log = getLogger('main/themes')
-
 const dc_theme_dir = join(DIST_DIR, 'themes')
-
 export async function readThemeDir(
   path: string = dc_theme_dir,
   prefix: string = 'dc'

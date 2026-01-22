@@ -1,97 +1,89 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-
 #include "pci.h"
 #include "vga.h"
-
-int cflag;					/* do not use hwgc */
-int dflag;					/* do the palette */
-
+int cflag;
+int dflag;
 Ctlr* ctlrs[] = {
-	&ark2000pv,				/* ctlr */
-	&ark2000pvhwgc,				/* hwgc */
-	&att20c490,				/* ramdac */
-	&att20c491,				/* ramdac */
-	&att20c492,				/* ramdac */
-	&att21c498,				/* ramdac */
-	&bt485,					/* ramdac */
-	&bt485hwgc,				/* hwgc */
-	&ch9294,				/* clock */
-	&clgd542x,				/* ctlr */
-	&clgd542xhwgc,				/* hwgc */
-	&clgd546x,				/* ctlr */
-	&clgd546xhwgc,				/* hwgc */
-	&ct65540,				/* ctlr */
-	&ct65545,				/* ctlr */
-	&ct65545hwgc,				/* hwgc */
-	&cyber938x,				/* ctlr */
-	&cyber938xhwgc,				/* hwgc */
-	&et4000,				/* ctlr */
-	&et4000hwgc,				/* hwgc */
-	&generic,				/* ctlr */
-	&hiqvideo,				/* ctlr */
-	&hiqvideohwgc,				/* hwgc */
-	&i81x,				/* ctlr */
-	&i81xhwgc,				/* hwgc */
-	&ibm8514,				/* ctlr */
-	&icd2061a,				/* clock */
-	&ics2494,				/* clock */
-	&ics2494a,				/* clock */
-	&ics534x,				/* gendac */
-	&mach32,				/* ctlr */
-	&mach64,				/* ctlr */
-	&mach64xx,				/* ctlr */
-	&mach64xxhwgc,				/* hwgc */
-	&mga2164w,				/* ctlr */
-	&mga2164whwgc,				/* hwgc */
-	&neomagic,				/* ctlr */
-	&neomagichwgc,				/* hwgc */
-	&nvidia,				/* ctlr */
-	&nvidiahwgc,				/* hwgc */
-	&radeon,				/* ctlr */
-	&radeonhwgc,				/* hwgc */
-	&palette,				/* ctlr */
-	&rgb524,				/* ramdac */
-	&rgb524hwgc,				/* hwgc */
-	&rgb524mn,				/* ramdac */
-	&s3801,					/* ctlr */
-	&s3805,					/* ctlr */
-	&s3928,					/* ctlr */
-	&s3clock,				/* clock */
-	&s3hwgc,				/* hwgc */
-	&sc15025,				/* ramdac */
-	&softhwgc,				/* hwgc */
-	&stg1702,				/* ramdac */
-	&t2r4,					/* ctlr */
-	&t2r4hwgc,				/* hwgc */
-	&tdfx,					/* ctlr */
-	&tdfxhwgc,				/* hwgc */
-	&trio64,				/* ctlr */
-	&tvp3020,				/* ramdac */
-	&tvp3020hwgc,				/* hwgc */
-	&tvp3025,				/* ramdac */
-	&tvp3025clock,				/* clock */
-	&tvp3026,				/* ramdac */
-	&tvp3026clock,				/* clock */
-	&tvp3026hwgc,				/* hwgc */
-	&vesa,					/* ctlr */
-	&virge,					/* ctlr */
-	&vision864,				/* ctlr */
-	&vision964,				/* ctlr */
-	&vision968,				/* ctlr */
-	&vmware,				/* ctlr */
-	&vmwarehwgc,				/* hwgc */
-	&w30c516,				/* ctlr */
-	&mga4xx,
-	&mga4xxhwgc,
-	0,
+&ark2000pv,
+&ark2000pvhwgc,
+&att20c490,
+&att20c491,
+&att20c492,
+&att21c498,
+&bt485,
+&bt485hwgc,
+&ch9294,
+&clgd542x,
+&clgd542xhwgc,
+&clgd546x,
+&clgd546xhwgc,
+&ct65540,
+&ct65545,
+&ct65545hwgc,
+&cyber938x,
+&cyber938xhwgc,
+&et4000,
+&et4000hwgc,
+&generic,
+&hiqvideo,
+&hiqvideohwgc,
+&i81x,
+&i81xhwgc,
+&ibm8514,
+&icd2061a,
+&ics2494,
+&ics2494a,
+&ics534x,
+&mach32,
+&mach64,
+&mach64xx,
+&mach64xxhwgc,
+&mga2164w,
+&mga2164whwgc,
+&neomagic,
+&neomagichwgc,
+&nvidia,
+&nvidiahwgc,
+&radeon,
+&radeonhwgc,
+&palette,
+&rgb524,
+&rgb524hwgc,
+&rgb524mn,
+&s3801,
+&s3805,
+&s3928,
+&s3clock,
+&s3hwgc,
+&sc15025,
+&softhwgc,
+&stg1702,
+&t2r4,
+&t2r4hwgc,
+&tdfx,
+&tdfxhwgc,
+&trio64,
+&tvp3020,
+&tvp3020hwgc,
+&tvp3025,
+&tvp3025clock,
+&tvp3026,
+&tvp3026clock,
+&tvp3026hwgc,
+&vesa,
+&virge,
+&vision864,
+&vision964,
+&vision968,
+&vmware,
+&vmwarehwgc,
+&w30c516,
+&mga4xx,
+&mga4xxhwgc,
+0,
 };
-
-/*
- * Lower 2-bits of indirect DAC register
- * addressing.
- */
 ushort dacxreg[4] = {
-	PaddrW, Pdata, Pixmask, PaddrR
+PaddrW, Pdata, Pixmask, PaddrR
 };

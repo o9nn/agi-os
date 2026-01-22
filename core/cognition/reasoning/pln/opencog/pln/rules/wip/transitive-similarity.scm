@@ -1,25 +1,4 @@
-;; =============================================================================
-;; TransitiveSimilarityRule
-;;
-;; <LinkType>
-;;   A
-;;   B
-;; <LinkType>
-;;   B
-;;   C
-;; |-
-;; <LinkType>
-;;   A
-;;   C
-;;
-;; Due to type system limitations, the rule has been divided into 3:
-;;           transitive-similarity-similarity-rule
-;;           transitive-similarity-extensional-similarity-rule
-;;           transitive-similarity-intensional-similarity-rule
-;;
-;; -----------------------------------------------------------------------------
 (load "formulas.scm")
-
 (define (gen-transitive-similarity-rule link-type)
     (BindLink
         (VariableList
@@ -48,16 +27,12 @@
                 (link-type
                     (VariableNode "$A")
                     (VariableNode "$C"))))))
-
 (define transitive-similarity-similarity-rule
   (gen-transitive-similarity-rule SimilarityLink))
-
 (define transitive-similarity-extensional-similarity-rule
   (gen-transitive-similarity-rule ExtensionalSimilarityLink))
-
 (define transitive-similarity-intensional-similarity-rule
   (gen-transitive-similarity-rule IntensionalSimilarityLink))
-
 (define (transitive-similarity-formula A B C AB BC AC)
     (let
         ((sA (cog-mean A))

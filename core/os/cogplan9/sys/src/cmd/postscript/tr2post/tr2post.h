@@ -1,13 +1,12 @@
 #define MAXSPECHARS 	512
 #define MAXTOKENSIZE	128
 #define CHARLIB	"/sys/lib/troff/font/devutf/charlib"
-
 extern int debug;
 extern int fontsize;
 extern int fontpos;
-extern int resolution;	/* device resolution, goobies per inch */
-extern int minx;		/* minimum x motion */
-extern int miny;		/* minimum y motion */
+extern int resolution;
+extern int minx;
+extern int miny;
 extern char devname[];
 extern int devres;
 extern int unitwidth;
@@ -15,59 +14,42 @@ extern char *printdesclang;
 extern char *encoding;
 extern int fontmnt;
 extern char **fontmtab;
-
-extern int curtrofffontid;	/* index into trofftab of current troff font */
+extern int curtrofffontid;
 extern int troffontcnt;
-
 extern BOOLEAN drawflag;
-
 struct specname {
-	char *str;
-	struct specname *next;
+char *str;
+struct specname *next;
 };
-
-/* character entries for special characters (those pointed
- * to by multiple character names, e.g. \(mu for multiply.
- */
 struct charent {
-	char postfontid;	/* index into pfnamtab */
-	char postcharid;	/* e.g., 0x00 */
-	short troffcharwidth;
-	char *name;
-	struct charent *next;
+char postfontid;
+char postcharid;
+short troffcharwidth;
+char *name;
+struct charent *next;
 };
-
 extern struct charent **build_char_list;
 extern int build_char_cnt;
-
 struct pfnament {
-	char *str;
-	int used;
+char *str;
+int used;
 };
-
-/* these entries map troff character code ranges to
- * postscript font and character ranges.
- */
 struct psfent {
-	int start;
-	int end;
-	int offset;
-	int psftid;
+int start;
+int end;
+int offset;
+int psftid;
 };
-
 struct troffont {
-	char *trfontid;		/* the common troff font name e.g., `R' */
-	BOOLEAN special;	/* flag says this is a special font. */
-	int spacewidth;
-	int psfmapsize;
-	struct psfent *psfmap;
-	struct charent *charent[NUMOFONTS][FONTSIZE];
+char *trfontid;
+BOOLEAN special;
+int spacewidth;
+int psfmapsize;
+struct psfent *psfmap;
+struct charent *charent[NUMOFONTS][FONTSIZE];
 };
-
 extern struct troffont *troffontab;
 extern struct charent spechars[];
-
-/** prototypes **/
 void initialize(void);
 void mountfont(int, char*);
 int findtfn(char *, int);
@@ -96,8 +78,8 @@ int hash(char *, int);
 BOOLEAN readDESC(void);
 void finish(void);
 void ps_include(Biobufhdr *, Biobufhdr *, int, int,
-	int, int, double, double, double, double,
-	double, double, double);
+int, int, double, double, double, double,
+double, double, double);
 void picture(Biobufhdr *, char *);
 void beginpath(char*, int);
 void drawpath(char*, int);

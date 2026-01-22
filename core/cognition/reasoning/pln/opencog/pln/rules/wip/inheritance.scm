@@ -1,20 +1,3 @@
-; =============================================================================
-; Inheritance Rule
-;
-; AndLink
-;   SubsetLink
-;       A
-;       B
-;   IntensionalInheritanceLink
-;       A
-;       B
-; |-
-; InheritanceLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define inheritance-rule
     (BindLink
         (VariableList
@@ -39,7 +22,6 @@
                 (InheritanceLink
                     (VariableNode "$A")
                     (VariableNode "$B"))))))
-
 (define (inheritance-formula SAB IIAB IAB)
     (cog-set-tv! 
         IAB
@@ -48,4 +30,3 @@
                 (+ (cog-mean SAB) (cog-mean IIAB)) 
                 2.0) 
             (min (cog-confidence SAB) (cog-confidence IIAB)))))
- 

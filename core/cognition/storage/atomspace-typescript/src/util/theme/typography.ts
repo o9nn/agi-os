@@ -61,5 +61,4 @@ const typography = {
         fontWeight: 'bold',
     },
 };
-
 export default typography;

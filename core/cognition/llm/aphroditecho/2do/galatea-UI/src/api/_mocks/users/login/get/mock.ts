@@ -1,6 +1,5 @@
 import fetchMock from 'fetch-mock';
 import { BASE_CORE_API_URL } from "../../../..";
-
 export default function mockResponse(): void {
     fetchMock.mock(`${BASE_CORE_API_URL}/users/login`, {
         status: 200,

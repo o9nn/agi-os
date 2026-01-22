@@ -1,6 +1,5 @@
 import { parse } from 'node-html-parser';
 import { read } from '$app/server';
-
 var posts = [
 	"https://labs.leaningtech.com/blog/webvm-claude",
 	"https://labs.leaningtech.com/blog/cx-10",
@@ -10,7 +9,6 @@ var posts = [
 	"https://labs.leaningtech.com/blog/webvm-virtual-machine-with-networking-via-tailscale",
 	"https://labs.leaningtech.com/blog/webvm-server-less-x86-virtual-machines-in-the-browser",
 ];
-
 async function getPostData(u)
 {
 	var ret = { title: null, image: null, url: u };
@@ -34,7 +32,6 @@ async function getPostData(u)
 	}
 	return ret;
 }
-
 export async function load()
 {
 	var ret = [];

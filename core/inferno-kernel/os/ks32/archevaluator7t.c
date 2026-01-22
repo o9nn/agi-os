@@ -6,57 +6,48 @@
 #include	"io.h"
 #include	"ureg.h"
 #include	"../port/error.h"
-
 extern int cflag;
 extern int consoleprint;
 extern int redirectconsole;
 extern int main_pool_pcnt;
 extern int heap_pool_pcnt;
 extern int image_pool_pcnt;
-
 void
 archreset(void)
 {
 }
-
 void
 archconfinit(void)
 {
-	conf.topofmem = 512 * 1024;
-	conf.flashbase = 0x01800000;
-	conf.cpuspeed = 50000000;
-
-	conf.useminicache = 1;
-	conf.cansetbacklight = 0;
-	conf.cansetcontrast = 0;
-	conf.remaplo = 0;
+conf.topofmem = 512 * 1024;
+conf.flashbase = 0x01800000;
+conf.cpuspeed = 50000000;
+conf.useminicache = 1;
+conf.cansetbacklight = 0;
+conf.cansetcontrast = 0;
+conf.remaplo = 0;
 }
-
 void
 archconsole(void)
 {
-	uartspecial(0, 57600, 'n', &kbdq, &printq, kbdcr2nl);
+uartspecial(0, 57600, 'n', &kbdq, &printq, kbdcr2nl);
 }
-
 void
 archreboot(void)
 {
 }
-
 void
 setleds(uchar val)
 {
-	ulong leds = IOPDATA;
-	IOPDATA = (leds & ~0xf0) | ((val & 0xf) << 4);
+ulong leds = IOPDATA;
+IOPDATA = (leds & ~0xf0) | ((val & 0xf) << 4);
 }
-
 static void
 setled7(uchar val)
 {
-	ulong leds = IOPDATA;
-	IOPDATA = (leds & ~(0x7f << 10)) | ((val & 0x7f) << 10);
+ulong leds = IOPDATA;
+IOPDATA = (leds & ~(0x7f << 10)) | ((val & 0x7f) << 10);
 }
-
 #define LEDSEGA	0x01
 #define LEDSEGB	0x02
 #define LEDSEGC	0x04
@@ -64,7 +55,6 @@ setled7(uchar val)
 #define LEDSEGE	0x10
 #define LEDSEGG	0x20
 #define LEDSEGF	0x40
-
 static uchar led7map[] = {
 [' '] 0,
 ['0']	LEDSEGA | LEDSEGB | LEDSEGC | LEDSEGD | LEDSEGE | LEDSEGF,
@@ -91,70 +81,56 @@ static uchar led7map[] = {
 ['U']	LEDSEGB | LEDSEGC | LEDSEGD | LEDSEGE | LEDSEGF,
 ['~']	LEDSEGB | LEDSEGE | LEDSEGG,
 };
-
 void
 setled7ascii(char c)
 {
-	if (c <= '~')
-		setled7(led7map[c]);
+if (c <= '~')
+setled7(led7map[c]);
 }
-
 void
 trace(char c)
 {
-	int i;
-//	int x = splfhi();
-	setled7ascii(c);
-	for (i = 0; i < 2000000; i++)
-		;
-//	splx(x);
+int i;
+setled7ascii(c);
+for (i = 0; i < 2000000; i++)
+;
 }
-
 void
 ttrace()
 {
-	static char c = '6';
-
-	trace(c);
-	c = '6' + '7' -c;
+static char c = '6';
+trace(c);
+c = '6' + '7' -c;
 }
-
 void
 lights(ulong val)
 {
-	IOPDATA = (IOPDATA & (0x7ff << 4)) | ((val & 0x7ff) << 4);
+IOPDATA = (IOPDATA & (0x7ff << 4)) | ((val & 0x7ff) << 4);
 }
-
 void
 lcd_setbacklight(int)
 {
 }
-
 void
 lcd_setbrightness(ushort)
 {
 }
-
 void
 lcd_setcontrast(ushort)
 {
 }
-
 void
-archflashwp(int /*wp*/)
+archflashwp(int )
 {
 }
-
 void
 screenputs(char *, int)
 {
 }
-
 void
 cursorenable(void)
 {
 }
-
 void
 cursordisable(void)
 {

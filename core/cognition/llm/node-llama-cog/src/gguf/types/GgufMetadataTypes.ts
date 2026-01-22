@@ -108,7 +108,6 @@ export const enum GgufArchitectureType {
     clip = "clip",
     unknown = "(unknown)"
 }
-
 export type GgufMetadata<A extends GgufArchitectureType = GgufArchitectureType> = {
     readonly general: GgufMetadataGeneral<A>,
     readonly tokenizer: GgufMetadataTokenizer
@@ -124,8 +123,6 @@ export type GgufMetadata<A extends GgufArchitectureType = GgufArchitectureType> 
             : GgufMetadataDefaultArchitectureType
     }
 );
-
-
 export type GgufMetadataLlmToType = {
     [GgufArchitectureType.llama]: GgufMetadataLlmLLaMA,
     [GgufArchitectureType.mpt]: GgufMetadataMPT,
@@ -136,16 +133,14 @@ export type GgufMetadataLlmToType = {
     [GgufArchitectureType.falcon]: GgufMetadataFalcon,
     [GgufArchitectureType.mamba]: GgufMetadataMamba
 };
-
-// source: `enum llama_ftype` in `llama.h` in the `llama.cpp` source code
 export enum GgufFileType {
     ALL_F32 = 0,
     MOSTLY_F16 = 1,
     MOSTLY_Q4_0 = 2,
     MOSTLY_Q4_1 = 3,
-    MOSTLY_Q4_1_SOME_F16 = 4, // deprecated
-    MOSTLY_Q4_2 = 5, // deprecated
-    MOSTLY_Q4_3 = 6, // deprecated
+    MOSTLY_Q4_1_SOME_F16 = 4, 
+    MOSTLY_Q4_2 = 5, 
+    MOSTLY_Q4_3 = 6, 
     MOSTLY_Q8_0 = 7,
     MOSTLY_Q5_0 = 8,
     MOSTLY_Q5_1 = 9,
@@ -172,88 +167,33 @@ export enum GgufFileType {
     MOSTLY_IQ4_XS = 30,
     MOSTLY_IQ1_M = 31,
     MOSTLY_BF16 = 32,
-    MOSTLY_Q4_0_4_4 = 33, // deprecated
-    MOSTLY_Q4_0_4_8 = 34, // deprecated
-    MOSTLY_Q4_0_8_8 = 35, // deprecated
+    MOSTLY_Q4_0_4_4 = 33, 
+    MOSTLY_Q4_0_4_8 = 34, 
+    MOSTLY_Q4_0_8_8 = 35, 
     MOSTLY_TQ1_0 = 36,
     MOSTLY_TQ2_0 = 37,
     MOSTLY_MXFP4_MOE = 38
 }
-
-
 export type GgufMetadataGeneral<A extends GgufArchitectureType = GgufArchitectureType> = {
     readonly architecture: A,
-
-    /**
-     * The version of the quantization format. Not required if the model is not
-     * quantized (i.e. no tensors are quantized). If any tensors are quantized,
-     * this must be present. This is separate to the quantization scheme of the
-     * tensors itself; the quantization version may change without changing the
-     * scheme's name (e.g. the quantization scheme is Q5_K, and the quantization
-     * version is 4).
-     */
     readonly quantization_version: string,
-
-    /**
-     * the global alignment to use, as described above. This can vary to allow
-     * for different alignment schemes, but it must be a multiple of 8. Some
-     * writers may not write the alignment. If the alignment is not specified,
-     * assume it is `32`.
-     */
     readonly alignment?: number,
-
-    /**
-     * The name of the model. This should be a human-readable name that can be
-     * used to identify the model. It should be unique within the community
-     * that the model is defined in.
-     */
     readonly name?: string,
     readonly basename?: string,
     readonly size_label?: string,
     readonly author?: string,
-
-    /**
-     * URL to the model's homepage. This can be a GitHub repo, a paper, etc.
-     */
     readonly url?: string,
-
-    /**
-     * free-form description of the model including anything that isn't
-     * covered by the other fields
-     */
     readonly description?: string,
-
-    /**
-     * License of the model, expressed as a SPDX license expression
-     * (e.g. `MIT OR Apache-2.0`). *Should not* include any other information,
-     * such as the license text or the URL to the license.
-     */
     readonly license?: string,
     readonly "license.name"?: string,
     readonly "license.link"?: string,
-
-    /**
-     * Information about where this model came from. This is useful for tracking
-     * the provenance of the model, and for finding the original source if the
-     * model is modified. For a model that was converted from GGML, for
-     * example, these keys would point to the model that was converted from.
-     */
     readonly source?: {
-        /**
-         * URL to the source of the model. Can be a GitHub repo, a paper, etc.
-         */
         readonly url?: string,
         readonly huggingface?: {
             readonly repository?: string
         }
     },
-
-    /**
-     * An enumerated value describing the type of the majority of the tensors
-     * in the file. Optional; can be inferred from the tensor types.
-     */
     readonly file_type?: GgufFileType | undefined,
-
     readonly base_model?: {
         readonly count: number,
         readonly [key: `${bigint}`]: {
@@ -268,7 +208,6 @@ export type GgufMetadataGeneral<A extends GgufArchitectureType = GgufArchitectur
         }
     }
 };
-
 export const enum GgufMetadataTokenizerTokenType {
     undefined = 0,
     normal = 1,
@@ -278,7 +217,6 @@ export const enum GgufMetadataTokenizerTokenType {
     unused = 5,
     byte = 6
 }
-
 export type GgufMetadataTokenizer = {
     readonly ggml: {
         readonly model: "no_vocab" | "none" | "llama" | "gpt2" | "bert" | "rwkv" | "t5" | "plamo2" | string,
@@ -311,12 +249,8 @@ export type GgufMetadataTokenizer = {
         readonly fim_pad_token_id?: number,
         readonly fim_rep_token_id?: number,
         readonly fim_sep_token_id?: number,
-
-        /** @deprecated */
         readonly prefix_token_id?: number,
-        /** @deprecated */
         readonly suffix_token_id?: number,
-        /** @deprecated */
         readonly middle_token_id?: number
     },
     readonly huggingface?: {
@@ -325,7 +259,6 @@ export type GgufMetadataTokenizer = {
     readonly chat_template?: string,
     readonly "chat_template.rerank"?: string
 };
-
 export const enum GgufMetadataArchitecturePoolingType {
     unspecified = -1,
     none = 0,
@@ -334,7 +267,6 @@ export const enum GgufMetadataArchitecturePoolingType {
     last = 3,
     rank = 4
 }
-
 export type GgufMetadataDefaultArchitectureType = {
     readonly vocab_size?: number,
     readonly context_length?: number,
@@ -348,7 +280,6 @@ export type GgufMetadataDefaultArchitectureType = {
     readonly pooling_type?: GgufMetadataArchitecturePoolingType,
     readonly logit_scale?: number,
     readonly token_shift_count?: number,
-
     readonly attention?: {
         readonly head_count?: number,
         readonly head_count_kv?: number | number[],
@@ -361,7 +292,6 @@ export type GgufMetadataDefaultArchitectureType = {
         readonly sliding_window?: number,
         readonly causal?: boolean
     },
-
     readonly rope?: {
         readonly dimension_count?: number,
         readonly freq_base?: number,
@@ -373,61 +303,16 @@ export type GgufMetadataDefaultArchitectureType = {
             readonly finetuned?: boolean
         }
     },
-
     readonly ssm?: {
         readonly conv_kernel?: number,
         readonly inner_size?: number,
         readonly state_size?: number,
         readonly time_step_rank?: number
     },
-
     readonly wkv?: {
         readonly head_size?: number
     }
 };
-
-// export type GgufMetadataLlmKeyTypes = {
-//     readonly context_length: number,
-//     readonly embedding_length: number,
-//     readonly block_count: number,
-//     readonly feed_forward_length: number,
-//     readonly use_parallel_residual: boolean,
-//     readonly tensor_data_layout: string,
-//     readonly expert_count: number,
-//     readonly expert_used_count: number,
-//
-//     readonly attention: {
-//         readonly head_count: number,
-//         readonly head_count_kv: number,
-//         readonly max_alibi_bias: number,
-//         readonly clamp_kqv: number,
-//         readonly layer_norm_epsilon: number,
-//         readonly layer_norm_rms_epsilon: number,
-//         readonly key_length: number,
-//         readonly value_length: number
-//     },
-//
-//     readonly rope: {
-//         readonly dimension_count: number,
-//         readonly freq_base: number,
-//         readonly scaling: {
-//             readonly type: "none" | "linear" | "yarn" | string,
-//             readonly factor: number,
-//             readonly original_context_length: number,
-//             readonly finetuned: boolean,
-//             readonly scale_linear?: number
-//         }
-//     },
-//
-//     readonly ssm: {
-//         readonly conv_kernel: number,
-//         readonly inner_size: number,
-//         readonly state_size: number,
-//         readonly time_step_rank: number
-//     }
-// };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#llama
 export type GgufMetadataLlmLLaMA = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -446,8 +331,6 @@ export type GgufMetadataLlmLLaMA = {
     readonly expert_used_count?: number,
     readonly tensor_data_layout?: string
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#mpt
 export type GgufMetadataMPT = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -459,8 +342,6 @@ export type GgufMetadataMPT = {
         readonly layer_norm_epsilon: number
     }
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#gpt-neox
 export type GgufMetadataGPTNeoX = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -468,7 +349,6 @@ export type GgufMetadataGPTNeoX = {
     readonly use_parallel_residual: boolean,
     readonly rope: {
         readonly dimension_count: number,
-        // readonly freq_base: number,
         readonly scale?: number
     },
     readonly attention: {
@@ -476,8 +356,6 @@ export type GgufMetadataGPTNeoX = {
         readonly layer_norm_epsilon: number
     }
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#gpt-j
 export type GgufMetadataGPTJ = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -491,8 +369,6 @@ export type GgufMetadataGPTJ = {
         readonly layer_norm_epsilon: number
     }
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#gpt-2
 export type GgufMetadataGPT2 = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -502,8 +378,6 @@ export type GgufMetadataGPT2 = {
         readonly layer_norm_epsilon: number
     }
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#bloom
 export type GgufMetadataBloom = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -514,8 +388,6 @@ export type GgufMetadataBloom = {
         readonly layer_norm_epsilon: number
     }
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#falcon
 export type GgufMetadataFalcon = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -528,8 +400,6 @@ export type GgufMetadataFalcon = {
     },
     readonly tensor_data_layout?: string
 };
-
-// source: https://github.com/ggml-org/ggml/blob/master/docs/gguf.md#mamba
 export type GgufMetadataMamba = {
     readonly context_length: number,
     readonly embedding_length: number,
@@ -544,7 +414,6 @@ export type GgufMetadataMamba = {
         readonly layer_norm_rms_epsilon: number
     }
 };
-
 export function isGgufMetadataOfArchitectureType<A extends GgufArchitectureType>(
     metadata: GgufMetadata, type: A
 ): metadata is GgufMetadata<A> {

@@ -1,15 +1,11 @@
 package cmd
-
 import (
 	"os"
 	"path/filepath"
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 )
-
 func TestExtractFilenames(t *testing.T) {
-	// Unix style paths
 	input := ` some preamble 
  ./relative\ path/one.png inbetween1 ./not a valid two.jpg inbetween2 ./1.svg
 /unescaped space /three.jpeg inbetween3 /valid\ path/dir/four.png "./quoted with spaces/five.JPG
@@ -26,8 +22,6 @@ func TestExtractFilenames(t *testing.T) {
 	assert.NotContains(t, res[4], '"')
 	assert.NotContains(t, res, "inbetween1")
 	assert.NotContains(t, res, "./1.svg")
-
-	// Windows style paths
 	input = ` some preamble
  c:/users/jdoe/one.png inbetween1 c:/program files/someplace/two.jpg inbetween2 
  /absolute/nospace/three.jpeg inbetween3 /absolute/with space/four.png inbetween4
@@ -63,8 +57,6 @@ d:\path with\spaces\thirteen.WEBP some ending
 	assert.Contains(t, res[12], "thirteen.WEBP")
 	assert.Contains(t, res[12], "d:")
 }
-
-// Ensure that file paths wrapped in single quotes are removed with the quotes.
 func TestExtractFileDataRemovesQuotedFilepath(t *testing.T) {
 	dir := t.TempDir()
 	fp := filepath.Join(dir, "img.jpg")
@@ -77,7 +69,6 @@ func TestExtractFileDataRemovesQuotedFilepath(t *testing.T) {
 	if err := os.WriteFile(fp, data, 0o600); err != nil {
 		t.Fatalf("failed to write test image: %v", err)
 	}
-
 	input := "before '" + fp + "' after"
 	cleaned, imgs, err := extractFileData(input)
 	assert.NoError(t, err)

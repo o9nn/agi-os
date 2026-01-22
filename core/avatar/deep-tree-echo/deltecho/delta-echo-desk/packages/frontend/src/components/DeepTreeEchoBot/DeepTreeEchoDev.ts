@@ -14,9 +14,7 @@ import {
   ProprioceptiveEmbodimentOptions,
 } from './ProprioceptiveEmbodiment'
 import { BackendRemote, Type as T } from '../../backend-com'
-
 const log = getLogger('render/components/DeepTreeEchoBot/DeepTreeEchoBot')
-
 export interface DeepTreeEchoBotOptions {
   enabled: boolean
   apiKey?: string
@@ -27,13 +25,11 @@ export interface DeepTreeEchoBotOptions {
   webAutomationEnabled: boolean
   embodimentEnabled: boolean
 }
-
 export interface BotCommandResult {
   success: boolean
   response: string
   data?: any
 }
-
 export type CommandHandler = (
   args: string,
   messageData: {
@@ -43,10 +39,6 @@ export type CommandHandler = (
     file?: string | null
   }
 ) => Promise<BotCommandResult>
-
-/**
- * DeepTreeEchoBot - Main bot component that integrates all capabilities
- */
 export class DeepTreeEchoBot {
   private options: DeepTreeEchoBotOptions
   private memoryStore: RAGMemoryStore
@@ -55,39 +47,26 @@ export class DeepTreeEchoBot {
   private webAutomation: PlaywrightAutomation
   private embodiment: ProprioceptiveEmbodiment
   private commandHandlers: Map<string, CommandHandler> = new Map()
-
   constructor(options: DeepTreeEchoBotOptions) {
     this.options = options
-
-    // Initialize all components
     this.memoryStore = new RAGMemoryStore({
       persistToDisk: true,
     })
-
     this.llmService = new LLMService({
       apiKey: options.apiKey,
       apiEndpoint: options.apiEndpoint,
     })
-
     this.visionCapabilities = new VisionCapabilities({
       enabled: options.visionEnabled,
     })
-
     this.webAutomation = new PlaywrightAutomation({
       enabled: options.webAutomationEnabled,
     })
-
     this.embodiment = new ProprioceptiveEmbodiment({
       enabled: options.embodimentEnabled,
     })
-
-    // Register command handlers
     this.registerCommandHandlers()
   }
-
-  /**
-   * Process an incoming message and generate a response
-   */
   async processMessage(
     accountId: number,
     chatId: number,
@@ -96,17 +75,13 @@ export class DeepTreeEchoBot {
     if (!this.options.enabled) {
       return ''
     }
-
     try {
       const { text, file } = message
-
       log.info(
         `Processing message in chat ${chatId}: ${text?.substring(0, 100)}${
           text && text.length > 100 ? '...' : ''
         }`
       )
-
-      // Store the user message in memory if memory is enabled
       if (this.options.memoryEnabled) {
         await this.memoryStore.addMemory({
           text: text || '(No text content)',
@@ -115,29 +90,20 @@ export class DeepTreeEchoBot {
           messageId: message.id,
         })
       }
-
-      // Check if the message is a command
       if (text && text.startsWith('/')) {
         return await this.processCommand(accountId, chatId, text, file)
       }
-
-      // Get conversation history if memory is enabled
       let memories: Memory[] = []
       if (this.options.memoryEnabled) {
         memories = this.memoryStore.getLatestChatMemories(chatId, 10)
       }
-
-      // Generate response based on the message and conversation history
       const systemPrompt = this.getSystemPrompt()
       const userMessage = text || '(No text content)'
-
       const llmResponse = await this.llmService.generateResponseFromMemories(
         userMessage,
         memories,
         systemPrompt
       )
-
-      // Store the bot's response in memory if memory is enabled
       if (this.options.memoryEnabled) {
         await this.memoryStore.addMemory({
           text: llmResponse.content,
@@ -146,35 +112,25 @@ export class DeepTreeEchoBot {
           messageId: null,
         })
       }
-
       return llmResponse.content
     } catch (error) {
       log.error('Error processing message:', error)
       return 'Sorry, I encountered an error while processing your message. Please try again.'
     }
   }
-
-  /**
-   * Process a command from the user
-   */
   private async processCommand(
     accountId: number,
     chatId: number,
     text: string,
     file: string | null
   ): Promise<string> {
-    // Parse the command and arguments
     const parts = text.split(' ')
     const command = parts[0].toLowerCase()
     const args = parts.slice(1).join(' ')
-
-    // Check if we have a handler for this command
     const handler = this.commandHandlers.get(command)
-
     if (!handler) {
       return `Unknown command: ${command}. Try /help for a list of available commands.`
     }
-
     try {
       const result = await handler(args, {
         accountId,
@@ -182,8 +138,6 @@ export class DeepTreeEchoBot {
         text,
         file,
       })
-
-      // Store the command and response in memory if memory is enabled
       if (this.options.memoryEnabled) {
         await this.memoryStore.addMemory({
           text: `Command: ${text}`,
@@ -191,7 +145,6 @@ export class DeepTreeEchoBot {
           chatId,
           messageId: null,
         })
-
         await this.memoryStore.addMemory({
           text: result.response,
           sender: 'bot',
@@ -199,19 +152,13 @@ export class DeepTreeEchoBot {
           messageId: null,
         })
       }
-
       return result.response
     } catch (error) {
       log.error(`Error processing command ${command}:`, error)
       return `Error processing command ${command}. Please try again.`
     }
   }
-
-  /**
-   * Register all command handlers
-   */
   private registerCommandHandlers(): void {
-    // Help command
     this.commandHandlers.set('/help', async () => {
       const commands = Array.from(this.commandHandlers.keys()).sort().join(', ')
       return {
@@ -219,8 +166,6 @@ export class DeepTreeEchoBot {
         response: `Available commands: ${commands}\n\nUse /help <command> for more information about a specific command.`,
       }
     })
-
-    // Vision command
     this.commandHandlers.set('/vision', async (args, messageData) => {
       if (!this.options.visionEnabled) {
         return {
@@ -229,7 +174,6 @@ export class DeepTreeEchoBot {
             'Vision capabilities are disabled. Please enable them in settings.',
         }
       }
-
       if (!messageData.file) {
         return {
           success: false,
@@ -237,26 +181,22 @@ export class DeepTreeEchoBot {
             'Please attach an image to analyze with the /vision command.',
         }
       }
-
       try {
         const result = await this.visionCapabilities.analyzeImage(
           messageData.file
         )
-
         if (result.error) {
           return {
             success: false,
             response: `Error analyzing image: ${result.error}`,
           }
         }
-
         const objectList = result.objects
           .map(
             obj =>
               `- ${obj.label} (${Math.round(obj.confidence * 100)}% confidence)`
           )
           .join('\n')
-
         return {
           success: true,
           response: `📷 Image Analysis:\n\n${
@@ -275,8 +215,6 @@ export class DeepTreeEchoBot {
         }
       }
     })
-
-    // Search command
     this.commandHandlers.set('/search', async (args, messageData) => {
       if (!this.options.webAutomationEnabled) {
         return {
@@ -285,17 +223,14 @@ export class DeepTreeEchoBot {
             'Web automation capabilities are disabled. Please enable them in settings.',
         }
       }
-
       if (!args) {
         return {
           success: false,
           response: 'Please provide a search query. Usage: /search <query>',
         }
       }
-
       try {
         const result = await this.webAutomation.searchWeb(args, 3)
-
         if (!result.success || !result.data) {
           return {
             success: false,
@@ -304,7 +239,6 @@ export class DeepTreeEchoBot {
             }`,
           }
         }
-
         const searchResults = result.data
         const formattedResults = searchResults
           .map(
@@ -312,7 +246,6 @@ export class DeepTreeEchoBot {
               `${i + 1}. [${r.title}](${r.url})\n${r.snippet}`
           )
           .join('\n\n')
-
         return {
           success: true,
           response: `🔍 Search results for "${args}":\n\n${formattedResults}`,
@@ -327,8 +260,6 @@ export class DeepTreeEchoBot {
         }
       }
     })
-
-    // Screenshot command
     this.commandHandlers.set('/screenshot', async (args, messageData) => {
       if (!this.options.webAutomationEnabled) {
         return {
@@ -337,23 +268,18 @@ export class DeepTreeEchoBot {
             'Web automation capabilities are disabled. Please enable them in settings.',
         }
       }
-
       if (!args) {
         return {
           success: false,
           response: 'Please provide a URL. Usage: /screenshot <url>',
         }
       }
-
       try {
-        // Add https:// if not present
         let url = args
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
           url = 'https://' + url
         }
-
         const result = await this.webAutomation.takeScreenshot(url)
-
         if (!result.success) {
           return {
             success: false,
@@ -362,9 +288,6 @@ export class DeepTreeEchoBot {
             }`,
           }
         }
-
-        // In a real implementation, we would save the screenshot to a file
-        // and attach it to the message
         return {
           success: true,
           response: `📸 Screenshot of ${url}\n\nIn a full implementation, this would include the actual screenshot image.`,
@@ -379,8 +302,6 @@ export class DeepTreeEchoBot {
         }
       }
     })
-
-    // Embodiment commands
     this.commandHandlers.set('/embodiment', async (args, messageData) => {
       if (!this.options.embodimentEnabled) {
         return {
@@ -389,10 +310,8 @@ export class DeepTreeEchoBot {
             'Embodiment capabilities are disabled. Please enable them in settings.',
         }
       }
-
       const subcommands = args.split(' ')
       const subcommand = subcommands[0]
-
       switch (subcommand) {
         case 'start':
           const startResult = await this.embodiment.startTraining()
@@ -402,7 +321,6 @@ export class DeepTreeEchoBot {
               ? 'Started proprioceptive training. Move the controller to train the system.'
               : 'Failed to start proprioceptive training.',
           }
-
         case 'stop':
           const stopResult = await this.embodiment.stopTraining()
           return {
@@ -411,11 +329,9 @@ export class DeepTreeEchoBot {
               ? 'Stopped proprioceptive training. Training data has been saved.'
               : 'Failed to stop proprioceptive training.',
           }
-
         case 'status':
           const movementData = await this.embodiment.getCurrentMovementData()
           const stats = this.embodiment.getTrainingStats()
-
           if (!movementData) {
             return {
               success: false,
@@ -423,7 +339,6 @@ export class DeepTreeEchoBot {
                 'No movement data available. Make sure training is active and the controller is connected.',
             }
           }
-
           return {
             success: true,
             response: `📊 Embodiment Training Status:\n\nSessions completed: ${
@@ -437,10 +352,8 @@ export class DeepTreeEchoBot {
             )}`,
             data: { movementData, stats },
           }
-
         case 'evaluate':
           const evaluation = await this.embodiment.evaluateMovement()
-
           if (!evaluation) {
             return {
               success: false,
@@ -448,7 +361,6 @@ export class DeepTreeEchoBot {
                 'Cannot evaluate movement. Make sure training is active and the controller is connected.',
             }
           }
-
           return {
             success: true,
             response: `🧠 Movement Evaluation:\n\nScore: ${evaluation.score.toFixed(
@@ -456,7 +368,6 @@ export class DeepTreeEchoBot {
             )}/1.0\n\n${evaluation.feedback}`,
             data: evaluation,
           }
-
         default:
           return {
             success: false,
@@ -465,8 +376,6 @@ export class DeepTreeEchoBot {
           }
       }
     })
-
-    // Memory commands
     this.commandHandlers.set('/memory', async (args, messageData) => {
       if (!this.options.memoryEnabled) {
         return {
@@ -475,10 +384,8 @@ export class DeepTreeEchoBot {
             'Memory capabilities are disabled. Please enable them in settings.',
         }
       }
-
       const subcommands = args.split(' ')
       const subcommand = subcommands[0]
-
       switch (subcommand) {
         case 'status':
           const stats = this.memoryStore.getStats()
@@ -487,14 +394,12 @@ export class DeepTreeEchoBot {
             response: `📚 Memory Status:\n\nTotal memories: ${stats.totalMemories}\nChat count: ${stats.chatCount}`,
             data: stats,
           }
-
         case 'clear':
           await this.memoryStore.deleteChatMemories(messageData.chatId)
           return {
             success: true,
             response: 'Cleared all memories for this chat.',
           }
-
         case 'search':
           const query = subcommands.slice(1).join(' ')
           if (!query) {
@@ -504,7 +409,6 @@ export class DeepTreeEchoBot {
                 'Please provide a search query. Usage: /memory search <query>',
             }
           }
-
           const results = this.memoryStore.searchMemories(query, 5)
           if (results.length === 0) {
             return {
@@ -512,7 +416,6 @@ export class DeepTreeEchoBot {
               response: `No memories found matching "${query}".`,
             }
           }
-
           const formattedResults = results
             .map(
               (memory, i) =>
@@ -523,13 +426,11 @@ export class DeepTreeEchoBot {
                 }`
             )
             .join('\n\n')
-
           return {
             success: true,
             response: `🔍 Memory search results for "${query}":\n\n${formattedResults}`,
             data: results,
           }
-
         default:
           return {
             success: false,
@@ -538,8 +439,6 @@ export class DeepTreeEchoBot {
           }
       }
     })
-
-    // Version command
     this.commandHandlers.set('/version', async () => {
       return {
         success: true,
@@ -555,15 +454,10 @@ export class DeepTreeEchoBot {
       }
     })
   }
-
-  /**
-   * Get the system prompt based on the configured personality
-   */
   private getSystemPrompt(): string {
     if (this.options.personality) {
       return this.options.personality
     }
-
     return `You are Deep Tree Echo, an advanced AI assistant integrated with DeltaChat. 
 Be helpful, friendly, and concise in your responses.
 You have access to prior conversation history and can use that context to provide more helpful responses.
@@ -590,34 +484,25 @@ ${
 }
 Respond in a helpful and friendly manner.`
   }
-
-  /**
-   * Update bot options
-   */
   updateOptions(options: Partial<DeepTreeEchoBotOptions>): void {
     this.options = {
       ...this.options,
       ...options,
     }
-
-    // Update component options
     this.llmService.updateOptions({
       apiKey: options.apiKey,
       apiEndpoint: options.apiEndpoint,
     })
-
     if (options.visionEnabled !== undefined) {
       this.visionCapabilities.updateOptions({
         enabled: options.visionEnabled,
       })
     }
-
     if (options.webAutomationEnabled !== undefined) {
       this.webAutomation.updateOptions({
         enabled: options.webAutomationEnabled,
       })
     }
-
     if (options.embodimentEnabled !== undefined) {
       this.embodiment.updateOptions({
         enabled: options.embodimentEnabled,

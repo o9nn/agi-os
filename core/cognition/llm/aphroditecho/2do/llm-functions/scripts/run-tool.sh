@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-
-# Usage: ./run-tool.sh <tool-name> <tool-data>
-
 set -e
-
 main() {
     root_dir="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd)"
     self_name=run-tool.sh
@@ -12,7 +8,6 @@ main() {
     tool_path="$root_dir/tools/$tool_name.sh"
     run 
 }
-
 parse_argv() {
     if [[ "$0" == *"$self_name" ]]; then
         tool_name="$1"
@@ -22,25 +17,23 @@ parse_argv() {
         tool_data="$1"
     fi
     if [[ "$tool_name" == *.sh ]]; then
-        tool_name="${tool_name:0:$((${#tool_name}-3))}"
+        tool_name="${tool_name:0:$((${
     fi
     if [[ -z "$tool_data" ]] || [[ -z "$tool_name" ]]; then
         die "usage: ./run-tool.sh <tool-name> <tool-data>"
     fi
 }
-
 setup_env() {
     load_env "$root_dir/.env" 
     export LLM_ROOT_DIR="$root_dir"
     export LLM_TOOL_NAME="$tool_name"
     export LLM_TOOL_CACHE_DIR="$LLM_ROOT_DIR/cache/$tool_name"
 }
-
 load_env() {
     local env_file="$1" env_vars
     if [[ -f "$env_file" ]]; then
         while IFS='=' read -r key value; do
-            if [[ "$key" == $'#'* ]] || [[ -z "$key" ]]; then
+            if [[ "$key" == $'
                 continue
             fi
             if [[ -z "${!key+x}" ]]; then
@@ -52,18 +45,15 @@ load_env() {
         fi
     fi
 }
-
 run() {
     if [[ -z "$tool_data" ]]; then
         die "error: no JSON data"
     fi
-
     if [[ "$OS" == "Windows_NT" ]]; then
         set -o igncr
         tool_path="$(cygpath -w "$tool_path")"
         tool_data="$(echo "$tool_data" | sed 's/\\/\\\\/g')"
     fi
-
     jq_script="$(cat <<-'EOF'
 def escape_shell_word:
   tostring
@@ -97,7 +87,6 @@ EOF
         dump_result "$tool_name"
     fi
 }
-
 dump_result() {
     if [[ "$LLM_OUTPUT" == "/dev/stdout" ]] || [[ -z "$LLM_DUMP_RESULTS" ]] ||  [[ ! -t 1 ]]; then
         return;
@@ -110,10 +99,8 @@ $(cat "$LLM_OUTPUT")
 EOF
     fi
 }
-
 die() {
     echo "$*" >&2
     exit 1
 }
-
 main "$@"

@@ -1,20 +1,12 @@
 #!/bin/bash
-# Virtual Environment Setup Script for Deep Tree Echo AGI Avatar
-# This script sets up the development environment with all required dependencies
-
 set -e
-
 echo "=========================================="
 echo "Deep Tree Echo AGI Avatar - Environment Setup"
 echo "=========================================="
-
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-# Check Node.js version
+NC='\033[0m'
 check_node() {
     echo -e "${YELLOW}Checking Node.js...${NC}"
     if command -v node &> /dev/null; then
@@ -30,8 +22,6 @@ check_node() {
         exit 1
     fi
 }
-
-# Check npm
 check_npm() {
     echo -e "${YELLOW}Checking npm...${NC}"
     if command -v npm &> /dev/null; then
@@ -41,15 +31,11 @@ check_npm() {
         exit 1
     fi
 }
-
-# Install dependencies
 install_deps() {
     echo -e "${YELLOW}Installing dependencies...${NC}"
     npm install
     echo -e "${GREEN}Dependencies installed${NC}"
 }
-
-# Setup Git hooks
 setup_hooks() {
     echo -e "${YELLOW}Setting up Git hooks...${NC}"
     if [ -d ".git" ]; then
@@ -59,8 +45,6 @@ setup_hooks() {
         echo -e "${YELLOW}Not a git repository, skipping hooks${NC}"
     fi
 }
-
-# Create necessary directories
 create_dirs() {
     echo -e "${YELLOW}Creating directories...${NC}"
     mkdir -p assets/models
@@ -70,58 +54,37 @@ create_dirs() {
     mkdir -p logs
     echo -e "${GREEN}Directories created${NC}"
 }
-
-# Create .env file if not exists
 create_env() {
     echo -e "${YELLOW}Setting up environment variables...${NC}"
     if [ ! -f ".env" ]; then
         cat > .env << EOF
-# Deep Tree Echo AGI Avatar Configuration
 NODE_ENV=development
 PORT=3000
-
-# Avatar Settings
 AVATAR_MODE=hybrid
 COGNITIVE_ENABLED=true
 HYPER_CHAOTIC=true
 SUPER_HOT_GIRL=true
-
-# Debug Settings
 DEBUG=false
 LOG_LEVEL=info
-
-# API Settings
 API_RATE_LIMIT=100
 API_TIMEOUT=30000
-
-# WebSocket Settings
 WS_PING_INTERVAL=30000
 WS_MAX_PAYLOAD=1048576
-
-# Optional: External Services
-# REDIS_URL=redis://localhost:6379
-# OPENAI_API_KEY=your-key-here
 EOF
         echo -e "${GREEN}.env file created${NC}"
     else
         echo -e "${YELLOW}.env file already exists${NC}"
     fi
 }
-
-# Build the project
 build_project() {
     echo -e "${YELLOW}Building project...${NC}"
     npm run build 2>/dev/null || echo "Build step skipped (will build on first run)"
     echo -e "${GREEN}Build complete${NC}"
 }
-
-# Run type checking
 type_check() {
     echo -e "${YELLOW}Running type check...${NC}"
     npx tsc --noEmit 2>/dev/null || echo "Type check skipped"
 }
-
-# Print completion message
 print_complete() {
     echo ""
     echo -e "${GREEN}=========================================="
@@ -140,8 +103,6 @@ print_complete() {
     echo "  docker-compose --profile dev up   - Start development"
     echo ""
 }
-
-# Main execution
 main() {
     check_node
     check_npm
@@ -152,5 +113,4 @@ main() {
     type_check
     print_complete
 }
-
 main "$@"

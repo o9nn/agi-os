@@ -1,6 +1,5 @@
 import { GLOB_MARKDOWN, GLOB_MARKDOWN_CODE, GLOB_TSX } from '@antfu/eslint-config'
 import { defineConfig } from '@importantimport/eslint-config'
-
 export default defineConfig({
   react: true,
   typescript: { tsconfigPath: './tsconfig.json' },

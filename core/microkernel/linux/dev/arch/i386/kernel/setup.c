@@ -10,4 +10,3 @@ char x86 =
 #else
 #error "CPU type is undefined!"
 #endif
-

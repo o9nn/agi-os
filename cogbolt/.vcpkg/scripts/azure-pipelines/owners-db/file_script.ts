@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 import * as fs from "fs";
 import * as path from "path";
-
 const include_subpath = "/include/";
-
 function getFiles(dirPath: string): string[] {
   const files = fs.readdirSync(dirPath);
   return files.filter((f) => !f.startsWith("."));
 }
-
 function genAllFileStrings(
   dirPath: string,
   files: string[],
@@ -25,7 +22,6 @@ function genAllFileStrings(
       const line = raw.trim();
       if (line.length === 0) continue;
       if (line.endsWith("/")) continue;
-      // Remove the leading triplet directory
       const idx = line.indexOf("/");
       const filepath = idx >= 0 ? line.substring(idx) : line;
       outputStream.write(pkg + ":" + filepath + "\n");
@@ -35,11 +31,9 @@ function genAllFileStrings(
     }
   }
 }
-
 function usage() {
   console.error("Usage: file_script.ts --info-dir <path-to-info-dir> [--out-dir <path>]");
 }
-
 function parseArgs(argv: string[]) {
   let infoDir: string | undefined;
   let outDir = "scripts/list_files";
@@ -68,15 +62,12 @@ function parseArgs(argv: string[]) {
   }
   return { infoDir, outDir };
 }
-
 function main() {
   const { infoDir: dir, outDir } = parseArgs(process.argv.slice(2));
   try {
     fs.mkdirSync(outDir, { recursive: true });
   } catch {
-    // ignore
   }
-
   const headersPath = path.join(outDir, "VCPKGHeadersDatabase.txt");
   const dbPath = path.join(outDir, "VCPKGDatabase.txt");
   const headers = fs.createWriteStream(headersPath, { encoding: "utf8" });
@@ -89,5 +80,4 @@ function main() {
     output.end();
   }
 }
-
 main();

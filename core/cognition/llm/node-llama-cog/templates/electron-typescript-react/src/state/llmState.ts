@@ -1,7 +1,5 @@
 import {State} from "lifecycle-utils";
-
 import {LlmState} from "../../electron/state/llmState.ts";
-
 export const llmState = new State<LlmState>({
     appVersion: undefined,
     llama: {

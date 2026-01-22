@@ -16,7 +16,6 @@
       )
    )
 )
-
 (define put-quoted-exec
 (PutLink
    (LambdaLink
@@ -24,7 +23,6 @@
    )
    quoted-exec)
 )
-
 (define quoted-eval
    (LambdaLink
       (VariableList
@@ -43,7 +41,6 @@
       )
    )
 )
-
 (define put-quoted-eval
 (PutLink
    (LambdaLink

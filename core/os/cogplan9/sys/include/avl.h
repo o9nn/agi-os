@@ -1,20 +1,16 @@
 #pragma	lib	"libavl.a"
 #pragma src "/sys/src/libavl"
-
 typedef struct Avl	Avl;
 typedef struct Avltree	Avltree;
 typedef struct Avlwalk	Avlwalk;
-
 #pragma incomplete Avltree
 #pragma incomplete Avlwalk
-
 struct Avl
 {
-	Avl	*p;		/* parent */
-	Avl	*n[2];		/* children */
-	int	bal;		/* balance bits */
+Avl	*p;
+Avl	*n[2];
+int	bal;
 };
-
 Avl	*avlnext(Avlwalk *walk);
 Avl	*avlprev(Avlwalk *walk);
 Avlwalk	*avlwalk(Avltree *tree);

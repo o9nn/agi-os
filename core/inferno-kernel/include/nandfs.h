@@ -1,33 +1,28 @@
 #pragma src "/usr/inferno/libnandfs"
-
 typedef struct Nandfs Nandfs;
 typedef struct NandfsTags NandfsTags;
-
 #pragma incomplete Nandfs
-
 enum {
-	NandfsL2PageSize = 9,
-	NandfsPageSize = 1 << NandfsL2PageSize,
-	NandfsAuxiliarySize = 16,
-	NandfsFullSize = NandfsPageSize + NandfsAuxiliarySize,
-	NandfsPathBits = 26,
-	NandfsPathMask = ((1 << NandfsPathBits) - 1),
-	NandfsNeraseBits = 18,
-	NandfsNeraseMask = ((1 << NandfsNeraseBits) - 1),
+NandfsL2PageSize = 9,
+NandfsPageSize = 1 << NandfsL2PageSize,
+NandfsAuxiliarySize = 16,
+NandfsFullSize = NandfsPageSize + NandfsAuxiliarySize,
+NandfsPathBits = 26,
+NandfsPathMask = ((1 << NandfsPathBits) - 1),
+NandfsNeraseBits = 18,
+NandfsNeraseMask = ((1 << NandfsNeraseBits) - 1),
 };
-
 struct NandfsTags {
-	ulong path;	// 26 bits
-	ulong nerase;	// 18 bits
-	uchar tag;		// 8 bits
-	uchar magic;	// 8 bits
+ulong path;
+ulong nerase;
+uchar tag;
+uchar magic;
 };
-
 char *nandfsinit(void*, long, long, char *(*)(void*, void*, long, ulong),
-	char *(*)(void*, void*, long, ulong),
-	char *(*)(void*, long),
-	char *(*)(void*),
-	LogfsLowLevel **);
+char *(*)(void*, void*, long, ulong),
+char *(*)(void*, long),
+char *(*)(void*),
+LogfsLowLevel **);
 void nandfsfree(Nandfs*);
 char *nandfsreadpageauxiliary(Nandfs*, NandfsTags*, long, int, int, LogfsLowLevelReadResult*);
 void nandfssetmagic(Nandfs*, void*);
@@ -35,15 +30,10 @@ char *nandfswritepageauxiliary(Nandfs*, NandfsTags*, long, int);
 char *nandfsreadpage(Nandfs*, void*, NandfsTags*, long, int, int, LogfsLowLevelReadResult*);
 char *nandfsreadpagerange(Nandfs*, void*, long, int, int, int, LogfsLowLevelReadResult*);
 char *nandfsupdatepage(Nandfs*, void*, ulong, uchar, long, int);
-
 long nandfsgetnerase(Nandfs*, long);
 void nandfssetnerase(Nandfs*, long, ulong);
 void nandfssetpartial(Nandfs*, long, int);
-
 char *nandfsmarkabsblockbad(Nandfs*, long);
-
-/* low level interface functions */
-
 char *nandfsopen(Nandfs*, long, long, int, int, long*);
 short nandfsgettag(Nandfs*, long);
 void nandfssettag(Nandfs*, long, short);
@@ -68,7 +58,5 @@ char *nandfsgetblockstatus(Nandfs*, long, int*, void **, LogfsLowLevelReadResult
 int nandfscalcformat(Nandfs*, long, long, long, long*, long*, long*);
 int nandfsgetopenstatus(Nandfs*);
 char *nandfssync(Nandfs*);
-
-/* defined in environment */
 void *nandfsrealloc(void*, ulong);
 void nandfsfreemem(void*);

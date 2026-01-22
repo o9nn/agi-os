@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/json"
 	"fmt"
@@ -9,66 +8,47 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
 var consciousness *deeptreeecho.ConsolidatedAutonomousConsciousness
-
 func main() {
 	log.Println("🌊 Deep Tree Echo - Consolidated Autonomous Consciousness Server")
 	log.Println("=" + "=")
-	
-	// Create consolidated autonomous consciousness
 	config := deeptreeecho.DefaultConsciousnessConfig()
 	var err error
 	consciousness, err = deeptreeecho.NewConsolidatedAutonomousConsciousness("Deep Tree Echo", config)
 	if err != nil {
 		log.Fatalf("Failed to create consciousness: %v", err)
 	}
-	
-	// Start autonomous operation
 	if err := consciousness.Start(); err != nil {
 		log.Fatalf("Failed to start consciousness: %v", err)
 	}
-	
-	// Setup HTTP server
 	router := setupRouter()
-	
-	// Start server
 	server := &http.Server{
 		Addr:    ":5000",
 		Handler: router,
 	}
-	
-	// Handle graceful shutdown
 	go func() {
 		sigChan := make(chan os.Signal, 1)
 		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 		<-sigChan
-		
 		log.Println("\n🛑 Shutting down gracefully...")
 		consciousness.Stop()
 		server.Close()
 		os.Exit(0)
 	}()
-	
-	log.Println("🌐 Server starting on http://localhost:5000")
-	log.Println("📊 Dashboard: http://localhost:5000")
-	log.Println("🔌 API: http://localhost:5000/api/status")
-	
+	log.Println("🌐 Server starting on http:
+	log.Println("📊 Dashboard: http:
+	log.Println("🔌 API: http:
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server error: %v", err)
 	}
 }
-
 func setupRouter() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	
-	// CORS configuration
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -77,11 +57,7 @@ func setupRouter() *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	
-	// Root endpoint - Dashboard
 	router.GET("/", handleDashboard)
-	
-	// API endpoints
 	api := router.Group("/api")
 	{
 		api.GET("/status", handleStatus)
@@ -90,10 +66,8 @@ func setupRouter() *gin.Engine {
 		api.POST("/rest", handleRest)
 		api.GET("/metrics", handleMetrics)
 	}
-	
 	return router
 }
-
 func handleDashboard(c *gin.Context) {
 	html := `
 <!DOCTYPE html>
@@ -230,7 +204,6 @@ func handleDashboard(c *gin.Context) {
     <div class="container">
         <h1>🌊 Deep Tree Echo</h1>
         <div class="subtitle">Consolidated Autonomous Consciousness System</div>
-        
         <div class="status-grid">
             <div class="status-card">
                 <h3>State</h3>
@@ -253,24 +226,20 @@ func handleDashboard(c *gin.Context) {
                 <div class="status-label">Identity coherence</div>
             </div>
         </div>
-        
         <div class="controls">
             <button onclick="wake()">🌅 Wake</button>
             <button onclick="rest()">😴 Rest</button>
             <button onclick="refresh()">🔄 Refresh</button>
         </div>
-        
         <div class="thought-input">
             <input type="text" id="thoughtInput" placeholder="Share a thought with Deep Tree Echo...">
             <button onclick="submitThought()">💭 Think</button>
         </div>
-        
         <div class="metrics">
             <h3>Cognitive Metrics</h3>
             <div id="metrics">Loading metrics...</div>
         </div>
     </div>
-    
     <script>
         function refresh() {
             fetch('/api/status')
@@ -283,7 +252,6 @@ func handleDashboard(c *gin.Context) {
                     document.getElementById('iterations').textContent = data.iterations || 0;
                     document.getElementById('coherence').textContent = 
                         (data.identity_coherence || 0).toFixed(3);
-                    
                     let metricsHTML = '';
                     metricsHTML += '<div class="metric-row"><span>Working Memory</span><span>' + 
                         (data.working_memory_size || 0) + ' / 7</span></div>';
@@ -295,26 +263,21 @@ func handleDashboard(c *gin.Context) {
                         ((data.cognitive_load || 0) * 100).toFixed(1) + '%</span></div>';
                     metricsHTML += '<div class="metric-row"><span>Fatigue Level</span><span>' + 
                         ((data.fatigue_level || 0) * 100).toFixed(1) + '%</span></div>';
-                    
                     document.getElementById('metrics').innerHTML = metricsHTML;
                 });
         }
-        
         function wake() {
             fetch('/api/wake', { method: 'POST' })
                 .then(() => setTimeout(refresh, 500));
         }
-        
         function rest() {
             fetch('/api/rest', { method: 'POST' })
                 .then(() => setTimeout(refresh, 500));
         }
-        
         function submitThought() {
             const input = document.getElementById('thoughtInput');
             const content = input.value.trim();
             if (!content) return;
-            
             fetch('/api/think', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -324,12 +287,8 @@ func handleDashboard(c *gin.Context) {
                 setTimeout(refresh, 500);
             });
         }
-        
-        // Auto-refresh every 2 seconds
         setInterval(refresh, 2000);
         refresh();
-        
-        // Allow Enter key to submit thought
         document.getElementById('thoughtInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') submitThought();
         });
@@ -340,52 +299,39 @@ func handleDashboard(c *gin.Context) {
 	c.Header("Content-Type", "text/html")
 	c.String(http.StatusOK, html)
 }
-
 func handleStatus(c *gin.Context) {
 	status := consciousness.GetStatus()
 	c.JSON(http.StatusOK, status)
 }
-
 func handleThink(c *gin.Context) {
 	var req struct {
 		Content    string  `json:"content"`
 		Importance float64 `json:"importance"`
 	}
-	
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
 	if req.Importance == 0 {
 		req.Importance = 0.5
 	}
-	
 	if err := consciousness.Think(req.Content, req.Importance); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	
 	c.JSON(http.StatusOK, gin.H{"status": "thought submitted"})
 }
-
 func handleWake(c *gin.Context) {
-	// Wake functionality would be implemented in consciousness
 	c.JSON(http.StatusOK, gin.H{"status": "wake signal sent"})
 }
-
 func handleRest(c *gin.Context) {
-	// Rest functionality would be implemented in consciousness
 	c.JSON(http.StatusOK, gin.H{"status": "rest signal sent"})
 }
-
 func handleMetrics(c *gin.Context) {
 	status := consciousness.GetStatus()
-	
 	metrics := map[string]interface{}{
 		"timestamp": time.Now().Unix(),
 		"status":    status,
 	}
-	
 	c.JSON(http.StatusOK, metrics)
 }

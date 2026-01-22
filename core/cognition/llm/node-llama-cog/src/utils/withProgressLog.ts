@@ -10,7 +10,6 @@ import {clockChar} from "../consts.js";
 import {ConsoleInteraction, ConsoleInteractionKey} from "../cli/utils/ConsoleInteraction.js";
 import {getConsoleLogPrefix} from "./getConsoleLogPrefix.js";
 import withOra from "./withOra.js";
-
 export async function withProgressLog<T>({
     loadingText,
     successText,
@@ -50,21 +49,15 @@ export async function withProgressLog<T>({
     let currentProgress = initialPercentage;
     let currentProgressBarText = initialProgressBarText;
     let isAborted = false;
-
     const getEta = () => {
         const now = Date.now();
-
         if (!eta || currentProgress === 1 || now - startTime < 1000)
             return null;
-
         const timeRemaining = ((now - startTime) / currentProgress) * (1 - currentProgress);
-
         if (!Number.isFinite(timeRemaining) || typeof timeRemaining === "bigint")
             return null;
-
         if (timeRemaining < 1000)
             return "0s left";
-
         try {
             return prettyMilliseconds(timeRemaining, {
                 keepDecimalsOnWholeSeconds: true,
@@ -75,7 +68,6 @@ export async function withProgressLog<T>({
             return null;
         }
     };
-
     if (noProgress) {
         return withOra({
             loading: loadingText,
@@ -87,7 +79,6 @@ export async function withProgressLog<T>({
             const progressUpdater: ProgressUpdater = {
                 setProgress: () => progressUpdater
             };
-
             return callback(progressUpdater);
         });
     } else if (!shouldLiveUpdate) {
@@ -98,9 +89,7 @@ export async function withProgressLog<T>({
                     minimumFractionDigits: 0,
                     maximumFractionDigits: progressFractionDigits ? 3 : 0
                 }) + "%";
-
             const etaText = getEta();
-
             return [
                 chalk.cyan(clockChar),
                 loadingText,
@@ -116,14 +105,12 @@ export async function withProgressLog<T>({
                     : chalk.gray(etaText ?? "")
             ].join(" ");
         };
-
         let lastLogProgress = initialPercentage;
         let lastLogProgressBarText = initialProgressBarText;
         const progressUpdater: ProgressUpdater = {
             setProgress(progress, progressText) {
                 currentProgress = progress;
                 currentProgressBarText = progressText;
-
                 if (Math.abs(currentProgress - lastLogProgress) >= minPercentageChangeForNonLiveUpdates ||
                     currentProgressBarText !== lastLogProgressBarText ||
                     (progress === 1 && lastLogProgress !== 1)
@@ -132,29 +119,21 @@ export async function withProgressLog<T>({
                     lastLogProgress = currentProgress;
                     lastLogProgressBarText = currentProgressBarText;
                 }
-
                 return progressUpdater;
             }
         };
-
         console.log(getConsoleLogPrefix() + getLoadingText());
-
         try {
             const res = await callback(progressUpdater);
-
             console.log(getConsoleLogPrefix() + `${logSymbols.success} ${successText}`);
-
             return res;
         } catch (er) {
             console.log(getConsoleLogPrefix() + `${logSymbols.error} ${failText}`);
-
             throw er;
         }
     }
-
     const updateManager = UpdateManager.getInstance();
     let etaUpdateTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
-
     function getProgressLine() {
         const formattedProgress = (currentProgress * 100)
             .toLocaleString("en-US", {
@@ -179,7 +158,6 @@ export async function withProgressLog<T>({
                 ) / 2
             )
         );
-
         return [
             loadingText,
             renderProgressBar({
@@ -195,63 +173,48 @@ export async function withProgressLog<T>({
                 : chalk.gray(getEta() ?? "")
         ].join(" ");
     }
-
     function updateProgressBar() {
         updateManager.update([
             getConsoleLogPrefix() + getProgressLine()
         ]);
-
         clearTimeout(etaUpdateTimeout);
         if (eta && currentProgress !== 1)
             etaUpdateTimeout = setTimeout(updateProgressBar, etaUpdateInterval);
     }
-
     const progressUpdater: ProgressUpdater = {
         setProgress(progress, progressText) {
             currentProgress = progress;
             currentProgressBarText = progressText;
-
             if (!isAborted)
                 updateProgressBar();
-
             return progressUpdater;
         },
         abortSignal: liveCtrlCSendsAbortSignal
             ? abortController.signal
             : undefined
     };
-
     updateManager.hook();
     const consoleInteraction = new ConsoleInteraction();
     let moveCursorUpAfterUnhook = false;
-
     consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, () => {
         isAborted = true;
-
         if (liveCtrlCSendsAbortSignal) {
             abortController.abort();
             consoleInteraction.stop();
-
             updateProgressBar();
-
             updateManager.unhook(true);
         } else {
             consoleInteraction.stop();
             updateManager.unhook(true);
             updateProgressBar();
-
             process.exit(0);
         }
     });
-
     try {
         updateProgressBar();
         consoleInteraction.start();
-
         const res = await callback(progressUpdater);
-
         clearTimeout(etaUpdateTimeout);
-
         if (noSuccessLiveStatus) {
             updateManager.update([""]);
             moveCursorUpAfterUnhook = true;
@@ -263,7 +226,6 @@ export async function withProgressLog<T>({
                         : ""
                 ) + successText
             ]);
-
         return res;
     } catch (err) {
         updateManager.update([
@@ -273,22 +235,18 @@ export async function withProgressLog<T>({
                     : ""
             ) + failText
         ]);
-
         throw err;
     } finally {
         consoleInteraction.stop();
         updateManager.unhook(true);
-
         if (moveCursorUpAfterUnhook)
             process.stdout.moveCursor(0, -1);
     }
 }
-
 type ProgressUpdater = {
     setProgress(percentage: number, progressText?: string): ProgressUpdater,
     abortSignal?: AbortSignal
 };
-
 function renderProgressBar({
     barText, backgroundText, length, loadedPercentage, barStyle, backgroundStyle
 }: {
@@ -301,11 +259,9 @@ function renderProgressBar({
 }) {
     const barChars = Math.floor(length * loadedPercentage);
     const backgroundChars = length - barChars;
-
     const slicedBarText = sliceAnsi(barText, 0, barChars);
     const paddedBarText = slicedBarText + " ".repeat(barChars - stripAnsi(slicedBarText).length);
     const slicedBackgroundText = sliceAnsi(backgroundText, barChars, barChars + backgroundChars);
     const paddedBackgroundText = slicedBackgroundText + " ".repeat(backgroundChars - stripAnsi(slicedBackgroundText).length);
-
     return barStyle(paddedBarText) + backgroundStyle(paddedBackgroundText);
 }

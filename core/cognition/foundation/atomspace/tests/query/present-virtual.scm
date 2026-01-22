@@ -1,5 +1,3 @@
-;; KB
-
 (EvaluationLink
   (PredicateNode "P")
   (LambdaLink
@@ -12,7 +10,6 @@
     )
   )
 )
-
 (EvaluationLink
   (PredicateNode "P")
   (LambdaLink
@@ -22,11 +19,7 @@
     )
   )
 )
-
-;; Query
-
 (define (dummy x) (stv 1 1))
-
 (define query
   (BindLink
     (AndLink

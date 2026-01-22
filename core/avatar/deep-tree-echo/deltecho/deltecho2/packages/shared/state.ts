@@ -1,16 +1,12 @@
 import { DesktopSettingsType } from './shared-types.js'
-
 export function getDefaultState(): DesktopSettingsType {
-  /**
-   * Persisted state. Must be JSON.
-   */
   return {
     bounds: {},
     HTMLEmailWindowBounds: undefined,
     enterKeySends: false,
     notifications: true,
     showNotificationContent: true,
-    locale: null, // if this is null, the system chooses the system language that electron reports
+    locale: null, 
     credentials: undefined,
     lastAccount: undefined,
     enableAVCalls: false,
@@ -34,7 +30,6 @@ export function getDefaultState(): DesktopSettingsType {
     contentProtectionEnabled: false,
     isMentionsEnabled: true,
     autostart: true,
-    // Deep Tree Echo Bot settings
     deepTreeEchoBotEnabled: false,
     deepTreeEchoBotEnableAsMainUser: false,
     deepTreeEchoBotMemoryEnabled: false,

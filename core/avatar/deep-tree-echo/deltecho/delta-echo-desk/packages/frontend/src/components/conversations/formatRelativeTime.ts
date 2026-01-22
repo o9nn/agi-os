@@ -1,6 +1,5 @@
 import moment from 'moment'
 import 'moment/min/locales'
-
 const getExtendedFormats = () => ({
   y: 'lll',
   M: `${window.static_translate('timestamp_format_m_desktop') || 'MMM D'} LT`,
@@ -11,19 +10,16 @@ const getShortFormats = () => ({
   M: window.static_translate('timestamp_format_m_desktop') || 'MMM D',
   d: 'ddd',
 })
-
 function isToday(timestamp: moment.Moment) {
   const today = moment().format('ddd')
   const targetDay = moment(timestamp).format('ddd')
   return today === targetDay
 }
-
 function isYear(timestamp: moment.Moment) {
   const year = moment().format('YYYY')
   const targetYear = moment(timestamp).format('YYYY')
   return year === targetYear
 }
-
 export default function formatRelativeTime(
   rawTimestamp: number,
   options: { extended: boolean }
@@ -34,7 +30,6 @@ export default function formatRelativeTime(
   const timestamp = moment(rawTimestamp)
   const now = moment()
   const diff = moment.duration(now.diff(timestamp))
-
   if (diff.years() >= 1 || !isYear(timestamp)) {
     return timestamp.format(formats.y)
   } else if (diff.months() >= 1 || diff.days() > 6) {
@@ -43,17 +38,14 @@ export default function formatRelativeTime(
     return timestamp.format(formats.d)
   } else if (diff.hours() >= 1) {
     const key = 'n_hours'
-
     return tx(key, String(diff.hours()), {
       quantity: diff.hours(),
     })
   } else if (diff.minutes() >= 1) {
     const key = 'n_minutes'
-
     return tx(key, String(diff.minutes()), {
       quantity: diff.minutes(),
     })
   }
-
   return tx('now')
 }

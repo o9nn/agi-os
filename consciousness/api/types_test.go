@@ -1,16 +1,13 @@
 package api
-
 import (
 	"encoding/json"
 	"errors"
 	"math"
 	"testing"
 	"time"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
 func TestKeepAliveParsingFromJSON(t *testing.T) {
 	tests := []struct {
 		name string
@@ -48,18 +45,15 @@ func TestKeepAliveParsingFromJSON(t *testing.T) {
 			exp:  &Duration{math.MaxInt64},
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var dec ChatRequest
 			err := json.Unmarshal([]byte(test.req), &dec)
 			require.NoError(t, err)
-
 			assert.Equal(t, test.exp, dec.KeepAlive)
 		})
 	}
 }
-
 func TestDurationMarshalUnmarshal(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -92,21 +86,17 @@ func TestDurationMarshalUnmarshal(t *testing.T) {
 			time.Duration(math.MaxInt64),
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			b, err := json.Marshal(Duration{test.input})
 			require.NoError(t, err)
-
 			var d Duration
 			err = json.Unmarshal(b, &d)
 			require.NoError(t, err)
-
 			assert.Equal(t, test.expected, d.Duration, "input %v, marshalled %v, got %v", test.input, string(b), d.Duration)
 		})
 	}
 }
-
 func TestUseMmapParsingFromJSON(t *testing.T) {
 	tr := true
 	fa := false
@@ -131,7 +121,6 @@ func TestUseMmapParsingFromJSON(t *testing.T) {
 			exp:  &fa,
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var oMap map[string]any
@@ -144,7 +133,6 @@ func TestUseMmapParsingFromJSON(t *testing.T) {
 		})
 	}
 }
-
 func TestUseMmapFormatParams(t *testing.T) {
 	tr := true
 	fa := false
@@ -195,7 +183,6 @@ func TestUseMmapFormatParams(t *testing.T) {
 			err: errors.New("invalid bool value [foo]"),
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			resp, err := FormatParams(test.req)
@@ -208,7 +195,6 @@ func TestUseMmapFormatParams(t *testing.T) {
 		})
 	}
 }
-
 func TestMessage_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -219,19 +205,16 @@ func TestMessage_UnmarshalJSON(t *testing.T) {
 		{`{"role": "assistant", "content": "How can I help you?"}`, "assistant"},
 		{`{"role": "TOOl", "content": "Access granted."}`, "tool"},
 	}
-
 	for _, test := range tests {
 		var msg Message
 		if err := json.Unmarshal([]byte(test.input), &msg); err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
-
 		if msg.Role != test.expected {
 			t.Errorf("role not lowercased: got %v, expected %v", msg.Role, test.expected)
 		}
 	}
 }
-
 func TestToolFunction_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -277,12 +260,10 @@ func TestToolFunction_UnmarshalJSON(t *testing.T) {
 			wantErr: "",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var tf ToolFunction
 			err := json.Unmarshal([]byte(tt.input), &tf)
-
 			if tt.wantErr != "" {
 				require.Error(t, err)
 				assert.Contains(t, err.Error(), tt.wantErr)
@@ -292,7 +273,6 @@ func TestToolFunction_UnmarshalJSON(t *testing.T) {
 		})
 	}
 }
-
 func TestPropertyType_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -315,18 +295,15 @@ func TestPropertyType_UnmarshalJSON(t *testing.T) {
 			expected: PropertyType{"string"},
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var pt PropertyType
 			if err := json.Unmarshal([]byte(test.input), &pt); err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
-
 			if len(pt) != len(test.expected) {
 				t.Errorf("Length mismatch: got %v, expected %v", len(pt), len(test.expected))
 			}
-
 			for i, v := range pt {
 				if v != test.expected[i] {
 					t.Errorf("Value mismatch at index %d: got %v, expected %v", i, v, test.expected[i])
@@ -335,7 +312,6 @@ func TestPropertyType_UnmarshalJSON(t *testing.T) {
 		})
 	}
 }
-
 func TestPropertyType_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -358,21 +334,18 @@ func TestPropertyType_MarshalJSON(t *testing.T) {
 			expected: `[]`,
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			data, err := json.Marshal(test.input)
 			if err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
-
 			if string(data) != test.expected {
 				t.Errorf("Marshaled data mismatch: got %v, expected %v", string(data), test.expected)
 			}
 		})
 	}
 }
-
 func TestThinking_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name             string
@@ -417,7 +390,6 @@ func TestThinking_UnmarshalJSON(t *testing.T) {
 			expectedError:    true,
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			var req GenerateRequest

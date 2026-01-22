@@ -1,5 +1,3 @@
-// This needs to be injected / imported before the frontend script
-
 import {
   AutostartState,
   DcNotification,
@@ -11,7 +9,6 @@ import {
   Theme,
 } from '@deltachat-desktop/shared/shared-types.js'
 import '@deltachat-desktop/shared/global.d.ts'
-
 import { LocaleData } from '@deltachat-desktop/shared/localize.js'
 import {
   MediaAccessStatus,
@@ -19,25 +16,19 @@ import {
   Runtime,
 } from '@deltachat-desktop/runtime-interface'
 import { BaseDeltaChat, yerpc } from '@deltachat/jsonrpc-client'
-
 import type { getLogger as getLoggerFunction } from '@deltachat-desktop/shared/logger.js'
 import type { setLogHandler as setLogHandlerFunction } from '@deltachat-desktop/shared/logger.js'
 import {
   HIDDEN_THEME_PREFIX,
   parseThemeMetaData,
 } from '@deltachat-desktop/shared/themes.js'
-
 import { MessageToBackend } from '../src/runtime-ws-protocol.js'
-
 const { WebsocketTransport } = yerpc
-
 let logJsonrpcConnection = false
-
 class BrowserTransport extends WebsocketTransport {
   constructor(private callCounterFunction: (label: string) => void) {
     super('wss://localhost:3000/ws/dc')
   }
-
   protected _onmessage(message: yerpc.Message): void {
     if (
       (message as any)['method'] === 'error_other_client_stole_dc_connection'
@@ -50,16 +41,13 @@ class BrowserTransport extends WebsocketTransport {
       )
     }
     if (logJsonrpcConnection) {
-      /* ignore-console-log */
       console.debug('%c▼ %c[JSONRPC]', 'color: red', 'color:grey', message)
     }
     super._onmessage(message)
   }
-
   _send(message: yerpc.Message): void {
     super._send(message)
     if (logJsonrpcConnection) {
-      /* ignore-console-log */
       console.debug('%c▲ %c[JSONRPC]', 'color: green', 'color:grey', message)
       if ((message as any)['method']) {
         this.callCounterFunction((message as any).method)
@@ -68,46 +56,33 @@ class BrowserTransport extends WebsocketTransport {
     }
   }
 }
-
 class BrowserDeltachat extends BaseDeltaChat<BrowserTransport> {
   close() {
-    /** noop */
   }
   constructor(callCounterFunction: (label: string) => void) {
     super(new BrowserTransport(callCounterFunction), true)
   }
 }
-
 class BrowserRuntime implements Runtime {
   socket: WebSocket
   private rc_config: RC_Config | null = null
   constructor() {
     this.socket = new WebSocket('wss://localhost:3000/ws/backend')
-
     this.socket.addEventListener('open', () => {
-      /* ignore-console-log */
       console.log('WebSocket connection opened')
     })
-
     this.socket.addEventListener('message', event => {
-      /* ignore-console-log */
       console.log('Received message from server:', event.data)
     })
-
     this.socket.addEventListener('close', () => {
-      /* ignore-console-log */
       console.log('WebSocket connection closed')
     })
-
     this.socket.addEventListener('error', event => {
-      /* ignore-console-log */
       console.error('WebSocket error:', event)
     })
   }
-
   sendToBackendOverWS(message: MessageToBackend.AllTypes) {
     if (this.socket.readyState != this.socket.OPEN) {
-      /* ignore-console-log */
       console.warn(
         'sendToBackendOverWS can not send message to backend because websocket is not open'
       )
@@ -115,50 +90,37 @@ class BrowserRuntime implements Runtime {
       try {
         this.socket.send(JSON.stringify(message))
       } catch (error) {
-        /* ignore-console-log */
         console.warn(
           'sendToBackendOverWS failed to send message to backend over websocket'
         )
       }
     }
   }
-
-  // #region event callbacks from runtime backend
-
   onWebxdcSendToChat:
     | ((
         file: { file_name: string; file_content: string } | null,
         text: string | null
       ) => void)
     | undefined
-  onThemeUpdate: (() => void) | undefined //!!!TODO!!!
-
-  // not used in browser, there is no menu to trigger these
+  onThemeUpdate: (() => void) | undefined 
   onChooseLanguage: ((locale: string) => Promise<void>) | undefined
   onShowDialog:
     | ((kind: 'about' | 'keybindings' | 'settings') => void)
     | undefined
-
-  // not used in browser - other reasons
   onResumeFromSleep: (() => void) | undefined
   onOpenQrUrl: ((url: string) => void) | undefined
   onToggleNotifications: (() => void) | undefined
-
-  // #endregion
-
   openMapsWebxdc(_accountId: number, _chatId?: number | undefined): void {
     throw new Error('Method not implemented.')
   }
-
   emitUIFullyReady(): void {
     this.sendToBackendOverWS({ type: 'UIReadyFrontendReady' })
   }
   onDragFileOut(_file: string): void {
-    // Browser can not implement this
     return
   }
   isDroppedFileFromOutside(_file: File): boolean {
-    return true // Browser does not support dragging files out, so can only be from outside
+    return true 
   }
   emitUIReady(): void {
     this.sendToBackendOverWS({ type: 'UIReady' })
@@ -217,21 +179,16 @@ class BrowserRuntime implements Runtime {
     const untranslated = await (
       await fetch('/locales/_untranslated_en.json')
     ).json()
-
     if (!locale) {
       return { locale: 'en', messages: { ...messagesEnglish, ...untranslated } }
     }
-
     let localeMessages: LocaleData['messages']
     try {
       localeMessages = await (await fetch(`/locales/${locale}.json`)).json()
     } catch (error1) {
-      // We couldn't load the file for the locale but it's a dialect. Try to fall
-      // back to the main language (example: de-CH -> de)
       try {
         if (locale.indexOf('-') !== -1) {
           const base_locale = (locale = locale.split('-')[0])
-
           localeMessages = await (
             await fetch(`/locales/${base_locale}.json`)
           ).json()
@@ -259,11 +216,9 @@ class BrowserRuntime implements Runtime {
     key: keyof DesktopSettingsType,
     value: string | number | boolean | undefined
   ): Promise<void> {
-    // if key is notifications and new value is on/true, then ask browser for permission
     if (key == 'notifications' && Boolean(value)) {
       await this.askBrowserForNotificationPermission()
     }
-
     const request = await fetch(`/backend-api/config/${key}`, {
       method: 'POST',
       headers: {
@@ -290,7 +245,6 @@ class BrowserRuntime implements Runtime {
     if (location !== 'dc') {
       throw new Error('only dc themes are implmented in the browser edition')
     }
-
     const realPath = `/themes/${id}.css`
     const theme_file_request = await fetch(realPath)
     if (!theme_file_request.ok) {
@@ -298,7 +252,6 @@ class BrowserRuntime implements Runtime {
     }
     const data = await theme_file_request.text()
     const metadata = parseThemeMetaData(data)
-
     return {
       theme: {
         address,
@@ -310,14 +263,12 @@ class BrowserRuntime implements Runtime {
     }
   }
   async clearWebxdcDOMStorage(_accountId: number): Promise<void> {
-    // not applicable in browser
     this.log.warn('clearWebxdcDOMStorage method does not exist in browser.')
   }
   getWebxdcDiskUsage(_accountId: number): Promise<{
     total_size: number
     data_size: number
   }> {
-    // not applicable in browser
     throw new Error('getWebxdcDiskUsage method does not exist in browser.')
   }
   async writeTempFileFromBase64(
@@ -355,7 +306,6 @@ class BrowserRuntime implements Runtime {
       body: name,
     })
   }
-
   activeNotifications: {
     [accountId: number]: { [chatId: number]: Notification[] }
   } = {}
@@ -366,7 +316,6 @@ class BrowserRuntime implements Runtime {
   }) => void = () => {
     this.log.critical('notification click handler not initialized yet')
   }
-
   setNotificationCallback(
     cb: (data: { accountId: number; chatId: number; msgId: number }) => void
   ): void {
@@ -388,19 +337,12 @@ class BrowserRuntime implements Runtime {
       messageId,
     } = data
     this.log.debug('showNotification', { accountId, chatId, messageId })
-
-    // TODO real timestamp (why? because we can! ;)
-
     let icon = (() => {
       const url = new URL(location.origin)
       url.pathname = 'images/deltachat.png'
       return url.toString()
     })()
-
     if (notificationIcon) {
-      // we need to pass the image/icon as dataurl, otherwise the browser has no permission to access it.
-      // IDEA: alternatively we could make another route that exposes the file with a random hash without authentification?
-      // Concern: Also the current method could run into size limits because it loads the whole image, which can be large? like high ram usage in browser?
       try {
         const response = await fetch(
           notificationIcon.startsWith('data:')
@@ -424,24 +366,20 @@ class BrowserRuntime implements Runtime {
         this.log.warn('failed to load thumbnail for notification', error)
       }
     }
-
-    this.log.info('notify-icon', { icon }) // todo rm
+    this.log.info('notify-icon', { icon }) 
     const notification = new Notification(title, {
       body,
       icon,
       tag: `${accountId}.${chatId}.${messageId}`,
     })
-
     notification.onclick = this.notificationCB.bind(this, {
       accountId,
       chatId,
       msgId: messageId,
     })
-
     if (!this.activeNotifications[accountId]) {
       this.activeNotifications[accountId] = {}
     }
-
     if (this.activeNotifications[accountId][chatId]) {
       this.activeNotifications[accountId][chatId].push(notification)
     } else {
@@ -481,7 +419,6 @@ class BrowserRuntime implements Runtime {
     document.title = `DeltaChat${value ? `(${value})` : ''}`
   }
   deleteWebxdcAccountData(_accountId: number): Promise<void> {
-    // not applicable in browser
     this.log.warn('deleteWebxdcAccountData method does not exist in browser.')
     return Promise.resolve()
   }
@@ -607,7 +544,7 @@ class BrowserRuntime implements Runtime {
           img.onerror = reject
           img.onabort = reject
         })
-        img.src = imgURL // load the image
+        img.src = imgURL 
         blob = await blobPromise
       }
       await navigator.clipboard.write([
@@ -621,10 +558,8 @@ class BrowserRuntime implements Runtime {
       throw err
     }
   }
-
   transformBlobURL(blob_path: string): string {
     const matches = blob_path.match(/.*(:?\\|\/)(.+?)\1dc.db-blobs\1(.*)/)
-    // this.log.info({ transformBlobURL: blob_path, matches })
     if (matches) {
       return `/blobs/${matches[2]}/${matches[3]}`
     }
@@ -676,7 +611,6 @@ class BrowserRuntime implements Runtime {
               'some file failed to upload with error, removing other files now:',
               rejectedPromise.reason
             )
-            // remove other files on error
             uploadedFiles.forEach(path => {
               this.removeTempFile(path)
             })
@@ -688,60 +622,47 @@ class BrowserRuntime implements Runtime {
           resolve([])
         }
       }
-
       input.click()
     })
   }
-
   openLink(link: string): void {
     window.open(link, '_blank')?.focus()
   }
-
   private log!: ReturnType<typeof getLoggerFunction>
   async initialize(
     setLogHandler: typeof setLogHandlerFunction,
     getLogger: typeof getLoggerFunction
   ): Promise<void> {
     this.log = getLogger('runtime/browser')
-
     const [RCConfigRequest, RuntimeInfoRequest] = await Promise.all([
       fetch('/backend-api/rc_config'),
       fetch('/backend-api/runtime_info'),
     ])
-
     if (!RCConfigRequest.ok || !RuntimeInfoRequest.ok) {
       throw new Error(
         'initialisation failed, look into network tab for more into'
       )
     }
-
     const config: RC_Config = (this.rc_config = await RCConfigRequest.json())
-
     if (config['log-debug']) {
       logJsonrpcConnection = true
     }
-
-    /* ignore-console-log */
     console.info('RC_Config', config)
     this.runtime_info = await RuntimeInfoRequest.json()
-
     setLogHandler((channel, level, stack_trace, ...args) => {
       this.sendToBackendOverWS({
         type: 'log',
         data: [channel, level, stack_trace, ...args],
       })
     }, config)
-
     this.askBrowserForNotificationPermission()
   }
-
   async askBrowserForNotificationPermission() {
     if ('Notification' in window && Notification.permission !== 'granted') {
       const result = await Notification.requestPermission()
       this.log.debug('Notification.requestPermission', { result })
     }
   }
-
   getRC_Config(): RC_Config {
     if (this.rc_config === null) {
       throw new Error('this.rc_config is not set')
@@ -751,7 +672,6 @@ class BrowserRuntime implements Runtime {
   async openHelpWindow(anchor?: string): Promise<void> {
     const curLang = window.localeData.locale
     const response = await fetch(`/help_exists/${curLang}`)
-
     const anchorPath = anchor ? '#' + anchor : ''
     if (response.ok) {
       window.open(`/help/${curLang}/help.html${anchorPath}`, '_blank')?.focus()
@@ -815,5 +735,4 @@ class BrowserRuntime implements Runtime {
     }
   }
 }
-
 ;(window as any).r = new BrowserRuntime()

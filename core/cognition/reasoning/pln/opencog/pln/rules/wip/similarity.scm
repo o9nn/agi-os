@@ -1,19 +1,3 @@
-;; =============================================================================
-;; Similarity Rule
-;;
-;; AndLink
-;;   A
-;;   B
-;; OrLink
-;;   A
-;;   B
-;; |-
-;; SimilarityLink
-;;   A
-;;   B
-;;
-;; -----------------------------------------------------------------------------
-
 (define similarity-rule
     (BindLink
         (VariableList
@@ -38,7 +22,6 @@
                 (SimilarityLink
                     (VariableNode "$A")
                     (VariableNode "$B"))))))
-
 (define (similarity-formula AAB OAB SAB)
     (cog-set-tv! 
         SAB
@@ -49,4 +32,3 @@
                     (* (cog-mean AAB) (cog-confidence AAB))
                     (* (cog-mean OAB) (cog-confidence OAB)))
                 (min (cog-confidence OAB) (cog-confidence AAB))))))
-

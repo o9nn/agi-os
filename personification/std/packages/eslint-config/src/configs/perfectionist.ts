@@ -1,7 +1,5 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import perfectionistPlugin from 'eslint-plugin-perfectionist'
-
 export const perfectionist = (): TypedFlatConfigItem[] => [{
   name: 'moeru/perfectionist/rules',
   rules: {
@@ -10,7 +8,6 @@ export const perfectionist = (): TypedFlatConfigItem[] => [{
       'error',
       {
         fallbackSort: { type: 'line-length' },
-        /** @see {@link https://perfectionist.dev/rules/sort-imports#groups} */
         groups: [
           'type-builtin',
           'type-import',

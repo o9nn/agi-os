@@ -1,21 +1,9 @@
 package ggml
-
-// #cgo CPPFLAGS: -I${SRCDIR}/ggml/src
-// #include <stdlib.h>
-// #include <stdint.h>
-// #include "ggml.h"
-// #include "ggml-cpu.h"
-// #include "ggml-backend.h"
-// #include "ggml-quants.h"
 import "C"
-
 import (
 	"unsafe"
-
 	fsggml "github.com/EchoCog/echollama/fs/ggml"
 )
-
-// convertToF32 converts (dequantizes) the raw data to F32 so we can then quantize it
 func ConvertToF32(data []byte, dtype uint32, nelements uint64) []float32 {
 	f32s := make([]float32, nelements)
 	elems := C.int64_t(nelements)
@@ -51,9 +39,8 @@ func ConvertToF32(data []byte, dtype uint32, nelements uint64) []float32 {
 	}
 	return f32s
 }
-
 func Quantize(newType fsggml.TensorType, f32s []float32, shape []uint64) []byte {
-	buf := make([]byte, len(f32s)*4) // upper bound on size
+	buf := make([]byte, len(f32s)*4) 
 	nPerRow := C.int64_t(shape[0])
 	nrows := C.int64_t(1)
 	if len(shape) > 1 {
@@ -79,7 +66,6 @@ func Quantize(newType fsggml.TensorType, f32s []float32, shape []uint64) []byte 
 	}
 	return buf[:newSize]
 }
-
 func QuantizationVersion() uint32 {
 	return uint32(C.GGML_QNT_VERSION)
 }

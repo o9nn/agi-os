@@ -1,40 +1,5 @@
-/* 
- * Mach Operating System
- * Copyright (c) 1992,1991,1990,1989,1988 Carnegie Mellon University
- * All Rights Reserved.
- * 
- * Permission to use, copy, modify and distribute this software and its
- * documentation is hereby granted, provided that both the copyright
- * notice and this permission notice appear in all copies of the
- * software, derivative works or modified versions, and any portions
- * thereof, and that both notices appear in supporting documentation.
- * 
- * CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
- * CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
- * ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
- * 
- * Carnegie Mellon requests users of this software to return to
- * 
- *  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
- *  School of Computer Science
- *  Carnegie Mellon University
- *  Pittsburgh PA 15213-3890
- * 
- * any improvements or extensions that they make and grant Carnegie Mellon
- * the rights to redistribute these changes.
- */
-/*
- *	File:	mach/mach_types.h
- *	Author:	Avadis Tevanian, Jr., Michael Wayne Young
- *	Date:	1986
- *
- *	Mach external interface definitions.
- *
- */
-
 #ifndef	_MACH_MACH_TYPES_H_
 #define _MACH_MACH_TYPES_H_
-
 #include <mach/host_info.h>
 #include <mach/machine.h>
 #include <mach/machine/vm_types.h>
@@ -55,15 +20,12 @@
 #include <mach/vm_cache_statistics.h>
 #include <mach/vm_wire.h>
 #include <mach/vm_sync.h>
-
 #ifdef	MACH_KERNEL
-
 typedef struct task		*task_t;
 typedef struct thread		*thread_t;
 typedef struct processor	*processor_t;
 typedef struct processor_set	*processor_set_t;
-
-#else	/* MACH_KERNEL */
+#else
 typedef	mach_port_t	task_t;
 typedef task_t		*task_array_t;
 typedef	task_t		vm_task_t;
@@ -79,12 +41,6 @@ typedef mach_port_t	processor_set_name_t;
 typedef mach_port_t	*processor_set_array_t;
 typedef mach_port_t	*processor_set_name_array_t;
 typedef vm_offset_t	*emulation_vector_t;
-#endif	/* MACH_KERNEL */
-
-/*
- *	Backwards compatibility, for those programs written
- *	before mach/{std,mach}_types.{defs,h} were set up.
- */
+#endif
 #include <mach/std_types.h>
-
-#endif	/* _MACH_MACH_TYPES_H_ */
+#endif

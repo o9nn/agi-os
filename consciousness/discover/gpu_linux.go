@@ -1,5 +1,4 @@
 package discover
-
 import (
 	"bufio"
 	"fmt"
@@ -9,51 +8,38 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-
 	"github.com/EchoCog/echollama/format"
 )
-
 var CudartGlobs = []string{
 	"/usr/local/cuda/lib64/libcudart.so*",
 	"/usr/lib/x86_64-linux-gnu/nvidia/current/libcudart.so*",
 	"/usr/lib/x86_64-linux-gnu/libcudart.so*",
 	"/usr/lib/wsl/lib/libcudart.so*",
-	"/usr/lib/wsl/drivers/*/libcudart.so*",
-	"/opt/cuda/lib64/libcudart.so*",
-	"/usr/local/cuda*/targets/aarch64-linux/lib/libcudart.so*",
+	"/usr/lib/wsl/driverstargets/aarch64-linux/lib/libcudart.so*",
 	"/usr/lib/aarch64-linux-gnu/nvidia/current/libcudart.so*",
 	"/usr/lib/aarch64-linux-gnu/libcudart.so*",
 	"/usr/local/cuda/lib*/libcudart.so*",
 	"/usr/lib*/libcudart.so*",
 	"/usr/local/lib*/libcudart.so*",
 }
-
 var NvmlGlobs = []string{}
-
 var NvcudaGlobs = []string{
-	"/usr/local/cuda*/targets/*/lib/libcuda.so*",
-	"/usr/lib/*-linux-gnu/nvidia/current/libcuda.so*",
-	"/usr/lib/*-linux-gnu/libcuda.so*",
-	"/usr/lib/wsl/lib/libcuda.so*",
-	"/usr/lib/wsl/drivers/*/libcuda.so*",
+	"/usr/local/cuda*/targetslibcuda.so*",
 	"/opt/cuda/lib*/libcuda.so*",
 	"/usr/local/cuda/lib*/libcuda.so*",
 	"/usr/lib*/libcuda.so*",
 	"/usr/local/lib*/libcuda.so*",
 }
-
 var OneapiGlobs = []string{
 	"/usr/lib/x86_64-linux-gnu/libze_intel_gpu.so*",
 	"/usr/lib*/libze_intel_gpu.so*",
 }
-
 var (
 	CudartMgmtName = "libcudart.so*"
 	NvcudaMgmtName = "libcuda.so*"
-	NvmlMgmtName   = "" // not currently wired on linux
+	NvmlMgmtName   = "" 
 	OneapiMgmtName = "libze_intel_gpu.so*"
 )
-
 func GetCPUMem() (memInfo, error) {
 	var mem memInfo
 	var total, available, free, buffers, cached, freeSwap uint64
@@ -94,9 +80,7 @@ func GetCPUMem() (memInfo, error) {
 	}
 	return mem, nil
 }
-
 const CpuInfoFilename = "/proc/cpuinfo"
-
 type linuxCpuInfo struct {
 	ID         string `cpuinfo:"processor"`
 	VendorID   string `cpuinfo:"vendor_id"`
@@ -105,7 +89,6 @@ type linuxCpuInfo struct {
 	Siblings   string `cpuinfo:"siblings"`
 	CoreID     string `cpuinfo:"core id"`
 }
-
 func GetCPUDetails() ([]CPU, error) {
 	file, err := os.Open(CpuInfoFilename)
 	if err != nil {
@@ -114,7 +97,6 @@ func GetCPUDetails() ([]CPU, error) {
 	defer file.Close()
 	return linuxCPUDetails(file)
 }
-
 func linuxCPUDetails(file io.Reader) ([]CPU, error) {
 	reColumns := regexp.MustCompile("\t+: ")
 	scanner := bufio.NewScanner(file)
@@ -141,8 +123,6 @@ func linuxCPUDetails(file io.Reader) ([]CPU, error) {
 	if cpu.ID != "" {
 		cpuInfos = append(cpuInfos, *cpu)
 	}
-
-	// Process the sockets/cores/threads
 	socketByID := map[string]*CPU{}
 	coreBySocket := map[string]map[string]struct{}{}
 	threadsByCoreBySocket := map[string]map[string]int{}
@@ -164,13 +144,9 @@ func linuxCPUDetails(file io.Reader) ([]CPU, error) {
 			threadsByCoreBySocket[c.PhysicalID][c.PhysicalID+":"+c.ID]++
 		}
 	}
-
-	// Tally up the values from the tracking maps
 	for id, s := range socketByID {
 		s.CoreCount = len(coreBySocket[id])
 		s.ThreadCount = 0
-
-		// This only works if HT is enabled, consider a more reliable model, maybe cache size comparisons?
 		efficiencyCoreCount := 0
 		for _, threads := range threadsByCoreBySocket[id] {
 			s.ThreadCount += threads
@@ -179,7 +155,6 @@ func linuxCPUDetails(file io.Reader) ([]CPU, error) {
 			}
 		}
 		if efficiencyCoreCount == s.CoreCount {
-			// 1:1 mapping means they're not actually efficiency cores, but regular cores
 			s.EfficiencyCoreCount = 0
 		} else {
 			s.EfficiencyCoreCount = efficiencyCoreCount

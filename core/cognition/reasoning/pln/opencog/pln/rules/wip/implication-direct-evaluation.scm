@@ -1,49 +1,5 @@
-;; =====================================================================
-;; Implication direct evaluation rule
-;;
-;; Evaluation
-;;   P
-;;   X1
-;; ...
-;; Evaluation
-;;   P
-;;   Xn
-;; Evaluation
-;;   Q
-;;   Xn+1
-;; ...
-;; Evaluation
-;;   Q
-;;   Xm
-;; |-
-;; Implication <TV>
-;;    P
-;;    Q
-;;
-;; where the TV strength and the count are calculated based on the
-;; instances P(X1), ..., P(Xn), Q(Xn+1), ..., Q(Xm).
-;;
-;; ----------------------------------------------------------------------
-
 (use-modules (srfi srfi-1))
 (use-modules (opencog logger))
-
-;; Rather than building as many rules as n and m we build the
-;; following one
-;;
-;; Evaluation
-;;   P
-;;   X
-;; Evaluation
-;;   Q
-;;   X
-;; |-
-;; Implication
-;;   P
-;;   Q
-;;
-;; and retrieve all the other instances in the rule formula
-
 (define implication-direct-evaluation-vardecl
   (VariableList
      (TypedVariable
@@ -52,11 +8,9 @@
      (TypedVariable
         (Variable "$Q")
         (Type "PredicateNode"))
-     ;; Current hack to limit X as concepts
      (TypedVariable
         (Variable "$X")
         (Type "ConceptNode"))))
-
 (define implication-direct-evaluation-pattern
   (And
      (Evaluation
@@ -69,32 +23,25 @@
         (Identical
            (Variable "$P")
            (Variable "$Q")))))
-
 (define implication-direct-evaluation-rewrite
   (ExecutionOutput
      (GroundedSchema "scm: implication-direct-evaluation-formula")
      (List
         (Variable "$P")
         (Variable "$Q"))))
-
 (define implication-direct-evaluation-rule
   (Bind
      implication-direct-evaluation-vardecl
      implication-direct-evaluation-pattern
      implication-direct-evaluation-rewrite))
-
-;; Return #t is the strength of the TV of A is above 0.5 and its
-;; confidence is above zero.
 (define (true-enough? A)
   (let* (
          (TV (cog-tv A))
          (s (cog-tv-mean TV))
          (c (cog-tv-confidence TV)))
     (and (> s 0.5) (> c 0))))
-
 (define (implication-direct-evaluation-formula P Q)
   (let* (
-         ;; Current hack to limit X as concepts
          (X (Variable "$X"))
          (vardecl (TypedVariable X (Type "ConceptNode")))
          (term->instance (lambda (p x) (Evaluation p x)))
@@ -115,18 +62,8 @@
                           (exact->inexact (/ P-inter-Q-length P-length))
                           0))
          (TV-confidence (count->confidence P-length)))
-    ;; (cog-logger-debug "[PLN-Induction] P = ~a" P)
-    ;; (cog-logger-debug "[PLN-Induction] Q = ~a" Q)
-    ;; (cog-logger-debug "[PLN-Induction] P-true-enough-terms = ~a" P-true-enough-terms) 
-    ;; (cog-logger-debug "[PLN-Induction] Q-true-enough-terms = ~a" Q-true-enough-terms)
-    ;; (cog-logger-debug "[PLN-Induction] P-length = ~a" P-length)
-    ;; (cog-logger-debug "[PLN-Induction] P-inter-Q-length = ~a" P-inter-Q-length)
-    ;; (cog-logger-debug "[PLN-Induction] TV-strength = ~a" TV-strength)
-    ;; (cog-logger-debug "[PLN-Induction] TV-confidence = ~a" TV-confidence)
     (if (> TV-confidence 0)
         (Implication (stv TV-strength TV-confidence) P Q))))
-
-;; Name the rule
 (define implication-direct-evaluation-rule-name
   (DefinedSchemaNode "implication-direct-evaluation-rule"))
 (DefineLink implication-direct-evaluation-rule-name

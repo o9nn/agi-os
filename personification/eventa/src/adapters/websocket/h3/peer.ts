@@ -1,23 +1,18 @@
 import type { Hooks, Message, Peer } from 'crossws'
-
 import type { EventContext } from '../../../context'
 import type { DirectionalEventa, Eventa } from '../../../eventa'
-
 import { createContext as createBaseContext } from '../../../context'
 import { and, defineEventa, defineInboundEventa, defineOutboundEventa, EventaFlowDirection, matchBy } from '../../../eventa'
 import { generateWebsocketPayload, parseWebsocketPayload } from '../internal'
-
 export const wsConnectedEvent = defineEventa<{ id: string }>('eventa:adapters:websocket-peer:connected')
 export const wsDisconnectedEvent = defineEventa<{ id: string }>('eventa:adapters:websocket-peer:disconnected')
 export const wsErrorEvent = defineEventa<{ error: unknown }>('eventa:adapters:websocket-peer:error')
-
 export function createPeerContext(peer: Peer): {
   hooks: Pick<Hooks, 'message'>
   context: EventContext<any, { raw: { message: Message } }>
 } {
   const peerId = peer.id
   const ctx = createBaseContext()
-
   ctx.on(and(
     matchBy((e: DirectionalEventa<any>) => e._flowDirection === EventaFlowDirection.Outbound || !e._flowDirection),
     matchBy('*'),
@@ -25,7 +20,6 @@ export function createPeerContext(peer: Peer): {
     const data = JSON.stringify(generateWebsocketPayload(event.id, { ...defineOutboundEventa(event.type), ...event }))
     peer.send(data)
   })
-
   return {
     hooks: {
       message(peer, message) {
@@ -44,17 +38,13 @@ export function createPeerContext(peer: Peer): {
     context: ctx,
   }
 }
-
 export interface PeerContext { peer: Peer, context: EventContext<any, { raw: { message: Message } }> }
-
 export function createPeerHooks(): { hooks: Partial<Hooks>, untilLeastOneConnected: Promise<PeerContext> } {
   let resolve: (value: PeerContext) => void
   const untilLeastOneConnected = new Promise<PeerContext>((r) => {
     resolve = r
   })
-
   let message: Hooks['message'] | undefined
-
   const hooks: Pick<Hooks, 'open' | 'message'> = {
     open: (peer) => {
       const { context, hooks } = createPeerContext(peer)
@@ -67,6 +57,5 @@ export function createPeerHooks(): { hooks: Partial<Hooks>, untilLeastOneConnect
       }
     },
   }
-
   return { hooks, untilLeastOneConnected }
 }

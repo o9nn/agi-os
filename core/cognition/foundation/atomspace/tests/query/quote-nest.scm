@@ -1,10 +1,3 @@
-;
-; quote-nest.scm
-;
-; Test nested quoted variables.  The pattern will search for
-; several quoted variables.
-;
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -12,7 +5,6 @@
 		(ConceptNode "banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -20,7 +12,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -28,7 +19,6 @@
 		(ConceptNode "grape")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -36,7 +26,6 @@
 		(ConceptNode "banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "all-var")
 	(ListLink
@@ -44,7 +33,6 @@
 		(VariableNode "$var-b")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -52,7 +40,6 @@
 		(VariableNode "$wrong-var-b")
 	)
 )
-
 (define bindy
 	(BindLink
 		(VariableNode "$var-a")
@@ -66,4 +53,3 @@
 		(VariableNode "$var-a")
 	)
 )
-

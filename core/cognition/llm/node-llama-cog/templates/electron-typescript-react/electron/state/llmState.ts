@@ -6,7 +6,6 @@ import {
 import {withLock, State} from "lifecycle-utils";
 import packageJson from "../../package.json";
 import {modelFunctions} from "../llm/modelFunctions.js";
-
 export const llmState = new State<LlmState>({
     appVersion: packageJson.version,
     llama: {
@@ -31,7 +30,6 @@ export const llmState = new State<LlmState>({
         }
     }
 });
-
 export type LlmState = {
     appVersion?: string,
     llama: {
@@ -63,7 +61,6 @@ export type LlmState = {
         }
     }
 };
-
 export type SimplifiedChatItem = SimplifiedUserChatItem | SimplifiedModelChatItem;
 export type SimplifiedUserChatItem = {
     type: "user",
@@ -82,17 +79,14 @@ export type SimplifiedModelChatItem = {
         endTime?: string
     }>
 };
-
 let llama: Llama | null = null;
 let model: LlamaModel | null = null;
 let context: LlamaContext | null = null;
 let contextSequence: LlamaContextSequence | null = null;
-
 let chatSession: LlamaChatSession | null = null;
 let chatSessionCompletionEngine: LlamaChatSessionPromptCompletionEngine | null = null;
 let promptAbortController: AbortController | null = null;
 let inProgressResponse: SimplifiedModelChatItem["message"] = [];
-
 export const llmFunctions = {
     async loadLlama() {
         await withLock([llmFunctions, "llama"], async () => {
@@ -104,19 +98,16 @@ export const llmFunctions = {
                     console.error("Failed to dispose llama", err);
                 }
             }
-
             try {
                 llmState.state = {
                     ...llmState.state,
                     llama: {loaded: false}
                 };
-
                 llama = await getLlama();
                 llmState.state = {
                     ...llmState.state,
                     llama: {loaded: true}
                 };
-
                 llama.onDispose.createListener(() => {
                     llmState.state = {
                         ...llmState.state,
@@ -139,7 +130,6 @@ export const llmFunctions = {
         await withLock([llmFunctions, "model"], async () => {
             if (llama == null)
                 throw new Error("Llama not loaded");
-
             if (model != null) {
                 try {
                     await model.dispose();
@@ -148,7 +138,6 @@ export const llmFunctions = {
                     console.error("Failed to dispose model", err);
                 }
             }
-
             try {
                 llmState.state = {
                     ...llmState.state,
@@ -157,7 +146,6 @@ export const llmFunctions = {
                         loadProgress: 0
                     }
                 };
-
                 model = await llama.loadModel({
                     modelPath,
                     onLoadProgress(loadProgress: number) {
@@ -178,7 +166,6 @@ export const llmFunctions = {
                         name: path.basename(modelPath)
                     }
                 };
-
                 model.onDispose.createListener(() => {
                     llmState.state = {
                         ...llmState.state,
@@ -201,7 +188,6 @@ export const llmFunctions = {
         await withLock([llmFunctions, "context"], async () => {
             if (model == null)
                 throw new Error("Model not loaded");
-
             if (context != null) {
                 try {
                     await context.dispose();
@@ -210,19 +196,16 @@ export const llmFunctions = {
                     console.error("Failed to dispose context", err);
                 }
             }
-
             try {
                 llmState.state = {
                     ...llmState.state,
                     context: {loaded: false}
                 };
-
                 context = await model.createContext();
                 llmState.state = {
                     ...llmState.state,
                     context: {loaded: true}
                 };
-
                 context.onDispose.createListener(() => {
                     llmState.state = {
                         ...llmState.state,
@@ -245,19 +228,16 @@ export const llmFunctions = {
         await withLock([llmFunctions, "contextSequence"], async () => {
             if (context == null)
                 throw new Error("Context not loaded");
-
             try {
                 llmState.state = {
                     ...llmState.state,
                     contextSequence: {loaded: false}
                 };
-
                 contextSequence = context.getSequence();
                 llmState.state = {
                     ...llmState.state,
                     contextSequence: {loaded: true}
                 };
-
                 contextSequence.onDispose.createListener(() => {
                     llmState.state = {
                         ...llmState.state,
@@ -281,7 +261,6 @@ export const llmFunctions = {
             await withLock([llmFunctions, "chatSession"], async () => {
                 if (contextSequence == null)
                     throw new Error("Context sequence not loaded");
-
                 if (chatSession != null) {
                     try {
                         chatSession.dispose();
@@ -291,7 +270,6 @@ export const llmFunctions = {
                         console.error("Failed to dispose chat session", err);
                     }
                 }
-
                 try {
                     llmState.state = {
                         ...llmState.state,
@@ -302,19 +280,15 @@ export const llmFunctions = {
                             draftPrompt: llmState.state.chatSession.draftPrompt
                         }
                     };
-
                     llmFunctions.chatSession.resetChatHistory(false);
-
                     try {
                         await chatSession?.preloadPrompt("", {
-                            functions: modelFunctions, // these won't be called, but are used to avoid redundant context shifts
+                            functions: modelFunctions, 
                             signal: promptAbortController?.signal
                         });
                     } catch (err) {
-                        // do nothing
                     }
                     chatSessionCompletionEngine?.complete(llmState.state.chatSession.draftPrompt.prompt);
-
                     llmState.state = {
                         ...llmState.state,
                         chatSession: {
@@ -340,7 +314,6 @@ export const llmFunctions = {
             await withLock([llmFunctions, "chatSession"], async () => {
                 if (chatSession == null)
                     throw new Error("Chat session not loaded");
-
                 llmState.state = {
                     ...llmState.state,
                     chatSession: {
@@ -353,7 +326,6 @@ export const llmFunctions = {
                     }
                 };
                 promptAbortController = new AbortController();
-
                 llmState.state = {
                     ...llmState.state,
                     chatSession: {
@@ -361,7 +333,6 @@ export const llmFunctions = {
                         simplifiedChat: getSimplifiedChatHistory(true, message)
                     }
                 };
-
                 const abortSignal = promptAbortController.signal;
                 try {
                     await chatSession.prompt(message, {
@@ -384,7 +355,6 @@ export const llmFunctions = {
                                         endTime: chunk.segmentEndTime?.toISOString()
                                     }
                             );
-
                             llmState.state = {
                                 ...llmState.state,
                                 chatSession: {
@@ -397,10 +367,7 @@ export const llmFunctions = {
                 } catch (err) {
                     if (err !== abortSignal.reason)
                         throw err;
-
-                    // if the prompt was aborted before the generation even started, we ignore the error
                 }
-
                 llmState.state = {
                     ...llmState.state,
                     chatSession: {
@@ -423,14 +390,13 @@ export const llmFunctions = {
         resetChatHistory(markAsLoaded: boolean = true) {
             if (contextSequence == null)
                 return;
-
             chatSession?.dispose();
             chatSession = new LlamaChatSession({
                 contextSequence,
                 autoDisposeSequence: false
             });
             chatSessionCompletionEngine = chatSession.createPromptCompletionEngine({
-                functions: modelFunctions, // these won't be called, but are used to avoid redundant context shifts
+                functions: modelFunctions, 
                 onGeneration(prompt, completion) {
                     if (llmState.state.chatSession.draftPrompt.prompt === prompt) {
                         llmState.state = {
@@ -446,7 +412,6 @@ export const llmFunctions = {
                     }
                 }
             });
-
             llmState.state = {
                 ...llmState.state,
                 chatSession: {
@@ -461,7 +426,6 @@ export const llmFunctions = {
                     }
                 }
             };
-
             chatSession.onDispose.createListener(() => {
                 chatSessionCompletionEngine = null;
                 promptAbortController = null;
@@ -479,7 +443,6 @@ export const llmFunctions = {
         setDraftPrompt(prompt: string) {
             if (chatSessionCompletionEngine == null)
                 return;
-
             llmState.state = {
                 ...llmState.state,
                 chatSession: {
@@ -493,11 +456,9 @@ export const llmFunctions = {
         }
     }
 } as const;
-
 function getSimplifiedChatHistory(generatingResult: boolean, currentPrompt?: string) {
     if (chatSession == null)
         return [];
-
     const chatHistory: SimplifiedChatItem[] = chatSession.getChatHistory()
         .flatMap((item): SimplifiedChatItem[] => {
             if (item.type === "system")
@@ -523,54 +484,41 @@ function getSimplifiedChatHistory(generatingResult: boolean, currentPrompt?: str
                                     startTime: item.startTime,
                                     endTime: item.endTime
                                 };
-
-                            void (item satisfies never); // ensure all item types are handled
+                            void (item satisfies never); 
                             return null;
                         })
                         .filter((item) => item != null)
-
-                        // squash adjacent response items of the same type
                         .reduce((res, item) => {
                             return squashMessageIntoModelChatMessages(res, item);
                         }, [] as SimplifiedModelChatItem["message"])
                 }];
-
-            void (item satisfies never); // ensure all item types are handled
+            void (item satisfies never); 
             return [];
         });
-
     if (generatingResult && currentPrompt != null) {
         chatHistory.push({
             type: "user",
             message: currentPrompt
         });
-
         if (inProgressResponse.length > 0)
             chatHistory.push({
                 type: "model",
                 message: inProgressResponse
             });
     }
-
     return chatHistory;
 }
-
-/** Squash a new model response message into the existing model response messages array */
 function squashMessageIntoModelChatMessages(
     modelChatMessages: SimplifiedModelChatItem["message"],
     message: SimplifiedModelChatItem["message"][number]
 ): SimplifiedModelChatItem["message"] {
     const newModelChatMessages = structuredClone(modelChatMessages);
     const lastExistingModelMessage = newModelChatMessages.at(-1);
-
     if (lastExistingModelMessage == null || lastExistingModelMessage.type !== message.type) {
-        // avoid pushing empty text messages
         if (message.type !== "text" || message.text !== "")
             newModelChatMessages.push(message);
-
         return newModelChatMessages;
     }
-
     if (lastExistingModelMessage.type === "text" && message.type === "text") {
         lastExistingModelMessage.text += message.text;
         return newModelChatMessages;
@@ -583,7 +531,6 @@ function squashMessageIntoModelChatMessages(
         lastExistingModelMessage.endTime = message.endTime;
         return newModelChatMessages;
     }
-
     newModelChatMessages.push(message);
     return newModelChatMessages;
 }

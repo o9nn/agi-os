@@ -1,10 +1,8 @@
 package common
-
 import (
 	"reflect"
 	"testing"
 )
-
 func TestTruncateStop(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -49,7 +47,6 @@ func TestTruncateStop(t *testing.T) {
 			expectedTrunc: true,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, resultTrunc := TruncateStop(tt.pieces, tt.stop)
@@ -59,7 +56,6 @@ func TestTruncateStop(t *testing.T) {
 		})
 	}
 }
-
 func TestIncompleteUnicode(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -117,7 +113,6 @@ func TestIncompleteUnicode(t *testing.T) {
 			expected: true,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := IncompleteUnicode(tt.input)

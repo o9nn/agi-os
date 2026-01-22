@@ -1,7 +1,6 @@
 import { BrowserWindow, Menu, shell } from 'electron'
 import { readFileSync } from 'fs'
 import { join } from 'path'
-
 import {
   gitHubIssuesUrl,
   homePageUrl,
@@ -16,9 +15,7 @@ import { getCurrentLocaleDate, tx } from './load-translations.js'
 import { mapPackagePath } from './isAppx.js'
 import { quitDeltaChat } from './tray.js'
 import { getLocaleDirectoryPath } from './getLocaleDirectory.js'
-
 const log = getLogger('main/menu')
-
 const languages: {
   locale: string
   name: string
@@ -27,7 +24,6 @@ const languages: {
   const rawLanguageList: { [locale: string]: string } = JSON.parse(
     readFileSync(languagesFile, 'utf8')
   )
-
   return Object.keys(rawLanguageList)
     .map(locale => ({
       locale: locale,
@@ -36,9 +32,7 @@ const languages: {
     .filter(({ name }) => name.indexOf('*') === -1)
     .sort(({ name: name1 }, { name: name2 }) => (name1 > name2 ? 1 : -1))
 })()
-
 let logHandlerRef: LogHandler | null = null
-
 export function refresh() {
   log.info(`rebuilding menu with locale ${getCurrentLocaleDate().locale}`)
   if (!logHandlerRef) {
@@ -56,17 +50,14 @@ export function refresh() {
   }
   mainWindow.window?.setMenu(menu)
 }
-
 export function init(logHandler: LogHandler) {
   logHandlerRef = logHandler
   refresh()
 }
-
 interface rawMenuItem extends Electron.MenuItemConstructorOptions {
   translate?: string
   submenu?: (rawMenuItem | Electron.MenuItemConstructorOptions)[]
 }
-
 function getAvailableLanguages(): Electron.MenuItemConstructorOptions[] {
   const { locale: currentLocale } = getCurrentLocaleDate()
   return languages.map(({ locale, name }) => {
@@ -81,9 +72,7 @@ function getAvailableLanguages(): Electron.MenuItemConstructorOptions[] {
     }
   })
 }
-
 function getZoomFactors(): Electron.MenuItemConstructorOptions[] {
-  // for now this solution is electron specific
   const zoomFactors = [
     { scale: 0.6, key: 'extra_small' },
     { scale: 0.8, key: 'small' },
@@ -91,15 +80,12 @@ function getZoomFactors(): Electron.MenuItemConstructorOptions[] {
     { scale: 1.2, key: 'large' },
     { scale: 1.4, key: 'extra_large' },
   ]
-
   const currentZoomFactor = DesktopSettings.state.zoomFactor
-
   if (zoomFactors.map(({ scale }) => scale).indexOf(currentZoomFactor) === -1)
     zoomFactors.push({
       scale: currentZoomFactor,
       key: 'custom',
     })
-
   return zoomFactors.map(({ key, scale }) => {
     return {
       label: !(scale === 1 && key === 'custom')
@@ -114,14 +100,11 @@ function getZoomFactors(): Electron.MenuItemConstructorOptions[] {
           DesktopSettings.update({ zoomFactor: scale })
           mainWindow.setZoomFactor(scale)
         } else {
-          // todo? currently it is a no-op and the 'option' is only shown
-          // when the config value was changed by the user
         }
       },
     }
   })
 }
-
 export function getAppMenu(
   window: BrowserWindow | null
 ): Electron.MenuItemConstructorOptions {
@@ -143,7 +126,6 @@ export function getAppMenu(
     },
     { type: 'separator' },
   ]
-
   return {
     label: appWindowTitle,
     submenu: [
@@ -155,7 +137,6 @@ export function getAppMenu(
       ...(isMainWindow
         ? [
             {
-              // because menubar stays when it's closed and apple wants that the user can reopen it via the menu bar
               label: tx('show_window'),
               click: () => {
                 mainWindow.show()
@@ -171,7 +152,6 @@ export function getAppMenu(
     ],
   }
 }
-
 export function getFileMenu(
   window: BrowserWindow | null,
   isMac: boolean
@@ -213,7 +193,6 @@ export function getFileMenu(
         click: () => {
           window?.close()
           if (isMac) {
-            // change back to main-window menu
             refresh()
           }
         },
@@ -221,10 +200,8 @@ export function getFileMenu(
       },
     ],
   }
-
   return isMac ? fileMenuMac : fileMenuNonMac
 }
-
 export function getEditMenu(): Electron.MenuItemConstructorOptions {
   return {
     label: tx('global_menu_edit_desktop'),
@@ -263,7 +240,6 @@ export function getEditMenu(): Electron.MenuItemConstructorOptions {
     ],
   }
 }
-
 export function getHelpMenu(
   isMac: boolean
 ): Electron.MenuItemConstructorOptions {
@@ -322,7 +298,6 @@ export function getHelpMenu(
     ],
   }
 }
-
 function getMenuTemplate(
   logHandler: LogHandler
 ): Electron.MenuItemConstructorOptions[] {
@@ -380,7 +355,6 @@ function getMenuTemplate(
     getHelpMenu(isMac),
   ]
 }
-
 function getMenuItem(menu: Menu, label: string) {
   for (let i = 0; i < menu.items.length; i++) {
     const menuItem = menu.items[i].submenu?.items.find(function (item) {

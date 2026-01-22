@@ -18,4 +18,3 @@ export function parseThemeMetaData(rawTheme) {
   return meta;
 }
 export const HIDDEN_THEME_PREFIX = "dev_";
-//# sourceMappingURL=themes.js.map

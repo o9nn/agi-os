@@ -1,13 +1,10 @@
 package tray
-
 import (
 	"fmt"
 	"runtime"
-
 	"github.com/EchoCog/echollama/app/assets"
 	"github.com/EchoCog/echollama/app/tray/commontray"
 )
-
 func NewTray() (commontray.OllamaTray, error) {
 	extension := ".png"
 	if runtime.GOOS == "windows" {
@@ -23,6 +20,5 @@ func NewTray() (commontray.OllamaTray, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to load icon %s: %w", iconName, err)
 	}
-
 	return InitPlatformTray(icon, updateIcon)
 }

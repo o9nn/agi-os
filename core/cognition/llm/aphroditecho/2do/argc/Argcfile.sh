@@ -1,35 +1,20 @@
 #!/usr/bin/env bash
 set -e
-
-# @cmd Test the project
-# @alias t
 test() {
     cargo test "$@"
 }
-
-# @cmd Test features matrix
 test-features() {
     cargo hack --no-dev-deps check --feature-powerset --depth 2 --lib
 }
-
-# @cmd Check the project
-# @alias c
 check() {
     cargo fmt --all --check
     cargo clippy --all
     cargo test
 }
-
-# @cmd Fix the project
-# @alias f
 fix() {
     cargo fmt --all
     cargo clippy --fix --all --allow-dirty
 }
-
-# @cmd Code for setup shell to load argc completion script
-# @option -s --shell[=bash|elvish|fish|nushell|powershell|xonsh|zsh|tcsh] shell type
-# @arg cmds* any other scripts based on argc
 setup-shell() {
     case $argc_shell in
         bash) echo "source <(argc --argc-completions bash ${argc_cmds[@]})" ;;
@@ -42,5 +27,4 @@ setup-shell() {
         tcsh) echo "eval \`argc --argc-completions tcsh ${argc_cmds[@]}\`" ;;
     esac
 }
-
 eval "$(argc --argc-eval "$0" "$@")"

@@ -5,7 +5,6 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-
 extern Dev rootdevtab;
 extern Dev consdevtab;
 extern Dev envdevtab;
@@ -30,32 +29,31 @@ extern Dev ipdevtab;
 extern Dev uartdevtab;
 extern Dev usbdevtab;
 Dev* devtab[]={
-	&rootdevtab,
-	&consdevtab,
-	&envdevtab,
-	&pipedevtab,
-	&procdevtab,
-	&mntdevtab,
-	&srvdevtab,
-	&dupdevtab,
-	&rtcdevtab,
-	&archdevtab,
-	&ssldevtab,
-	&tlsdevtab,
-	&capdevtab,
-	&kprofdevtab,
-	&aoedevtab,
-	&sddevtab,
-	&fsdevtab,
-	&flashdevtab,
-	&twsidevtab,
-	&etherdevtab,
-	&ipdevtab,
-	&uartdevtab,
-	&usbdevtab,
-	nil,
+&rootdevtab,
+&consdevtab,
+&envdevtab,
+&pipedevtab,
+&procdevtab,
+&mntdevtab,
+&srvdevtab,
+&dupdevtab,
+&rtcdevtab,
+&archdevtab,
+&ssldevtab,
+&tlsdevtab,
+&capdevtab,
+&kprofdevtab,
+&aoedevtab,
+&sddevtab,
+&fsdevtab,
+&flashdevtab,
+&twsidevtab,
+&etherdevtab,
+&ipdevtab,
+&uartdevtab,
+&usbdevtab,
+nil,
 };
-
 extern void ether1116link(void);
 extern void archkwlink(void);
 extern void ethermediumlink(void);
@@ -64,30 +62,26 @@ extern void loopbackmediumlink(void);
 extern void netdevmediumlink(void);
 extern void usbehcilink(void);
 void links(void){
-	bootlinks();
-
-	ether1116link();
-	archkwlink();
-	ethermediumlink();
-	flashkwlink();
-	loopbackmediumlink();
-	netdevmediumlink();
-	usbehcilink();
+bootlinks();
+ether1116link();
+archkwlink();
+ethermediumlink();
+flashkwlink();
+loopbackmediumlink();
+netdevmediumlink();
+usbehcilink();
 }
-
 #include "../port/sd.h"
 extern SDifc sdaoeifc;
 SDifc* sdifc[] = {
-	&sdaoeifc,
-	nil,
+&sdaoeifc,
+nil,
 };
-
 extern PhysUart kwphysuart;
 PhysUart* physuart[] = {
-	&kwphysuart,
-	nil,
+&kwphysuart,
+nil,
 };
-
 #include "../ip/ip.h"
 extern void tcpinit(Fs*);
 extern void udpinit(Fs*);
@@ -96,18 +90,16 @@ extern void icmpinit(Fs*);
 extern void icmp6init(Fs*);
 extern void ipmuxinit(Fs*);
 void (*ipprotoinit[])(Fs*) = {
-	tcpinit,
-	udpinit,
-	ipifcinit,
-	icmpinit,
-	icmp6init,
-	ipmuxinit,
-	nil,
+tcpinit,
+udpinit,
+ipifcinit,
+icmpinit,
+icmp6init,
+ipmuxinit,
+nil,
 };
-
 int cpuserver = 1;
 int i8250freq = 3686000;
-
 char* conffile = "/sys/src/9/kw/plug";
 ulong kerndate = KERNDATE;
 uchar configfile[]={
@@ -171,6 +163,5 @@ uchar configfile[]={
 0x09,0x2f,0x61,0x72,0x6d,0x2f,0x62,0x69,0x6e,0x2f,0x64,0x69,0x73,0x6b,0x2f,0x70,
 0x61,0x72,0x74,0x66,0x73,0x0a,0x23,0x09,0x2f,0x61,0x72,0x6d,0x2f,0x62,0x69,0x6e,
 0x2f,0x70,0x61,0x71,0x66,0x73,0x0a,
-
 0,
 };

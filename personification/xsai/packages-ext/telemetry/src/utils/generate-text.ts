@@ -1,27 +1,17 @@
 import type { CompletionStep, GenerateTextOptions, GenerateTextResponse, GenerateTextResult, Message, TrampolineFn, WithUnknown } from 'xsai'
-
 import { chat, responseJSON, trampoline } from 'xsai'
-
 import type { WithTelemetry } from '../types/options'
-
 import { commonAttributes, idAttributes, metadataAttributes } from './attributes'
 import { extractGenerateTextStep, extractGenerateTextStepPost } from './generate-text-internal'
 import { getTracer } from './get-tracer'
 import { recordSpan } from './record-span'
 import { stringifyTool } from './stringify-tool'
 import { wrapTool } from './wrap-tool'
-
-/**
- * @experimental
- * Generating Text with Telemetry.
- */
 export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTextOptions>>) => {
   const tracer = getTracer()
-
   const rawGenerateText = async (options: WithUnknown<WithTelemetry<GenerateTextOptions>>): Promise<TrampolineFn<GenerateTextResult>> => {
     const messages: Message[] = structuredClone(options.messages)
     const steps: CompletionStep<true>[] = options.steps ? structuredClone(options.steps) : []
-
     const [stepWithoutToolCalls, { messages: msgs1, msgToolCalls, reasoningText }] = await recordSpan({
       attributes: {
         ...idAttributes(),
@@ -51,14 +41,11 @@ export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTe
         telemetry: undefined,
       })
         .then(responseJSON<GenerateTextResponse>)
-
       const [step, { messages: msgs, msgToolCalls, reasoningText }] = await extractGenerateTextStep({
         ...options,
         messages,
         steps,
       }, res)
-
-      // TODO: metrics counter
       span.setAttributes({
         ...((step.text != null && step.toolCalls.length === 0) ? { 'ai.response.text': step.text } : {}),
         ...(step.toolCalls.length > 0 ? { 'ai.response.toolCalls': JSON.stringify(step.toolCalls) } : {}),
@@ -69,24 +56,18 @@ export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTe
         'gen_ai.usage.input_tokens': step.usage.prompt_tokens,
         'gen_ai.usage.output_tokens': step.usage.completion_tokens,
       })
-
       return [step, { messages: msgs, msgToolCalls, reasoningText }]
     })
-
     const [toolResults, msgs2] = await extractGenerateTextStepPost({
       ...options,
       messages,
       steps,
     }, msgToolCalls)
-
     const step = { ...stepWithoutToolCalls, toolResults }
-
     steps.push(step)
     messages.push(...msgs1, ...msgs2)
-
     if (options.onStepFinish)
       await options.onStepFinish(step)
-
     if (step.finishReason === 'stop' || step.stepType === 'done') {
       return {
         finishReason: step.finishReason,
@@ -107,7 +88,6 @@ export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTe
       })
     }
   }
-
   return recordSpan<GenerateTextResult>({
     attributes: {
       ...commonAttributes('ai.generateText', options.model),
@@ -121,7 +101,6 @@ export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTe
       ...options,
       tools: options.tools?.map(tool => wrapTool(tool, tracer)),
     }))
-
     span.setAttributes({
       ...(result.toolCalls.length > 0 ? { 'ai.response.toolCalls': JSON.stringify(result.toolCalls) } : {}),
       ...(result.text != null ? { 'ai.response.text': result.text } : {}),
@@ -129,7 +108,6 @@ export const generateText = async (options: WithUnknown<WithTelemetry<GenerateTe
       'ai.usage.completionTokens': result.usage.completion_tokens,
       'ai.usage.promptTokens': result.usage.prompt_tokens,
     })
-
     return result
   })
 }

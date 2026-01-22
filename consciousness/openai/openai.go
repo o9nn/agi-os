@@ -1,6 +1,4 @@
-// openai package provides middleware for partial compatibility with the OpenAI REST API
 package openai
-
 import (
 	"bytes"
 	"encoding/base64"
@@ -13,26 +11,20 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
 	"github.com/gin-gonic/gin"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/types/model"
 )
-
 var finishReasonToolCalls = "tool_calls"
-
 type Error struct {
 	Message string  `json:"message"`
 	Type    string  `json:"type"`
 	Param   any     `json:"param"`
 	Code    *string `json:"code"`
 }
-
 type ErrorResponse struct {
 	Error Error `json:"error"`
 }
-
 type Message struct {
 	Role       string     `json:"role"`
 	Content    any        `json:"content"`
@@ -41,53 +33,43 @@ type Message struct {
 	Name       string     `json:"name,omitempty"`
 	ToolCallID string     `json:"tool_call_id,omitempty"`
 }
-
 type Choice struct {
 	Index        int     `json:"index"`
 	Message      Message `json:"message"`
 	FinishReason *string `json:"finish_reason"`
 }
-
 type ChunkChoice struct {
 	Index        int     `json:"index"`
 	Delta        Message `json:"delta"`
 	FinishReason *string `json:"finish_reason"`
 }
-
 type CompleteChunkChoice struct {
 	Text         string  `json:"text"`
 	Index        int     `json:"index"`
 	FinishReason *string `json:"finish_reason"`
 }
-
 type Usage struct {
 	PromptTokens     int `json:"prompt_tokens"`
 	CompletionTokens int `json:"completion_tokens"`
 	TotalTokens      int `json:"total_tokens"`
 }
-
 type ResponseFormat struct {
 	Type       string      `json:"type"`
 	JsonSchema *JsonSchema `json:"json_schema,omitempty"`
 }
-
 type JsonSchema struct {
 	Schema json.RawMessage `json:"schema"`
 }
-
 type EmbedRequest struct {
 	Input any    `json:"input"`
 	Model string `json:"model"`
 }
-
 type StreamOptions struct {
 	IncludeUsage bool `json:"include_usage"`
 }
-
 type Reasoning struct {
 	Effort *string `json:"effort,omitempty"`
 }
-
 type ChatCompletionRequest struct {
 	Model            string          `json:"model"`
 	Messages         []Message       `json:"messages"`
@@ -104,7 +86,6 @@ type ChatCompletionRequest struct {
 	Tools            []api.Tool      `json:"tools"`
 	Reasoning        *Reasoning      `json:"reasoning,omitempty"`
 }
-
 type ChatCompletion struct {
 	Id                string   `json:"id"`
 	Object            string   `json:"object"`
@@ -114,7 +95,6 @@ type ChatCompletion struct {
 	Choices           []Choice `json:"choices"`
 	Usage             Usage    `json:"usage,omitempty"`
 }
-
 type ChatCompletionChunk struct {
 	Id                string        `json:"id"`
 	Object            string        `json:"object"`
@@ -124,8 +104,6 @@ type ChatCompletionChunk struct {
 	Choices           []ChunkChoice `json:"choices"`
 	Usage             *Usage        `json:"usage,omitempty"`
 }
-
-// TODO (https://github.com/EchoCog/echollama/issues/5259): support []string, []int and [][]int
 type CompletionRequest struct {
 	Model            string         `json:"model"`
 	Prompt           string         `json:"prompt"`
@@ -140,7 +118,6 @@ type CompletionRequest struct {
 	TopP             float32        `json:"top_p"`
 	Suffix           string         `json:"suffix"`
 }
-
 type Completion struct {
 	Id                string                `json:"id"`
 	Object            string                `json:"object"`
@@ -150,7 +127,6 @@ type Completion struct {
 	Choices           []CompleteChunkChoice `json:"choices"`
 	Usage             Usage                 `json:"usage,omitempty"`
 }
-
 type CompletionChunk struct {
 	Id                string                `json:"id"`
 	Object            string                `json:"object"`
@@ -160,7 +136,6 @@ type CompletionChunk struct {
 	SystemFingerprint string                `json:"system_fingerprint"`
 	Usage             *Usage                `json:"usage,omitempty"`
 }
-
 type ToolCall struct {
 	ID       string `json:"id"`
 	Index    int    `json:"index"`
@@ -170,37 +145,31 @@ type ToolCall struct {
 		Arguments string `json:"arguments"`
 	} `json:"function"`
 }
-
 type Model struct {
 	Id      string `json:"id"`
 	Object  string `json:"object"`
 	Created int64  `json:"created"`
 	OwnedBy string `json:"owned_by"`
 }
-
 type Embedding struct {
 	Object    string    `json:"object"`
 	Embedding []float32 `json:"embedding"`
 	Index     int       `json:"index"`
 }
-
 type ListCompletion struct {
 	Object string  `json:"object"`
 	Data   []Model `json:"data"`
 }
-
 type EmbeddingList struct {
 	Object string         `json:"object"`
 	Data   []Embedding    `json:"data"`
 	Model  string         `json:"model"`
 	Usage  EmbeddingUsage `json:"usage,omitempty"`
 }
-
 type EmbeddingUsage struct {
 	PromptTokens int `json:"prompt_tokens"`
 	TotalTokens  int `json:"total_tokens"`
 }
-
 func NewError(code int, message string) ErrorResponse {
 	var etype string
 	switch code {
@@ -211,10 +180,8 @@ func NewError(code int, message string) ErrorResponse {
 	default:
 		etype = "api_error"
 	}
-
 	return ErrorResponse{Error{Type: etype, Message: message}}
 }
-
 func toUsage(r api.ChatResponse) Usage {
 	return Usage{
 		PromptTokens:     r.PromptEvalCount,
@@ -222,7 +189,6 @@ func toUsage(r api.ChatResponse) Usage {
 		TotalTokens:      r.PromptEvalCount + r.EvalCount,
 	}
 }
-
 func toolCallId() string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyz0123456789"
 	b := make([]byte, 8)
@@ -231,7 +197,6 @@ func toolCallId() string {
 	}
 	return "call_" + strings.ToLower(string(b))
 }
-
 func toToolCalls(tc []api.ToolCall) []ToolCall {
 	toolCalls := make([]ToolCall, len(tc))
 	for i, tc := range tc {
@@ -239,18 +204,15 @@ func toToolCalls(tc []api.ToolCall) []ToolCall {
 		toolCalls[i].Type = "function"
 		toolCalls[i].Function.Name = tc.Function.Name
 		toolCalls[i].Index = tc.Function.Index
-
 		args, err := json.Marshal(tc.Function.Arguments)
 		if err != nil {
 			slog.Error("could not marshall function arguments to json", "error", err)
 			continue
 		}
-
 		toolCalls[i].Function.Arguments = string(args)
 	}
 	return toolCalls
 }
-
 func toChatCompletion(id string, r api.ChatResponse) ChatCompletion {
 	toolCalls := toToolCalls(r.Message.ToolCalls)
 	return ChatCompletion{
@@ -275,7 +237,6 @@ func toChatCompletion(id string, r api.ChatResponse) ChatCompletion {
 		Usage: toUsage(r),
 	}
 }
-
 func toChunk(id string, r api.ChatResponse, toolCallSent bool) ChatCompletionChunk {
 	toolCalls := toToolCalls(r.Message.ToolCalls)
 	return ChatCompletionChunk{
@@ -299,7 +260,6 @@ func toChunk(id string, r api.ChatResponse, toolCallSent bool) ChatCompletionChu
 		}},
 	}
 }
-
 func toUsageGenerate(r api.GenerateResponse) Usage {
 	return Usage{
 		PromptTokens:     r.PromptEvalCount,
@@ -307,7 +267,6 @@ func toUsageGenerate(r api.GenerateResponse) Usage {
 		TotalTokens:      r.PromptEvalCount + r.EvalCount,
 	}
 }
-
 func toCompletion(id string, r api.GenerateResponse) Completion {
 	return Completion{
 		Id:                id,
@@ -328,7 +287,6 @@ func toCompletion(id string, r api.GenerateResponse) Completion {
 		Usage: toUsageGenerate(r),
 	}
 }
-
 func toCompleteChunk(id string, r api.GenerateResponse) CompletionChunk {
 	return CompletionChunk{
 		Id:                id,
@@ -348,7 +306,6 @@ func toCompleteChunk(id string, r api.GenerateResponse) CompletionChunk {
 		}},
 	}
 }
-
 func toListCompletion(r api.ListResponse) ListCompletion {
 	var data []Model
 	for _, m := range r.Models {
@@ -359,13 +316,11 @@ func toListCompletion(r api.ListResponse) ListCompletion {
 			OwnedBy: model.ParseName(m.Name).Namespace,
 		})
 	}
-
 	return ListCompletion{
 		Object: "list",
 		Data:   data,
 	}
 }
-
 func toEmbeddingList(model string, r api.EmbedResponse) EmbeddingList {
 	if r.Embeddings != nil {
 		var data []Embedding
@@ -376,7 +331,6 @@ func toEmbeddingList(model string, r api.EmbedResponse) EmbeddingList {
 				Index:     i,
 			})
 		}
-
 		return EmbeddingList{
 			Object: "list",
 			Data:   data,
@@ -387,10 +341,8 @@ func toEmbeddingList(model string, r api.EmbedResponse) EmbeddingList {
 			},
 		}
 	}
-
 	return EmbeddingList{}
 }
-
 func toModel(r api.ShowResponse, m string) Model {
 	return Model{
 		Id:      m,
@@ -399,7 +351,6 @@ func toModel(r api.ShowResponse, m string) Model {
 		OwnedBy: model.ParseName(m).Namespace,
 	}
 }
-
 func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 	var messages []api.Message
 	for _, msg := range r.Messages {
@@ -441,7 +392,6 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 							return nil, errors.New("invalid message format")
 						}
 					}
-
 					types := []string{"jpeg", "jpg", "png", "webp"}
 					valid := false
 					for _, t := range types {
@@ -452,23 +402,18 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 							break
 						}
 					}
-
 					if !valid {
 						return nil, errors.New("invalid image input")
 					}
-
 					img, err := base64.StdEncoding.DecodeString(url)
 					if err != nil {
 						return nil, errors.New("invalid message format")
 					}
-
 					messages = append(messages, api.Message{Role: msg.Role, Images: []api.ImageData{img}})
 				default:
 					return nil, errors.New("invalid message format")
 				}
 			}
-			// since we might have added multiple messages above, if we have tools
-			// calls we'll add them to the last message
 			if len(messages) > 0 && len(msg.ToolCalls) > 0 {
 				toolCalls, err := fromCompletionToolCall(msg.ToolCalls)
 				if err != nil {
@@ -481,11 +426,9 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 				messages[len(messages)-1].Thinking = msg.Reasoning
 			}
 		default:
-			// content is only optional if tool calls are present
 			if msg.ToolCalls == nil {
 				return nil, fmt.Errorf("invalid message content type: %T", content)
 			}
-
 			toolCalls := make([]api.ToolCall, len(msg.ToolCalls))
 			for i, tc := range msg.ToolCalls {
 				toolCalls[i].Function.Name = tc.Function.Name
@@ -497,9 +440,7 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 			messages = append(messages, api.Message{Role: msg.Role, Thinking: msg.Reasoning, ToolCalls: toolCalls})
 		}
 	}
-
 	options := make(map[string]any)
-
 	switch stop := r.Stop.(type) {
 	case string:
 		options["stop"] = []string{stop}
@@ -512,43 +453,34 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 		}
 		options["stop"] = stops
 	}
-
 	if r.MaxTokens != nil {
 		options["num_predict"] = *r.MaxTokens
 	}
-
 	if r.Temperature != nil {
 		options["temperature"] = *r.Temperature
 	} else {
 		options["temperature"] = 1.0
 	}
-
 	if r.Seed != nil {
 		options["seed"] = *r.Seed
 	}
-
 	if r.FrequencyPenalty != nil {
 		options["frequency_penalty"] = *r.FrequencyPenalty
 	}
-
 	if r.PresencePenalty != nil {
 		options["presence_penalty"] = *r.PresencePenalty
 	}
-
 	if r.TopP != nil {
 		options["top_p"] = *r.TopP
 	} else {
 		options["top_p"] = 1.0
 	}
-
 	if r.Reasoning != nil {
 		options["reasoning"] = *r.Reasoning.Effort
 	}
-
 	var format json.RawMessage
 	if r.ResponseFormat != nil {
 		switch strings.ToLower(strings.TrimSpace(r.ResponseFormat.Type)) {
-		// Support the old "json_object" type for OpenAI compatibility
 		case "json_object":
 			format = json.RawMessage(`"json"`)
 		case "json_schema":
@@ -557,14 +489,12 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 			}
 		}
 	}
-
 	var think *api.ThinkValue
 	if r.Reasoning != nil {
 		think = &api.ThinkValue{
 			Value: *r.Reasoning.Effort,
 		}
 	}
-
 	return &api.ChatRequest{
 		Model:    r.Model,
 		Messages: messages,
@@ -575,10 +505,7 @@ func fromChatRequest(r ChatCompletionRequest) (*api.ChatRequest, error) {
 		Think:    think,
 	}, nil
 }
-
 func nameFromToolCallID(messages []Message, toolCallID string) string {
-	// iterate backwards to be more resilient to duplicate tool call IDs (this
-	// follows "last one wins")
 	for i := len(messages) - 1; i >= 0; i-- {
 		msg := messages[i]
 		for _, tc := range msg.ToolCalls {
@@ -589,7 +516,6 @@ func nameFromToolCallID(messages []Message, toolCallID string) string {
 	}
 	return ""
 }
-
 func fromCompletionToolCall(toolCalls []ToolCall) ([]api.ToolCall, error) {
 	apiToolCalls := make([]api.ToolCall, len(toolCalls))
 	for i, tc := range toolCalls {
@@ -599,13 +525,10 @@ func fromCompletionToolCall(toolCalls []ToolCall) ([]api.ToolCall, error) {
 			return nil, errors.New("invalid tool call arguments")
 		}
 	}
-
 	return apiToolCalls, nil
 }
-
 func fromCompleteRequest(r CompletionRequest) (api.GenerateRequest, error) {
 	options := make(map[string]any)
-
 	switch stop := r.Stop.(type) {
 	case string:
 		options["stop"] = []string{stop}
@@ -620,31 +543,24 @@ func fromCompleteRequest(r CompletionRequest) (api.GenerateRequest, error) {
 		}
 		options["stop"] = stops
 	}
-
 	if r.MaxTokens != nil {
 		options["num_predict"] = *r.MaxTokens
 	}
-
 	if r.Temperature != nil {
 		options["temperature"] = *r.Temperature
 	} else {
 		options["temperature"] = 1.0
 	}
-
 	if r.Seed != nil {
 		options["seed"] = *r.Seed
 	}
-
 	options["frequency_penalty"] = r.FrequencyPenalty
-
 	options["presence_penalty"] = r.PresencePenalty
-
 	if r.TopP != 0.0 {
 		options["top_p"] = r.TopP
 	} else {
 		options["top_p"] = 1.0
 	}
-
 	return api.GenerateRequest{
 		Model:   r.Model,
 		Prompt:  r.Prompt,
@@ -653,11 +569,9 @@ func fromCompleteRequest(r CompletionRequest) (api.GenerateRequest, error) {
 		Suffix:  r.Suffix,
 	}, nil
 }
-
 type BaseWriter struct {
 	gin.ResponseWriter
 }
-
 type ChatWriter struct {
 	stream        bool
 	streamOptions *StreamOptions
@@ -665,52 +579,42 @@ type ChatWriter struct {
 	toolCallSent  bool
 	BaseWriter
 }
-
 type CompleteWriter struct {
 	stream        bool
 	streamOptions *StreamOptions
 	id            string
 	BaseWriter
 }
-
 type ListWriter struct {
 	BaseWriter
 }
-
 type RetrieveWriter struct {
 	BaseWriter
 	model string
 }
-
 type EmbedWriter struct {
 	BaseWriter
 	model string
 }
-
 func (w *BaseWriter) writeError(data []byte) (int, error) {
 	var serr api.StatusError
 	err := json.Unmarshal(data, &serr)
 	if err != nil {
 		return 0, err
 	}
-
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(NewError(http.StatusInternalServerError, serr.Error()))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *ChatWriter) writeResponse(data []byte) (int, error) {
 	var chatResponse api.ChatResponse
 	err := json.Unmarshal(data, &chatResponse)
 	if err != nil {
 		return 0, err
 	}
-
-	// chat chunk
 	if w.stream {
 		c := toChunk(w.id, chatResponse, w.toolCallSent)
 		d, err := json.Marshal(c)
@@ -720,13 +624,11 @@ func (w *ChatWriter) writeResponse(data []byte) (int, error) {
 		if !w.toolCallSent && len(c.Choices) > 0 && len(c.Choices[0].Delta.ToolCalls) > 0 {
 			w.toolCallSent = true
 		}
-
 		w.ResponseWriter.Header().Set("Content-Type", "text/event-stream")
 		_, err = w.ResponseWriter.Write([]byte(fmt.Sprintf("data: %s\n\n", d)))
 		if err != nil {
 			return 0, err
 		}
-
 		if chatResponse.Done {
 			if w.streamOptions != nil && w.streamOptions.IncludeUsage {
 				u := toUsage(chatResponse)
@@ -746,37 +648,28 @@ func (w *ChatWriter) writeResponse(data []byte) (int, error) {
 				return 0, err
 			}
 		}
-
 		return len(data), nil
 	}
-
-	// chat completion
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(toChatCompletion(w.id, chatResponse))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *ChatWriter) Write(data []byte) (int, error) {
 	code := w.ResponseWriter.Status()
 	if code != http.StatusOK {
 		return w.writeError(data)
 	}
-
 	return w.writeResponse(data)
 }
-
 func (w *CompleteWriter) writeResponse(data []byte) (int, error) {
 	var generateResponse api.GenerateResponse
 	err := json.Unmarshal(data, &generateResponse)
 	if err != nil {
 		return 0, err
 	}
-
-	// completion chunk
 	if w.stream {
 		c := toCompleteChunk(w.id, generateResponse)
 		if w.streamOptions != nil && w.streamOptions.IncludeUsage {
@@ -786,13 +679,11 @@ func (w *CompleteWriter) writeResponse(data []byte) (int, error) {
 		if err != nil {
 			return 0, err
 		}
-
 		w.ResponseWriter.Header().Set("Content-Type", "text/event-stream")
 		_, err = w.ResponseWriter.Write([]byte(fmt.Sprintf("data: %s\n\n", d)))
 		if err != nil {
 			return 0, err
 		}
-
 		if generateResponse.Done {
 			if w.streamOptions != nil && w.streamOptions.IncludeUsage {
 				u := toUsageGenerate(generateResponse)
@@ -812,117 +703,91 @@ func (w *CompleteWriter) writeResponse(data []byte) (int, error) {
 				return 0, err
 			}
 		}
-
 		return len(data), nil
 	}
-
-	// completion
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(toCompletion(w.id, generateResponse))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *CompleteWriter) Write(data []byte) (int, error) {
 	code := w.ResponseWriter.Status()
 	if code != http.StatusOK {
 		return w.writeError(data)
 	}
-
 	return w.writeResponse(data)
 }
-
 func (w *ListWriter) writeResponse(data []byte) (int, error) {
 	var listResponse api.ListResponse
 	err := json.Unmarshal(data, &listResponse)
 	if err != nil {
 		return 0, err
 	}
-
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(toListCompletion(listResponse))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *ListWriter) Write(data []byte) (int, error) {
 	code := w.ResponseWriter.Status()
 	if code != http.StatusOK {
 		return w.writeError(data)
 	}
-
 	return w.writeResponse(data)
 }
-
 func (w *RetrieveWriter) writeResponse(data []byte) (int, error) {
 	var showResponse api.ShowResponse
 	err := json.Unmarshal(data, &showResponse)
 	if err != nil {
 		return 0, err
 	}
-
-	// retrieve completion
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(toModel(showResponse, w.model))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *RetrieveWriter) Write(data []byte) (int, error) {
 	code := w.ResponseWriter.Status()
 	if code != http.StatusOK {
 		return w.writeError(data)
 	}
-
 	return w.writeResponse(data)
 }
-
 func (w *EmbedWriter) writeResponse(data []byte) (int, error) {
 	var embedResponse api.EmbedResponse
 	err := json.Unmarshal(data, &embedResponse)
 	if err != nil {
 		return 0, err
 	}
-
 	w.ResponseWriter.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w.ResponseWriter).Encode(toEmbeddingList(w.model, embedResponse))
 	if err != nil {
 		return 0, err
 	}
-
 	return len(data), nil
 }
-
 func (w *EmbedWriter) Write(data []byte) (int, error) {
 	code := w.ResponseWriter.Status()
 	if code != http.StatusOK {
 		return w.writeError(data)
 	}
-
 	return w.writeResponse(data)
 }
-
 func ListMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		w := &ListWriter{
 			BaseWriter: BaseWriter{ResponseWriter: c.Writer},
 		}
-
 		c.Writer = w
-
 		c.Next()
 	}
 }
-
 func RetrieveMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var b bytes.Buffer
@@ -930,21 +795,15 @@ func RetrieveMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, NewError(http.StatusInternalServerError, err.Error()))
 			return
 		}
-
 		c.Request.Body = io.NopCloser(&b)
-
-		// response writer
 		w := &RetrieveWriter{
 			BaseWriter: BaseWriter{ResponseWriter: c.Writer},
 			model:      c.Param("model"),
 		}
-
 		c.Writer = w
-
 		c.Next()
 	}
 }
-
 func CompletionsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req CompletionRequest
@@ -953,33 +812,27 @@ func CompletionsMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, err.Error()))
 			return
 		}
-
 		var b bytes.Buffer
 		genReq, err := fromCompleteRequest(req)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, err.Error()))
 			return
 		}
-
 		if err := json.NewEncoder(&b).Encode(genReq); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, NewError(http.StatusInternalServerError, err.Error()))
 			return
 		}
-
 		c.Request.Body = io.NopCloser(&b)
-
 		w := &CompleteWriter{
 			BaseWriter:    BaseWriter{ResponseWriter: c.Writer},
 			stream:        req.Stream,
 			id:            fmt.Sprintf("cmpl-%d", rand.Intn(999)),
 			streamOptions: req.StreamOptions,
 		}
-
 		c.Writer = w
 		c.Next()
 	}
 }
-
 func EmbeddingsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req EmbedRequest
@@ -988,40 +841,31 @@ func EmbeddingsMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, err.Error()))
 			return
 		}
-
 		if req.Input == "" {
 			req.Input = []string{""}
 		}
-
 		if req.Input == nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, "invalid input"))
 			return
 		}
-
 		if v, ok := req.Input.([]any); ok && len(v) == 0 {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, "invalid input"))
 			return
 		}
-
 		var b bytes.Buffer
 		if err := json.NewEncoder(&b).Encode(api.EmbedRequest{Model: req.Model, Input: req.Input}); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, NewError(http.StatusInternalServerError, err.Error()))
 			return
 		}
-
 		c.Request.Body = io.NopCloser(&b)
-
 		w := &EmbedWriter{
 			BaseWriter: BaseWriter{ResponseWriter: c.Writer},
 			model:      req.Model,
 		}
-
 		c.Writer = w
-
 		c.Next()
 	}
 }
-
 func ChatMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req ChatCompletionRequest
@@ -1030,36 +874,28 @@ func ChatMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, err.Error()))
 			return
 		}
-
 		if len(req.Messages) == 0 {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, "[] is too short - 'messages'"))
 			return
 		}
-
 		var b bytes.Buffer
-
 		chatReq, err := fromChatRequest(req)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, NewError(http.StatusBadRequest, err.Error()))
 			return
 		}
-
 		if err := json.NewEncoder(&b).Encode(chatReq); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, NewError(http.StatusInternalServerError, err.Error()))
 			return
 		}
-
 		c.Request.Body = io.NopCloser(&b)
-
 		w := &ChatWriter{
 			BaseWriter:    BaseWriter{ResponseWriter: c.Writer},
 			stream:        req.Stream,
 			id:            fmt.Sprintf("chatcmpl-%d", rand.Intn(999)),
 			streamOptions: req.StreamOptions,
 		}
-
 		c.Writer = w
-
 		c.Next()
 	}
 }

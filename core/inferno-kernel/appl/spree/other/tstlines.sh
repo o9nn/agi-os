@@ -21,14 +21,13 @@ while {} {
 	args:=${split ${recv show}}
 	(t args) = $args
 	$t = $args
-
 	tk 0 .c delete lines
 	echo $v1 $v2
 	r := `{tstboing $v1 $v2}
 	(ap1x ap1y ap2x ap2y bp1x bp1y bp2x bp2y) := $v1 $v2
 	tk 0 .c create line $ap1x $ap1y $ap2x $ap2y -tags lines -fill black -width 3 -arrow last
 	tk 0 .c create line $bp1x $bp1y $bp2x $bp2y -tags lines -fill red
-	and {~ $#r 6} {
+	and {~ $
 		(rp1x rp1y rp2x rp2y sp2x sp2y) := $r
 		tk 0 .c create line $ap2x $ap2y $rp1x $rp1y -tags lines -fill black
 		tk 0 .c create line $rp1x $rp1y $rp2x $rp2y -tags lines -fill green -arrow last
@@ -36,14 +35,12 @@ while {} {
 	}
 	tk 0 update
 } &
-
 fn show {
 	a:=$*
-	if {~ $#a 8} {echo usage} {
+	if {~ $
 		send show ${join ' ' $a}
 	}
 }
-
 for i in 1 2 {
 	while {} {
 		p1:=${recv b^$i}

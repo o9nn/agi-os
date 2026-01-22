@@ -1,10 +1,8 @@
 package llamarunner
-
 import (
 	"testing"
 	"time"
 )
-
 func TestCountCommon(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -55,7 +53,6 @@ func TestCountCommon(t *testing.T) {
 			expected: 0,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := countCommonPrefix(tt.t1, tt.t2)
@@ -65,13 +62,11 @@ func TestCountCommon(t *testing.T) {
 		})
 	}
 }
-
 func TestFindCacheSlot(t *testing.T) {
 	type expected struct {
 		result int
 		len    int
 	}
-
 	tests := []struct {
 		name    string
 		cache   InputCache
@@ -202,7 +197,6 @@ func TestFindCacheSlot(t *testing.T) {
 			best:    expected{result: 1, len: 2},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run("Longest-"+tt.name, func(t *testing.T) {
 			result, resultLen, err := tt.cache.findLongestCacheSlot(tt.prompt)
@@ -214,7 +208,6 @@ func TestFindCacheSlot(t *testing.T) {
 			}
 		})
 	}
-
 	for _, tt := range tests {
 		t.Run("Best-"+tt.name, func(t *testing.T) {
 			result, resultLen, err := tt.cache.findBestCacheSlot(tt.prompt)
@@ -227,7 +220,6 @@ func TestFindCacheSlot(t *testing.T) {
 		})
 	}
 }
-
 func TestShiftDiscard(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -279,7 +271,6 @@ func TestShiftDiscard(t *testing.T) {
 			expected: 0,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := InputCache{numCtx: tt.numCtx}

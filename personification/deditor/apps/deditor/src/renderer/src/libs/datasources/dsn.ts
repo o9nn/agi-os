@@ -1,7 +1,5 @@
 import type { ConnectionThroughParameters, DSNDefaultParams } from './types'
-
 import { DatasourceDriverEnum } from './driver'
-
 export function defaultParamsFromDriver(driver: string): DSNDefaultParams {
   switch (driver) {
     case DatasourceDriverEnum.Postgres:
@@ -18,7 +16,6 @@ export function defaultParamsFromDriver(driver: string): DSNDefaultParams {
       throw new Error(`Unsupported driver: ${driver}`)
   }
 }
-
 export function postgresDefaultParams(): DSNDefaultParams {
   return {
     params: {
@@ -34,7 +31,6 @@ export function postgresDefaultParams(): DSNDefaultParams {
     },
   }
 }
-
 export function mysqlDefaultParams(): DSNDefaultParams {
   return {
     params: {
@@ -46,7 +42,6 @@ export function mysqlDefaultParams(): DSNDefaultParams {
     },
   }
 }
-
 export function pgliteDefaultParams(): DSNDefaultParams {
   return {
     params: {
@@ -58,7 +53,6 @@ export function pgliteDefaultParams(): DSNDefaultParams {
     },
   }
 }
-
 export function pgliteWebSocketDefaultParams(): DSNDefaultParams {
   return {
     params: {
@@ -70,7 +64,6 @@ export function pgliteWebSocketDefaultParams(): DSNDefaultParams {
     },
   }
 }
-
 export function sqliteDefaultParams(): DSNDefaultParams {
   return {
     params: {
@@ -82,7 +75,6 @@ export function sqliteDefaultParams(): DSNDefaultParams {
     },
   }
 }
-
 export function toDSN(
   driver: string,
   params: ConnectionThroughParameters,
@@ -95,12 +87,10 @@ export function toDSN(
     applyParamsURLSearchParams: () => {},
     applyURL: () => {},
   }
-
   const search = new URLSearchParams()
   if (applyParamsURLSearchParams != null && typeof applyParamsURLSearchParams === 'function') {
     applyParamsURLSearchParams(search)
   }
-
   for (const [key, value] of Object.entries(params.extraOptions || {})) {
     if (Array.isArray(value)) {
       value.forEach(v => search.set(key, v))
@@ -109,7 +99,6 @@ export function toDSN(
       search.set(key, String(value))
     }
   }
-
   const dsn = new URL('/test', 'https://127.0.0.1')
   dsn.username = params.user || ''
   dsn.password = params.password || ''
@@ -117,31 +106,24 @@ export function toDSN(
   dsn.port = String(params.port || defaultParams?.params?.port || 5432)
   dsn.pathname = params.database || defaultParams?.params?.database || ''
   dsn.search = search.toString()
-
   if (applyURL != null && typeof applyURL === 'function') {
     applyURL(dsn)
   }
-
   return dsn.toString().replace('https', driver)
 }
-
 export function fromDSN(dsn: string, defaultParams: DSNDefaultParams): ConnectionThroughParameters {
   const params: ConnectionThroughParameters = {
     ...defaultParams.params!,
   }
-
   try {
     const url = new URL(dsn)
     params.host = url.hostname || '127.0.0.1'
     params.port = Number(url.port) || 5432
     params.user = url.username || ''
     params.password = url.password || ''
-    params.database = url?.pathname?.slice(1) || 'postgres' // Remove leading slash
-
+    params.database = url?.pathname?.slice(1) || 'postgres' 
     if (!params.extraOptions)
       params.extraOptions = { sslmode: false }
-
-    // Parse SSL mode from query params if present
     const sslMode = url.searchParams.get('sslmode')
     if (sslMode) {
       if (sslMode === 'true') {
@@ -154,13 +136,10 @@ export function fromDSN(dsn: string, defaultParams: DSNDefaultParams): Connectio
         params.extraOptions!.sslmode = sslMode as 'require' | 'allow' | 'prefer' | 'verify-full'
       }
     }
-
-    // Parse other extra options from query params
     url.searchParams.forEach((value, key) => {
       if (key === 'sslmode') {
         return
       }
-
       if (params.extraOptions![key] === undefined) {
         params.extraOptions![key] = value
       }
@@ -175,6 +154,5 @@ export function fromDSN(dsn: string, defaultParams: DSNDefaultParams): Connectio
   catch (err) {
     console.warn('Invalid connection string format:', err)
   }
-
   return params
 }

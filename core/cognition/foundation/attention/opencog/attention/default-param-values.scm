@@ -1,8 +1,4 @@
-;
-; ECAN paramters.
-;
 (use-modules (opencog))
-
 (define AF_RENT_FREQUENCY         (Concept "AF_RENT_FREQUENCY"))
 (define MAX_AF_SIZE               (Concept "MAX_AF_SIZE"))
 (define MIN_AF_SIZE               (Concept "MIN_AF_SIZE"))
@@ -26,7 +22,6 @@
 (define TARGET_LTI_FUNDS_BUFFER   (Concept "TARGET_LTI_FUNDS_BUFFER"))
 (define RENT_TOURNAMENT_SIZE      (Concept "RENT_TOURNAMENT_SIZE"))
 (define SPREADING_FILTER          (Concept "SPREADING_FILTER"))
-
 (Member AF_SIZE                   ECAN_PARAM)
 (Member MAX_AF_SIZE               ECAN_PARAM)
 (Member MIN_AF_SIZE               ECAN_PARAM)
@@ -50,7 +45,6 @@
 (Member LTI_FUNDS_BUFFER          ECAN_PARAM)
 (Member TARGET_LTI_FUNDS_BUFFER   ECAN_PARAM)
 (Member RENT_TOURNAMENT_SIZE      ECAN_PARAM)
-
 (State AF_SIZE                   (Number 0.2))
 (State MIN_AF_SIZE               (Number 500))
 (State AFB_DECAY                 (Number 0.05))

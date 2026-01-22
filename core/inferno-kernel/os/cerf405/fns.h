@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 void	addpower(Power*);
 void	archbacklight(int);
 void	archconfinit(void);
@@ -21,7 +20,7 @@ void	clockcheck(void);
 void	clockinit(void);
 void	clockintr(Ureg*);
 void	clrfptrap(void);
-#define	coherence()		/* nothing needed for uniprocessor */
+#define	coherence()
 void	compiledcr(void);
 void	cpuidprint(void);
 void*	dcflush(void*, ulong);
@@ -114,7 +113,7 @@ void	puttwb(ulong);
 ulong	rmapalloc(RMap*, ulong, int, int);
 long	rtctime(void);
 void	screeninit(void);
-int	screenprint(char*, ...);			/* debugging */
+int	screenprint(char*, ...);
 void	(*screenputs)(char*, int);
 int	segflush(void*, ulong);
 void	toggleled(int);
@@ -130,18 +129,13 @@ void	trapvec(void);
 void	trapcvec(void);
 void	uartinstall(void);
 void	uartspecial(int, int, Queue**, Queue**, int (*)(Queue*, int));
-void	uartwait(void);	/* debugging */
+void	uartwait(void);
 void	wbflush(void);
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 ulong	getcallerpc(void*);
-
 #define	isphys(a)	(((ulong)(a)&KSEGM)!=KSEG0 && ((ulong)(a)&KSEGM)!=KSEG1)
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	(isphys(a)?(ulong)(a):((ulong)(a)&~KSEGM))
-
-/* IBM bit field order */
 #define	IBIT(b)	(((ulong)(1<<31))>>(b))
 #define	SIBIT(n)	((ushort)1<<(15-(n)))
 #define	CIBIT(n)	((uchar)1<<(7-(n)))
-

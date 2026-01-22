@@ -1,7 +1,6 @@
 #include "logfsos.h"
 #include "logfs.h"
 #include "local.h"
-
 char logfsebadfid[] = "fid not in use";
 char logfsefidnotopen[] = "fid is not open for I/O";
 char logfsefidopen[] = "fid is open for I/O";

@@ -1,14 +1,5 @@
-;
-; constant-present.scm
-;
-; Contains a constant clause insidde of a PresentLink.
-; This occurs naturally in the URE ForwardChainerUTest
-;
-
 (use-modules (opencog) (opencog exec))
-
 (Inheritance (Concept "B") (Concept "foo"))
-
 (define query
 	(Bind
 		(TypedVariable (Variable "$C-7a4842c1") (Type "Concept"))
@@ -23,9 +14,6 @@
 				(Inheritance (Concept "A") (Variable "$C-7a4842c1"))
 				(Inheritance (Concept "A") (Concept "B"))
 				(Inheritance (Concept "B") (Variable "$C-7a4842c1"))))))
-
-; (cog-execute! query)
-
 (define expected
 	(Set
 		(Execution

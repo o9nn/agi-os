@@ -1,5 +1,4 @@
 package cmd
-
 import (
 	"encoding/json"
 	"io"
@@ -8,12 +7,9 @@ import (
 	"os"
 	"strings"
 	"testing"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/types/model"
 )
-
-// Test that a warning is printed when thinking is requested but not supported.
 func TestWarnMissingThinking(t *testing.T) {
 	cases := []struct {
 		capabilities []model.Capability
@@ -22,7 +18,6 @@ func TestWarnMissingThinking(t *testing.T) {
 		{capabilities: []model.Capability{model.CapabilityThinking}, expectWarn: false},
 		{capabilities: []model.Capability{}, expectWarn: true},
 	}
-
 	for _, tc := range cases {
 		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path != "/api/show" || r.Method != http.MethodPost {
@@ -38,7 +33,6 @@ func TestWarnMissingThinking(t *testing.T) {
 			}
 		}))
 		defer srv.Close()
-
 		t.Setenv("OLLAMA_HOST", srv.URL)
 		client, err := api.ClientFromEnvironment()
 		if err != nil {
@@ -51,7 +45,6 @@ func TestWarnMissingThinking(t *testing.T) {
 		w.Close()
 		os.Stderr = oldStderr
 		out, _ := io.ReadAll(r)
-
 		warned := strings.Contains(string(out), "warning:")
 		if tc.expectWarn && !warned {
 			t.Errorf("expected warning, got none")

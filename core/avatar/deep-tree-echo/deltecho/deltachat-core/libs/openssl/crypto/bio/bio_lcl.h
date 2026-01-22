@@ -1,7 +1,5 @@
 #include <openssl/bio.h>
-
 #if BIO_FLAGS_UPLINK==0
-/* Shortcut UPLINK calls on most platforms... */
 # define UP_stdin        stdin
 # define UP_stdout       stdout
 # define UP_stderr       stderr
@@ -12,7 +10,6 @@
 # undef  UP_fsetmod
 # define UP_feof         feof
 # define UP_fclose       fclose
-
 # define UP_fopen        fopen
 # define UP_fseek        fseek
 # define UP_ftell        ftell

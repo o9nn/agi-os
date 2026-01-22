@@ -2,7 +2,6 @@ export { MMDLoader } from './loaders/mmd-loader'
 export { PMDLoader } from './loaders/pmd-loader'
 export { PMXLoader } from './loaders/pmx-loader'
 export { VMDLoader } from './loaders/vmd-loader'
-
 export { buildAnimation, buildCameraAnimation } from './utils/build-animation'
 export { buildGeometry } from './utils/build-geometry'
 export { buildMaterial } from './utils/build-material'

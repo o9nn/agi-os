@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "🎉 BOLT AI IDE - ImGui Integration Complete!"
 echo "========================================"
 echo ""
@@ -77,7 +76,7 @@ echo "│ File  View  AI  Help                    Bolt AI IDE         │"
 echo "├──────────────┬──────────────────────┬─────────────────────┤"
 echo "│📁 Files      │💻 Code Editor        │💬 AI Assistant      │"
 echo "│              │                      │                    │"
-echo "│💻 main.cpp   │#include <iostream>   │🤖 Hi! I'm your     │"
+echo "│💻 main.cpp   │
 echo "│📝 README.md  │                      │AI coding assistant. │"
 echo "│🔧 CMakeLists │int main() {          │                    │"
 echo "│              │  // Your code here   │Ask me about:       │"
@@ -101,8 +100,6 @@ echo "• Add git integration"
 echo "• Create project templates"
 echo ""
 echo "The ImGui integration is complete and ready to run in any GUI environment!"
-
-# Also show the terminal version for comparison
 echo ""
 echo "🔄 Running terminal version for comparison..."
 echo ""

@@ -8,7 +8,6 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-
 export default defineConfig({
   presets: [
     presetWind3(),

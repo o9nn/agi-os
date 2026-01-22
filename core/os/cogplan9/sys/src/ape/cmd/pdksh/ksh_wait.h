@@ -1,12 +1,7 @@
-/* Wrapper around the ugly sys/wait includes/ifdefs */
-/* $Id$ */
-
 #ifdef HAVE_SYS_WAIT_H
 # include <sys/wait.h>
 #endif
-
 #ifndef POSIX_SYS_WAIT
-/* Get rid of system macros (which probably use union wait) */
 # undef WIFCORED
 # undef WIFEXITED
 # undef WEXITSTATUS
@@ -14,15 +9,12 @@
 # undef WTERMSIG
 # undef WIFSTOPPED
 # undef WSTOPSIG
-#endif /* POSIX_SYS_WAIT */
-
+#endif
 typedef int WAIT_T;
-
 #ifndef WIFCORED
 # define WIFCORED(s)	((s) & 0x80)
 #endif
 #define WSTATUS(s)	(s)
-
 #ifndef WIFEXITED
 # define WIFEXITED(s)	(((s) & 0xff) == 0)
 #endif
@@ -41,10 +33,8 @@ typedef int WAIT_T;
 #ifndef WSTOPSIG
 # define WSTOPSIG(s)	(((s) >> 8) & 0xff)
 #endif
-
 #if !defined(HAVE_WAITPID) && defined(HAVE_WAIT3)
-  /* always used with p == -1 */
 # define ksh_waitpid(p, s, o)	wait3((s), (o), (struct rusage *) 0)
-#else /* !HAVE_WAITPID && HAVE_WAIT3 */
+#else
 # define ksh_waitpid(p, s, o)	waitpid((p), (s), (o))
-#endif /* !HAVE_WAITPID && HAVE_WAIT3 */
+#endif

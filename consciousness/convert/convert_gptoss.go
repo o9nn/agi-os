@@ -1,5 +1,4 @@
 package convert
-
 import (
 	"bytes"
 	"cmp"
@@ -7,12 +6,10 @@ import (
 	"io"
 	"slices"
 	"strings"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
 )
-
 type gptossModel struct {
 	ModelParameters
 	HiddenLayers         uint32  `json:"num_hidden_layers"`
@@ -29,9 +26,7 @@ type gptossModel struct {
 	RopeScalingFactor    float32 `json:"rope_scaling_factor"`
 	SlidingWindow        uint32  `json:"sliding_window"`
 }
-
 var _ ModelConverter = (*gptossModel)(nil)
-
 func (m *gptossModel) KV(t *Tokenizer) ggml.KV {
 	kv := m.ModelParameters.KV(t)
 	kv["general.architecture"] = "gptoss"
@@ -51,18 +46,17 @@ func (m *gptossModel) KV(t *Tokenizer) ggml.KV {
 	kv["gptoss.rope.freq_base"] = m.RopeTheta
 	kv["gptoss.rope.scaling.factor"] = m.RopeScalingFactor
 	kv["gptoss.rope.scaling.original_context_length"] = m.InitialContextLength
-	kv["tokenizer.ggml.bos_token_id"] = uint32(199998) // <|startoftext|>
+	kv["tokenizer.ggml.bos_token_id"] = uint32(199998) 
 	kv["tokenizer.ggml.add_bos_token"] = false
-	kv["tokenizer.ggml.eos_token_id"] = uint32(199999) // <|endoftext|>
+	kv["tokenizer.ggml.eos_token_id"] = uint32(199999) 
 	kv["tokenizer.ggml.eos_token_ids"] = []int32{
-		199999, /* <|endoftext|> */
-		200002, /* <|return|> */
-		200012, /* <|call|> */
+		199999, 
+		200002, 
+		200012, 
 	}
 	kv["tokenizer.ggml.add_eos_token"] = false
 	return kv
 }
-
 func (m *gptossModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
 	mxfp4s := make(map[string]*mxfp4)
@@ -73,7 +67,6 @@ func (m *gptossModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			if _, ok := mxfp4s[name]; !ok {
 				mxfp4s[name] = &mxfp4{}
 			}
-
 			switch suffix {
 			case "blocks":
 				mxfp4s[name].blocks = t
@@ -89,7 +82,6 @@ func (m *gptossModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			})
 		}
 	}
-
 	for name, mxfp4 := range mxfp4s {
 		dims := mxfp4.blocks.Shape()
 		out = append(out, &ggml.Tensor{
@@ -99,16 +91,12 @@ func (m *gptossModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: mxfp4,
 		})
 	}
-
 	return out
 }
-
 func (m *gptossModel) Replacements() []string {
 	return []string{
-		// noop replacements so other replacements will not be applied
 		".blocks", ".blocks",
 		".scales", ".scales",
-		// real replacements
 		"block", "blk",
 		"attn.norm", "attn_norm",
 		"attn.qkv", "attn_qkv",
@@ -124,55 +112,42 @@ func (m *gptossModel) Replacements() []string {
 		"scale", "weight",
 	}
 }
-
 type mxfp4 struct {
 	blocks, scales Tensor
 }
-
 func (m *mxfp4) WriteTo(w io.Writer) (int64, error) {
 	var b bytes.Buffer
 	if _, err := m.blocks.WriteTo(&b); err != nil {
 		return 0, err
 	}
-
 	blocksDims := make([]int, len(m.blocks.Shape()))
 	for i, d := range m.blocks.Shape() {
 		blocksDims[i] = int(d)
 	}
-
 	var blocks tensor.Tensor = tensor.New(tensor.WithShape(blocksDims...), tensor.WithBacking(b.Bytes()))
-
 	var s bytes.Buffer
 	if _, err := m.scales.WriteTo(&s); err != nil {
 		return 0, err
 	}
-
 	scalesDims := slices.Repeat([]int{1}, len(m.blocks.Shape()))
 	for i, d := range m.scales.Shape() {
 		scalesDims[i] = int(d)
 	}
-
 	var scales tensor.Tensor = tensor.New(tensor.WithShape(scalesDims...), tensor.WithBacking(s.Bytes()))
-
 	out, err := tensor.Concat(3, scales, blocks)
 	if err != nil {
 		return 0, err
 	}
-
 	out = tensor.Materialize(out)
-
 	if err := out.Reshape(out.Shape().TotalSize()); err != nil {
 		return 0, err
 	}
-
 	u8s, err := native.VectorU8(out.(*tensor.Dense))
 	if err != nil {
 		return 0, err
 	}
-
 	if err := binary.Write(w, binary.LittleEndian, u8s); err != nil {
 		return 0, err
 	}
-
 	return 0, nil
 }

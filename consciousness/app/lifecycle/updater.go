@@ -1,5 +1,4 @@
 package lifecycle
-
 import (
 	"context"
 	"crypto/rand"
@@ -18,51 +17,40 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
 	"github.com/EchoCog/echollama/auth"
 	"github.com/EchoCog/echollama/version"
 )
-
 var (
-	UpdateCheckURLBase  = "https://ollama.com/api/update"
+	UpdateCheckURLBase  = "https:
 	UpdateDownloaded    = false
 	UpdateCheckInterval = 60 * 60 * time.Second
 )
-
-// TODO - maybe move up to the API package?
 type UpdateResponse struct {
 	UpdateURL     string `json:"url"`
 	UpdateVersion string `json:"version"`
 }
-
 func IsNewReleaseAvailable(ctx context.Context) (bool, UpdateResponse) {
 	var updateResp UpdateResponse
-
 	requestURL, err := url.Parse(UpdateCheckURLBase)
 	if err != nil {
 		return false, updateResp
 	}
-
 	query := requestURL.Query()
 	query.Add("os", runtime.GOOS)
 	query.Add("arch", runtime.GOARCH)
 	query.Add("version", version.Version)
 	query.Add("ts", strconv.FormatInt(time.Now().Unix(), 10))
-
 	nonce, err := auth.NewNonce(rand.Reader, 16)
 	if err != nil {
 		return false, updateResp
 	}
-
 	query.Add("nonce", nonce)
 	requestURL.RawQuery = query.Encode()
-
 	data := []byte(fmt.Sprintf("%s,%s", http.MethodGet, requestURL.RequestURI()))
 	signature, err := auth.Sign(ctx, data)
 	if err != nil {
 		return false, updateResp
 	}
-
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, requestURL.String(), nil)
 	if err != nil {
 		slog.Warn(fmt.Sprintf("failed to check for update: %s", err))
@@ -70,7 +58,6 @@ func IsNewReleaseAvailable(ctx context.Context) (bool, UpdateResponse) {
 	}
 	req.Header.Set("Authorization", signature)
 	req.Header.Set("User-Agent", fmt.Sprintf("ollama/%s (%s %s) Go/%s", version.Version, runtime.GOARCH, runtime.GOOS, runtime.Version()))
-
 	slog.Debug("checking for available update", "requestURL", requestURL)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -78,7 +65,6 @@ func IsNewReleaseAvailable(ctx context.Context) (bool, UpdateResponse) {
 		return false, updateResp
 	}
 	defer resp.Body.Close()
-
 	if resp.StatusCode == http.StatusNoContent {
 		slog.Debug("check update response 204 (current version is up to date)")
 		return false, updateResp
@@ -87,7 +73,6 @@ func IsNewReleaseAvailable(ctx context.Context) (bool, UpdateResponse) {
 	if err != nil {
 		slog.Warn(fmt.Sprintf("failed to read body response: %s", err))
 	}
-
 	if resp.StatusCode != http.StatusOK {
 		slog.Info(fmt.Sprintf("check update error %d - %.96s", resp.StatusCode, string(body)))
 		return false, updateResp
@@ -97,20 +82,15 @@ func IsNewReleaseAvailable(ctx context.Context) (bool, UpdateResponse) {
 		slog.Warn(fmt.Sprintf("malformed response checking for update: %s", err))
 		return false, updateResp
 	}
-	// Extract the version string from the URL in the github release artifact path
 	updateResp.UpdateVersion = path.Base(path.Dir(updateResp.UpdateURL))
-
 	slog.Info("New update available at " + updateResp.UpdateURL)
 	return true, updateResp
 }
-
 func DownloadNewRelease(ctx context.Context, updateResp UpdateResponse) error {
-	// Do a head first to check etag info
 	req, err := http.NewRequestWithContext(ctx, http.MethodHead, updateResp.UpdateURL, nil)
 	if err != nil {
 		return err
 	}
-
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("error checking update: %w", err)
@@ -129,18 +109,13 @@ func DownloadNewRelease(ctx context.Context, updateResp UpdateResponse) error {
 	if err == nil {
 		filename = params["filename"]
 	}
-
 	stageFilename := filepath.Join(UpdateStageDir, etag, filename)
-
-	// Check to see if we already have it downloaded
 	_, err = os.Stat(stageFilename)
 	if err == nil {
 		slog.Info("update already downloaded")
 		return nil
 	}
-
 	cleanupOldDownloads()
-
 	req.Method = http.MethodGet
 	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
@@ -149,19 +124,16 @@ func DownloadNewRelease(ctx context.Context, updateResp UpdateResponse) error {
 	defer resp.Body.Close()
 	etag = strings.Trim(resp.Header.Get("etag"), "\"")
 	if etag == "" {
-		slog.Debug("no etag detected, falling back to filename based dedup") // TODO probably can get rid of this redundant log
+		slog.Debug("no etag detected, falling back to filename based dedup") 
 		etag = "_"
 	}
-
 	stageFilename = filepath.Join(UpdateStageDir, etag, filename)
-
 	_, err = os.Stat(filepath.Dir(stageFilename))
 	if errors.Is(err, os.ErrNotExist) {
 		if err := os.MkdirAll(filepath.Dir(stageFilename), 0o755); err != nil {
 			return fmt.Errorf("create ollama dir %s: %v", filepath.Dir(stageFilename), err)
 		}
 	}
-
 	payload, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read body response: %w", err)
@@ -175,15 +147,12 @@ func DownloadNewRelease(ctx context.Context, updateResp UpdateResponse) error {
 		return fmt.Errorf("write payload %s: %d vs %d -- %w", stageFilename, n, len(payload), err)
 	}
 	slog.Info("new update downloaded " + stageFilename)
-
 	UpdateDownloaded = true
 	return nil
 }
-
 func cleanupOldDownloads() {
 	files, err := os.ReadDir(UpdateStageDir)
 	if err != nil && errors.Is(err, os.ErrNotExist) {
-		// Expected behavior on first run
 		return
 	} else if err != nil {
 		slog.Warn(fmt.Sprintf("failed to list stage dir: %s", err))
@@ -198,13 +167,9 @@ func cleanupOldDownloads() {
 		}
 	}
 }
-
 func StartBackgroundUpdaterChecker(ctx context.Context, cb func(string) error) {
 	go func() {
-		// Don't blast an update message immediately after startup
-		// time.Sleep(30 * time.Second)
 		time.Sleep(3 * time.Second)
-
 		for {
 			available, resp := IsNewReleaseAvailable(ctx)
 			if available {

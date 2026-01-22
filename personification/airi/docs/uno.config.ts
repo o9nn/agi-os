@@ -1,9 +1,7 @@
 import type { Preset } from 'unocss'
-
 import { presetChromatic } from '@proj-airi/unocss-preset-chromatic'
 import { blackA, cyan, grass, green, indigo, mauve, purple, red, slate, teal, violet } from '@radix-ui/colors'
 import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWebFonts, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
-
 export default defineConfig({
   presets: [
     presetAttributify(),
@@ -83,8 +81,8 @@ export default defineConfig({
   ],
   content: {
     filesystem: [
-      '.vitepress/**/*.{js,ts,vue}',
-      'content/**/*.md',
+      '.vitepress*.{js,ts,vue}',
+      'content*.md',
     ],
   },
   safelist: [
@@ -156,10 +154,6 @@ export default defineConfig({
       ...purple,
       ...slate,
     },
-    /**
-     * https://github.com/unocss/unocss/blob/1031312057a3bea1082b7d938eb2ad640f57613a/packages-presets/preset-wind4/src/theme/animate.ts
-     * https://unocss.dev/presets/wind4#transformdirectives
-     */
     animation: {
       keyframes: {
         overlayShow: '{from{opacity:0}to{opacity:1}}',
@@ -257,7 +251,6 @@ html,:host {
     font-variation-settings: normal;
     -webkit-tap-highlight-color: transparent
 }
-
 code,kbd,samp,pre {
     font-family: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-feature-settings: normal;

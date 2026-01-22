@@ -1,11 +1,9 @@
 package model
-
 import (
 	"reflect"
 	"slices"
 	"strings"
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
 	"github.com/EchoCog/echollama/fs"
 	fsggml "github.com/EchoCog/echollama/fs/ggml"
@@ -14,7 +12,6 @@ import (
 	"github.com/EchoCog/echollama/ml/nn"
 	"github.com/EchoCog/echollama/model/input"
 )
-
 func TestParseTags(t *testing.T) {
 	cases := []struct {
 		value string
@@ -36,7 +33,6 @@ func TestParseTags(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.value, func(t *testing.T) {
 			got := ParseTags(tt.value)
@@ -46,25 +42,20 @@ func TestParseTags(t *testing.T) {
 		})
 	}
 }
-
 type fakeBackend struct {
 	*ggml.Backend
 	names []string
 }
-
 type fakeTensor struct {
 	*ggml.Tensor
 	Name string
 }
-
 func (m *fakeBackend) Get(name string) ml.Tensor {
 	if slices.Contains(m.names, name) {
 		return &fakeTensor{Name: name}
 	}
-
 	return nil
 }
-
 func TestPopulateFields(t *testing.T) {
 	type fakeLayer struct {
 		Query  *nn.Linear `gguf:"attn_q"`
@@ -72,14 +63,12 @@ func TestPopulateFields(t *testing.T) {
 		Value  *nn.Linear `gguf:"attn_v"`
 		Output *nn.Linear `gguf:"attn_o"`
 	}
-
 	type fakeModel struct {
 		Input      *nn.Embedding `gguf:"input"`
 		OutputNorm *nn.RMSNorm   `gguf:"output_norm"`
 		Output     *nn.Linear    `gguf:"output"`
 		Layers     [2]fakeLayer  `gguf:"blk"`
 	}
-
 	var m fakeModel
 	v := reflect.ValueOf(&m)
 	v.Elem().Set(populateFields(Base{b: &fakeBackend{
@@ -95,7 +84,6 @@ func TestPopulateFields(t *testing.T) {
 			"output.weight",
 		},
 	}}, v.Elem()))
-
 	if diff := cmp.Diff(fakeModel{
 		Input:      &nn.Embedding{Weight: &fakeTensor{Name: "input.weight"}},
 		OutputNorm: &nn.RMSNorm{Weight: &fakeTensor{Name: "output_norm.weight"}},
@@ -116,13 +104,11 @@ func TestPopulateFields(t *testing.T) {
 		t.Errorf("populateFields() set incorrect values (-want +got):\n%s", diff)
 	}
 }
-
 func TestPopulateFieldsAlternateName(t *testing.T) {
 	type fakeModel struct {
 		Input  *nn.Embedding `gguf:"input"`
 		Output *nn.Linear    `gguf:"output,alt:input"`
 	}
-
 	m := fakeModel{}
 	v := reflect.ValueOf(&m)
 	v.Elem().Set(populateFields(Base{b: &fakeBackend{
@@ -130,7 +116,6 @@ func TestPopulateFieldsAlternateName(t *testing.T) {
 			"input.weight",
 		},
 	}}, v.Elem()))
-
 	if diff := cmp.Diff(fakeModel{
 		Input:  &nn.Embedding{Weight: &fakeTensor{Name: "input.weight"}},
 		Output: &nn.Linear{Weight: &fakeTensor{Name: "input.weight"}},
@@ -138,7 +123,6 @@ func TestPopulateFieldsAlternateName(t *testing.T) {
 		t.Errorf("populateFields() set incorrect values (-want +got):\n%s", diff)
 	}
 }
-
 func TestGetTextProcessor(t *testing.T) {
 	tp, err := getTextProcessor(fsggml.KV{})
 	if err == nil {
@@ -148,7 +132,6 @@ func TestGetTextProcessor(t *testing.T) {
 	} else if tp != nil {
 		t.Error("expected nil tp")
 	}
-
 	models["dummy"] = func(fs.Config) (Model, error) {
 		return notTextProcessorModel{}, nil
 	}
@@ -161,17 +144,13 @@ func TestGetTextProcessor(t *testing.T) {
 		t.Error("expected nil tp")
 	}
 }
-
 type notTextProcessorModel struct{}
-
 func (notTextProcessorModel) Forward(ml.Context, input.Batch) (ml.Tensor, error) {
 	panic("unimplemented")
 }
-
 func (notTextProcessorModel) Backend() ml.Backend {
 	panic("unimplemented")
 }
-
 func (notTextProcessorModel) Config() config {
 	panic("unimplemented")
 }

@@ -1,10 +1,7 @@
 #!/usr/bin/env node
-
 const fs = require("fs");
 const path = require("path");
-
 const TOOL_ENTRY_FUNC = "run";
-
 function main() {
   const scriptfile = process.argv[2];
   const isTool = path.dirname(scriptfile) == "tools";
@@ -26,11 +23,6 @@ function main() {
   }
   console.log(JSON.stringify(declarations, null, 2));
 }
-
-/**
- * @param {string} contents
- * @param {bool} isTool
- */
 function extractFunctions(contents, isTool) {
   const output = [];
   const lines = contents.split("\n");
@@ -41,7 +33,7 @@ function extractFunctions(contents, isTool) {
     if (/^\s*\/\*/.test(line)) {
       isInComment = true;
       incompleteComment += `\n${line}`;
-    } else if (/^\s*\*\//.test(line)) {
+    } else if (/^\s*\*\
       isInComment = false;
       incompleteComment += `\n${line}`;
       jsdoc = incompleteComment;
@@ -80,11 +72,6 @@ function extractFunctions(contents, isTool) {
   }
   return output;
 }
-
-/**
- * @param {string} jsdoc
- * @param {string} funcName,
- */
 function parseJsDoc(jsdoc, funcName) {
   const lines = jsdoc.split("\n");
   let description = "";
@@ -121,14 +108,6 @@ function parseJsDoc(jsdoc, funcName) {
     params,
   };
 }
-
-/**
- * @typedef {ReturnType<parseParam>} Param
- */
-
-/**
- * @param {string} rawParam
- */
 function parseParam(rawParam) {
   const regex = /^{([^}]+)} +(\S+)( *- +| +)?/;
   const match = regex.exec(rawParam);
@@ -138,7 +117,6 @@ function parseParam(rawParam) {
   const type = match[1];
   let name = match[2];
   const description = rawParam.replace(regex, "");
-
   let required = true;
   if (/^\[.*\]$/.test(name)) {
     name = name.slice(1, -1);
@@ -147,11 +125,6 @@ function parseParam(rawParam) {
   let property = buildProperty(type, description);
   return { name, property, required };
 }
-
-/**
- * @param {string} type
- * @param {string} description
- */
 function buildProperty(type, description) {
   type = type.toLowerCase();
   const property = {};
@@ -175,12 +148,6 @@ function buildProperty(type, description) {
   property.description = description;
   return property;
 }
-
-/**
- * @param {string} name
- * @param {string} description
- * @param {Param[]} params
- */
 function buildDeclaration(name, description, params) {
   const declaration = {
     name,
@@ -203,20 +170,12 @@ function buildDeclaration(name, description, params) {
   }
   return declaration;
 }
-
-/**
- * @param {string} filePath
- */
 function getBasename(filePath) {
   const filenameWithExt = filePath.split(/[/\\]/).pop();
-
   const lastDotIndex = filenameWithExt.lastIndexOf(".");
-
   if (lastDotIndex === -1) {
     return filenameWithExt;
   }
-
   return filenameWithExt.substring(0, lastDotIndex);
 }
-
 main();

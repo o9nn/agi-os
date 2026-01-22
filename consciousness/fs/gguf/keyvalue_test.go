@@ -1,11 +1,8 @@
 package gguf
-
 import (
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
 )
-
 func split(name string, values map[string][]any) (matched []any, unmatched []any) {
 	for key, value := range values {
 		if key == name {
@@ -16,7 +13,6 @@ func split(name string, values map[string][]any) (matched []any, unmatched []any
 	}
 	return
 }
-
 func TestValue(t *testing.T) {
 	values := map[string][]any{
 		"int64":   {int(42), int8(42), int16(42), int32(42), int64(42)},
@@ -25,7 +21,6 @@ func TestValue(t *testing.T) {
 		"string":  {"42", "hello"},
 		"bool":    {true, false},
 	}
-
 	t.Run("int64", func(t *testing.T) {
 		matched, unmatched := split("int64", values)
 		for _, v := range matched {
@@ -34,7 +29,6 @@ func TestValue(t *testing.T) {
 				t.Errorf("expected 42, got %d", i64)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if i64 := kv.Int(); i64 != 0 {
@@ -42,7 +36,6 @@ func TestValue(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("uint64", func(t *testing.T) {
 		matched, unmatched := split("uint64", values)
 		for _, v := range matched {
@@ -51,7 +44,6 @@ func TestValue(t *testing.T) {
 				t.Errorf("expected 42, got %d", u64)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if u64 := kv.Uint(); u64 != 0 {
@@ -59,7 +51,6 @@ func TestValue(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("float64", func(t *testing.T) {
 		matched, unmatched := split("float64", values)
 		for _, v := range matched {
@@ -68,7 +59,6 @@ func TestValue(t *testing.T) {
 				t.Errorf("expected 42, got %f", f64)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if f64 := kv.Float(); f64 != 0 {
@@ -76,7 +66,6 @@ func TestValue(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("string", func(t *testing.T) {
 		matched, unmatched := split("string", values)
 		for _, v := range matched {
@@ -85,7 +74,6 @@ func TestValue(t *testing.T) {
 				t.Errorf("expected 42, got %s", s)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if s := kv.String(); s != "" {
@@ -93,7 +81,6 @@ func TestValue(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("bool", func(t *testing.T) {
 		matched, unmatched := split("bool", values)
 		for _, v := range matched {
@@ -102,7 +89,6 @@ func TestValue(t *testing.T) {
 				t.Errorf("expected true, got %v", b)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if b := kv.Bool(); b != false {
@@ -111,7 +97,6 @@ func TestValue(t *testing.T) {
 		}
 	})
 }
-
 func TestValues(t *testing.T) {
 	values := map[string][]any{
 		"int64s":   {[]int{42}, []int8{42}, []int16{42}, []int32{42}, []int64{42}},
@@ -120,7 +105,6 @@ func TestValues(t *testing.T) {
 		"strings":  {[]string{"42"}, []string{"hello"}},
 		"bools":    {[]bool{true}, []bool{false}},
 	}
-
 	t.Run("int64s", func(t *testing.T) {
 		matched, unmatched := split("int64s", values)
 		for _, v := range matched {
@@ -129,7 +113,6 @@ func TestValues(t *testing.T) {
 				t.Errorf("diff: %s", diff)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if i64s := kv.Ints(); i64s != nil {
@@ -137,7 +120,6 @@ func TestValues(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("uint64s", func(t *testing.T) {
 		matched, unmatched := split("uint64s", values)
 		for _, v := range matched {
@@ -146,7 +128,6 @@ func TestValues(t *testing.T) {
 				t.Errorf("diff: %s", diff)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if u64s := kv.Uints(); u64s != nil {
@@ -154,7 +135,6 @@ func TestValues(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("float64s", func(t *testing.T) {
 		matched, unmatched := split("float64s", values)
 		for _, v := range matched {
@@ -163,7 +143,6 @@ func TestValues(t *testing.T) {
 				t.Errorf("diff: %s", diff)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if f64s := kv.Floats(); f64s != nil {
@@ -171,7 +150,6 @@ func TestValues(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("strings", func(t *testing.T) {
 		matched, unmatched := split("strings", values)
 		for _, v := range matched {
@@ -180,7 +158,6 @@ func TestValues(t *testing.T) {
 				t.Errorf("diff: %s", diff)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if s := kv.Strings(); s != nil {
@@ -188,7 +165,6 @@ func TestValues(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("bools", func(t *testing.T) {
 		matched, unmatched := split("bools", values)
 		for _, v := range matched {
@@ -197,7 +173,6 @@ func TestValues(t *testing.T) {
 				t.Errorf("diff: %s", diff)
 			}
 		}
-
 		for _, v := range unmatched {
 			kv := KeyValue{"key", Value{v}}
 			if b := kv.Bools(); b != nil {

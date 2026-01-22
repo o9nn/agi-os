@@ -1,5 +1,4 @@
 import { runtime } from '@deltachat-desktop/runtime-interface'
-
 export const enum LastUsedSlot {
   Attachment = 'last_directory:attachment',
   ProfileImage = 'last_directory:profile_image',
@@ -9,7 +8,6 @@ export const enum LastUsedSlot {
   KeyImport = 'last_directory:keys_import',
   KeyExport = 'last_directory:keys_export',
 }
-
 const defaultLocations: {
   [key in LastUsedSlot]: Parameters<typeof runtime.getAppPath>[0]
 } = {
@@ -21,16 +19,13 @@ const defaultLocations: {
   [LastUsedSlot.KeyImport]: 'downloads',
   [LastUsedSlot.KeyExport]: 'downloads',
 }
-
 export async function rememberLastUsedPath(key: LastUsedSlot) {
   const defaultPath = await runtime.getAppPath(defaultLocations[key])
   const selectedPath = sessionStorage.getItem(key) || defaultPath
-
   const setLastPath = (lastPath: string) => {
     if (lastPath !== defaultPath) {
       sessionStorage.setItem(key, lastPath)
     }
   }
-
   return { defaultPath: selectedPath, setLastPath }
 }

@@ -1,11 +1,8 @@
 import type { BrowserWindow, IpcMainEvent } from 'electron'
-
 import strings from '@stdlib/string'
 import debug from 'debug'
-
 import { toErrorObject } from '@deditor-app/shared'
 import { ipcMain } from 'electron'
-
 export function defineIPCHandler<
   TMethods,
   TMethodName extends keyof TMethods = keyof TMethods,
@@ -17,16 +14,12 @@ export function defineIPCHandler<
   type MethodType = TMethods[TMethodName]
   type ParamType = MethodType extends (params: infer P) => any ? P : never
   type ReturnType = MethodType extends (...args: any[]) => infer R ? R : never
-
   const debugIpcHandler = debug(`deditor:ipc:handler:${strings.kebabcase(namespace)}:${strings.kebabcase(String(method))}`)
-
   return {
     handle: (handler: (context: { event: IpcMainEvent }, request: ParamType) => Promise<ReturnType>) => {
       const eventName = `${namespace}:${strings.kebabcase(String(method))}`
-
       const wrappedHandler = (event: IpcMainEvent, request: { _eventId: string, params: ParamType }) => {
         debugIpcHandler(`request:`, request)
-
         try {
           handler({ event }, request.params)
             .then((result) => {
@@ -50,7 +43,6 @@ export function defineIPCHandler<
           })
         }
       }
-
       ipcMain.on(`request:${eventName}`, wrappedHandler)
       return () => ipcMain.removeListener(`request:${eventName}`, wrappedHandler)
     },

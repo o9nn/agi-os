@@ -4,20 +4,16 @@ PWD=$(dirname "$0")
 JSON_FILE=$1
 METTA_FILE=""
 METTA_BIAS_FILE=""
-
-# check if optional parameter is present and are valid files
-if [ $# -gt 1 ]; then
+if [ $
   if [ -f "$2" ]; then
     METTA_FILE=$2
   fi
 fi
-if [ $# -gt 2 ]; then
+if [ $
   if [ -f "$3" ]; then
     METTA_BIAS_FILE=$3
   fi
 fi
-
-# check if optional args contain no-db and no-agents
 NO_DB=false
 NO_AGENTS=false
 for arg in "$@"; do
@@ -30,9 +26,7 @@ for arg in "$@"; do
       ;;
   esac
 done
-
 echo "Using JSON file: $JSON_FILE"
-# extract the scenario from json file name
 SCENARIO=$(basename "$JSON_FILE" .json)
 SENTENCE_NODE_COUNT=$(jq -r '."sentence-node-count"' "$JSON_FILE")
 WORD_COUNT=$(jq -r '."word-count"' "$JSON_FILE")
@@ -48,7 +42,6 @@ if [ -z "$METTA_FILE" ]; then
   rm -f 3rd_party_slots/python_inference_poc/output.metta
   $PWD/run_script.sh python3 $ITPPATH/metta_file_generator.py --sentence-node-count $SENTENCE_NODE_COUNT --word-count $WORD_COUNT --word-length $WORD_LENGTH --alphabet-range $ALPHABET --seed $SEED
 fi
-
 if [ -z "$METTA_BIAS_FILE" ]; then
   rm -f 3rd_party_slots/python_inference_poc/biased_predicates.metta
   $PWD/run_script.sh python3 $ITPPATH/predicate_generator.py  $ITPPATHD/output.metta --config-file $ITPPATHD/config/$SCENARIO.json
@@ -61,7 +54,6 @@ else
     cp -f "$METTA_BIAS_FILE" /tmp/biased_predicates.metta
   fi
   cp -f "$METTA_FILE" /tmp/output.metta
-
 fi
 if [ "$NO_DB" = false ] ; then
   das-cli db start

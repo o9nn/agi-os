@@ -1,6 +1,4 @@
 import type { CodeGenProvider } from './types'
-
-// TODO: cohere 'https://api.cohere.ai/compatibility/v1/'
 export const extraProviders: CodeGenProvider[] = [
   {
     apiKey: ['MINIMAX_API_KEY'],

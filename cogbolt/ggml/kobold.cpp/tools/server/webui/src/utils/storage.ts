@@ -1,12 +1,7 @@
-// coversations is stored in localStorage
-// format: { [convId]: { id: string, lastModified: number, messages: [...] } }
-
 import { CONFIG_DEFAULT } from '../Config';
 import { Conversation, Message, TimingReport } from './types';
 import Dexie, { Table } from 'dexie';
-
 const event = new EventTarget();
-
 type CallbackConversationChanged = (convId: string) => void;
 let onConversationChangedHandlers: [
   CallbackConversationChanged,
@@ -17,47 +12,27 @@ const dispatchConversationChange = (convId: string) => {
     new CustomEvent('conversationChange', { detail: { convId } })
   );
 };
-
 const db = new Dexie('LlamacppWebui') as Dexie & {
   conversations: Table<Conversation>;
   messages: Table<Message>;
 };
-
-// https://dexie.org/docs/Version/Version.stores()
 db.version(1).stores({
-  // Unlike SQL, you don’t need to specify all properties but only the one you wish to index.
   conversations: '&id, lastModified',
   messages: '&id, convId, [convId+id], timestamp',
 });
-
-// convId is a string prefixed with 'conv-'
 const StorageUtils = {
-  /**
-   * manage conversations
-   */
   async getAllConversations(): Promise<Conversation[]> {
-    await migrationLStoIDB().catch(console.error); // noop if already migrated
+    await migrationLStoIDB().catch(console.error); 
     return (await db.conversations.toArray()).sort(
       (a, b) => b.lastModified - a.lastModified
     );
   },
-  /**
-   * can return null if convId does not exist
-   */
   async getOneConversation(convId: string): Promise<Conversation | null> {
     return (await db.conversations.where('id').equals(convId).first()) ?? null;
   },
-  /**
-   * get all message nodes in a conversation
-   */
   async getMessages(convId: string): Promise<Message[]> {
     return await db.messages.where({ convId }).toArray();
   },
-  /**
-   * use in conjunction with getMessages to filter messages by leafNodeId
-   * includeRoot: whether to include the root node in the result
-   * if node with leafNodeId does not exist, return the path with the latest timestamp
-   */
   filterByLeafNodeId(
     msgs: Readonly<Message[]>,
     leafNodeId: Message['id'],
@@ -70,7 +45,6 @@ const StorageUtils = {
     }
     let startNode: Message | undefined = nodeMap.get(leafNodeId);
     if (!startNode) {
-      // if not found, we return the path with the latest timestamp
       let latestTime = -1;
       for (const msg of msgs) {
         if (msg.timestamp > latestTime) {
@@ -79,8 +53,6 @@ const StorageUtils = {
         }
       }
     }
-    // traverse the path from leafNodeId to root
-    // startNode can never be undefined here
     let currNode: Message | undefined = startNode;
     while (currNode) {
       if (currNode.type !== 'root' || (currNode.type === 'root' && includeRoot))
@@ -90,9 +62,6 @@ const StorageUtils = {
     res.sort((a, b) => a.timestamp - b.timestamp);
     return res;
   },
-  /**
-   * create a new conversation with a default root node
-   */
   async createConversation(name: string): Promise<Conversation> {
     const now = Date.now();
     const msgId = now;
@@ -103,7 +72,6 @@ const StorageUtils = {
       name,
     };
     await db.conversations.add(conv);
-    // create a root node
     await db.messages.add({
       id: msgId,
       convId: conv.id,
@@ -116,9 +84,6 @@ const StorageUtils = {
     });
     return conv;
   },
-  /**
-   * update the name of a conversation
-   */
   async updateConversationName(convId: string, name: string): Promise<void> {
     await db.conversations.update(convId, {
       name,
@@ -126,9 +91,6 @@ const StorageUtils = {
     });
     dispatchConversationChange(convId);
   },
-  /**
-   * if convId does not exist, throw an error
-   */
   async appendMsg(
     msg: Exclude<Message, 'parent' | 'children'>,
     parentNodeId: Message['id']
@@ -140,7 +102,6 @@ const StorageUtils = {
       const parentMsg = await db.messages
         .where({ convId, id: parentNodeId })
         .first();
-      // update the currNode of conversation
       if (!conv) {
         throw new Error(`Conversation ${convId} does not exist`);
       }
@@ -153,11 +114,9 @@ const StorageUtils = {
         lastModified: Date.now(),
         currNode: msg.id,
       });
-      // update parent
       await db.messages.update(parentNodeId, {
         children: [...parentMsg.children, msg.id],
       });
-      // create message
       await db.messages.add({
         ...msg,
         parent: parentNodeId,
@@ -166,9 +125,6 @@ const StorageUtils = {
     });
     dispatchConversationChange(convId);
   },
-  /**
-   * remove conversation by id
-   */
   async remove(convId: string): Promise<void> {
     await db.transaction('rw', db.conversations, db.messages, async () => {
       await db.conversations.delete(convId);
@@ -176,8 +132,6 @@ const StorageUtils = {
     });
     dispatchConversationChange(convId);
   },
-
-  // event listeners
   onConversationChanged(callback: CallbackConversationChanged) {
     const fn = (e: Event) => callback((e as CustomEvent).detail.convId);
     onConversationChangedHandlers.push([callback, fn]);
@@ -190,11 +144,8 @@ const StorageUtils = {
     }
     onConversationChangedHandlers = [];
   },
-
-  // manage config
   getConfig(): typeof CONFIG_DEFAULT {
     const savedVal = JSON.parse(localStorage.getItem('config') || '{}');
-    // to prevent breaking changes in the future, we always provide default value for missing keys
     return {
       ...CONFIG_DEFAULT,
       ...savedVal,
@@ -214,15 +165,10 @@ const StorageUtils = {
     }
   },
 };
-
 export default StorageUtils;
-
-// Migration from localStorage to IndexedDB
-
-// these are old types, LS prefix stands for LocalStorage
 interface LSConversation {
-  id: string; // format: `conv-{timestamp}`
-  lastModified: number; // timestamp from Date.now()
+  id: string; 
+  lastModified: number; 
   messages: LSMessage[];
 }
 interface LSMessage {

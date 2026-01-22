@@ -5,18 +5,14 @@ import {LlamaModelOptions, readGgufFileInfo} from "../../../src/index.js";
 import {GgufInsights} from "../../../src/gguf/insights/GgufInsights.js";
 import {defaultLlamaVramPadding} from "../../../src/bindings/getLlama.js";
 import {BuildGpu} from "../../../src/bindings/types.js";
-
 describe("functionary", () => {
     describe("model options", () => {
         describe("Resolve the correct number of GPU layers", async () => {
             const modelPath = await getModelFile("functionary-small-v2.5.Q4_0.gguf");
             const llama = await getTestLlama();
-
             const fileInfo = await readGgufFileInfo(modelPath);
             const ggufInsights = await GgufInsights.from(fileInfo, llama);
-
             const s1GB = Math.pow(1024, 3);
-
             async function resolveGpuLayers(gpuLayers: LlamaModelOptions["gpuLayers"], {
                 totalVram, freeVram, unifiedMemorySize = 0,
                 totalRam = 0, freeRam = 0,
@@ -39,7 +35,6 @@ describe("functionary", () => {
                     llamaSupportsGpuOffloading: llamaGpu !== false,
                     useMmap: true
                 });
-
                 async function resolveAutoContextSize() {
                     const resolvedConfig = await ggufInsights.configurationResolver.resolveAndScoreConfig({
                         targetGpuLayers: resolvedGpuLayers,
@@ -62,19 +57,15 @@ describe("functionary", () => {
                         llamaSupportsGpuOffloading: llamaGpu !== false,
                         llamaVramPaddingSize: defaultLlamaVramPadding(llamaGpu === false ? 0 : totalVram)
                     });
-
                     if (resolvedConfig.compatibilityScore === 0)
                         return null;
-
                     return resolvedConfig.resolvedValues.contextSize;
                 }
-
                 return {
                     gpuLayers: resolvedGpuLayers,
                     contextSize: await resolveAutoContextSize()
                 };
             }
-
             describe("attempts to resolve 0 gpuLayers", () => {
                 test("no RAM", async () => {
                     {
@@ -93,7 +84,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(0);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(0, {
                             totalVram: 0,
@@ -104,7 +94,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
                 });
-
                 test("some RAM", async () => {
                     {
                         const res = await resolveGpuLayers(0, {
@@ -126,7 +115,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(0);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(0, {
                             totalVram: 0,
@@ -139,7 +127,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
                 });
-
                 test("with swap", async () => {
                     {
                         const res = await resolveGpuLayers(0, {
@@ -165,7 +152,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(0);
                         expect(res.contextSize).to.toMatchInlineSnapshot("2048");
                     }
-
                     {
                         const res = await resolveGpuLayers(0, {
                             totalVram: 0,
@@ -181,7 +167,6 @@ describe("functionary", () => {
                     }
                 });
             });
-
             describe("attempts to resolve 16 gpuLayers", () => {
                 test("no RAM", async () => {
                     {
@@ -213,18 +198,12 @@ describe("functionary", () => {
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: s1GB * 6,
-
-                            // play with this number to make the test pass, it should be low enough so that there won't be any VRAM left
-                            // to create a context
                             freeVram: s1GB * 0.2,
-
                             ignoreMemorySafetyChecks: true
                         });
                         expect(res.gpuLayers).to.eql(16);
                         expect(res.contextSize).to.eql(null);
                     }
-
-
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: 0,
@@ -245,7 +224,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
                 });
-
                 test("some RAM", async () => {
                     {
                         const res = await resolveGpuLayers(16, {
@@ -282,21 +260,14 @@ describe("functionary", () => {
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: s1GB * 6,
-
-                            // play with this number to make the test pass, it should be low enough so that there won't be any VRAM left
-                            // to create a context
                             freeVram: s1GB * 0.2,
-
                             totalRam: s1GB * 3,
                             freeRam: s1GB * 2,
-
                             ignoreMemorySafetyChecks: true
                         });
                         expect(res.gpuLayers).to.eql(16);
                         expect(res.contextSize).to.eql(null);
                     }
-
-
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: 0,
@@ -321,7 +292,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("7680");
                     }
                 });
-
                 test("some unified RAM", async () => {
                     {
                         const res = await resolveGpuLayers(16, {
@@ -383,22 +353,15 @@ describe("functionary", () => {
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: s1GB * 8,
-
-                            // play with this number to make the test pass, it should be low enough so that there won't be any VRAM left
-                            // to create a context
                             freeVram: s1GB * 0.2,
-
                             totalRam: s1GB * 3,
                             freeRam: s1GB * 2,
                             unifiedMemorySize: s1GB * 8,
-
                             ignoreMemorySafetyChecks: true
                         });
                         expect(res.gpuLayers).to.eql(16);
                         expect(res.contextSize).to.eql(null);
                     }
-
-
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: s1GB * 6,
@@ -425,7 +388,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("2048");
                     }
                 });
-
                 test("with swap", async () => {
                     {
                         const res = await resolveGpuLayers(16, {
@@ -468,23 +430,16 @@ describe("functionary", () => {
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: s1GB * 6,
-
-                            // play with this number to make the test pass, it should be low enough so that there won't be any VRAM left
-                            // to create a context
                             freeVram: s1GB * 0.2,
-
                             totalRam: s1GB * 3,
                             freeRam: s1GB * 2,
                             totalSwap: s1GB * 6,
                             freeSwap: s1GB * 3,
-
                             ignoreMemorySafetyChecks: true
                         });
                         expect(res.gpuLayers).to.eql(16);
                         expect(res.contextSize).to.eql(null);
                     }
-
-
                     {
                         const res = await resolveGpuLayers(16, {
                             totalVram: 0,
@@ -514,7 +469,6 @@ describe("functionary", () => {
                     }
                 });
             });
-
             describe("attempts to resolve 32 gpuLayers", () => {
                 it("no RAM", async () => {
                     {
@@ -543,7 +497,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(32);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(32, {
                             totalVram: 0,
@@ -564,7 +517,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
                 });
-
                 it("some RAM", async () => {
                     {
                         const res = await resolveGpuLayers(32, {
@@ -598,7 +550,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(32);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(32, {
                             totalVram: 0,
@@ -635,11 +586,9 @@ describe("functionary", () => {
                     }
                 });
             });
-
             describe("attempts to resolve 33 gpuLayers", () => {
                 test("no RAM", async () => {
                     {
-                        // some RAM is always used to load the model (for the input layer)
                         const res = await resolveGpuLayers(33, {
                             totalVram: s1GB * 8,
                             freeVram: s1GB * 8
@@ -665,7 +614,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(33);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(33, {
                             totalVram: 0,
@@ -686,7 +634,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
                 });
-
                 test("some RAM", async () => {
                     {
                         const res = await resolveGpuLayers(33, {
@@ -740,7 +687,6 @@ describe("functionary", () => {
                         expect(res.gpuLayers).to.eql(33);
                         expect(res.contextSize).to.toMatchInlineSnapshot("null");
                     }
-
                     {
                         const res = await resolveGpuLayers(33, {
                             totalVram: 0,
@@ -798,7 +744,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("7680");
                     }
                 });
-
                 test("some unified RAM", async () => {
                     {
                         const res = await resolveGpuLayers(33, {
@@ -859,7 +804,6 @@ describe("functionary", () => {
                     }
                 });
             });
-
             it('attempts to resolve "max"', async () => {
                 try {
                     await resolveGpuLayers("max", {
@@ -870,7 +814,6 @@ describe("functionary", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 try {
                     await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -880,7 +823,6 @@ describe("functionary", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 try {
                     await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -890,7 +832,6 @@ describe("functionary", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 {
                     const res = await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -921,7 +862,6 @@ describe("functionary", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("1024");
                 }
             });
-
             describe('attempts to resolve "auto"', () => {
                 test("8GB RAM", async () => {
                     {
@@ -1085,7 +1025,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("8192");
                     }
                 });
-
                 test("5GB RAM", async () => {
                     {
                         const res = await resolveGpuLayers("auto", {
@@ -1249,7 +1188,6 @@ describe("functionary", () => {
                     }
                 });
             });
-
             describe("attempts to resolve {min?: number, max?: number}", () => {
                 test("8GB RAM", async () => {
                     {
@@ -1294,7 +1232,6 @@ describe("functionary", () => {
                     } catch (err) {
                         expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                     }
-
                     {
                         const res = await resolveGpuLayers({max: 16}, {
                             totalVram: s1GB * 6,
@@ -1352,7 +1289,6 @@ describe("functionary", () => {
                         expect(res.contextSize).to.toMatchInlineSnapshot("4096");
                     }
                 });
-
                 test("5GB RAM", async () => {
                     {
                         const res = await resolveGpuLayers({max: 4}, {
@@ -1396,7 +1332,6 @@ describe("functionary", () => {
                     } catch (err) {
                         expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                     }
-
                     {
                         const res = await resolveGpuLayers({max: 16}, {
                             totalVram: s1GB * 6,
@@ -1455,7 +1390,6 @@ describe("functionary", () => {
                     }
                 });
             });
-
             describe("attempts to resolve {fitContext?: {contextSize?: number}}", () => {
                 test("8GB RAM", async () => {
                     {
@@ -1545,7 +1479,6 @@ describe("functionary", () => {
                         }
                     }
                 });
-
                 test("7GB RAM", async () => {
                     {
                         const contextSize = 4096;

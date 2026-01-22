@@ -1,10 +1,5 @@
 #include	"../cc/cc.h"
 #include	"../5c/5.out.h"
-
-/*
- * 5c/arm
- * Arm
- */
 #define	SZ_CHAR		1
 #define	SZ_SHORT	2
 #define	SZ_INT		4
@@ -15,7 +10,6 @@
 #define	SZ_DOUBLE	8
 #define	FNX		100
 #define	BTRUE		0x1000
-
 typedef	struct	Adr	Adr;
 typedef	struct	Prog	Prog;
 typedef	struct	Case	Case;
@@ -25,116 +19,97 @@ typedef	struct	Hintab	Hintab;
 typedef	struct	Var	Var;
 typedef	struct	Reg	Reg;
 typedef	struct	Rgn	Rgn;
-
-
 #define	R0ISZERO	0
-
 struct	Adr
 {
-	long	offset;
-	double	dval;
-	char	sval[NSNAME];
-	Ieee	ieee;
-
-	Sym*	sym;
-	char	type;
-	char	reg;
-	char	name;
-	char	etype;
+long	offset;
+double	dval;
+char	sval[NSNAME];
+Ieee	ieee;
+Sym*	sym;
+char	type;
+char	reg;
+char	name;
+char	etype;
 };
 #define	A	((Adr*)0)
-
 #define	INDEXED	9
 struct	Prog
 {
-	Adr	from;
-	Adr	to;
-	Prog*	link;
-	long	lineno;
-	char	as;
-	char	reg;
-	uchar	scond;
+Adr	from;
+Adr	to;
+Prog*	link;
+long	lineno;
+char	as;
+char	reg;
+uchar	scond;
 };
 #define	P	((Prog*)0)
-
 struct	Case
 {
-	Case*	link;
-	vlong	val;
-	long	label;
-	char	def;
-	char isv;
+Case*	link;
+vlong	val;
+long	label;
+char	def;
+char isv;
 };
 #define	C	((Case*)0)
-
 struct	C1
 {
-	vlong	val;
-	long	label;
+vlong	val;
+long	label;
 };
-
 struct	Multab
 {
-	long	val;
-	char	code[20];
+long	val;
+char	code[20];
 };
-
 struct	Hintab
 {
-	ushort	val;
-	char	hint[10];
+ushort	val;
+char	hint[10];
 };
-
 struct	Var
 {
-	long	offset;
-	Sym*	sym;
-	char	name;
-	char	etype;
+long	offset;
+Sym*	sym;
+char	name;
+char	etype;
 };
-
 struct	Reg
 {
-	long	pc;
-	long	rpo;		/* reverse post ordering */
-
-	Bits	set;
-	Bits	use1;
-	Bits	use2;
-
-	Bits	refbehind;
-	Bits	refahead;
-	Bits	calbehind;
-	Bits	calahead;
-	Bits	regdiff;
-	Bits	act;
-
-	long	regu;
-	long	loop;		/* could be shorter */
-
-	
-	Reg*	log5;
-	long	active;
-
-	Reg*	p1;
-	Reg*	p2;
-	Reg*	p2link;
-	Reg*	s1;
-	Reg*	s2;
-	Reg*	link;
-	Prog*	prog;
+long	pc;
+long	rpo;
+Bits	set;
+Bits	use1;
+Bits	use2;
+Bits	refbehind;
+Bits	refahead;
+Bits	calbehind;
+Bits	calahead;
+Bits	regdiff;
+Bits	act;
+long	regu;
+long	loop;
+Reg*	log5;
+long	active;
+Reg*	p1;
+Reg*	p2;
+Reg*	p2link;
+Reg*	s1;
+Reg*	s2;
+Reg*	link;
+Prog*	prog;
 };
 #define	R	((Reg*)0)
-
-#define	NRGN	1000		/* was 600; raised for paranoia.c */
+#define	NRGN	1000
 struct	Rgn
 {
-	Reg*	enter;
-	short	cost;
-	short	varno;
-	short	regno;
+Reg*	enter;
+short	cost;
+short	varno;
+short	regno;
 };
-
 EXTERN	long	breakpc;
 EXTERN	long	nbreak;
 EXTERN	Case*	cases;
@@ -165,34 +140,26 @@ EXTERN	char	reg[NREG+NFREG];
 EXTERN	long	exregoffset;
 EXTERN	long	exfregoffset;
 EXTERN	int	suppress;
-
 #define	BLOAD(r)	band(bnot(r->refbehind), r->refahead)
 #define	BSTORE(r)	band(bnot(r->calbehind), r->calahead)
 #define	LOAD(r)		(~r->refbehind.b[z] & r->refahead.b[z])
 #define	STORE(r)	(~r->calbehind.b[z] & r->calahead.b[z])
-
 #define	bset(a,n)	((a).b[(n)/32]&(1L<<(n)%32))
-
 #define	CLOAD	4
 #define	CREF	5
 #define	CINF	1000
 #define	LOOP	3
-
 EXTERN	Rgn	region[NRGN];
 EXTERN	Rgn*	rgp;
 EXTERN	int	nregion;
 EXTERN	int	nvar;
-
 EXTERN	Bits	externs;
 EXTERN	Bits	params;
 EXTERN	Bits	consts;
 EXTERN	Bits	addrs;
-
 EXTERN	long	regbits;
 EXTERN	long	exregbits;
-
 EXTERN	int	change;
-
 EXTERN	Reg*	firstr;
 EXTERN	Reg*	lastr;
 EXTERN	Reg	zreg;
@@ -201,23 +168,14 @@ EXTERN	Var	var[NVAR];
 EXTERN	long*	idom;
 EXTERN	Reg**	rpo2r;
 EXTERN	long	maxnr;
-
 extern	char*	anames[];
 extern	Hintab	hintab[];
-
-/*
- * sgen.c
- */
 void	codgen(Node*, Node*);
 void	gen(Node*);
 void	noretval(int);
 void	usedset(Node*, int);
 void	xcom(Node*);
 int	bcomplex(Node*, Node*);
-
-/*
- * cgen.c
- */
 void	cgen(Node*, Node*);
 void	cgenrel(Node*, Node*, int);
 void	reglcgen(Node*, Node*, Node*);
@@ -226,10 +184,6 @@ void	bcgen(Node*, int);
 void	boolgen(Node*, int, Node*);
 void	sugen(Node*, Node*, long);
 void	layout(Node*, Node*, int, int, Node*);
-
-/*
- * txt.c
- */
 void	ginit(void);
 void	gclean(void);
 void	nextpc(void);
@@ -262,10 +216,6 @@ void	patch(Prog*, long);
 int	sconst(Node*);
 int	sval(long);
 void	gpseudo(int, Sym*, Node*);
-
-/*
- * swt.c
- */
 int	swcmp(const void*, const void*);
 void	doswit(Node*);
 void	swit1(C1*, int, long, Node*);
@@ -280,10 +230,6 @@ void	nullwarn(Node*, Node*);
 void	gextern(Sym*, Node*, long, long);
 void	outcode(void);
 void	ieeedtod(Ieee*, double);
-
-/*
- * list
- */
 void	listinit(void);
 int	Pconv(Fmt*);
 int	Aconv(Fmt*);
@@ -292,10 +238,6 @@ int	Sconv(Fmt*);
 int	Nconv(Fmt*);
 int	Bconv(Fmt*);
 int	Rconv(Fmt*);
-
-/*
- * reg.c
- */
 Reg*	rega(void);
 int	rcmp(const void*, const void*);
 void	regopt(Prog*);
@@ -309,10 +251,6 @@ void	paint1(Reg*, int);
 ulong	paint2(Reg*, int);
 void	paint3(Reg*, int, long, int);
 void	addreg(Adr*, int);
-
-/*
- * peep.c
- */
 void	peep(void);
 void	excise(Reg*);
 Reg*	uniqp(Reg*);
@@ -326,23 +264,19 @@ int	shiftprop(Reg*);
 void	constprop(Adr*, Adr*, Reg*);
 int	copy1(Adr*, Adr*, Reg*, int);
 int	copyu(Prog*, Adr*, Adr*);
-
 int	copyas(Adr*, Adr*);
 int	copyau(Adr*, Adr*);
 int	copyau1(Prog*, Adr*);
 int	copysub(Adr*, Adr*, Adr*, int);
 int	copysub1(Prog*, Adr*, Adr*, int);
-
 long	RtoB(int);
 long	FtoB(int);
 int	BtoR(long);
 int	BtoF(long);
-
-void	predicate(void); 
-int	isbranch(Prog *); 
-int	predicable(Prog *p); 
-int	modifiescpsr(Prog *p); 
-
+void	predicate(void);
+int	isbranch(Prog *);
+int	predicable(Prog *p);
+int	modifiescpsr(Prog *p);
 #pragma	varargck	type	"A"	int
 #pragma	varargck	type	"B"	Bits
 #pragma	varargck	type	"D"	Adr*

@@ -1,232 +1,36 @@
-#!/usr/bin/env python3
-"""
-Demonstration of Task 8.1.1 Model Serving Integration.
-
-This script demonstrates the integrated model serving infrastructure
-in the Deep Tree Echo FastAPI application.
-
-Note: This is a demonstration script showing the integration structure.
-Actual execution requires full Aphrodite Engine setup with dependencies.
-"""
-
 from typing import Optional
-
 def demonstrate_integration():
-    """
-    Demonstrate how the model serving infrastructure integrates
-    with the Deep Tree Echo FastAPI application.
-    """
-    
-    print("=" * 70)
-    print("Task 8.1.1: Model Serving Infrastructure Integration Demo")
-    print("=" * 70)
+    print('=' * 70)
+    print('Task 8.1.1: Model Serving Infrastructure Integration Demo')
+    print('=' * 70)
     print()
-    
-    # Show the integration structure
-    print("1. APPLICATION INITIALIZATION")
-    print("-" * 70)
-    print("""
-from aphrodite.endpoints.deep_tree_echo.app_factory import create_app
-from aphrodite.engine.async_aphrodite import AsyncAphrodite
-
-# Create AsyncAphrodite engine (with your model)
-engine = AsyncAphrodite(
-    model="meta-llama/Meta-Llama-3.1-8B-Instruct",
-    # ... other engine configuration
-)
-
-# Create FastAPI app with integrated model serving
-app = create_app(engine=engine)
-
-# The app now includes:
-# - ModelServingManager initialized with the engine
-# - Model serving routes at /api/v1/model_serving/*
-# - Enhanced /health endpoint with model serving status
-    """)
-    
-    print("\n2. MODEL LOADING WITH CACHING")
-    print("-" * 70)
-    print("""
-# Example: Load a model with automatic caching
-import httpx
-
-async with httpx.AsyncClient() as client:
-    response = await client.post(
-        "http://localhost:8000/api/v1/model_serving/load",
-        json={
-            "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "version": "v1.0"
-        }
-    )
-    
-    result = response.json()
-    print(f"Model loaded: {result['data']['model_config']}")
-    print(f"DTESN optimized: {result['data']['dtesn_optimized']}")
-    print(f"Engine integrated: {result['data']['engine_integrated']}")
-    """)
-    
-    print("\n3. ZERO-DOWNTIME MODEL UPDATE")
-    print("-" * 70)
-    print("""
-# Example: Update model with zero downtime
-async with httpx.AsyncClient() as client:
-    response = await client.post(
-        "http://localhost:8000/api/v1/model_serving/update",
-        json={
-            "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "new_version": "v2.0"
-        }
-    )
-    
-    result = response.json()
-    if result['status'] == 'success':
-        print("Zero-downtime update completed!")
-        print(f"New version: {result['data']['new_version']}")
-        
-# Update process includes:
-# 1. Load new version alongside existing
-# 2. Comprehensive health check
-# 3. Gradual traffic shift (5% → 15% → 30% → 50% → 75% → 90% → 100%)
-# 4. Health monitoring at each stage
-# 5. Automatic rollback on failure
-    """)
-    
-    print("\n4. RESOURCE-AWARE ALLOCATION")
-    print("-" * 70)
-    print("""
-# Example: Get model resource allocation
-async with httpx.AsyncClient() as client:
-    response = await client.get(
-        "http://localhost:8000/api/v1/model_serving/models/meta-llama/Meta-Llama-3.1-8B-Instruct"
-    )
-    
-    data = response.json()['data']['model_allocation']
-    
-    # Memory allocation details
-    memory = data['memory_usage']
-    print(f"Model Memory: {memory['model_memory_gb']} GB")
-    print(f"Cache Memory: {memory['cache_memory_gb']} GB")
-    print(f"DTESN Memory: {memory['dtesn_memory_gb']} GB")
-    print(f"Total: {memory['total_estimated_gb']} GB")
-    print(f"Strategy: {memory['allocation_strategy']}")
-    
-    # DTESN optimizations
-    dtesn = data['dtesn_optimizations']
-    print(f"Membrane Depth: {dtesn['recommended_membrane_depth']}")
-    print(f"Reservoir Size: {dtesn['recommended_reservoir_size']}")
-    """)
-    
-    print("\n5. HEALTH MONITORING")
-    print("-" * 70)
-    print("""
-# Example: Check overall health with model serving status
-async with httpx.AsyncClient() as client:
-    response = await client.get("http://localhost:8000/health")
-    health = response.json()
-    
-    # Model serving status in health check
-    ms = health['model_serving']
-    print(f"Model Serving Enabled: {ms['enabled']}")
-    print(f"Cached Models: {ms['cached_models']}")
-    print(f"Healthy Models: {ms['healthy_models']}")
-    print(f"Cache Hit Rate: {ms['cache_hit_rate']:.2%}")
-    print(f"Engine Integrated: {ms['engine_integrated']}")
-    
-# Example: Specific model health check
-    response = await client.get(
-        "http://localhost:8000/api/v1/model_serving/health/meta-llama/Meta-Llama-3.1-8B-Instruct"
-    )
-    model_health = response.json()['data']
-    print(f"Model Health: {model_health['health_status']}")
-    """)
-    
-    print("\n6. PERFORMANCE METRICS")
-    print("-" * 70)
-    print("""
-# Example: Get performance metrics
-async with httpx.AsyncClient() as client:
-    response = await client.get(
-        "http://localhost:8000/api/v1/model_serving/metrics"
-    )
-    
-    metrics = response.json()['data']['performance_metrics']
-    print(f"Total Loads: {metrics['total_loads']}")
-    print(f"Success Rate: {metrics['success_rate_percent']}%")
-    print(f"Cache Hit Rate: {metrics['cache_hit_rate']:.2%}")
-    print(f"Average Load Time: {metrics['average_load_time']:.2f}ms")
-    print(f"Zero-Downtime Updates: {metrics['zero_downtime_updates']}")
-    """)
-    
-    print("\n7. DTESN INTEGRATION FEATURES")
-    print("-" * 70)
-    print("""
-The model serving infrastructure automatically applies DTESN-specific
-optimizations based on model characteristics:
-
-Small Models (7B parameters):
-  - Membrane depth: 4 levels
-  - Reservoir size: 512 units
-  - Optimized for efficiency
-
-Medium Models (13B parameters):
-  - Membrane depth: 6 levels
-  - Reservoir size: 1024 units
-  - Balanced performance
-
-Large Models (70B parameters):
-  - Membrane depth: 8 levels
-  - Reservoir size: 2048 units
-  - Maximum capacity
-
-Additional optimizations:
-  - B-Series computation caching
-  - P-System acceleration
-  - ESN reservoir integration
-  - Membrane processing parallelization
-    """)
-    
-    print("\n8. AVAILABLE API ENDPOINTS")
-    print("-" * 70)
-    print("""
-Status & Monitoring:
-  GET  /api/v1/model_serving/status
-  GET  /api/v1/model_serving/metrics
-
-Model Management:
-  POST /api/v1/model_serving/load
-  POST /api/v1/model_serving/update
-  DELETE /api/v1/model_serving/models/{model_id}
-
-Model Information:
-  GET  /api/v1/model_serving/models
-  GET  /api/v1/model_serving/models/{model_id}
-
-Health Checks:
-  GET  /api/v1/model_serving/health/{model_id}
-  POST /api/v1/model_serving/health_check/{model_id}
-
-Enhanced Global Health:
-  GET  /health
-    """)
-    
-    print("\n" + "=" * 70)
-    print("INTEGRATION COMPLETE ✅")
-    print("=" * 70)
-    print("""
-All Task 8.1.1 acceptance criteria met:
-  ✓ Server-side model loading and caching strategies
-  ✓ Model versioning with zero-downtime updates
-  ✓ Resource-aware model allocation for DTESN operations
-  ✓ Seamless model management without service interruption
-
-The model serving infrastructure is fully integrated and production-ready!
-
-For more information, see:
-  - TASK_8_1_1_MODEL_SERVING_INTEGRATION.md
-  - aphrodite/endpoints/deep_tree_echo/model_serving_manager.py
-  - aphrodite/endpoints/deep_tree_echo/model_serving_routes.py
-    """)
-
-
-if __name__ == "__main__":
+    print('1. APPLICATION INITIALIZATION')
+    print('-' * 70)
+    print('\nfrom aphrodite.endpoints.deep_tree_echo.app_factory import create_app\nfrom aphrodite.engine.async_aphrodite import AsyncAphrodite\n\n# Create AsyncAphrodite engine (with your model)\nengine = AsyncAphrodite(\n    model="meta-llama/Meta-Llama-3.1-8B-Instruct",\n    # ... other engine configuration\n)\n\n# Create FastAPI app with integrated model serving\napp = create_app(engine=engine)\n\n# The app now includes:\n# - ModelServingManager initialized with the engine\n# - Model serving routes at /api/v1/model_serving/*\n# - Enhanced /health endpoint with model serving status\n    ')
+    print('\n2. MODEL LOADING WITH CACHING')
+    print('-' * 70)
+    print('\n# Example: Load a model with automatic caching\nimport httpx\n\nasync with httpx.AsyncClient() as client:\n    response = await client.post(\n        "http://localhost:8000/api/v1/model_serving/load",\n        json={\n            "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",\n            "version": "v1.0"\n        }\n    )\n    \n    result = response.json()\n    print(f"Model loaded: {result[\'data\'][\'model_config\']}")\n    print(f"DTESN optimized: {result[\'data\'][\'dtesn_optimized\']}")\n    print(f"Engine integrated: {result[\'data\'][\'engine_integrated\']}")\n    ')
+    print('\n3. ZERO-DOWNTIME MODEL UPDATE')
+    print('-' * 70)
+    print('\n# Example: Update model with zero downtime\nasync with httpx.AsyncClient() as client:\n    response = await client.post(\n        "http://localhost:8000/api/v1/model_serving/update",\n        json={\n            "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",\n            "new_version": "v2.0"\n        }\n    )\n    \n    result = response.json()\n    if result[\'status\'] == \'success\':\n        print("Zero-downtime update completed!")\n        print(f"New version: {result[\'data\'][\'new_version\']}")\n        \n# Update process includes:\n# 1. Load new version alongside existing\n# 2. Comprehensive health check\n# 3. Gradual traffic shift (5% → 15% → 30% → 50% → 75% → 90% → 100%)\n# 4. Health monitoring at each stage\n# 5. Automatic rollback on failure\n    ')
+    print('\n4. RESOURCE-AWARE ALLOCATION')
+    print('-' * 70)
+    print('\n# Example: Get model resource allocation\nasync with httpx.AsyncClient() as client:\n    response = await client.get(\n        "http://localhost:8000/api/v1/model_serving/models/meta-llama/Meta-Llama-3.1-8B-Instruct"\n    )\n    \n    data = response.json()[\'data\'][\'model_allocation\']\n    \n    # Memory allocation details\n    memory = data[\'memory_usage\']\n    print(f"Model Memory: {memory[\'model_memory_gb\']} GB")\n    print(f"Cache Memory: {memory[\'cache_memory_gb\']} GB")\n    print(f"DTESN Memory: {memory[\'dtesn_memory_gb\']} GB")\n    print(f"Total: {memory[\'total_estimated_gb\']} GB")\n    print(f"Strategy: {memory[\'allocation_strategy\']}")\n    \n    # DTESN optimizations\n    dtesn = data[\'dtesn_optimizations\']\n    print(f"Membrane Depth: {dtesn[\'recommended_membrane_depth\']}")\n    print(f"Reservoir Size: {dtesn[\'recommended_reservoir_size\']}")\n    ')
+    print('\n5. HEALTH MONITORING')
+    print('-' * 70)
+    print('\n# Example: Check overall health with model serving status\nasync with httpx.AsyncClient() as client:\n    response = await client.get("http://localhost:8000/health")\n    health = response.json()\n    \n    # Model serving status in health check\n    ms = health[\'model_serving\']\n    print(f"Model Serving Enabled: {ms[\'enabled\']}")\n    print(f"Cached Models: {ms[\'cached_models\']}")\n    print(f"Healthy Models: {ms[\'healthy_models\']}")\n    print(f"Cache Hit Rate: {ms[\'cache_hit_rate\']:.2%}")\n    print(f"Engine Integrated: {ms[\'engine_integrated\']}")\n    \n# Example: Specific model health check\n    response = await client.get(\n        "http://localhost:8000/api/v1/model_serving/health/meta-llama/Meta-Llama-3.1-8B-Instruct"\n    )\n    model_health = response.json()[\'data\']\n    print(f"Model Health: {model_health[\'health_status\']}")\n    ')
+    print('\n6. PERFORMANCE METRICS')
+    print('-' * 70)
+    print('\n# Example: Get performance metrics\nasync with httpx.AsyncClient() as client:\n    response = await client.get(\n        "http://localhost:8000/api/v1/model_serving/metrics"\n    )\n    \n    metrics = response.json()[\'data\'][\'performance_metrics\']\n    print(f"Total Loads: {metrics[\'total_loads\']}")\n    print(f"Success Rate: {metrics[\'success_rate_percent\']}%")\n    print(f"Cache Hit Rate: {metrics[\'cache_hit_rate\']:.2%}")\n    print(f"Average Load Time: {metrics[\'average_load_time\']:.2f}ms")\n    print(f"Zero-Downtime Updates: {metrics[\'zero_downtime_updates\']}")\n    ')
+    print('\n7. DTESN INTEGRATION FEATURES')
+    print('-' * 70)
+    print('\nThe model serving infrastructure automatically applies DTESN-specific\noptimizations based on model characteristics:\n\nSmall Models (7B parameters):\n  - Membrane depth: 4 levels\n  - Reservoir size: 512 units\n  - Optimized for efficiency\n\nMedium Models (13B parameters):\n  - Membrane depth: 6 levels\n  - Reservoir size: 1024 units\n  - Balanced performance\n\nLarge Models (70B parameters):\n  - Membrane depth: 8 levels\n  - Reservoir size: 2048 units\n  - Maximum capacity\n\nAdditional optimizations:\n  - B-Series computation caching\n  - P-System acceleration\n  - ESN reservoir integration\n  - Membrane processing parallelization\n    ')
+    print('\n8. AVAILABLE API ENDPOINTS')
+    print('-' * 70)
+    print('\nStatus & Monitoring:\n  GET  /api/v1/model_serving/status\n  GET  /api/v1/model_serving/metrics\n\nModel Management:\n  POST /api/v1/model_serving/load\n  POST /api/v1/model_serving/update\n  DELETE /api/v1/model_serving/models/{model_id}\n\nModel Information:\n  GET  /api/v1/model_serving/models\n  GET  /api/v1/model_serving/models/{model_id}\n\nHealth Checks:\n  GET  /api/v1/model_serving/health/{model_id}\n  POST /api/v1/model_serving/health_check/{model_id}\n\nEnhanced Global Health:\n  GET  /health\n    ')
+    print('\n' + '=' * 70)
+    print('INTEGRATION COMPLETE ✅')
+    print('=' * 70)
+    print('\nAll Task 8.1.1 acceptance criteria met:\n  ✓ Server-side model loading and caching strategies\n  ✓ Model versioning with zero-downtime updates\n  ✓ Resource-aware model allocation for DTESN operations\n  ✓ Seamless model management without service interruption\n\nThe model serving infrastructure is fully integrated and production-ready!\n\nFor more information, see:\n  - TASK_8_1_1_MODEL_SERVING_INTEGRATION.md\n  - aphrodite/endpoints/deep_tree_echo/model_serving_manager.py\n  - aphrodite/endpoints/deep_tree_echo/model_serving_routes.py\n    ')
+if __name__ == '__main__':
     demonstrate_integration()

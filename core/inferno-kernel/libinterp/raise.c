@@ -1,6 +1,3 @@
-/*
- * Exceptions thrown by the interpreter
- */	
 char exAlt[]		 = "alt send/recv on same chan";
 char exBusy[]		 = "channel busy";
 char exModule[]		 = "module not loaded";

@@ -2,13 +2,11 @@ import {describe, expect, test} from "vitest";
 import {LlamaChatSession, isChatModelResponseSegment} from "../../../src/index.js";
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
 describe("qwen3 0.6b", () => {
     describe("reasoning budget", () => {
         test("doesn't exceed reasoning budget", {timeout: 1000 * 60 * 60 * 2}, async () => {
             const modelPath = await getModelFile("Qwen3-0.6B-Q8_0.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -18,9 +16,7 @@ describe("qwen3 0.6b", () => {
             const chatSession = new LlamaChatSession({
                 contextSequence: context.getSequence()
             });
-
             const initialChatHistory = chatSession.getChatHistory();
-
             async function promptWithBudget({
                 prompt, maxTokens, reasoningBudget
             }: {
@@ -28,7 +24,6 @@ describe("qwen3 0.6b", () => {
             }) {
                 let thoughtTokens = 0;
                 let totalTokens = 0;
-
                 chatSession.setChatHistory(initialChatHistory);
                 const {responseText, response} = await chatSession.promptWithMeta(prompt, {
                     maxTokens,
@@ -39,11 +34,9 @@ describe("qwen3 0.6b", () => {
                         if (chunk.type === "segment" && chunk.segmentType === "thought") {
                             thoughtTokens += chunk.tokens.length;
                         }
-
                         totalTokens += chunk.tokens.length;
                     }
                 });
-
                 return {
                     thoughtTokens,
                     totalTokens,
@@ -54,7 +47,6 @@ describe("qwen3 0.6b", () => {
                         .map((item) => item.text)
                 };
             }
-
             const res1 = await promptWithBudget({
                 prompt: "Where do llamas come from?",
                 reasoningBudget: 10,
@@ -64,7 +56,6 @@ describe("qwen3 0.6b", () => {
             expect(res1.thoughtTokens).to.be.lte(10);
             expect(res1.totalTokens).to.be.gte(16);
             expect(res1.totalTokens).to.be.lte(20);
-
             const res2 = await promptWithBudget({
                 prompt: "Where do llamas come from?",
                 reasoningBudget: 0,
@@ -73,7 +64,6 @@ describe("qwen3 0.6b", () => {
             expect(res2.thoughtTokens).to.be.eq(0);
             expect(res2.totalTokens).to.be.gte(16);
             expect(res2.totalTokens).to.be.lte(20);
-
             const res3 = await promptWithBudget({
                 prompt: "Where do llamas come from?",
                 reasoningBudget: 20,
@@ -82,7 +72,6 @@ describe("qwen3 0.6b", () => {
             expect(res3.thoughtTokens).to.be.eq(res3.totalTokens);
             expect(res3.totalTokens).to.be.gte(16);
             expect(res3.totalTokens).to.be.lte(20);
-
             const res4 = await promptWithBudget({
                 prompt: "Where do llamas come from?",
                 maxTokens: 20

@@ -1,48 +1,28 @@
-/*!
- * # Semantic UI 2.2.10 - Embed
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.embed = function(parameters) {
-
   var
     $allModules     = $(this),
-
     moduleSelector  = $allModules.selector || '',
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
-
     returnedValue
   ;
-
   $allModules
     .each(function() {
       var
         settings        = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.embed.settings, parameters)
           : $.extend({}, $.fn.embed.settings),
-
         selector        = settings.selector,
         className       = settings.className,
         sources         = settings.sources,
@@ -50,23 +30,18 @@ $.fn.embed = function(parameters) {
         metadata        = settings.metadata,
         namespace       = settings.namespace,
         templates       = settings.templates,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
         $window         = $(window),
         $module         = $(this),
         $placeholder    = $module.find(selector.placeholder),
         $icon           = $module.find(selector.icon),
         $embed          = $module.find(selector.embed),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
         module
       ;
-
       module = {
-
         initialize: function() {
           module.debug('Initializing embed');
           module.determine.autoplay();
@@ -74,7 +49,6 @@ $.fn.embed = function(parameters) {
           module.bind.events();
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of module', module);
           instance = module;
@@ -82,7 +56,6 @@ $.fn.embed = function(parameters) {
             .data(moduleNamespace, module)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying previous instance of embed');
           module.reset();
@@ -91,14 +64,12 @@ $.fn.embed = function(parameters) {
             .off(eventNamespace)
           ;
         },
-
         refresh: function() {
           module.verbose('Refreshing selector cache');
           $placeholder = $module.find(selector.placeholder);
           $icon        = $module.find(selector.icon);
           $embed       = $module.find(selector.embed);
         },
-
         bind: {
           events: function() {
             if( module.has.placeholder() ) {
@@ -110,7 +81,6 @@ $.fn.embed = function(parameters) {
             }
           }
         },
-
         create: function() {
           var
             placeholder = module.get.placeholder()
@@ -122,7 +92,6 @@ $.fn.embed = function(parameters) {
             module.createAndShow();
           }
         },
-
         createPlaceholder: function(placeholder) {
           var
             icon  = module.get.icon(),
@@ -133,7 +102,6 @@ $.fn.embed = function(parameters) {
           $module.html( templates.placeholder(placeholder, icon) );
           module.debug('Creating placeholder for embed', placeholder, icon);
         },
-
         createEmbed: function(url) {
           module.refresh();
           url = url || module.get.url();
@@ -145,19 +113,15 @@ $.fn.embed = function(parameters) {
           settings.onCreate.call(element, url);
           module.debug('Creating embed object', $embed);
         },
-
         changeEmbed: function(url) {
           $embed
             .html( module.generate.embed(url) )
           ;
         },
-
         createAndShow: function() {
           module.createEmbed();
           module.show();
         },
-
-        // sets new embed
         change: function(source, id, url) {
           module.debug('Changing video to ', source, id, url);
           $module
@@ -177,8 +141,6 @@ $.fn.embed = function(parameters) {
             module.create();
           }
         },
-
-        // clears embed
         reset: function() {
           module.debug('Clearing embed and showing placeholder');
           module.remove.active();
@@ -186,25 +148,20 @@ $.fn.embed = function(parameters) {
           module.showPlaceholder();
           settings.onReset.call(element);
         },
-
-        // shows current embed
         show: function() {
           module.debug('Showing embed');
           module.set.active();
           settings.onDisplay.call(element);
         },
-
         hide: function() {
           module.debug('Hiding embed');
           module.showPlaceholder();
         },
-
         showPlaceholder: function() {
           module.debug('Showing placeholder image');
           module.remove.active();
           settings.onPlaceholderDisplay.call(element);
         },
-
         get: {
           id: function() {
             return settings.id || $module.data(metadata.id);
@@ -244,7 +201,6 @@ $.fn.embed = function(parameters) {
             ;
           }
         },
-
         determine: {
           autoplay: function() {
             if(module.should.autoplay()) {
@@ -291,14 +247,11 @@ $.fn.embed = function(parameters) {
             return url;
           }
         },
-
-
         set: {
           active: function() {
             $module.addClass(className.active);
           }
         },
-
         remove: {
           active: function() {
             $module.removeClass(className.active);
@@ -307,7 +260,6 @@ $.fn.embed = function(parameters) {
             $embed.empty();
           }
         },
-
         encode: {
           parameters: function(parameters) {
             var
@@ -320,7 +272,6 @@ $.fn.embed = function(parameters) {
             return urlString.join('&amp;');
           }
         },
-
         generate: {
           embed: function(url) {
             module.debug('Generating embed html');
@@ -353,7 +304,6 @@ $.fn.embed = function(parameters) {
             return module.encode.parameters(parameters);
           }
         },
-
         has: {
           embed: function() {
             return ($embed.length > 0);
@@ -362,7 +312,6 @@ $.fn.embed = function(parameters) {
             return settings.placeholder || $module.data(metadata.placeholder);
           }
         },
-
         should: {
           autoplay: function() {
             return (settings.autoplay === 'auto')
@@ -371,13 +320,11 @@ $.fn.embed = function(parameters) {
             ;
           }
         },
-
         is: {
           video: function() {
             return module.get.type() == 'video';
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -543,7 +490,6 @@ $.fn.embed = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -563,31 +509,22 @@ $.fn.embed = function(parameters) {
     : this
   ;
 };
-
 $.fn.embed.settings = {
-
   name        : 'Embed',
   namespace   : 'embed',
-
   silent      : false,
   debug       : false,
   verbose     : false,
   performance : true,
-
   icon     : false,
   source   : false,
   url      : false,
   id       : false,
-
-  // standard video settings
   autoplay  : 'auto',
   color     : '#444444',
   hd        : true,
   brandedUI : false,
-
-  // additional parameters to include with the embed
   parameters: false,
-
   onDisplay            : function() {},
   onPlaceholderDisplay : function() {},
   onReset              : function() {},
@@ -595,7 +532,6 @@ $.fn.embed.settings = {
   onEmbed              : function(parameters) {
     return parameters;
   },
-
   metadata    : {
     id          : 'id',
     icon        : 'icon',
@@ -603,30 +539,26 @@ $.fn.embed.settings = {
     source      : 'source',
     url         : 'url'
   },
-
   error : {
     noURL  : 'No URL specified',
     method : 'The method you called is not defined'
   },
-
   className : {
     active : 'active',
     embed  : 'embed'
   },
-
   selector : {
     embed       : '.embed',
     placeholder : '.placeholder',
     icon        : '.icon'
   },
-
   sources: {
     youtube: {
       name   : 'youtube',
       type   : 'video',
       icon   : 'video play',
       domain : 'youtube.com',
-      url    : '//www.youtube.com/embed/{id}',
+      url    : '
       parameters: function(settings) {
         return {
           autohide       : !settings.brandedUI,
@@ -643,7 +575,7 @@ $.fn.embed.settings = {
       type   : 'video',
       icon   : 'video play',
       domain : 'vimeo.com',
-      url    : '//player.vimeo.com/video/{id}',
+      url    : '
       parameters: function(settings) {
         return {
           api      : settings.api,
@@ -656,7 +588,6 @@ $.fn.embed.settings = {
       }
     }
   },
-
   templates: {
     iframe : function(url, parameters) {
       var src = url;
@@ -682,15 +613,9 @@ $.fn.embed.settings = {
       return html;
     }
   },
-
-  // NOT YET IMPLEMENTED
   api     : false,
   onPause : function() {},
   onPlay  : function() {},
   onStop  : function() {}
-
 };
-
-
-
 })( jQuery, window, document );

@@ -5,17 +5,13 @@ import {
   start as globalStart,
   stop as globalStop,
 } from './global'
-
 export type { Lifecycle } from './builtin'
-
 export type { Logger, LoggerOptions } from './logger'
-
 export {
   createDefaultLogger,
   createLoggLogger,
   createNoopLogger,
 } from './logger'
-
 export {
   createContainer,
   invoke,
@@ -41,7 +37,6 @@ export type {
   ProvideOptionWithKeys,
   ResolveDependencyDeclaration,
 } from './scoped'
-
 export const injecta = {
   provide: globalProvide,
   invoke: globalInvoke,

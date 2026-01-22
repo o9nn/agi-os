@@ -1,6 +1,3 @@
-/**
- * https://github.com/rolldown/tsdown/blob/a7e267ab7f4e836e836dab5cecf029fc35fd1939/src/utils/general.ts
- */
 export function toArray<T>(
   val: T | T[] | null | undefined,
   defaultValue?: T,
@@ -17,11 +14,9 @@ export function toArray<T>(
     return [val]
   }
 }
-
 export function resolveComma<T extends string>(arr: T[]): T[] {
   return arr.flatMap(format => format.split(',') as T[])
 }
-
 export function resolveRegex<T>(str: T): T | RegExp {
   if (
     typeof str === 'string'
@@ -33,7 +28,6 @@ export function resolveRegex<T>(str: T): T | RegExp {
   }
   return str
 }
-
 export function debounce<T extends (...args: any[]) => any>(
   fn: T,
   wait: number,
@@ -48,13 +42,10 @@ export function debounce<T extends (...args: any[]) => any>(
     }, wait)
   } as T
 }
-
 export function slash(string: string): string {
   return string.replaceAll('\\', '/')
 }
-
 export const noop = <T>(v: T): T => v
-
 export function matchPattern(
   id: string,
   patterns: (string | RegExp)[],

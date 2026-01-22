@@ -1,6 +1,5 @@
 import type { MapPositionStruct } from 'factorio:prototype'
 import type { LuaEntity, PathfinderWaypoint } from 'factorio:runtime'
-
 export enum TaskStates {
   IDLE = 'idle',
   WALKING_TO_ENTITY = 'walking_to_entity',
@@ -15,7 +14,6 @@ export enum TaskStates {
   ATTACKING = 'attacking',
   WAITING = 'waiting',
 }
-
 export interface PlayerParametersWalkToEntity {
   type: TaskStates.WALKING_TO_ENTITY
   entity_name: string
@@ -26,56 +24,47 @@ export interface PlayerParametersWalkToEntity {
   calculating_path: boolean
   target_position: MapPositionStruct | null
 }
-
 export interface PlayerParametersWalkingDirect {
   type: TaskStates.WALKING_DIRECT
   target_position: MapPositionStruct | null
 }
-
 export interface PlayerParametersMineEntity {
   type: TaskStates.MINING
   entity_name: string
   count: number
   position?: MapPositionStruct
 }
-
 export interface PlayerParametersPlaceEntity {
   type: TaskStates.PLACING
   entity_name: string
   position?: MapPositionStruct
 }
-
 export interface PlayerParametersMoveItems {
   type: TaskStates.MOVING_ITEMS
   item_name: string
   entity_name: string
   max_count: number
-  to_entity: boolean // If true, the items will be moved to the entity, otherwise, the items will be moved to the player's inventory
+  to_entity: boolean 
 }
-
 export interface PlayerParametersCraftItem {
   type: TaskStates.CRAFTING
   item_name: string
   count: number
   crafted: number
 }
-
 export interface PlayerParametersAttackNearestEnemy {
   type: TaskStates.ATTACKING
   search_radius: number
   target: LuaEntity | null
 }
-
 export interface PlayerParametersResearchTechnology {
   type: TaskStates.RESEARCHING
   technology_name: string
 }
-
 export interface PlayerParametersWaiting {
   type: TaskStates.WAITING
   remaining_ticks: number
 }
-
 export type PlayerParameters
   = | PlayerParametersWalkToEntity
     | PlayerParametersWalkingDirect
@@ -86,7 +75,6 @@ export type PlayerParameters
     | PlayerParametersAttackNearestEnemy
     | PlayerParametersResearchTechnology
     | PlayerParametersWaiting
-
 export interface PlayerState {
   task_state: TaskStates
   parameters_walk_to_entity?: PlayerParametersWalkToEntity

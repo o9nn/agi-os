@@ -1,5 +1,4 @@
 import { md } from '@moeru-ai/ccc'
-
 export const relationships = [
   md.h(3, 'Relationships'),
   Object.entries({
@@ -15,7 +14,6 @@ export const relationships = [
     'Fujiwara no Mokou': md.p([
       'Mokou and Kaguya seem to have a mutual rivalry.',
       'The two fight, compete, and even kill each other for fun and to alleviate the boredom of eternal life.',
-      /** for SFW */
       'Having said that... But lately it has turned into a spell card game vs.',
     ]),
     'Reisen Udongein Inaba': md.p([

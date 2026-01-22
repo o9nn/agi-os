@@ -1,22 +1,17 @@
 package server
-
 import (
 	"bytes"
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/template"
 )
-
 func TestChatPrompt(t *testing.T) {
 	type expect struct {
 		prompt string
 		images [][]byte
 		error  error
 	}
-
 	tmpl, err := template.Parse(`
 {{- if .System }}{{ .System }} {{ end }}
 {{- if .Prompt }}{{ .Prompt }} {{ end }}
@@ -25,7 +20,6 @@ func TestChatPrompt(t *testing.T) {
 		t.Fatal(err)
 	}
 	visionModel := Model{Template: tmpl, ProjectorPaths: []string{"vision"}}
-
 	cases := []struct {
 		name  string
 		model Model
@@ -203,7 +197,6 @@ func TestChatPrompt(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			model := tt.model
@@ -215,20 +208,16 @@ func TestChatPrompt(t *testing.T) {
 			} else if tt.error != nil && err != tt.error {
 				t.Fatalf("expected err '%q', got '%q'", tt.error, err)
 			}
-
 			if diff := cmp.Diff(prompt, tt.prompt); diff != "" {
 				t.Errorf("mismatch (-got +want):\n%s", diff)
 			}
-
 			if len(images) != len(tt.images) {
 				t.Fatalf("expected %d images, got %d", len(tt.images), len(images))
 			}
-
 			for i := range images {
 				if images[i].ID != i {
 					t.Errorf("expected ID %d, got %d", i, images[i].ID)
 				}
-
 				if len(model.Config.ModelFamilies) == 0 {
 					if !bytes.Equal(images[i].Data, tt.images[i]) {
 						t.Errorf("expected %q, got %q", tt.images[i], images[i].Data)

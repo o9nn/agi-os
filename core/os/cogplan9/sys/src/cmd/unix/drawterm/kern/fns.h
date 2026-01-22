@@ -1,5 +1,4 @@
 #define	ROUND(s, sz)	(((s)+((sz)-1))&~((sz)-1))
-
 void		accounttime(void);
 void		addclock0link(void (*)(void), int);
 int		addphysseg(Physseg*);
@@ -383,4 +382,3 @@ void	procwakeup(Proc*);
 void	osinit(void);
 void	screeninit(void);
 extern	void	terminit(void);
-

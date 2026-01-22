@@ -1,4 +1,3 @@
-/* input modes */
 #define BRKINT	0x001
 #define ICRNL	0x002
 #define IGNBRK	0x004
@@ -10,8 +9,6 @@
 #define IXOFF	0x100
 #define IXON	0x200
 #define PARMRK	0x400
-
-/* output modes */
 #define	OPOST	0000001
 #define	OLCUC	0000002
 #define	ONLCR	0000004
@@ -42,8 +39,6 @@
 #define	FFDLY	0100000
 #define	FF0	0
 #define	FF1	0100000
-
-/* control modes */
 #define CLOCAL	0x001
 #define CREAD	0x002
 #define CSIZE	0x01C
@@ -55,8 +50,6 @@
 #define HUPCL	0x040
 #define PARENB	0x080
 #define PARODD	0x100
-
-/* local modes */
 #define ECHO	0x001
 #define ECHOE	0x002
 #define ECHOK	0x004
@@ -66,8 +59,6 @@
 #define ISIG	0x040
 #define NOFLSH	0x080
 #define TOSTOP	0x100
-
-/* control characters */
 #define VEOF	0
 #define VEOL	1
 #define VERASE	2
@@ -80,8 +71,6 @@
 #define VSTART	9
 #define VSTOP	10
 #define NCCS	11
-
-/* baud rates */
 #define B0	0
 #define B50	1
 #define B75	2
@@ -98,30 +87,26 @@
 #define B9600	13
 #define B19200	14
 #define B38400	15
-
 #define	CESC	'\\'
-#define	CINTR	0177	/* DEL */
-#define	CQUIT	034	/* FS, cntl | */
-#define	CERASE	010	/* BS */
-#define	CKILL	025	/* cntl u */
-#define	CEOF	04	/* cntl d */
-#define	CSTART	021	/* cntl q */
-#define	CSTOP	023	/* cntl s */
-#define	CSWTCH	032	/* cntl z */
+#define	CINTR	0177
+#define	CQUIT	034
+#define	CERASE	010
+#define	CKILL	025
+#define	CEOF	04
+#define	CSTART	021
+#define	CSTOP	023
+#define	CSWTCH	032
 #define CEOL	000
 #define	CNSWTCH	0
-
-/* optional actions for tcsetattr */
 #define TCSANOW	  1
 #define TCSADRAIN 2
 #define TCSAFLUSH 3
-
 typedef struct Termios Termios;
 struct Termios
 {
-	int	iflag;		/* input modes */
-	int	oflag;		/* output modes */
-	int	cflag;		/* control modes */
-	int	lflag;		/* local modes */
-	uchar	cc[NCCS];	/* control characters */
+int	iflag;
+int	oflag;
+int	cflag;
+int	lflag;
+uchar	cc[NCCS];
 };

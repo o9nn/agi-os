@@ -1,92 +1,79 @@
-#define	INS	32768		/* input buffer */
-#define	OBS	4096		/* outbut buffer */
-#define	NARG	128		/* Max number arguments to a macro */
-#define	NINCLUDE 64		/* Max number of include directories (-I) */
-#define	NIF	32		/* depth of nesting of #if */
+#define	INS	32768
+#define	OBS	4096
+#define	NARG	128
+#define	NINCLUDE 64
+#define	NIF	32
 #ifndef EOF
 #define	EOF	(-1)
 #endif
 #ifndef NULL
 #define NULL	0
 #endif
-
 enum toktype { END, UNCLASS, NAME, NUMBER, STRING, CCON, NL, WS, DSHARP,
-		EQ, NEQ, LEQ, GEQ, LSH, RSH, LAND, LOR, PPLUS, MMINUS,
-		ARROW, SBRA, SKET, LP, RP, DOT, AND, STAR, PLUS, MINUS,
-		TILDE, NOT, SLASH, PCT, LT, GT, CIRC, OR, QUEST,
-		COLON, ASGN, COMMA, SHARP, SEMIC, CBRA, CKET,
-		ASPLUS, ASMINUS, ASSTAR, ASSLASH, ASPCT, ASCIRC, ASLSH,
-		ASRSH, ASOR, ASAND, ELLIPS,
-		DSHARP1, NAME1, DEFINED, UMINUS };
-
+EQ, NEQ, LEQ, GEQ, LSH, RSH, LAND, LOR, PPLUS, MMINUS,
+ARROW, SBRA, SKET, LP, RP, DOT, AND, STAR, PLUS, MINUS,
+TILDE, NOT, SLASH, PCT, LT, GT, CIRC, OR, QUEST,
+COLON, ASGN, COMMA, SHARP, SEMIC, CBRA, CKET,
+ASPLUS, ASMINUS, ASSTAR, ASSLASH, ASPCT, ASCIRC, ASLSH,
+ASRSH, ASOR, ASAND, ELLIPS,
+DSHARP1, NAME1, DEFINED, UMINUS };
 enum kwtype { KIF, KIFDEF, KIFNDEF, KELIF, KELSE, KENDIF, KINCLUDE, KDEFINE,
-		KUNDEF, KLINE, KERROR, KWARNING, KPRAGMA, KDEFINED,
-		KLINENO, KFILE, KDATE, KTIME, KSTDC, KEVAL };
-
-#define	ISDEFINED	01	/* has #defined value */
-#define	ISKW		02	/* is PP keyword */
-#define	ISUNCHANGE	04	/* can't be #defined in PP */
-#define	ISMAC		010	/* builtin macro, e.g. __LINE__ */
-#define	ISVARMAC	020	/* variadic macro */
-
-#define	EOB	0xFE		/* sentinel for end of input buffer */
-#define	EOFC	0xFD		/* sentinel for end of input file */
-#define	XPWS	1		/* token flag: white space to assure token sep. */
-
+KUNDEF, KLINE, KERROR, KWARNING, KPRAGMA, KDEFINED,
+KLINENO, KFILE, KDATE, KTIME, KSTDC, KEVAL };
+#define	ISDEFINED	01
+#define	ISKW		02
+#define	ISUNCHANGE	04
+#define	ISMAC		010
+#define	ISVARMAC	020
+#define	EOB	0xFE
+#define	EOFC	0xFD
+#define	XPWS	1
 enum { Notinmacro, Inmacro };
-
 typedef struct token {
-	unsigned char	type;
-	unsigned char 	flag;
-	unsigned short	hideset;
-	unsigned int	wslen;
-	unsigned int	len;
-	uchar	*t;
+unsigned char	type;
+unsigned char 	flag;
+unsigned short	hideset;
+unsigned int	wslen;
+unsigned int	len;
+uchar	*t;
 } Token;
-
 typedef struct tokenrow {
-	Token	*tp;		/* current one to scan */
-	Token	*bp;		/* base (allocated value) */
-	Token	*lp;		/* last+1 token used */
-	int	max;		/* number allocated */
+Token	*tp;
+Token	*bp;
+Token	*lp;
+int	max;
 } Tokenrow;
-
 typedef struct source {
-	char	*filename;	/* name of file of the source */
-	int	line;		/* current line number */
-	int	lineinc;	/* adjustment for \\n lines */
-	uchar	*inb;		/* input buffer */
-	uchar	*inp;		/* input pointer */
-	uchar	*inl;		/* end of input */
-	int 	ins;		/* input buffer size */
-	int	fd;		/* input source */
-	int	ifdepth;	/* conditional nesting in include */
-	struct	source *next;	/* stack for #include */
+char	*filename;
+int	line;
+int	lineinc;
+uchar	*inb;
+uchar	*inp;
+uchar	*inl;
+int 	ins;
+int	fd;
+int	ifdepth;
+struct	source *next;
 } Source;
-
 typedef struct nlist {
-	struct nlist *next;
-	uchar	*name;
-	int	len;
-	Tokenrow *vp;		/* value as macro */
-	Tokenrow *ap;		/* list of argument names, if any */
-	char	val;		/* value as preprocessor name */
-	char	flag;		/* is defined, is pp name */
+struct nlist *next;
+uchar	*name;
+int	len;
+Tokenrow *vp;
+Tokenrow *ap;
+char	val;
+char	flag;
 } Nlist;
-
 typedef	struct	includelist {
-	char	deleted;
-	char	always;
-	char	*file;
+char	deleted;
+char	always;
+char	*file;
 } Includelist;
-
 #define	new(t)	(t *)domalloc(sizeof(t))
 #define	quicklook(a,b)	(namebit[(a)&077] & (1<<((b)&037)))
 #define	quickset(a,b)	namebit[(a)&077] |= (1<<((b)&037))
 extern	unsigned long namebit[077+1];
-
 enum errtype { WARNING, ERROR, FATAL };
-
 void	expandlex(void);
 void	fixlex(void);
 void	setup(int, char **);
@@ -142,7 +129,6 @@ void	iniths(void);
 void	setobjname(char *);
 void	clearwstab(void);
 #define	rowlen(tokrow)	((tokrow)->lp - (tokrow)->bp)
-
 extern	char *outp;
 extern	Token	nltoken;
 extern	Source *cursource;

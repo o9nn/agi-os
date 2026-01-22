@@ -25,23 +25,8 @@ export function translate(locale, messages) {
       if (typeof opts.quantity === "string") {
         message = entry[opts.quantity];
       } else if (typeof opts.quantity === "number") {
-        message = entry[opts.quantity] || // TODO fix: simply using `pluralRules.select()` to index
-        // into the object is not quite right,
-        // because the string could be untranslated, and it'd fall back to
-        // English, with only 'one' and 'other' plural categories,
-        // in which case we must apply the English
-        // plural rules instead of the current locale's rules.
-        //
-        // Currently this is behaves incorrectly e.g. for untranslated
-        // Indonesian (id), which only has the 'other' plural category,
-        // so even when we have to use 'one' for English, we'd use 'other'.
-        //
-        // But currently we don't have a way to distinguish between translated
-        // and untranslated strings in this code.
-        // See https://github.com/deltachat/deltachat-desktop/blob/b342a1d47b505e68caaec71f79c381c3f304405a/src/main/load-translations.ts#L44-L64
-        entry[pluralRules.select(opts.quantity)] || // This also catches the case where we failed to construct
-        // `Intl.PluralRules` for the currentl locale, and fall back to
-        // English (see `try catch` above).
+        message = entry[opts.quantity] || 
+        entry[pluralRules.select(opts.quantity)] || 
         entry["other"];
       } else {
         message = void 0;
@@ -85,4 +70,3 @@ export function translate(locale, messages) {
   }
   return getMessage;
 }
-//# sourceMappingURL=localize.js.map

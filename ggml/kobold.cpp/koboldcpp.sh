@@ -1,9 +1,7 @@
 #!/bin/bash
-
 if [ ! -f "bin/micromamba" ]; then
 	curl -Ls https://anaconda.org/conda-forge/micromamba/1.5.3/download/linux-64/micromamba-1.5.3-0.tar.bz2 | tar -xvj bin/micromamba
 fi
-
 if [[ ! -f "conda/envs/linux/bin/python" && $KCPP_CUDA != "rocm" || $1 == "rebuild" && $KCPP_CUDA != "rocm" ]]; then
 	cp environment.yaml environment.tmp.yaml
 	if [ -n "$KCPP_CUDA" ]; then
@@ -17,16 +15,13 @@ if [[ ! -f "conda/envs/linux/bin/python" && $KCPP_CUDA != "rocm" || $1 == "rebui
 	echo $KCPP_CUDA > conda/envs/linux/cudaver
 	echo rm environment.tmp.yaml
 fi
-
 if [[ ! -f "conda/envs/linux/bin/python" && $KCPP_CUDA == "rocm" || $1 == "rebuild" && $KCPP_CUDA == "rocm" ]]; then
 	bin/micromamba create --no-rc --no-shortcuts -r conda -p conda/envs/linux -f environment-nocuda.yaml -y
 	bin/micromamba run -r conda -p conda/envs/linux make clean
 	echo "rocm" > conda/envs/linux/cudaver
 fi
-
 KCPP_CUDA=$(<conda/envs/linux/cudaver)
 KCPP_CUDAAPPEND=-cuda${KCPP_CUDA//.}$KCPP_APPEND
-
 LLAMA_NOAVX2_FLAG=""
 ARCHES_FLAG=""
 NO_WMMA_FLAG=""
@@ -42,20 +37,17 @@ fi
 if [ -n "$NO_WMMA" ]; then
 	NO_WMMA_FLAG="LLAMA_NO_WMMA=1"
 fi
-
 if [ "$KCPP_CUDA" = "rocm" ]; then
 	bin/micromamba run -r conda -p conda/envs/linux make -j$(nproc) LLAMA_VULKAN=1 LLAMA_CLBLAST=1 LLAMA_HIPBLAS=1 LLAMA_PORTABLE=1 LLAMA_USE_BUNDLED_GLSLC=1 LLAMA_ADD_CONDA_PATHS=1 $LLAMA_NOAVX2_FLAG $ARCHES_FLAG $NO_WMMA_FLAG
 else
 	bin/micromamba run -r conda -p conda/envs/linux make -j$(nproc) LLAMA_VULKAN=1 LLAMA_CLBLAST=1 LLAMA_CUBLAS=1 LLAMA_PORTABLE=1 LLAMA_USE_BUNDLED_GLSLC=1 LLAMA_ADD_CONDA_PATHS=1 $LLAMA_NOAVX2_FLAG $ARCHES_FLAG $NO_WMMA_FLAG
 fi
-
 if [ $? -ne 0 ]; then
     echo "Error: make failed."
     exit 1
 fi
 bin/micromamba run -r conda -p conda/envs/linux chmod +x "./create_ver_file.sh"
 bin/micromamba run -r conda -p conda/envs/linux ./create_ver_file.sh
-
 if [[ $1 == "rebuild" ]]; then
 	echo Rebuild complete, you can now try to launch Koboldcpp.
 elif [[ $1 == "dist" ]]; then

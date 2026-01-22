@@ -1,5 +1,4 @@
 import type { Provider } from './types'
-
 export const overrides: Record<string, Partial<Provider>> = {
   'cerebras': {
     _capabilities: {

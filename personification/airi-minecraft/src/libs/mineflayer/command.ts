@@ -4,7 +4,6 @@ export interface CommandContext {
   command: string
   args: string[]
 }
-
 export function parseCommand(sender: string, message: string): CommandContext {
   const isCommand = message.startsWith('#')
   const command = message.split(' ')[0]

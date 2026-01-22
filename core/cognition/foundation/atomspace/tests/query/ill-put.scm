@@ -1,6 +1,4 @@
 (use-modules (opencog logger))
-
-;; Well formed PutLink
 (define put-1
 (PutLink
   (LambdaLink
@@ -8,8 +6,6 @@
     (VariableNode "$X"))
   (ConceptNode "A"))
 )
-
-;; Ill formed PutLinks (only detectable at run-time)
 (define put-2
 (PutLink
   put-1
@@ -20,7 +16,6 @@
   put-2
   (Concept "C"))
 )
-
 (define get-put
 (Get
   (TypedVariable
@@ -32,7 +27,6 @@
       (GroundedPredicate "scm-eager: well-formed?")
       (Variable "$P"))))
 )
-
 (define (well-formed? P)
   (cog-logger-debug "well-formed? P = ~a" P)
   (stv 1 1))

@@ -1,11 +1,7 @@
 import fs from "fs";
-
-/** @type {import('tailwindcss').Config} */
-
 let theme = {};
 try {
   const themePath = "./theme.json";
-
   if (fs.existsSync(themePath)) {
     theme = JSON.parse(fs.readFileSync(themePath, "utf-8"));
   }
@@ -140,8 +136,7 @@ const defaultTheme = {
   },
   darkMode: ["selector", '[data-appearance="dark"]'],
 }
-
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./index.html", "./src*.{js,ts,jsx,tsx}"],
   theme: { ...defaultTheme, ...theme },
 };

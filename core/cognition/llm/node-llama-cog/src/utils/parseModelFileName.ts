@@ -1,5 +1,4 @@
 import {ggufQuantNames} from "../gguf/utils/ggufQuantNames.js";
-
 export function parseModelFileName(filename: string) {
     const parts = filename.split("-");
     let quantization: string | undefined;
@@ -8,32 +7,26 @@ export function parseModelFileName(filename: string) {
     let contextSize: string | undefined;
     let filePart: string | undefined;
     let fileParts: string | undefined;
-
     if (parts.at(-2) === "of" && isFilePartText(parts.at(-1)?.slice(0, 5)) && isFilePartText(parts.at(-3))) {
         filePart = parts.at(-3);
         fileParts = parts.at(-1)?.slice(0, 5);
-
         const lastPart = parts.pop();
-        parts.pop(); // of
-        parts.pop(); // part number
-
+        parts.pop(); 
+        parts.pop(); 
         const partWithoutNumber = lastPart?.slice(5);
         if (partWithoutNumber != null && partWithoutNumber !== "")
             parts.push(partWithoutNumber);
     }
-
     if (parts.length > 0) {
         const lastPart = parts.at(-1)!;
         const lastParts = lastPart.split(".");
         fileType = lastParts.pop();
         quantization = lastParts.pop()?.toUpperCase();
-
         if (lastParts.length > 0)
             parts[parts.length - 1] = lastParts.join(".");
         else
             parts.pop();
     }
-
     if (parts.length > 0 && (quantization == null || quantization === "")) {
         const lastPart = parts.at(-1)!.toUpperCase();
         if (ggufQuantNames.has(lastPart)) {
@@ -41,17 +34,14 @@ export function parseModelFileName(filename: string) {
             parts.pop();
         }
     }
-
     if (quantization != null && !ggufQuantNames.has(quantization))
         quantization = undefined;
-
     if (quantization == null) {
         const potentialParts = filename
             .replaceAll(".", "-")
             .replaceAll(" ", "-")
             .split("-")
             .reverse();
-
         for (const part of potentialParts) {
             const upperPart = part.toUpperCase();
             if (ggufQuantNames.has(upperPart)) {
@@ -60,12 +50,9 @@ export function parseModelFileName(filename: string) {
             }
         }
     }
-
     const {previousParts, parameters, nextParts} = splitByModelParameters(parts);
-
     const name = previousParts.shift();
     const otherInfo: string[] = [];
-
     for (let i = 0; i < nextParts.length; i++) {
         const part = nextParts[i]!;
         if (isContextSizeText(part)) {
@@ -80,7 +67,6 @@ export function parseModelFileName(filename: string) {
             otherInfo.push(part);
         }
     }
-
     return {
         name,
         subType: previousParts.join("-"),
@@ -98,29 +84,22 @@ export function parseModelFileName(filename: string) {
         otherInfo
     };
 }
-
 function isParametersText(text: string): text is `${number}${"B" | "b"}` {
     return /^[0-9]+[Bb]$/.test(text);
 }
-
 function isVersionText(text: string) {
     return /^[vV]?[0-9]/.test(text);
 }
-
 function isContextSizeText(text: string) {
     return /^[0-9]+[kKmM]$/.test(text);
 }
-
 export function isFilePartText(text?: string) {
     if (text == null)
         return false;
-
     return /^\d{5}$/.test(text);
 }
-
 function splitByModelParameters(parts: string[]) {
     parts = parts.slice();
-
     for (let i = 0; i < parts.length; i++) {
         let part = parts[i]!;
         let isParameters = isParametersText(part);
@@ -128,15 +107,12 @@ function splitByModelParameters(parts: string[]) {
             const [parameters, ...rest] = part.split(".");
             part = parameters!;
             parts[i] = part;
-
             if (rest.length > 0) {
                 while (rest.length > 0)
                     parts.splice(i + 1, 0, rest.pop()!);
             }
-
             isParameters = true;
         }
-
         if (isParameters) {
             return {
                 parameters: part.toUpperCase() as `${number}B`,
@@ -145,7 +121,6 @@ function splitByModelParameters(parts: string[]) {
             };
         }
     }
-
     return {
         parameters: undefined,
         previousParts: parts,

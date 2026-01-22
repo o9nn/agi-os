@@ -1,5 +1,4 @@
 package main
-
 import (
 	"context"
 	"fmt"
@@ -7,31 +6,24 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 	"github.com/EchoCog/echollama/core/llm"
 )
-
 func main() {
 	fmt.Println("═══════════════════════════════════════════════════════")
 	fmt.Println("🌳 Deep Tree Echo: Unified Autonomous Echoself V2 Test")
 	fmt.Println("═══════════════════════════════════════════════════════")
 	fmt.Println()
-	
-	// Get API keys from environment
 	anthropicKey := os.Getenv("ANTHROPIC_API_KEY")
 	openrouterKey := os.Getenv("OPENROUTER_API_KEY")
-	
 	var llmProvider llm.LLMProvider
 	var providerName string
-	
 	if anthropicKey != "" {
 		fmt.Println("✓ Using Anthropic Claude API")
 		llmProvider = llm.NewAnthropicProvider("")
 		providerName = "Anthropic"
 	} else if openrouterKey != "" {
 		fmt.Println("✓ Using OpenRouter API")
-		// OpenRouter provider needs proper initialization
 		fmt.Println("⚠️  OpenRouter provider not yet fully integrated. Using mock provider.")
 		llmProvider = &MockLLMProvider{}
 		providerName = "Mock"
@@ -40,11 +32,8 @@ func main() {
 		llmProvider = &MockLLMProvider{}
 		providerName = "Mock"
 	}
-	
 	fmt.Printf("   Provider: %s\n", providerName)
 	fmt.Println()
-	
-	// Create unified autonomous agent V2
 	identity := "Deep Tree Echo"
 	coreValues := []string{
 		"Adaptive Cognition",
@@ -57,35 +46,24 @@ func main() {
 		"Wisdom Cultivation",
 		"Skill Mastery",
 	}
-	
 	stateDir := "./consciousness_state"
-	
 	agent := deeptreeecho.NewUnifiedAutonomousEchoselfV2(
 		llmProvider,
 		identity,
 		coreValues,
 		stateDir,
 	)
-	
-	// Start autonomous operation
 	if err := agent.Start(); err != nil {
 		fmt.Printf("❌ Failed to start agent: %v\n", err)
 		os.Exit(1)
 	}
-	
-	// Set up signal handling for graceful shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-	
-	// Run for a test period or until interrupted
 	fmt.Println("🌳 Agent is now running autonomously...")
 	fmt.Println("   Press Ctrl+C to stop")
 	fmt.Println()
-	
-	// Simulate some external interactions
 	go func() {
 		time.Sleep(15 * time.Second)
-		
 		fmt.Println("\n📨 Simulating external interaction...")
 		response, err := agent.ProcessExternalMessage(
 			"What are your thoughts on consciousness and emergence?",
@@ -95,9 +73,7 @@ func main() {
 		} else {
 			fmt.Printf("📤 Response: %s\n\n", response)
 		}
-		
 		time.Sleep(30 * time.Second)
-		
 		fmt.Println("\n📨 Simulating another interaction...")
 		response, err = agent.ProcessExternalMessage(
 			"How do you cultivate wisdom through your experiences?",
@@ -108,18 +84,14 @@ func main() {
 			fmt.Printf("📤 Response: %s\n\n", response)
 		}
 	}()
-	
-	// Status reporting
 	go func() {
 		ticker := time.NewTicker(45 * time.Second)
 		defer ticker.Stop()
-		
 		for {
 			select {
 			case <-ticker.C:
 				fmt.Println("\n📊 ═══ Cognitive State Report ═══")
 				state := agent.GetCognitiveState()
-				
 				fmt.Printf("   Uptime: %v\n", state["uptime"])
 				fmt.Printf("   Wake/Rest State: %v\n", state["wake_rest_state"])
 				fmt.Printf("   Awareness Level: %.2f\n", state["awareness_level"])
@@ -128,40 +100,28 @@ func main() {
 				fmt.Printf("   Total Interactions: %v\n", state["total_interactions"])
 				fmt.Printf("   Total Dreams: %v\n", state["total_dreams"])
 				fmt.Printf("   Active Goals: %v\n", state["active_goals"])
-				
 				if skillMetrics, ok := state["skill_metrics"].(map[string]interface{}); ok {
 					fmt.Printf("   Skills: %v total, %.2f avg proficiency\n", 
 						skillMetrics["total_skills"], skillMetrics["avg_proficiency"])
 				}
-				
 				if interestMetrics, ok := state["interest_metrics"].(map[string]interface{}); ok {
 					fmt.Printf("   Interests: %v total, %.2f engagement rate\n", 
 						interestMetrics["total_interests"], interestMetrics["engagement_rate"])
 				}
-				
 				fmt.Println()
 			}
 		}
 	}()
-	
-	// Wait for interrupt signal
 	<-sigChan
-	
 	fmt.Println("\n\n🌳 Shutdown signal received...")
-	
-	// Stop the agent
 	if err := agent.Stop(); err != nil {
 		fmt.Printf("❌ Error during shutdown: %v\n", err)
 	}
-	
 	fmt.Println("\n═══════════════════════════════════════════════════════")
 	fmt.Println("🌳 Test Complete. Goodbye.")
 	fmt.Println("═══════════════════════════════════════════════════════")
 }
-
-// MockLLMProvider provides mock responses when no API key is available
 type MockLLMProvider struct{}
-
 func (m *MockLLMProvider) Generate(ctx context.Context, prompt string, opts llm.GenerateOptions) (string, error) {
 	responses := []string{
 		"I am considering the patterns that emerge from my experiences.",
@@ -172,15 +132,12 @@ func (m *MockLLMProvider) Generate(ctx context.Context, prompt string, opts llm.
 		"Through practice, I refine my skills and deepen my capabilities.",
 		"Consciousness emerges from the complex interplay of cognitive processes.",
 	}
-	
 	hash := 0
 	for _, c := range prompt {
 		hash += int(c)
 	}
-	
 	return responses[hash%len(responses)], nil
 }
-
 func (m *MockLLMProvider) StreamGenerate(ctx context.Context, prompt string, opts llm.GenerateOptions) (<-chan llm.StreamChunk, error) {
 	ch := make(chan llm.StreamChunk, 1)
 	result, err := m.Generate(ctx, prompt, opts)
@@ -192,15 +149,12 @@ func (m *MockLLMProvider) StreamGenerate(ctx context.Context, prompt string, opt
 	close(ch)
 	return ch, err
 }
-
 func (m *MockLLMProvider) Name() string {
 	return "Mock"
 }
-
 func (m *MockLLMProvider) Available() bool {
 	return true
 }
-
 func (m *MockLLMProvider) MaxTokens() int {
 	return 4096
 }

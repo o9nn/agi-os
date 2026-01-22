@@ -13,9 +13,6 @@ const TypesClasses: Map<string, TypesClass> = new Map<string,TypesClass>(
         }]
     ]
 )
-
-
-//Red,Green,Yellow,Purple,Green,Blue,Brown,Pink,Grey,Purple,Orange,Blue
 export const SeedColors = [
     "IndianRed","Lime","Gold","Thistle","GreenYellow","Aquamarine","RosyBrown","LightPink","Lightgray","Lavender","Coral","Cyan",
     "Salmon","LightGreen","Yellow","Violet","SpringGreen","MediumTurquoise","Chocolate","HotPink","DarkGray","Fuchsia","Tomato","CadetBlue",
@@ -23,5 +20,4 @@ export const SeedColors = [
     "Red","OliveDrab","Khaki","DarkViolet","Olive","DeepSkyBlue","Sienna","MediumVioletRed","SlateGray","Purple","DarkOrange","DodgerBlue",
     "DarkRed","DarkOliveGreen","DarkKhaki","Indigo","Teal","Blue","Brown","PaleVioletRed","DarkSlateGrey","DarkSlateBlue","Orange","Navy","BurlyWood"
 ]
-
 export default TypesClasses;

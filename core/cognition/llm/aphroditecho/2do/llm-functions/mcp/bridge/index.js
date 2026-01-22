@@ -1,21 +1,16 @@
 #!/usr/bin/env node
-
 import * as path from "node:path";
 import * as fs from "node:fs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import express from "express";
-
 const app = express();
 const PORT = process.env.MCP_BRIDGE_PORT || 8808;
-
 let [rootDir] = process.argv.slice(2);
-
 if (!rootDir) {
   console.error("Usage: mcp-bridge <llm-functions-dir>");
   process.exit(1);
 }
-
 let mcpServers = {};
 const mcpJsonPath = path.join(rootDir, "mcp.json");
 try {
@@ -25,7 +20,6 @@ try {
   console.error(`Failed to read json at '${mcpJsonPath}'`);
   process.exit(1);
 }
-
 async function startMcpServer(id, serverConfig) {
   console.log(`Starting ${id} server...`);
   const capabilities = { tools: {} };
@@ -84,7 +78,6 @@ async function startMcpServer(id, serverConfig) {
     },
   }
 }
-
 async function runBridge() {
   let hasError = false;
   let runningMcpServers = await Promise.all(
@@ -105,7 +98,6 @@ async function runBridge() {
     await stopMcpServers();
     return;
   }
-
   const definitions = runningMcpServers.flatMap(s => s.tools.map(t => t.spec));
   const runTool = async (name, args) => {
     for (const server of runningMcpServers) {
@@ -116,16 +108,12 @@ async function runBridge() {
     }
     return `Not found tool '${name}'`;
   };
-
   app.use((err, _req, res, _next) => {
     res.status(500).send(err?.message || err);
   });
-
   app.use(express.json());
-
   app.get("/", (_req, res) => {
     res.send(`# MCP Bridge API
-  
 - POST /tools/:name 
   \`\`\`
   curl -X POST http://localhost:8808/tools/filesystem_write_file  \\
@@ -138,11 +126,9 @@ async function runBridge() {
   \`\`\`
   `);
   });
-
   app.get("/tools", (_req, res) => {
     res.json(definitions);
   });
-
   app.post("/tools/:name", async (req, res) => {
     try {
       const output = await runTool(req.params.name, req.body);
@@ -151,43 +137,34 @@ async function runBridge() {
       res.status(500).send(err);
     }
   });
-
   app.get("/pid", (_req, res) => {
     res.send(process.pid.toString());
   });
-
   app.get("/health", (_req, res) => {
     res.send("OK");
   });
-
   app.use((_req, res, _next) => {
     res.status(404).send("Not found");
   });
-
   const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
   return async () => {
     server.close(() => console.log("Http server closed"));
     await stopMcpServers();
   };
 }
-
 function arrayify(a) {
   let r;
   if (a === undefined) r = [];
   else if (Array.isArray(a)) r = a.slice(0);
   else r = [a];
-
   return r
 }
-
 function formatToolName(serverName, toolName, prefix) {
   const name = prefix ? `${serverName}_${toolName}` : toolName;
   return name.toLowerCase().replace(/-/g, "_");
 }
-
 runBridge()
   .then(stop => {
     if (stop) {

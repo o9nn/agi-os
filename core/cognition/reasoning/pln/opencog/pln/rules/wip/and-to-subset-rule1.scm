@@ -1,18 +1,3 @@
-; =============================================================================
-; And to Subset Rule1
-;
-; AndLink
-;   AndLink
-;       A
-;       B
-;   A
-; |-
-; SubsetLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define and-to-subset1-rule
     (BindLink
         (VariableList
@@ -33,7 +18,6 @@
                 (SubsetLink
                     (VariableNode "$A")
                     (VariableNode "$B"))))))
-
 (define (and-to-subset1-formula AAB A SAB)
     (cog-set-tv! 
         SAB
@@ -43,4 +27,3 @@
             (stv 
                 (/ (cog-mean AAB) (cog-mean A))
                 (min (cog-confidence AAB) (cog-confidence A))))))
- 

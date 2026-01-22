@@ -1,62 +1,11 @@
-/*
- * Copyright 2000 ATI Technologies Inc., Markham, Ontario, and
- *                VA Linux Systems Inc., Fremont, California.
- *
- * All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation on the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software,
- * and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice (including the
- * next paragraph) shall be included in all copies or substantial
- * portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NON-INFRINGEMENT.  IN NO EVENT SHALL ATI, VA LINUX SYSTEMS AND/OR
- * THEIR SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- *
- * Authors:
- *   Kevin E. Martin <martin@xfree86.org>
- *   Rickard E. Faith <faith@valinux.com>
- *   Alan Hourihane <alanh@fairlite.demon.co.uk>
- *
- * References:
- *
- * !!!! FIXME !!!!
- *   RAGE 128 VR/ RAGE 128 GL Register Reference Manual (Technical
- *   Reference Manual P/N RRG-G04100-C Rev. 0.04), ATI Technologies: April
- *   1999.
- *
- * !!!! FIXME !!!!
- *   RAGE 128 Software Development Manual (Technical Reference Manual P/N
- *   SDK-G04000 Rev. 0.01), ATI Technologies: June 1999.
- *
- * !!!! FIXME !!!!  NOTE: THIS FILE HAS BEEN CONVERTED FROM r128_reg.h
- * AND CONTAINS REGISTERS AND REGISTER DEFINITIONS THAT ARE NOT CORRECT
- * ON THE RADEON.  A FULL AUDIT OF THIS CODE IS NEEDED!
- */
-
 #define BIOS8(r, o)  ((uchar) (r->bios[o]))
 #define BIOS16(r, o) ((ushort)(r->bios[o] | (r->bios[(o) + 1] << 8)))
 #define BIOS32(r, o) ((ulong) (r->bios[o] | (r->bios[(o) + 1] << 8) | \
-	(r->bios[(o) + 2] << 16) | (r->bios[(o) + 3] << 24)))
-
+(r->bios[(o) + 2] << 16) | (r->bios[(o) + 3] << 24)))
 enum {
-	BIOS_START	= 0x48,
+BIOS_START	= 0x48,
 };
-
-/* Registers for 2D/Video/Overlay */
-#define ADAPTER_ID                   0x0f2c /* PCI */
+#define ADAPTER_ID                   0x0f2c
 #define AGP_BASE                     0x0170
 #define AGP_CNTL                     0x0174
 #       define AGP_APER_SIZE_256MB   (0x00 << 0)
@@ -67,17 +16,17 @@ enum {
 #       define AGP_APER_SIZE_8MB     (0x3e << 0)
 #       define AGP_APER_SIZE_4MB     (0x3f << 0)
 #       define AGP_APER_SIZE_MASK    (0x3f << 0)
-#define AGP_COMMAND                  0x0f60 /* PCI */
-#define AGP_PLL_CNTL                 0x000b /* PLL */
-#define AGP_STATUS                   0x0f5c /* PCI */
+#define AGP_COMMAND                  0x0f60
+#define AGP_PLL_CNTL                 0x000b
+#define AGP_STATUS                   0x0f5c
 #       define AGP_1X_MODE           0x01
 #       define AGP_2X_MODE           0x02
 #       define AGP_4X_MODE           0x04
 #       define AGP_FW_MODE           0x10
 #       define AGP_MODE_MASK         0x17
-#define ATTRDR                       0x03c1 /* VGA */
-#define ATTRDW                       0x03c0 /* VGA */
-#define ATTRX                        0x03c0 /* VGA */
+#define ATTRDR                       0x03c1
+#define ATTRDW                       0x03c0
+#define ATTRX                        0x03c0
 #define AUX_SC_CNTL                  0x1660
 #       define AUX1_SC_EN            (1 << 0)
 #       define AUX1_SC_MODE_OR       (0 << 1)
@@ -102,7 +51,6 @@ enum {
 #define AUX3_SC_TOP                  0x168c
 #define AUX_WINDOW_HORZ_CNTL         0x02d8
 #define AUX_WINDOW_VERT_CNTL         0x02dc
-
 #define BASE_CODE                    0x0f0b
 #define BIOS_0_SCRATCH               0x0010
 #define BIOS_1_SCRATCH               0x0014
@@ -112,8 +60,8 @@ enum {
 #define BIOS_5_SCRATCH               0x0024
 #define BIOS_6_SCRATCH               0x0028
 #define BIOS_7_SCRATCH               0x002c
-#define BIOS_ROM                     0x0f30 /* PCI */
-#define BIST                         0x0f0f /* PCI */
+#define BIOS_ROM                     0x0f30
+#define BIST                         0x0f0f
 #define BRUSH_DATA0                  0x1480
 #define BRUSH_DATA1                  0x1484
 #define BRUSH_DATA10                 0x14a8
@@ -189,14 +137,13 @@ enum {
 #       define BUS_READ_BURST         (1 << 30)
 #define BUS_CNTL1                    0x0034
 #       define BUS_WAIT_ON_LOCK_EN    (1 << 4)
-
 #define CACHE_CNTL                   0x1724
-#define CACHE_LINE                   0x0f0c /* PCI */
-#define CAP0_TRIG_CNTL               0x0950 /* ? */
-#define CAP1_TRIG_CNTL               0x09c0 /* ? */
-#define CAPABILITIES_ID              0x0f50 /* PCI */
-#define CAPABILITIES_PTR             0x0f34 /* PCI */
-#define CLK_PIN_CNTL                 0x0001 /* PLL */
+#define CACHE_LINE                   0x0f0c
+#define CAP0_TRIG_CNTL               0x0950
+#define CAP1_TRIG_CNTL               0x09c0
+#define CAPABILITIES_ID              0x0f50
+#define CAPABILITIES_PTR             0x0f34
+#define CLK_PIN_CNTL                 0x0001
 #define CLOCK_CNTL_DATA              0x000c
 #define CLOCK_CNTL_INDEX             0x0008
 #       define PLL_WR_EN             (1 << 7)
@@ -212,7 +159,7 @@ enum {
 #define CLR_CMP_MASK                 0x15cc
 #       define CLR_CMP_MSK           0xffffffff
 #define CLR_CMP_MASK_3D              0x1A28
-#define COMMAND                      0x0f04 /* PCI */
+#define COMMAND                      0x0f04
 #define COMPOSITE_SHADOW_ID          0x1a0c
 #define CONFIG_APER_0_BASE           0x0100
 #define CONFIG_APER_1_BASE           0x0104
@@ -340,8 +287,8 @@ enum {
 #define CRTC2_CRNT_FRAME             0x0314
 #define CRTC2_GUI_TRIG_VLINE         0x0318
 #define CRTC2_VLINE_CRNT_VLINE       0x0310
-#define CRTC8_DATA                   0x03d5 /* VGA, 0x3b5 */
-#define CRTC8_IDX                    0x03d4 /* VGA, 0x3b4 */
+#define CRTC8_DATA                   0x03d5
+#define CRTC8_IDX                    0x03d4
 #define CUR_CLR0                     0x026c
 #define CUR_CLR1                     0x0270
 #define CUR_HORZ_VERT_OFF            0x0268
@@ -354,7 +301,6 @@ enum {
 #define CUR2_HORZ_VERT_POSN          0x0364
 #define CUR2_OFFSET                  0x0360
 #       define CUR2_LOCK             (1 << 31)
-
 #define DAC_CNTL                     0x0058
 #       define DAC_RANGE_CNTL        (3 <<  0)
 #       define DAC_BLANKING          (1 <<  2)
@@ -377,10 +323,10 @@ enum {
 #       define DISP_DAC_SOURCE_MASK  0x03
 #       define DISP_DAC_SOURCE_CRTC2 0x01
 #define DAC_CRC_SIG                  0x02cc
-#define DAC_DATA                     0x03c9 /* VGA */
-#define DAC_MASK                     0x03c6 /* VGA */
-#define DAC_R_INDEX                  0x03c7 /* VGA */
-#define DAC_W_INDEX                  0x03c8 /* VGA */
+#define DAC_DATA                     0x03c9
+#define DAC_MASK                     0x03c6
+#define DAC_R_INDEX                  0x03c7
+#define DAC_W_INDEX                  0x03c8
 #define DDA_CONFIG                   0x02e0
 #define DDA_ON_OFF                   0x02e4
 #define DEFAULT_OFFSET               0x16e0
@@ -390,7 +336,7 @@ enum {
 #       define DEFAULT_SC_BOTTOM_MAX (0x1fff << 16)
 #define DESTINATION_3D_CLR_CMP_VAL   0x1820
 #define DESTINATION_3D_CLR_CMP_MSK   0x1824
-#define DEVICE_ID                    0x0f02 /* PCI */
+#define DEVICE_ID                    0x0f02
 #define DISP_MISC_CNTL               0x0d00
 #       define SOFT_RESET_GRPH_PP    (1 << 0)
 #define DP_BRUSH_BKGD_CLR            0x1478
@@ -521,7 +467,6 @@ enum {
 #define DST_Y                        0x1420
 #define DST_Y_SUB                    0x15a8
 #define DST_Y_X                      0x1438
-
 #define FCP_CNTL                     0x0910
 #      define FCP0_SRC_PCICLK             0
 #      define FCP0_SRC_PCLK               1
@@ -618,21 +563,20 @@ enum {
 #       define VERT_STRETCH_BLEND       (1     << 26)
 #       define VERT_AUTO_RATIO_EN       (1     << 27)
 #       define VERT_STRETCH_RESERVED    0xf1000000
-
 #define GEN_INT_CNTL                 0x0040
 #define GEN_INT_STATUS               0x0044
 #       define VSYNC_INT_AK          (1 <<  2)
 #       define VSYNC_INT             (1 <<  2)
 #       define VSYNC2_INT_AK         (1 <<  6)
 #       define VSYNC2_INT            (1 <<  6)
-#define GENENB                       0x03c3 /* VGA */
-#define GENFC_RD                     0x03ca /* VGA */
-#define GENFC_WT                     0x03da /* VGA, 0x03ba */
-#define GENMO_RD                     0x03cc /* VGA */
-#define GENMO_WT                     0x03c2 /* VGA */
-#define GENS0                        0x03c2 /* VGA */
-#define GENS1                        0x03da /* VGA, 0x03ba */
-#define GPIO_MONID                   0x0068 /* DDC interface via I2C */
+#define GENENB                       0x03c3
+#define GENFC_RD                     0x03ca
+#define GENFC_WT                     0x03da
+#define GENMO_RD                     0x03cc
+#define GENMO_WT                     0x03c2
+#define GENS0                        0x03c2
+#define GENS1                        0x03da
+#define GPIO_MONID                   0x0068
 #define GPIO_MONIDB                  0x006c
 #define GPIO_CRT2_DDC                0x006c
 #define GPIO_DVI_DDC                 0x0064
@@ -645,18 +589,17 @@ enum {
 #       define GPIO_Y_SHIFT_1        9
 #       define GPIO_EN_0             (1 << 16)
 #       define GPIO_EN_1             (1 << 17)
-#       define GPIO_MASK_0           (1 << 24) /*??*/
-#       define GPIO_MASK_1           (1 << 25) /*??*/
-#define GRPH8_DATA                   0x03cf /* VGA */
-#define GRPH8_IDX                    0x03ce /* VGA */
+#       define GPIO_MASK_0           (1 << 24)
+#       define GPIO_MASK_1           (1 << 25)
+#define GRPH8_DATA                   0x03cf
+#define GRPH8_IDX                    0x03ce
 #define GUI_SCRATCH_REG0             0x15e0
 #define GUI_SCRATCH_REG1             0x15e4
 #define GUI_SCRATCH_REG2             0x15e8
 #define GUI_SCRATCH_REG3             0x15ec
 #define GUI_SCRATCH_REG4             0x15f0
 #define GUI_SCRATCH_REG5             0x15f4
-
-#define HEADER                       0x0f0e /* PCI */
+#define HEADER                       0x0f0e
 #define HOST_DATA0                   0x17c0
 #define HOST_DATA1                   0x17c4
 #define HOST_DATA2                   0x17c8
@@ -668,16 +611,14 @@ enum {
 #define HOST_DATA_LAST               0x17e0
 #define HOST_PATH_CNTL               0x0130
 #       define HDP_SOFT_RESET        (1 << 26)
-#define HTOTAL_CNTL                  0x0009 /* PLL */
-#define HTOTAL2_CNTL                 0x002e /* PLL */
-
-#define I2C_CNTL_1                   0x0094 /* ? */
-#define DVI_I2C_CNTL_1               0x02e4 /* ? */
-#define INTERRUPT_LINE               0x0f3c /* PCI */
-#define INTERRUPT_PIN                0x0f3d /* PCI */
-#define IO_BASE                      0x0f14 /* PCI */
-
-#define LATENCY                      0x0f0d /* PCI */
+#define HTOTAL_CNTL                  0x0009
+#define HTOTAL2_CNTL                 0x002e
+#define I2C_CNTL_1                   0x0094
+#define DVI_I2C_CNTL_1               0x02e4
+#define INTERRUPT_LINE               0x0f3c
+#define INTERRUPT_PIN                0x0f3d
+#define IO_BASE                      0x0f14
+#define LATENCY                      0x0f0d
 #define LEAD_BRES_DEC                0x1608
 #define LEAD_BRES_LNTH               0x161c
 #define LEAD_BRES_LNTH_SUB           0x1624
@@ -693,11 +634,10 @@ enum {
 #define LVDS_PLL_CNTL                0x02d4
 #       define HSYNC_DELAY_SHIFT     28
 #       define HSYNC_DELAY_MASK      (0xf << 28)
-
-#define MAX_LATENCY                  0x0f3f /* PCI */
+#define MAX_LATENCY                  0x0f3f
 #define MC_AGP_LOCATION              0x014c
 #define MC_FB_LOCATION               0x0148
-#define MCLK_CNTL                    0x0012 /* PLL */
+#define MCLK_CNTL                    0x0012
 #       define FORCEON_MCLKA         (1 << 16)
 #       define FORCEON_MCLKB         (1 << 17)
 #       define FORCEON_YCLKA         (1 << 18)
@@ -709,7 +649,7 @@ enum {
 #define MDGPIO_MASK                  0x0198
 #define MDGPIO_Y_REG                 0x01b4
 #define MEM_ADDR_CONFIG              0x0148
-#define MEM_BASE                     0x0f10 /* PCI */
+#define MEM_BASE                     0x0f10
 #define MEM_CNTL                     0x0140
 #define MEM_INIT_LAT_TIMER           0x0154
 #define MEM_INTF_CNTL                0x014c
@@ -717,16 +657,13 @@ enum {
 #define MEM_STR_CNTL                 0x0150
 #define MEM_VGA_RP_SEL               0x003c
 #define MEM_VGA_WP_SEL               0x0038
-#define MIN_GRANT                    0x0f3e /* PCI */
+#define MIN_GRANT                    0x0f3e
 #define MM_DATA                      0x0004
 #define MM_INDEX                     0x0000
-#define MPLL_CNTL                    0x000e /* PLL */
-#define MPP_TB_CONFIG                0x01c0 /* ? */
-#define MPP_GP_CONFIG                0x01c8 /* ? */
-
-
+#define MPLL_CNTL                    0x000e
+#define MPP_TB_CONFIG                0x01c0
+#define MPP_GP_CONFIG                0x01c8
 #define N_VIF_COUNT                  0x0248
-
 #define OV0_AUTO_FLIP_CNTL           0x0470
 #define OV0_COLOUR_CNTL              0x04E0
 #define OV0_DEINTERLACE_PATTERN      0x0474
@@ -864,8 +801,7 @@ enum {
 #define OVR_CLR                      0x0230
 #define OVR_WID_LEFT_RIGHT           0x0234
 #define OVR_WID_TOP_BOTTOM           0x0238
-
-#define P2PLL_CNTL                   0x002a /* P2PLL */
+#define P2PLL_CNTL                   0x002a
 #       define P2PLL_RESET                (1 <<  0)
 #       define P2PLL_SLEEP                (1 <<  1)
 #       define P2PLL_ATOMIC_UPDATE_EN     (1 << 16)
@@ -874,10 +810,10 @@ enum {
 #define P2PLL_DIV_0                  0x002c
 #       define P2PLL_FB0_DIV_MASK    0x07ff
 #       define P2PLL_POST0_DIV_MASK  0x00070000
-#define P2PLL_REF_DIV                0x002B /* PLL */
+#define P2PLL_REF_DIV                0x002B
 #       define P2PLL_REF_DIV_MASK    0x03ff
-#       define P2PLL_ATOMIC_UPDATE_R (1 << 15) /* same as _W */
-#       define P2PLL_ATOMIC_UPDATE_W (1 << 15) /* same as _R */
+#       define P2PLL_ATOMIC_UPDATE_R (1 << 15)
+#       define P2PLL_ATOMIC_UPDATE_W (1 << 15)
 #       define R300_PPLL_REF_DIV_ACC_MASK   (0x3ff < 18)
 #       define R300_PPLL_REF_DIV_ACC_SHIFT  18
 #define PALETTE_DATA                 0x00b4
@@ -891,31 +827,30 @@ enum {
 #       define PIX2CLK_SRC_SEL_BYTECLK  0x02
 #       define PIX2CLK_SRC_SEL_P2PLLCLK 0x03
 #define PLANE_3D_MASK_C              0x1d44
-#define PLL_TEST_CNTL                0x0013 /* PLL */
-#define PMI_CAP_ID                   0x0f5c /* PCI */
-#define PMI_DATA                     0x0f63 /* PCI */
-#define PMI_NXT_CAP_PTR              0x0f5d /* PCI */
-#define PMI_PMC_REG                  0x0f5e /* PCI */
-#define PMI_PMCSR_REG                0x0f60 /* PCI */
-#define PMI_REGISTER                 0x0f5c /* PCI */
-#define PPLL_CNTL                    0x0002 /* PLL */
+#define PLL_TEST_CNTL                0x0013
+#define PMI_CAP_ID                   0x0f5c
+#define PMI_DATA                     0x0f63
+#define PMI_NXT_CAP_PTR              0x0f5d
+#define PMI_PMC_REG                  0x0f5e
+#define PMI_PMCSR_REG                0x0f60
+#define PMI_REGISTER                 0x0f5c
+#define PPLL_CNTL                    0x0002
 #       define PPLL_RESET                (1 <<  0)
 #       define PPLL_SLEEP                (1 <<  1)
 #       define PPLL_ATOMIC_UPDATE_EN     (1 << 16)
 #       define PPLL_VGA_ATOMIC_UPDATE_EN (1 << 17)
 #       define PPLL_ATOMIC_UPDATE_VSYNC  (1 << 18)
-#define PPLL_DIV_0                   0x0004 /* PLL */
-#define PPLL_DIV_1                   0x0005 /* PLL */
-#define PPLL_DIV_2                   0x0006 /* PLL */
-#define PPLL_DIV_3                   0x0007 /* PLL */
+#define PPLL_DIV_0                   0x0004
+#define PPLL_DIV_1                   0x0005
+#define PPLL_DIV_2                   0x0006
+#define PPLL_DIV_3                   0x0007
 #       define PPLL_FB3_DIV_MASK     0x07ff
 #       define PPLL_POST3_DIV_MASK   0x00070000
-#define PPLL_REF_DIV                 0x0003 /* PLL */
+#define PPLL_REF_DIV                 0x0003
 #       define PPLL_REF_DIV_MASK     0x03ff
-#       define PPLL_ATOMIC_UPDATE_R  (1 << 15) /* same as _W */
-#       define PPLL_ATOMIC_UPDATE_W  (1 << 15) /* same as _R */
-#define PWR_MNGMT_CNTL_STATUS        0x0f60 /* PCI */
-
+#       define PPLL_ATOMIC_UPDATE_R  (1 << 15)
+#       define PPLL_ATOMIC_UPDATE_W  (1 << 15)
+#define PWR_MNGMT_CNTL_STATUS        0x0f60
 #define RBBM_GUICNTL                 0x172c
 #       define HOST_DATA_SWAP_NONE   (0 << 0)
 #       define HOST_DATA_SWAP_16BIT  (1 << 0)
@@ -939,10 +874,9 @@ enum {
 #       define RB2D_DC_FLUSH_ALL     0xf
 #       define RB2D_DC_BUSY          (1 << 31)
 #define RB2D_DSTCACHE_MODE           0x3428
-#define REG_BASE                     0x0f18 /* PCI */
-#define REGPROG_INF                  0x0f09 /* PCI */
-#define REVISION_ID                  0x0f08 /* PCI */
-
+#define REG_BASE                     0x0f18
+#define REGPROG_INF                  0x0f09
+#define REVISION_ID                  0x0f08
 #define SC_BOTTOM                    0x164c
 #define SC_BOTTOM_RIGHT              0x16f0
 #define SC_BOTTOM_RIGHT_C            0x1c8c
@@ -953,15 +887,15 @@ enum {
 #define SC_TOP_LEFT_C                0x1c88
 #       define SC_SIGN_MASK_LO       0x8000
 #       define SC_SIGN_MASK_HI       0x80000000
-#define SCLK_CNTL                    0x000d /* PLL */
+#define SCLK_CNTL                    0x000d
 #       define DYN_STOP_LAT_MASK     0x00007ff8
 #       define CP_MAX_DYN_STOP_LAT   0x0008
 #       define SCLK_FORCEON_MASK     0xffff8000
-#define SCLK_MORE_CNTL               0x0035 /* PLL */
+#define SCLK_MORE_CNTL               0x0035
 #       define SCLK_MORE_FORCEON     0x0700
 #define SDRAM_MODE_REG               0x0158
-#define SEQ8_DATA                    0x03c5 /* VGA */
-#define SEQ8_IDX                     0x03c4 /* VGA */
+#define SEQ8_DATA                    0x03c5
+#define SEQ8_IDX                     0x03c4
 #define SNAPSHOT_F_COUNT             0x0244
 #define SNAPSHOT_VH_COUNTS           0x0240
 #define SNAPSHOT_VIF_COUNT           0x024c
@@ -975,9 +909,9 @@ enum {
 #define SRC_X_Y                      0x1590
 #define SRC_Y                        0x1418
 #define SRC_Y_X                      0x1434
-#define STATUS                       0x0f06 /* PCI */
-#define SUBPIC_CNTL                  0x0540 /* ? */
-#define SUB_CLASS                    0x0f0a /* PCI */
+#define STATUS                       0x0f06
+#define SUBPIC_CNTL                  0x0540
+#define SUB_CLASS                    0x0f0a
 #define SURFACE_CNTL                 0x0b00
 #       define SURF_TRANSLATION_DIS  (1 << 8)
 #       define NONSURF_AP0_SWP_16BPP (1 << 20)
@@ -1007,7 +941,6 @@ enum {
 #define SURFACE7_LOWER_BOUND         0x0b74
 #define SURFACE7_UPPER_BOUND         0x0b78
 #define SW_SEMAPHORE                 0x013c
-
 #define TEST_DEBUG_CNTL              0x0120
 #define TEST_DEBUG_MUX               0x0124
 #define TEST_DEBUG_OUT               0x012c
@@ -1017,34 +950,27 @@ enum {
 #define TRAIL_BRES_INC               0x1610
 #define TRAIL_X                      0x1618
 #define TRAIL_X_SUB                  0x1620
-
-#define VCLK_ECP_CNTL                0x0008 /* PLL */
+#define VCLK_ECP_CNTL                0x0008
 #       define VCLK_SRC_SEL_MASK     0x03
 #       define VCLK_SRC_SEL_CPUCLK   0x00
 #       define VCLK_SRC_SEL_PSCANCLK 0x01
 #       define VCLK_SRC_SEL_BYTECLK  0x02
 #       define VCLK_SRC_SEL_PPLLCLK  0x03
-#define VENDOR_ID                    0x0f00 /* PCI */
+#define VENDOR_ID                    0x0f00
 #define VGA_DDA_CONFIG               0x02e8
 #define VGA_DDA_ON_OFF               0x02ec
 #define VID_BUFFER_CONTROL           0x0900
 #define VIDEOMUX_CNTL                0x0190
-#define VIPH_CONTROL                 0x0c40 /* ? */
-
+#define VIPH_CONTROL                 0x0c40
 #define WAIT_UNTIL                   0x1720
 #       define WAIT_CRTC_PFLIP       (1 << 0)
 #       define WAIT_2D_IDLECLEAN     (1 << 16)
 #       define WAIT_3D_IDLECLEAN     (1 << 17)
 #       define WAIT_HOST_IDLECLEAN   (1 << 18)
-
-#define X_MPLL_REF_FB_DIV            0x000a /* PLL */
-#define XCLK_CNTL                    0x000d /* PLL */
-#define XDLL_CNTL                    0x000c /* PLL */
-#define XPLL_CNTL                    0x000b /* PLL */
-
-
-
-				/* Registers for 3D/TCL */
+#define X_MPLL_REF_FB_DIV            0x000a
+#define XCLK_CNTL                    0x000d
+#define XDLL_CNTL                    0x000c
+#define XPLL_CNTL                    0x000b
 #define PP_BORDER_COLOR_0            0x1d40
 #define PP_BORDER_COLOR_1            0x1d44
 #define PP_BORDER_COLOR_2            0x1d48
@@ -1213,7 +1139,6 @@ enum {
 #       define FACE_HEIGHT_4_SHIFT         28
 #       define FACE_WIDTH_4_MASK           (0xf << 24)
 #       define FACE_HEIGHT_4_MASK          (0xf << 28)
-
 #define PP_TXOFFSET_0                0x1c5c
 #define PP_TXOFFSET_1                0x1c74
 #define PP_TXOFFSET_2                0x1c8c
@@ -1228,8 +1153,7 @@ enum {
 #       define TXO_MICRO_TILE_OPT     (2 << 3)
 #       define TXO_OFFSET_MASK        0xffffffe0
 #       define TXO_OFFSET_SHIFT       5
-
-#define PP_CUBIC_OFFSET_T0_0         0x1dd0  /* bits [31:5] */
+#define PP_CUBIC_OFFSET_T0_0         0x1dd0
 #define PP_CUBIC_OFFSET_T0_1         0x1dd4
 #define PP_CUBIC_OFFSET_T0_2         0x1dd8
 #define PP_CUBIC_OFFSET_T0_3         0x1ddc
@@ -1244,8 +1168,7 @@ enum {
 #define PP_CUBIC_OFFSET_T2_2         0x1e1c
 #define PP_CUBIC_OFFSET_T2_3         0x1e20
 #define PP_CUBIC_OFFSET_T2_4         0x1e24
-
-#define PP_TEX_SIZE_0                0x1d04  /* NPOT */
+#define PP_TEX_SIZE_0                0x1d04
 #define PP_TEX_SIZE_1                0x1d0c
 #define PP_TEX_SIZE_2                0x1d14
 #       define TEX_USIZE_MASK        (0x7ff << 0)
@@ -1256,7 +1179,6 @@ enum {
 #       define SIGNED_RGB_SHIFT      30
 #       define SIGNED_ALPHA_MASK     (1 << 31)
 #       define SIGNED_ALPHA_SHIFT    31
-
 #define PP_TXCBLEND_0                0x1c60
 #define PP_TXCBLEND_1                0x1c78
 #define PP_TXCBLEND_2                0x1c90
@@ -1379,11 +1301,9 @@ enum {
 #       define ALPHA_ARG_C_T3_ALPHA       (8   << 8)
 #       define DOT_ALPHA_DONT_REPLICATE   (1   << 9)
 #       define ALPHA_ARG_MASK             0xf
-
 #define PP_TFACTOR_0                 0x1c68
 #define PP_TFACTOR_1                 0x1c80
 #define PP_TFACTOR_2                 0x1c98
-
 #define RB3D_BLENDCNTL               0x1c20
 #       define COMB_FCN_MASK                    (3  << 12)
 #       define COMB_FCN_ADD_CLAMP               (0  << 12)
@@ -1553,7 +1473,6 @@ enum {
 #define RE_WIDTH_HEIGHT              0x1c44
 #       define RE_WIDTH_SHIFT        0
 #       define RE_HEIGHT_SHIFT       16
-
 #define SE_CNTL                      0x1c4c
 #       define FFACE_CULL_CW          (0 <<  0)
 #       define FFACE_CULL_CCW         (1 <<  0)
@@ -1675,8 +1594,6 @@ enum {
 #       define TEXMAT_1_SHIFT           20
 #       define TEXMAT_2_SHIFT           24
 #       define TEXMAT_3_SHIFT           28
-
-
 #define SE_TCL_OUTPUT_VTX_FMT        0x2254
 #       define TCL_VTX_W0                 (1 <<  0)
 #       define TCL_VTX_FP_DIFFUSE         (1 <<  1)
@@ -1700,7 +1617,6 @@ enum {
 #       define TCL_VTX_W1                 (1 << 29)
 #       define TCL_VTX_NORM1              (1 << 30)
 #       define TCL_VTX_Z0                 (1 << 31)
-
 #define SE_TCL_OUTPUT_VTX_SEL        0x2258
 #       define TCL_COMPUTE_XYZW           (1 << 0)
 #       define TCL_COMPUTE_DIFFUSE        (1 << 1)
@@ -1719,7 +1635,6 @@ enum {
 #       define TCL_TEX_1_OUTPUT_SHIFT     20
 #       define TCL_TEX_2_OUTPUT_SHIFT     24
 #       define TCL_TEX_3_OUTPUT_SHIFT     28
-
 #define SE_TCL_PER_LIGHT_CTL_0       0x2270
 #       define LIGHT_0_ENABLE               (1 <<  0)
 #       define LIGHT_0_ENABLE_AMBIENT       (1 <<  1)
@@ -1748,9 +1663,7 @@ enum {
 #define SE_TCL_PER_LIGHT_CTL_3       0x227c
 #       define LIGHT_6_SHIFT            0
 #       define LIGHT_7_SHIFT            16
-
 #define SE_TCL_SHININESS             0x2250
-
 #define SE_TCL_TEXTURE_PROC_CTL      0x2268
 #       define TEXGEN_TEXMAT_0_ENABLE      (1 << 0)
 #       define TEXGEN_TEXMAT_1_ENABLE      (1 << 1)
@@ -1774,7 +1687,6 @@ enum {
 #       define TEXGEN_1_INPUT_SHIFT        20
 #       define TEXGEN_2_INPUT_SHIFT        24
 #       define TEXGEN_3_INPUT_SHIFT        28
-
 #define SE_TCL_UCP_VERT_BLEND_CTL    0x2264
 #       define UCP_IN_CLIP_SPACE            (1 <<  0)
 #       define UCP_IN_MODEL_SPACE           (1 <<  1)
@@ -1809,7 +1721,6 @@ enum {
 #       define CULL_FRONT                   (1 << 29)
 #       define CULL_BACK                    (1 << 30)
 #       define FORCE_W_TO_ONE               (1 << 31)
-
 #define SE_VPORT_XSCALE              0x1d98
 #define SE_VPORT_XOFFSET             0x1d9c
 #define SE_VPORT_YSCALE              0x1da0
@@ -1818,24 +1729,17 @@ enum {
 #define SE_VPORT_ZOFFSET             0x1dac
 #define SE_ZBIAS_FACTOR              0x1db0
 #define SE_ZBIAS_CONSTANT            0x1db4
-
-
-
-				/* Registers for CP and Microcode Engine */
 #define CP_ME_RAM_ADDR               0x07d4
 #define CP_ME_RAM_RADDR              0x07d8
 #define CP_ME_RAM_DATAH              0x07dc
 #define CP_ME_RAM_DATAL              0x07e0
-
 #define CP_RB_BASE                   0x0700
 #define CP_RB_CNTL                   0x0704
 #define CP_RB_RPTR_ADDR              0x070c
 #define CP_RB_RPTR                   0x0710
 #define CP_RB_WPTR                   0x0714
-
 #define CP_IB_BASE                   0x0738
 #define CP_IB_BUFSZ                  0x073c
-
 #define CP_CSQ_CNTL                  0x0740
 #       define CSQ_CNT_PRIMARY_MASK     (0xff << 0)
 #       define CSQ_PRIDIS_INDDIS        (0    << 28)
@@ -1853,23 +1757,14 @@ enum {
 #define CP_CSQ_DATA                  0x07f4
 #define CP_CSQ_APER_PRIMARY          0x1000
 #define CP_CSQ_APER_INDIRECT         0x1300
-
 #define CP_RB_WPTR_DELAY             0x0718
 #       define PRE_WRITE_TIMER_SHIFT    0
 #       define PRE_WRITE_LIMIT_SHIFT    23
-
 #define AIC_CNTL                     0x01d0
 #       define PCIGART_TRANSLATE_EN     (1 << 0)
-
-
-/* Constants */
 #define AGP_TEX_OFFSET               0x02000000
-
 #define LAST_FRAME_REG               GUI_SCRATCH_REG0
 #define LAST_CLEAR_REG               GUI_SCRATCH_REG2
-
-
-/* CP packet types */
 #define CP_PACKET0                           0x00000000
 #define CP_PACKET1                           0x40000000
 #define CP_PACKET2                           0x80000000
@@ -1880,9 +1775,7 @@ enum {
 #       define CP_PACKET0_REG_MASK           0x000007ff
 #       define CP_PACKET1_REG0_MASK          0x000007ff
 #       define CP_PACKET1_REG1_MASK          0x003ff800
-
 #define CP_PACKET0_ONE_REG_WR                0x00008000
-
 #define CP_PACKET3_NOP                       0xC0001000
 #define CP_PACKET3_NEXT_CHAR                 0xC0001900
 #define CP_PACKET3_PLY_NEXTSCAN              0xC0001D00
@@ -1904,7 +1797,6 @@ enum {
 #define CP_PACKET3_CNTL_PAINT_MULTI          0xC0009A00
 #define CP_PACKET3_CNTL_BITBLT_MULTI         0xC0009B00
 #define CP_PACKET3_CNTL_TRANS_BITBLT         0xC0009C00
-
 #define CP_VC_FRMT_XY                        0x00000000
 #define CP_VC_FRMT_W0                        0x00000001
 #define CP_VC_FRMT_FPCOLOR                   0x00000002
@@ -1928,7 +1820,6 @@ enum {
 #define CP_VC_FRMT_W1                        0x20000000
 #define CP_VC_FRMT_N1                        0x40000000
 #define CP_VC_FRMT_Z                         0x80000000
-
 #define CP_VC_CNTL_PRIM_TYPE_NONE            0x00000000
 #define CP_VC_CNTL_PRIM_TYPE_POINT           0x00000001
 #define CP_VC_CNTL_PRIM_TYPE_LINE            0x00000002
@@ -1951,7 +1842,6 @@ enum {
 #define CP_VC_CNTL_TCL_DISABLE               0x00000000
 #define CP_VC_CNTL_TCL_ENABLE                0x00000200
 #define CP_VC_CNTL_NUM_SHIFT                 16
-
 #define VS_MATRIX_0_ADDR                   0
 #define VS_MATRIX_1_ADDR                   4
 #define VS_MATRIX_2_ADDR                   8
@@ -1979,7 +1869,6 @@ enum {
 #define VS_GLOBAL_AMBIENT_ADDR           122
 #define VS_FOG_PARAM_ADDR                123
 #define VS_EYE_VECTOR_ADDR               124
-
 #define SS_LIGHT_DCD_ADDR                  0
 #define SS_LIGHT_SPOT_EXPONENT_ADDR        8
 #define SS_LIGHT_SPOT_CUTOFF_ADDR         16
@@ -1990,85 +1879,67 @@ enum {
 #define SS_HORZ_GUARD_CLIP_ADJ_ADDR       50
 #define SS_HORZ_GUARD_DISCARD_ADJ_ADDR    51
 #define SS_SHININESS                      60
-
-
-/* ATI Technologies Inc */
 #define ATI_PCIVID		0x1002
-
 struct pciids {
-	ushort	did;
-	int	type;
-	char*	name;
+ushort	did;
+int	type;
+char*	name;
 };
-
 enum {
-	ATI_R300,
-	ATI_RV250,
-	ATI_R250,
-	ATI_RV200,
-	ATI_R200,
-	ATI_RV100,
-	ATI_R100,
-	ATI_M6,
-	ATI_M7,
-	ATI_M9,
+ATI_R300,
+ATI_RV250,
+ATI_R250,
+ATI_RV200,
+ATI_R200,
+ATI_RV100,
+ATI_R100,
+ATI_M6,
+ATI_M7,
+ATI_M9,
 };
-
 struct pciids radeon_pciids[] = {
-	/* ATI_M6, LY */
-	/* ATI_M6, LZ */
-
-	0x4c57, ATI_M7,		"Radeon Mobility M7 LW [Radeon Mobility 7500]",
-	0x4c58, ATI_M7,		"Radeon RV200 LX [Mobility FireGL 7800 M7]",
-
-	0x4c64, ATI_M9,		"Radeon R250 Ld [Radeon Mobility 9000 M9]",
-	0x4c65, ATI_M9,		"Radeon R250 Le [Radeon Mobility 9000 M9]",
-	0x4c66, ATI_M9,		"Radeon R250 Lf [Radeon Mobility 9000 M9]",
-	0x4c67, ATI_M9,		"Radeon R250 Lg [Radeon Mobility 9000 M9]",
-
-	0x5159, ATI_RV100,	"Radeon RV100 QY [Radeon 7000/VE]",
-	0x515a, ATI_RV100,	"Radeon RV100 QZ [Radeon 7000/VE]",
-
-	0x5144, ATI_R100,	"Radeon R100 QD [Radeon 7200]",
-	0x5145, ATI_R100,	"Radeon R100 QE",
-	0x5146, ATI_R100,	"Radeon R100 QF",
-	0x5147, ATI_R100,	"Radeon R100 QG",
-
-	0x5148, ATI_R200,	"Radeon R200 QH [Radeon 8500]",
-	0x5149, ATI_R200,	"Radeon R200 QI",
-	0x514a, ATI_R200,	"Radeon R200 QJ",
-	0x514b, ATI_R200,	"Radeon R200 QK",
-	0x514c, ATI_R200,	"Radeon R200 QL [Radeon 8500 LE]",
-	0x514d, ATI_R200,	"Radeon R200 QM [Radeon 9100]",
-	0x514e, ATI_R200,	"Radeon R200 QN [Radeon 8500LE]",
-	0x514f, ATI_R200,	"Radeon R200 QO [Radeon 8500LE]",
-	0x5168, ATI_R200,	"Radeon R200 Qh",
-	0x5169, ATI_R200,	"Radeon R200 Qi",
-	0x516a, ATI_R200,	"Radeon R200 Qj",
-	0x516b, ATI_R200,	"Radeon R200 Qk",
-	0x516c, ATI_R200,	"Radeon R200 Ql",
-
-	0x5157, ATI_RV200,	"Radeon RV200 QW [Radeon 7500]",
-	0x5158, ATI_RV200,	"Radeon RV200 QX [Radeon 7500]",
-
-	0x4964, ATI_RV250, 	"Radeon R250 Id [Radeon 9000]",
-	0x4965, ATI_RV250, 	"Radeon R250 Ie [Radeon 9000]",
-	0x4966, ATI_RV250, 	"Radeon R250 If [Radeon 9000]",
-	0x4967, ATI_RV250,	"Radeon R250 Ig [Radeon 9000]",
-
-	0x4144, ATI_R300, 	"Radeon R300 AD [Radeon 9500 Pro]",
-	0x4145, ATI_R300, 	"Radeon R300 AE [Radeon 9500 Pro]",
-	0x4146, ATI_R300, 	"Radeon R300 AF [Radeon 9500 Pro]",
-	0x4147, ATI_R300, 	"Radeon R300 AG [FireGL Z1/X1]",
-	0x4e44, ATI_R300,	"Radeon R300 ND [Radeon 9700]",
-	0x4e45, ATI_R300,	"Radeon R300 NE [Radeon 9700]",
-	0x4e46, ATI_R300,	"Radeon R300 NF [Radeon 9700]",
-	0x4e47, ATI_R300,	"Radeon R300 NG [FireGL X1]",
-
-	0x4e64, ATI_R300,	"Radeon R300 [Radeon 9700 Pro] (Secondary)",
-	0x4e65, ATI_R300,	"Radeon R300 [Radeon 9700] (Secondary)",
-	0x4e66, ATI_R300,	"Radeon R300 [Radeon 9700] (Secondary)",
-	0x4e67, ATI_R300,	"Radeon R300 [FireGL X1] (Secondary)",
-
-	0
+0x4c57, ATI_M7,		"Radeon Mobility M7 LW [Radeon Mobility 7500]",
+0x4c58, ATI_M7,		"Radeon RV200 LX [Mobility FireGL 7800 M7]",
+0x4c64, ATI_M9,		"Radeon R250 Ld [Radeon Mobility 9000 M9]",
+0x4c65, ATI_M9,		"Radeon R250 Le [Radeon Mobility 9000 M9]",
+0x4c66, ATI_M9,		"Radeon R250 Lf [Radeon Mobility 9000 M9]",
+0x4c67, ATI_M9,		"Radeon R250 Lg [Radeon Mobility 9000 M9]",
+0x5159, ATI_RV100,	"Radeon RV100 QY [Radeon 7000/VE]",
+0x515a, ATI_RV100,	"Radeon RV100 QZ [Radeon 7000/VE]",
+0x5144, ATI_R100,	"Radeon R100 QD [Radeon 7200]",
+0x5145, ATI_R100,	"Radeon R100 QE",
+0x5146, ATI_R100,	"Radeon R100 QF",
+0x5147, ATI_R100,	"Radeon R100 QG",
+0x5148, ATI_R200,	"Radeon R200 QH [Radeon 8500]",
+0x5149, ATI_R200,	"Radeon R200 QI",
+0x514a, ATI_R200,	"Radeon R200 QJ",
+0x514b, ATI_R200,	"Radeon R200 QK",
+0x514c, ATI_R200,	"Radeon R200 QL [Radeon 8500 LE]",
+0x514d, ATI_R200,	"Radeon R200 QM [Radeon 9100]",
+0x514e, ATI_R200,	"Radeon R200 QN [Radeon 8500LE]",
+0x514f, ATI_R200,	"Radeon R200 QO [Radeon 8500LE]",
+0x5168, ATI_R200,	"Radeon R200 Qh",
+0x5169, ATI_R200,	"Radeon R200 Qi",
+0x516a, ATI_R200,	"Radeon R200 Qj",
+0x516b, ATI_R200,	"Radeon R200 Qk",
+0x516c, ATI_R200,	"Radeon R200 Ql",
+0x5157, ATI_RV200,	"Radeon RV200 QW [Radeon 7500]",
+0x5158, ATI_RV200,	"Radeon RV200 QX [Radeon 7500]",
+0x4964, ATI_RV250, 	"Radeon R250 Id [Radeon 9000]",
+0x4965, ATI_RV250, 	"Radeon R250 Ie [Radeon 9000]",
+0x4966, ATI_RV250, 	"Radeon R250 If [Radeon 9000]",
+0x4967, ATI_RV250,	"Radeon R250 Ig [Radeon 9000]",
+0x4144, ATI_R300, 	"Radeon R300 AD [Radeon 9500 Pro]",
+0x4145, ATI_R300, 	"Radeon R300 AE [Radeon 9500 Pro]",
+0x4146, ATI_R300, 	"Radeon R300 AF [Radeon 9500 Pro]",
+0x4147, ATI_R300, 	"Radeon R300 AG [FireGL Z1/X1]",
+0x4e44, ATI_R300,	"Radeon R300 ND [Radeon 9700]",
+0x4e45, ATI_R300,	"Radeon R300 NE [Radeon 9700]",
+0x4e46, ATI_R300,	"Radeon R300 NF [Radeon 9700]",
+0x4e47, ATI_R300,	"Radeon R300 NG [FireGL X1]",
+0x4e64, ATI_R300,	"Radeon R300 [Radeon 9700 Pro] (Secondary)",
+0x4e65, ATI_R300,	"Radeon R300 [Radeon 9700] (Secondary)",
+0x4e66, ATI_R300,	"Radeon R300 [Radeon 9700] (Secondary)",
+0x4e67, ATI_R300,	"Radeon R300 [FireGL X1] (Secondary)",
+0
 };

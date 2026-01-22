@@ -7,23 +7,17 @@ import {
 import {LlamaText, SpecialToken, SpecialTokensText} from "../utils/LlamaText.js";
 import {ChatModelFunctionsDocumentationGenerator} from "./utils/ChatModelFunctionsDocumentationGenerator.js";
 import {jsonDumps} from "./utils/jsonDumps.js";
-
-// source: https://github.com/MeetKai/functionary/blob/main/tests/prompt_test_v2.txt
 export class FunctionaryChatWrapper extends ChatWrapper {
     public readonly wrapperName: string = "Functionary";
     public readonly variation: "v3" | "v2" | "v2.llama3";
-
     public override readonly settings: ChatWrapperSettings;
-
     public constructor({
         variation = "v3"
     }: {
         variation?: "v3" | "v2" | "v2.llama3"
     } = {}) {
         super();
-
         this.variation = variation;
-
         if (variation === "v3")
             this.settings = {
                 ...ChatWrapper.defaultSettings,
@@ -122,7 +116,6 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                 }
             };
     }
-
     public override generateContextState({
         chatHistory, availableFunctions, documentFunctionParams
     }: ChatWrapperGenerateContextStateOptions): ChatWrapperGeneratedContextState {
@@ -130,28 +123,21 @@ export class FunctionaryChatWrapper extends ChatWrapper {
             return this._generateContextStateV3({chatHistory, availableFunctions, documentFunctionParams});
         else if (this.variation === "v2.llama3")
             return this._generateContextStateV2Llama3({chatHistory, availableFunctions, documentFunctionParams});
-
         return this._generateContextStateV2({chatHistory, availableFunctions, documentFunctionParams});
     }
-
-    /** @internal */
     private _generateContextStateV3({
         chatHistory, availableFunctions, documentFunctionParams
     }: ChatWrapperGenerateContextStateOptions): ChatWrapperGeneratedContextState {
         const hasFunctions = Object.keys(availableFunctions ?? {}).length > 0;
-
         const historyWithFunctions = this.addAvailableFunctionsSystemMessageToHistory(chatHistory, availableFunctions, {
             documentParams: documentFunctionParams
         });
-
         const contextText = LlamaText(
             historyWithFunctions.map((item, index) => {
                 const isLastItem = index === historyWithFunctions.length - 1;
-
                 if (item.type === "system") {
                     if (item.text.length === 0)
                         return "";
-
                     return LlamaText([
                         new SpecialTokensText("<|start_header_id|>system<|end_header_id|>\n\n"),
                         LlamaText.fromJSON(item.text),
@@ -168,30 +154,23 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         return LlamaText([
                             new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>\n\n")
                         ]);
-
                     const res: LlamaText[] = [];
                     const pendingFunctionCalls: LlamaText[] = [];
                     const pendingFunctionResults: LlamaText[] = [];
-
                     const addPendingFunctions = () => {
                         if (pendingFunctionResults.length === 0)
                             return;
-
                         res.push(LlamaText(pendingFunctionCalls));
                         res.push(LlamaText(new SpecialTokensText("<|eot_id|>")));
                         res.push(LlamaText(pendingFunctionResults));
-
                         pendingFunctionResults.length = 0;
                     };
-
                     const simplifiedResponse = convertModelResponseToLamaTextAndFunctionCalls(item.response, this);
                     for (let index = 0; index < simplifiedResponse.length; index++) {
                         const response = simplifiedResponse[index];
                         const isLastResponse = index === simplifiedResponse.length - 1;
-
                         if (response == null)
                             continue;
-
                         if (LlamaText.isLlamaText(response)) {
                             addPendingFunctions();
                             res.push(
@@ -213,7 +192,6 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         } else if (isChatModelResponseFunctionCall(response)) {
                             if (response.startsNewChunk)
                                 addPendingFunctions();
-
                             pendingFunctionCalls.push(
                                 response.rawCall != null
                                     ? LlamaText.fromJSON(response.rawCall)
@@ -230,7 +208,7 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                                 LlamaText([
                                     new SpecialTokensText("<|start_header_id|>tool<|end_header_id|>\n\n"),
                                     response.result === undefined
-                                        ? "" // "void"
+                                        ? "" 
                                         : jsonDumps(response.result),
                                     new SpecialTokensText("<|eot_id|>")
                                 ])
@@ -238,26 +216,20 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         } else
                             void (response satisfies never);
                     }
-
                     addPendingFunctions();
-
                     if (isLastItem && (res.length === 0 || typeof item.response[item.response.length - 1] !== "string"))
                         res.push(
                             hasFunctions
                                 ? LlamaText(new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>\n\n"))
                                 : LlamaText(new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>\n\n>>>all\n"))
                         );
-
                     return LlamaText(res);
                 }
-
                 void (item satisfies never);
                 return "";
             })
         );
-
         const lastItem = historyWithFunctions.at(-1);
-
         if (!hasFunctions || (
             lastItem?.type === "model" &&
             lastItem.response.length > 0 &&
@@ -276,12 +248,10 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                 ]
             };
         }
-
         const textResponseStart = [
             LlamaText(new SpecialTokensText(">>>all\n")),
             LlamaText(">>>all\n")
         ];
-
         return {
             contextText,
             stopGenerationTriggers: [
@@ -299,24 +269,19 @@ export class FunctionaryChatWrapper extends ChatWrapper {
             }
         };
     }
-
-    /** @internal */
     private _generateContextStateV2Llama3({
         chatHistory, availableFunctions, documentFunctionParams
     }: ChatWrapperGenerateContextStateOptions): ChatWrapperGeneratedContextState {
         const historyWithFunctions = this.addAvailableFunctionsSystemMessageToHistory(chatHistory, availableFunctions, {
             documentParams: documentFunctionParams
         });
-
         const contextText = LlamaText(
             new SpecialToken("BOS"),
             historyWithFunctions.map((item, index) => {
                 const isLastItem = index === historyWithFunctions.length - 1;
-
                 if (item.type === "system") {
                     if (item.text.length === 0)
                         return "";
-
                     return LlamaText([
                         new SpecialTokensText("<|start_header_id|>system<|end_header_id|>\n\n"),
                         LlamaText.fromJSON(item.text),
@@ -333,30 +298,23 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         return LlamaText([
                             new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>\n\n")
                         ]);
-
                     const res: LlamaText[] = [];
                     const pendingFunctionCalls: LlamaText[] = [];
                     const pendingFunctionResults: LlamaText[] = [];
-
                     const addPendingFunctions = () => {
                         if (pendingFunctionResults.length === 0)
                             return;
-
                         res.push(LlamaText(pendingFunctionCalls));
                         res.push(LlamaText(new SpecialTokensText("<|eot_id|>")));
                         res.push(LlamaText(pendingFunctionResults));
-
                         pendingFunctionResults.length = 0;
                     };
-
                     const simplifiedResponse = convertModelResponseToLamaTextAndFunctionCalls(item.response, this);
                     for (let index = 0; index < simplifiedResponse.length; index++) {
                         const response = simplifiedResponse[index];
                         const isLastResponse = index === simplifiedResponse.length - 1;
-
                         if (response == null)
                             continue;
-
                         if (LlamaText.isLlamaText(response)) {
                             addPendingFunctions();
                             res.push(
@@ -371,7 +329,6 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         } else if (isChatModelResponseFunctionCall(response)) {
                             if (response.startsNewChunk)
                                 addPendingFunctions();
-
                             pendingFunctionCalls.push(
                                 response.rawCall != null
                                     ? LlamaText.fromJSON(response.rawCall)
@@ -390,7 +347,7 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                                     response.name,
                                     new SpecialTokensText("\n"),
                                     response.result === undefined
-                                        ? "" // "void"
+                                        ? "" 
                                         : jsonDumps(response.result),
                                     new SpecialTokensText("<|eot_id|>")
                                 ])
@@ -398,24 +355,19 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                         } else
                             void (response satisfies never);
                     }
-
                     addPendingFunctions();
-
                     if (isLastItem && (res.length === 0 || typeof item.response[item.response.length - 1] !== "string"))
                         res.push(
                             LlamaText([
                                 new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>\n\n")
                             ])
                         );
-
                     return LlamaText(res);
                 }
-
                 void (item satisfies never);
                 return "";
             })
         );
-
         return {
             contextText,
             stopGenerationTriggers: [
@@ -428,27 +380,21 @@ export class FunctionaryChatWrapper extends ChatWrapper {
             ]
         };
     }
-
-    /** @internal */
     private _generateContextStateV2({
         chatHistory, availableFunctions, documentFunctionParams
     }: ChatWrapperGenerateContextStateOptions): ChatWrapperGeneratedContextState {
         const hasFunctions = Object.keys(availableFunctions ?? {}).length > 0;
-
         const historyWithFunctions = this.addAvailableFunctionsSystemMessageToHistory(chatHistory, availableFunctions, {
             documentParams: documentFunctionParams
         });
-
         const contextText = LlamaText(
             new SpecialToken("BOS"),
             historyWithFunctions.map((item, index) => {
                 const isFirstItem = index === 0;
                 const isLastItem = index === historyWithFunctions.length - 1;
-
                 if (item.type === "system") {
                     if (item.text.length === 0)
                         return "";
-
                     return LlamaText([
                         isFirstItem
                             ? LlamaText([])
@@ -478,30 +424,23 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                             new SpecialTokensText("<|recipient|>all\n"),
                             new SpecialTokensText("<|content|>")
                         ]);
-
                     const res: LlamaText[] = [];
                     const pendingFunctionCalls: LlamaText[] = [];
                     const pendingFunctionResults: LlamaText[] = [];
-
                     const addPendingFunctions = () => {
                         if (pendingFunctionResults.length === 0)
                             return;
-
                         res.push(LlamaText(pendingFunctionCalls));
                         res.push(LlamaText(new SpecialTokensText("<|stop|>")));
                         res.push(LlamaText(pendingFunctionResults));
-
                         pendingFunctionResults.length = 0;
                     };
-
                     const simplifiedResponse = convertModelResponseToLamaTextAndFunctionCalls(item.response, this);
                     for (let index = 0; index < simplifiedResponse.length; index++) {
                         const response = simplifiedResponse[index];
                         const isFirstResponse = index === 0;
-
                         if (response == null)
                             continue;
-
                         if (LlamaText.isLlamaText(response)) {
                             addPendingFunctions();
                             res.push(
@@ -523,7 +462,6 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                                         (isFirstItem && isFirstResponse)
                                             ? LlamaText([])
                                             : new SpecialTokensText("\n"),
-
                                         new SpecialTokensText("<|from|>assistant\n"),
                                         new SpecialTokensText("<|recipient|>"), response.name, new SpecialTokensText("\n"),
                                         new SpecialTokensText("<|content|>"),
@@ -539,16 +477,14 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                                     new SpecialTokensText("<|recipient|>all\n"),
                                     new SpecialTokensText("<|content|>"),
                                     response.result === undefined
-                                        ? "" // "void"
+                                        ? "" 
                                         : jsonDumps(response.result)
                                 ])
                             );
                         } else
                             void (response satisfies never);
                     }
-
                     addPendingFunctions();
-
                     if (res.length === 0) {
                         if (isLastItem) {
                             if (!hasFunctions)
@@ -586,31 +522,25 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                                 ])
                             );
                     }
-
                     if (!isLastItem)
                         res.push(LlamaText(new SpecialTokensText("<|stop|>")));
-
                     return LlamaText(res);
                 }
-
                 void (item satisfies never);
                 return "";
             })
         );
-
         if (!hasFunctions) {
             return {
                 contextText,
                 stopGenerationTriggers: [
                     LlamaText(new SpecialToken("EOS")),
                     LlamaText(new SpecialTokensText("<|stop|>")),
-
                     LlamaText(" <|stop|>"),
                     LlamaText("<|stop|>"),
                     LlamaText("\n<|from|>user"),
                     LlamaText("\n<|from|>assistant"),
                     LlamaText("\n<|from|>system"),
-
                     LlamaText(new SpecialTokensText(" <|stop|>")),
                     LlamaText(new SpecialTokensText("<|stop|>")),
                     LlamaText(new SpecialTokensText("\n<|from|>user")),
@@ -619,7 +549,6 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                 ]
             };
         }
-
         const textResponseStart = [
             "\n",
             "\n\n",
@@ -629,17 +558,14 @@ export class FunctionaryChatWrapper extends ChatWrapper {
             LlamaText(new SpecialTokensText(prefix + "<|from|>assistant\n<|recipient|>all\n<|content|>")),
             LlamaText(prefix + "<|from|>assistant\n<|recipient|>all\n<|content|>")
         ]);
-
         return {
             contextText,
             stopGenerationTriggers: [
                 LlamaText(new SpecialToken("EOS")),
                 LlamaText(new SpecialTokensText("<|stop|>")),
-
                 LlamaText(" <|stop|>"),
                 LlamaText("<|stop|>"),
                 LlamaText("\n<|from|>user"),
-
                 LlamaText(new SpecialTokensText(" <|stop|>")),
                 LlamaText(new SpecialTokensText("<|stop|>")),
                 LlamaText(new SpecialTokensText("\n<|from|>user"))
@@ -651,20 +577,15 @@ export class FunctionaryChatWrapper extends ChatWrapper {
             }
         };
     }
-
     public override generateAvailableFunctionsSystemText(availableFunctions: ChatModelFunctions, {documentParams = true}: {
         documentParams?: boolean
     }) {
         const functionsDocumentationGenerator = new ChatModelFunctionsDocumentationGenerator(availableFunctions);
-
         if (!functionsDocumentationGenerator.hasAnyFunctions)
             return LlamaText([]);
-
         const availableFunctionNames = Object.keys(availableFunctions ?? {});
-
         if (availableFunctionNames.length === 0)
             return LlamaText([]);
-
         if (this.variation === "v3") {
             return LlamaText.joinValues("\n", [
                 "You are capable of executing available function(s) if required.",
@@ -675,25 +596,23 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                 ">>>${recipient}",
                 "${content}",
                 "Available functions:",
-                "// Supported function definitions that should be called when necessary.",
+                "
                 "namespace functions {",
                 "",
                 functionsDocumentationGenerator.getTypeScriptFunctionTypes({documentParams, reservedFunctionNames: ["all"]}),
                 "",
-                "} // namespace functions"
+                "} 
             ]);
         }
-
         return LlamaText.joinValues("\n", [
-            "// Supported function definitions that should be called when necessary.",
+            "
             "namespace functions {",
             "",
             functionsDocumentationGenerator.getTypeScriptFunctionTypes({documentParams, reservedFunctionNames: ["all"]}),
             "",
-            "} // namespace functions"
+            "} 
         ]);
     }
-
     public override addAvailableFunctionsSystemMessageToHistory(
         history: readonly ChatHistoryItem[],
         availableFunctions?: ChatModelFunctions,
@@ -704,12 +623,9 @@ export class FunctionaryChatWrapper extends ChatWrapper {
         } = {}
     ) {
         const availableFunctionNames = Object.keys(availableFunctions ?? {});
-
         if (availableFunctions == null || availableFunctionNames.length === 0)
             return history;
-
         const res = history.slice();
-
         const firstSystemMessageIndex = res.findIndex((item) => item.type === "system");
         res.splice(
             Math.max(0, firstSystemMessageIndex),
@@ -721,11 +637,8 @@ export class FunctionaryChatWrapper extends ChatWrapper {
                 type: "system",
                 text: "The assistant calls functions with appropriate input when necessary. The assistant writes <|stop|> when finished answering."
             });
-
         return res;
     }
-
-    /** @internal */
     public static override _getOptionConfigurationsToTestIfCanSupersedeJinjaTemplate(): ChatWrapperJinjaMatchConfiguration<typeof this> {
         return [
             {variation: "v3"},
@@ -734,21 +647,17 @@ export class FunctionaryChatWrapper extends ChatWrapper {
         ];
     }
 }
-
 function convertModelResponseToLamaTextAndFunctionCalls(
     modelResponse: ChatModelResponse["response"], chatWrapper: ChatWrapper
 ): Array<LlamaText | ChatModelFunctionCall> {
     const pendingItems: Array<string | ChatModelSegment> = [];
     const res: Array<LlamaText | ChatModelFunctionCall> = [];
-
     function pushPendingItems() {
         if (pendingItems.length === 0)
             return;
-
         res.push(chatWrapper.generateModelResponseText(pendingItems));
         pendingItems.length = 0;
     }
-
     for (const item of modelResponse) {
         if (typeof item === "string" || isChatModelResponseSegment(item))
             pendingItems.push(item);
@@ -757,7 +666,6 @@ function convertModelResponseToLamaTextAndFunctionCalls(
             res.push(item);
         }
     }
-
     pushPendingItems();
     return res;
 }

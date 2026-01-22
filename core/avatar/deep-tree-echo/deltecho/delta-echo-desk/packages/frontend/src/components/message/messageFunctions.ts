@@ -1,5 +1,4 @@
 import moment from 'moment'
-
 import { getLogger } from '../../../../shared/logger'
 import { runtime } from '@deltachat-desktop/runtime-interface'
 import { BackendRemote, Type } from '../../backend-com'
@@ -8,16 +7,10 @@ import { internalOpenWebxdc } from '../../system-integration/webxdc'
 import ForwardMessage from '../dialogs/ForwardMessage'
 import ConfirmationDialog from '../dialogs/ConfirmationDialog'
 import MessageDetail from '../dialogs/MessageDetail/MessageDetail'
-
 import type { OpenDialog } from '../../contexts/DialogContext'
 import type { T } from '@deltachat/jsonrpc-client'
 import ConfirmDeleteMessageDialog from '../dialogs/ConfirmDeleteMessage'
-
 const log = getLogger('render/msgFunctions')
-
-/**
- * json representation of the message object we get from the backend
- */
 export function onDownload(msg: Type.Message) {
   if (!msg.file) {
     log.error('message has no file to download:', msg)
@@ -29,7 +22,6 @@ export function onDownload(msg: Type.Message) {
     runtime.downloadFile(msg.file, msg.fileName)
   }
 }
-
 export async function openAttachmentInShell(msg: Type.Message) {
   if (!msg.file || !msg.fileName) {
     log.error('message has no file to open:', msg)
@@ -42,14 +34,12 @@ export async function openAttachmentInShell(msg: Type.Message) {
     )
   }
 }
-
 export function openForwardDialog(
   openDialog: OpenDialog,
   message: Type.Message
 ) {
   openDialog(ForwardMessage, { message })
 }
-
 export function confirmDialog(
   openDialog: OpenDialog,
   message: string,
@@ -67,7 +57,6 @@ export function confirmDialog(
     })
   })
 }
-
 export async function confirmForwardMessage(
   openDialog: OpenDialog,
   accountId: number,
@@ -85,7 +74,6 @@ export async function confirmForwardMessage(
   }
   return yes
 }
-
 export function confirmDeleteMessage(
   openDialog: OpenDialog,
   accountId: number,
@@ -98,11 +86,9 @@ export function confirmDeleteMessage(
     chat,
   })
 }
-
 export function openMessageInfo(openDialog: OpenDialog, message: Type.Message) {
   openDialog(MessageDetail, { id: message.id })
 }
-
 export function setQuoteInDraft(messageId: number) {
   if (window.__setQuoteInDraft) {
     window.__setQuoteInDraft(messageId)
@@ -110,9 +96,6 @@ export function setQuoteInDraft(messageId: number) {
     throw new Error('window.__setQuoteInDraft undefined')
   }
 }
-/**
- * @throws if the composer is not rendered.
- */
 export function enterEditMessageMode(messageToEdit: T.Message) {
   if (window.__enterEditMessageMode) {
     window.__enterEditMessageMode(messageToEdit)
@@ -120,7 +103,6 @@ export function enterEditMessageMode(messageToEdit: T.Message) {
     throw new Error('window.__enterEditMessageMode undefined')
   }
 }
-
 export async function openMessageHTML(messageId: number) {
   const accountId = selectedAccountId()
   const content = await BackendRemote.rpc.getMessageHtml(accountId, messageId)
@@ -147,11 +129,9 @@ export async function openMessageHTML(messageId: number) {
     content
   )
 }
-
 export async function downloadFullMessage(messageId: number) {
   await BackendRemote.rpc.downloadFullMessage(selectedAccountId(), messageId)
 }
-
 export async function openWebxdc(message: Type.Message) {
   const accountId = selectedAccountId()
   internalOpenWebxdc(accountId, message)

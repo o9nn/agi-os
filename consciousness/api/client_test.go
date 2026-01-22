@@ -1,5 +1,4 @@
 package api
-
 import (
 	"encoding/json"
 	"fmt"
@@ -9,58 +8,48 @@ import (
 	"strings"
 	"testing"
 )
-
 func TestClientFromEnvironment(t *testing.T) {
 	type testCase struct {
 		value  string
 		expect string
 		err    error
 	}
-
 	testCases := map[string]*testCase{
-		"empty":                      {value: "", expect: "http://127.0.0.1:11434"},
-		"only address":               {value: "1.2.3.4", expect: "http://1.2.3.4:11434"},
-		"only port":                  {value: ":1234", expect: "http://:1234"},
-		"address and port":           {value: "1.2.3.4:1234", expect: "http://1.2.3.4:1234"},
-		"scheme http and address":    {value: "http://1.2.3.4", expect: "http://1.2.3.4:80"},
-		"scheme https and address":   {value: "https://1.2.3.4", expect: "https://1.2.3.4:443"},
-		"scheme, address, and port":  {value: "https://1.2.3.4:1234", expect: "https://1.2.3.4:1234"},
-		"hostname":                   {value: "example.com", expect: "http://example.com:11434"},
-		"hostname and port":          {value: "example.com:1234", expect: "http://example.com:1234"},
-		"scheme http and hostname":   {value: "http://example.com", expect: "http://example.com:80"},
-		"scheme https and hostname":  {value: "https://example.com", expect: "https://example.com:443"},
-		"scheme, hostname, and port": {value: "https://example.com:1234", expect: "https://example.com:1234"},
-		"trailing slash":             {value: "example.com/", expect: "http://example.com:11434"},
-		"trailing slash port":        {value: "example.com:1234/", expect: "http://example.com:1234"},
+		"empty":                      {value: "", expect: "http:
+		"only address":               {value: "1.2.3.4", expect: "http:
+		"only port":                  {value: ":1234", expect: "http:
+		"address and port":           {value: "1.2.3.4:1234", expect: "http:
+		"scheme http and address":    {value: "http:
+		"scheme https and address":   {value: "https:
+		"scheme, address, and port":  {value: "https:
+		"hostname":                   {value: "example.com", expect: "http:
+		"hostname and port":          {value: "example.com:1234", expect: "http:
+		"scheme http and hostname":   {value: "http:
+		"scheme https and hostname":  {value: "https:
+		"scheme, hostname, and port": {value: "https:
+		"trailing slash":             {value: "example.com/", expect: "http:
+		"trailing slash port":        {value: "example.com:1234/", expect: "http:
 	}
-
 	for k, v := range testCases {
 		t.Run(k, func(t *testing.T) {
 			t.Setenv("OLLAMA_HOST", v.value)
-
 			client, err := ClientFromEnvironment()
 			if err != v.err {
 				t.Fatalf("expected %s, got %s", v.err, err)
 			}
-
 			if client.Base.String() != v.expect {
 				t.Fatalf("expected %s, got %s", v.expect, client.Base.String())
 			}
 		})
 	}
 }
-
-// testError represents an internal error type with status code and message
-// this is used since the error response from the server is not a standard error struct
 type testError struct {
 	message    string
 	statusCode int
 }
-
 func (e testError) Error() string {
 	return e.message
 }
-
 func TestClientStream(t *testing.T) {
 	testCases := []struct {
 		name      string
@@ -112,7 +101,6 @@ func TestClientStream(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -120,9 +108,7 @@ func TestClientStream(t *testing.T) {
 				if !ok {
 					t.Fatal("expected http.Flusher")
 				}
-
 				w.Header().Set("Content-Type", "application/x-ndjson")
-
 				for _, resp := range tc.responses {
 					if errResp, ok := resp.(testError); ok {
 						w.WriteHeader(errResp.statusCode)
@@ -134,7 +120,6 @@ func TestClientStream(t *testing.T) {
 						}
 						return
 					}
-
 					if err := json.NewEncoder(w).Encode(resp); err != nil {
 						t.Fatalf("failed to encode response: %v", err)
 					}
@@ -142,9 +127,7 @@ func TestClientStream(t *testing.T) {
 				}
 			}))
 			defer ts.Close()
-
 			client := NewClient(&url.URL{Scheme: "http", Host: ts.Listener.Addr().String()}, http.DefaultClient)
-
 			var receivedChunks []ChatResponse
 			err := client.stream(t.Context(), http.MethodPost, "/v1/chat", nil, func(chunk []byte) error {
 				var resp ChatResponse
@@ -154,7 +137,6 @@ func TestClientStream(t *testing.T) {
 				receivedChunks = append(receivedChunks, resp)
 				return nil
 			})
-
 			if tc.wantErr != "" {
 				if err == nil {
 					t.Fatal("expected error but got nil")
@@ -170,7 +152,6 @@ func TestClientStream(t *testing.T) {
 		})
 	}
 }
-
 func TestClientDo(t *testing.T) {
 	testCases := []struct {
 		name     string
@@ -204,7 +185,6 @@ func TestClientDo(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -218,22 +198,18 @@ func TestClientDo(t *testing.T) {
 					}
 					return
 				}
-
 				w.Header().Set("Content-Type", "application/json")
 				if err := json.NewEncoder(w).Encode(tc.response); err != nil {
 					t.Fatalf("failed to encode response: %v", err)
 				}
 			}))
 			defer ts.Close()
-
 			client := NewClient(&url.URL{Scheme: "http", Host: ts.Listener.Addr().String()}, http.DefaultClient)
-
 			var resp struct {
 				ID      string `json:"id"`
 				Success bool   `json:"success"`
 			}
 			err := client.do(t.Context(), http.MethodPost, "/v1/messages", nil, &resp)
-
 			if tc.wantErr != "" {
 				if err == nil {
 					t.Fatalf("got nil, want error %q", tc.wantErr)
@@ -243,11 +219,9 @@ func TestClientDo(t *testing.T) {
 				}
 				return
 			}
-
 			if err != nil {
 				t.Fatalf("got error %q, want nil", err)
 			}
-
 			if expectedResp, ok := tc.response.(struct {
 				ID      string `json:"id"`
 				Success bool   `json:"success"`

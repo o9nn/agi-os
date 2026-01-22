@@ -1,10 +1,8 @@
 package tools
-
 import (
 	"testing"
 	"text/template"
 )
-
 func TestParseTag(t *testing.T) {
 	cases := []struct {
 		name     string
@@ -122,14 +120,12 @@ func TestParseTag(t *testing.T) {
 			want:     "[TOOL_CALL][",
 		},
 	}
-
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			tmpl, err := template.New("test").Parse(tc.template)
 			if err != nil && tc.template != "" {
 				t.Fatalf("failed to parse template: %v", err)
 			}
-
 			got := parseTag(tmpl)
 			if got != tc.want {
 				t.Errorf("got text %q, want %q", got, tc.want)

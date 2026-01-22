@@ -1,14 +1,5 @@
-;; Data set for testing issue
-;;
-;; https://github.com/opencog/atomspace/issues/1528
-;;
-;; blair-witch is here to emphasize the weirdness of the bug.
-
-;; Grounded Predicate
 (define (truth X) (stv 1 1))
 (define (alternative-fact X) (stv 0 1))
-
-;; Query
 (define find-something
 (BindLink
   (AndLink
@@ -21,7 +12,6 @@
   )
   (Concept "A"))
 )
-
 (define find-nothing
 (BindLink
   (AndLink

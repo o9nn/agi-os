@@ -1,32 +1,4 @@
-; =============================================================================
-; And To Subset Rule N
-;
-; AndLink
-;   AndLink
-;       A
-;       B
-;       C
-;       D
-;   AndLink
-;       A
-;       B
-;       C
-; |-
-; SubsetLink
-;   AndLink
-;       A
-;       B
-;       C
-;   D
-;
-; To solve the pattern matcher issue, and-to-subsetn rule has been divided into
-; two parts. The two rules are :-
-;       and-to-subset-3-rule
-;       and-to-subset-4-rule
-;
-; -----------------------------------------------------------------------------
 (load "formulas.scm")
-
 (define and-to-subset-3-rule
     (BindLink
         (VariableList
@@ -56,7 +28,6 @@
                         (VariableNode "$A")
                         (VariableNode "$B"))
                     (VariableNode "$C"))))))
-
 (define and-to-subset-4-rule
     (BindLink
         (VariableList
@@ -92,11 +63,9 @@
                         (VariableNode "$B")
                         (VariableNode "$C"))
                     (VariableNode "$D"))))))
-
 (define (and-to-subsetn-formula ABCD ABC sABCD)
     (cog-set-tv!
         sABCD
         (stv 
             (/ (cog-mean ABCD) (cog-mean ABC)) 
             (min (cog-confidence ABCD) (cog-confidence ABC)))))
-

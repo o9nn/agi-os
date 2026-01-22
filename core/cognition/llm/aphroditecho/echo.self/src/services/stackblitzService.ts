@@ -1,6 +1,5 @@
 import sdk, { type VM } from "@stackblitz/sdk";
 import { FileData } from "../store/appStore";
-
 export interface StackBlitzProject {
   title: string;
   description: string;
@@ -10,11 +9,8 @@ export interface StackBlitzProject {
     template?: string;
   };
 }
-
 export const extractProjectDependencies = (): Record<string, string> => {
   try {
-    // Try to load package.json to extract dependencies
-    // In a real app, this would be more sophisticated
     return {
       react: "^18.2.0",
       "react-dom": "^18.2.0",
@@ -28,24 +24,18 @@ export const extractProjectDependencies = (): Record<string, string> => {
     return {};
   }
 };
-
 export const prepareFilesForStackBlitz = (
   files: FileData[]
 ): Record<string, string> => {
   const result: Record<string, string> = {};
-
-  // Convert our file structure to StackBlitz format
   files.forEach(file => {
     if (file.type === "file") {
-      // Remove leading slash if present
       const path = file.path.startsWith("/")
         ? file.path.substring(1)
         : file.path;
       result[path] = file.content;
     }
   });
-
-  // Add essential files if they don't exist
   if (!result["index.html"]) {
     result["index.html"] = `
 <!DOCTYPE html>
@@ -62,8 +52,6 @@ export const prepareFilesForStackBlitz = (
 </html>
     `;
   }
-
-  // Add package.json if it doesn't exist
   if (!result["package.json"]) {
     const dependencies = extractProjectDependencies();
     result["package.json"] = JSON.stringify(
@@ -83,10 +71,8 @@ export const prepareFilesForStackBlitz = (
       2
     );
   }
-
   return result;
 };
-
 export const openInStackBlitz = async (
   files: FileData[],
   options?: {
@@ -98,7 +84,6 @@ export const openInStackBlitz = async (
 ): Promise<void> => {
   const projectFiles = prepareFilesForStackBlitz(files);
   const dependencies = extractProjectDependencies();
-
   try {
     return await sdk.openProject(
       {
@@ -118,7 +103,6 @@ export const openInStackBlitz = async (
     throw error;
   }
 };
-
 export const embedStackBlitzProject = async (
   node: HTMLElement,
   files: FileData[],
@@ -134,7 +118,6 @@ export const embedStackBlitzProject = async (
 ): Promise<VM> => {
   const projectFiles = prepareFilesForStackBlitz(files);
   const dependencies = extractProjectDependencies();
-
   try {
     return await sdk.embedProject(
       node,

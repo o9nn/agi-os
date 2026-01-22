@@ -1,6 +1,5 @@
 (Inheritance (Concept "B") (Concept "Parent"))
 (Inheritance (Concept "C") (Concept "Parent"))
-
 (define put-get
  (PutLink
    (EvaluationLink
@@ -10,7 +9,6 @@
      (ConceptNode "A")))
   (GetLink
    (Inheritance (Variable "$X") (Concept "Parent")))))
-
 (define expected-put-get
  (SetLink
   (EvaluationLink

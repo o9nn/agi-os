@@ -1,7 +1,5 @@
-/* defs 4.2 85/10/28 */
 #define _POSIX_SOURCE
 #define _RESEARCH_SOURCE
-
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
@@ -12,23 +10,17 @@
 #include <limits.h>
 #include <stdio.h>
 #include <ctype.h>
-
 #ifndef SHELLCOM
 #define SHELLCOM "/bin/sh"
 #endif
-
-typedef char flag;	/* represent a few bit flag */
-
+typedef char flag;
 #define NO	0
 #define YES	1
-
 #define equal(a,b)	(! strcmp(a,b))
 #define HASHSIZE	1021
 #define NLEFTS	512
 #define NCHARS	500
 #define NINTS	250
-
-/* cranked these up, we're not on the pdp-11 any more */
 #define INMAX	80000
 #define OUTMAX	80000
 #define QBUFMAX	80000
@@ -36,18 +28,13 @@ typedef char flag;	/* represent a few bit flag */
 #define MAXPROC	200
 #define MAXINCLUDE	32
 #define PROCLIMIT	3
-
 #define ALLDEPS	1
 #define SOMEDEPS	2
-
 #define META	01
 #define TERMINAL	02
 extern char funny[128];
-
-
 #define ALLOC(x) (struct x *) ckalloc(sizeof(struct x))
 #define CHNULL	(char *) NULL
-
 extern int sigivalue;
 extern int sigqvalue;
 extern int dbgflag;
@@ -64,118 +51,101 @@ extern int ignerr;
 extern int okdel;
 extern int forceshell;
 extern int inarglist;
-extern char **envpp;	/* points to slot in environment vector */
+extern char **envpp;
 extern char *prompt;
 extern int nopdir;
-
 typedef struct nameblock *nameblkp;
 typedef struct depblock *depblkp;
 typedef struct lineblock *lineblkp;
 typedef struct chain *chainp;
-
 struct nameblock
-	{
-	nameblkp nxtnameblock;
-	char *namep;
-	lineblkp linep;
-	flag done;
-	flag septype;
-	flag isarch;
-	flag isdir;
-	time_t modtime;
-	};
-
+{
+nameblkp nxtnameblock;
+char *namep;
+lineblkp linep;
+flag done;
+flag septype;
+flag isarch;
+flag isdir;
+time_t modtime;
+};
 extern nameblkp mainname;
 extern nameblkp firstname;
 extern nameblkp *hashtab;
 extern int nhashed;
 extern int hashsize;
 extern int hashthresh;
-
 struct lineblock
-	{
-	lineblkp nxtlineblock;
-	struct depblock *depp;
-	struct shblock *shp;
-	};
+{
+lineblkp nxtlineblock;
+struct depblock *depp;
+struct shblock *shp;
+};
 extern lineblkp sufflist;
-
 struct depblock
-	{
-	depblkp nxtdepblock;
-	nameblkp depname;
-	char nowait;
-	} ;
-
+{
+depblkp nxtdepblock;
+nameblkp depname;
+char nowait;
+} ;
 struct shblock
-	{
-	struct shblock *nxtshblock;
-	char *shbp;
-	};
-
+{
+struct shblock *nxtshblock;
+char *shbp;
+};
 struct varblock
-	{
-	struct varblock *nxtvarblock;
-	char *varname;
-	char *varval;
-	char **export;
-	flag noreset;
-	flag used;
-	};
+{
+struct varblock *nxtvarblock;
+char *varname;
+char *varval;
+char **export;
+flag noreset;
+flag used;
+};
 extern struct varblock *firstvar;
-
 struct pattern
-	{
-	struct pattern *nxtpattern;
-	char *patval;
-	};
+{
+struct pattern *nxtpattern;
+char *patval;
+};
 extern struct pattern *firstpat;
-
 struct dirhd
-	{
-	struct dirhd *nxtdirhd;
-	time_t dirtime;
-	int dirok;
-	DIR * dirfc;
-	char *dirn;
-	};
+{
+struct dirhd *nxtdirhd;
+time_t dirtime;
+int dirok;
+DIR * dirfc;
+char *dirn;
+};
 extern struct dirhd *firstod;
-
-
 struct chain
-	{
-	chainp nextp;
-	char *datap;
-	};
-
+{
+chainp nextp;
+char *datap;
+};
 struct wild
-	{
-	struct wild *next;
-	lineblkp linep;
-	char *left;
-	char *right;
-	int llen;
-	int rlen;
-	int totlen;
-	};
-
+{
+struct wild *next;
+lineblkp linep;
+char *left;
+char *right;
+int llen;
+int rlen;
+int totlen;
+};
 typedef struct wild *wildp;
 extern wildp firstwild;
 extern wildp lastwild;
-
-
-/* date for processes */
-extern int proclimit;	/* maximum spawned processes allowed alive at one time */
-extern int proclive;	/* number of spawned processes awaited */
-extern int nproc;	/* next slot in process stack to use */
+extern int proclimit;
+extern int proclive;
+extern int nproc;
 extern struct process
-	{
-	int pid;
-	flag nohalt;
-	flag nowait;
-	flag done;
-	} procstack[ ];
-
+{
+int pid;
+flag nohalt;
+flag nowait;
+flag done;
+} procstack[ ];
 extern void	intrupt(int);
 extern void	enbint(void (*)(int));
 extern int	doname(nameblkp, int, time_t *, int);

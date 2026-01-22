@@ -1,35 +1,23 @@
 import type { BrowserConfig } from '../types/browser'
 import type { SearchOptions, TimelineOptions } from '../types/twitter'
-
 import process from 'node:process'
-
-/**
- * Complete configuration interface
- */
 export interface Config {
-  // Browser configuration
   browser: BrowserConfig & {
-    apiKey: string // API Key for Stagehand
-    endpoint?: string // Optional Stagehand service endpoint
+    apiKey: string 
+    endpoint?: string 
   }
-
-  // Twitter API credentials
   credentials?: {
     apiKey?: string
     apiSecret?: string
     accessToken?: string
     accessTokenSecret?: string
   }
-
-  // Twitter configuration
   twitter: {
     defaultOptions?: {
       timeline?: TimelineOptions
       search?: SearchOptions
     }
   }
-
-  // Adapter configuration
   adapters: {
     airi?: {
       url?: string
@@ -41,25 +29,16 @@ export interface Config {
       enabled: boolean
     }
   }
-
-  // System configuration
   system: {
     logLevel: 'error' | 'warn' | 'info' | 'verbose' | 'debug'
     logFormat?: 'json' | 'pretty'
     concurrency: number
   }
 }
-
-/**
- * Default configuration
- */
 export function getDefaultConfig(): Config {
-  // No longer parse cookies from environment variable
-  // The auth service will load cookies from session file instead
-
   return {
     browser: {
-      apiKey: process.env.BROWSERBASE_API_KEY || '', // Move apiKey to browser config
+      apiKey: process.env.BROWSERBASE_API_KEY || '', 
       headless: process.env.BROWSER_HEADLESS === 'true',
       userAgent: process.env.BROWSER_USER_AGENT || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
       viewport: {

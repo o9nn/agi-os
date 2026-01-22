@@ -1,5 +1,4 @@
 package ggml
-
 import (
 	"maps"
 	"math"
@@ -7,10 +6,8 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
 )
-
 func TestTensorLayers(t *testing.T) {
 	tensors := make(map[string]*Tensor)
 	for _, name := range []string{
@@ -42,7 +39,6 @@ func TestTensorLayers(t *testing.T) {
 	} {
 		tensors[name] = &Tensor{Name: name}
 	}
-
 	cases := []struct {
 		name  string
 		items []*Tensor
@@ -149,7 +145,6 @@ func TestTensorLayers(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			got := Tensors{items: tt.items}.GroupLayers()
@@ -159,8 +154,6 @@ func TestTensorLayers(t *testing.T) {
 		})
 	}
 }
-
-// ref: https://github.com/ggml-org/llama.cpp/blob/a82c9e7c23ef6db48cebfa194dc9cebbc4ac3552/ggml/src/ggml.c#L572
 func TestTensorTypes(t *testing.T) {
 	cases := []struct {
 		kind      uint32
@@ -197,21 +190,18 @@ func TestTensorTypes(t *testing.T) {
 		{29, 256, 56},
 		{30, 1, 2},
 	}
-
 	for _, tt := range cases {
 		t.Run(strconv.Itoa(int(tt.kind)), func(t *testing.T) {
 			tensor := Tensor{Kind: tt.kind}
 			if tensor.blockSize() != tt.blockSize {
 				t.Errorf("unexpected block size: got=%d want=%d", tensor.blockSize(), tt.blockSize)
 			}
-
 			if tensor.typeSize() != tt.typeSize {
 				t.Errorf("unexpected type size: got=%d want=%d", tensor.typeSize(), tt.typeSize)
 			}
 		})
 	}
 }
-
 func TestKeyValue(t *testing.T) {
 	kv := KV{
 		"general.architecture": "test",
@@ -220,56 +210,43 @@ func TestKeyValue(t *testing.T) {
 		"test.int32s":          &array[int32]{size: 3, values: []int32{1, 2, 3}},
 		"test.uint32s":         &array[uint32]{size: 3, values: []uint32{1, 2, 3}},
 	}
-
 	if diff := cmp.Diff(kv.Strings("strings"), []string{"a", "b", "c"}); diff != "" {
 		t.Errorf("unexpected strings (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Strings("nonexistent.strings"), []string(nil)); diff != "" {
 		t.Errorf("unexpected strings (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Strings("default.strings", []string{"ollama"}), []string{"ollama"}); diff != "" {
 		t.Errorf("unexpected strings (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Floats("float32s"), []float32{1.0, 2.0, 3.0}); diff != "" {
 		t.Errorf("unexpected float32s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Floats("nonexistent.float32s"), []float32(nil)); diff != "" {
 		t.Errorf("unexpected float32s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Floats("default.float32s", []float32{math.MaxFloat32}), []float32{math.MaxFloat32}); diff != "" {
 		t.Errorf("unexpected float32s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Ints("int32s"), []int32{1, 2, 3}); diff != "" {
 		t.Errorf("unexpected int8s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Ints("nonexistent.int32s"), []int32(nil)); diff != "" {
 		t.Errorf("unexpected int8s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Ints("default.int32s", []int32{math.MaxInt32}), []int32{math.MaxInt32}); diff != "" {
 		t.Errorf("unexpected int8s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Uints("uint32s"), []uint32{1, 2, 3}); diff != "" {
 		t.Errorf("unexpected uint8s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Uints("nonexistent.uint32s"), []uint32(nil)); diff != "" {
 		t.Errorf("unexpected uint8s (-got +want):\n%s", diff)
 	}
-
 	if diff := cmp.Diff(kv.Uints("default.uint32s", []uint32{math.MaxUint32}), []uint32{math.MaxUint32}); diff != "" {
 		t.Errorf("unexpected uint8s (-got +want):\n%s", diff)
 	}
 }
-
 func TestHeadCount(t *testing.T) {
 	valuesArray := []int32{1, 5, 3, 4}
 	cases := []struct {
@@ -291,7 +268,6 @@ func TestHeadCount(t *testing.T) {
 			want: uint64(3),
 		},
 	}
-
 	for _, tt := range cases {
 		got := tt.kv.HeadCountMax()
 		if got != tt.want {

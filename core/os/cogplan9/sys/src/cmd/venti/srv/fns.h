@@ -1,6 +1,3 @@
-/*
- * sorted by 4,/^$/|sort -bd +1
- */
 int		addarena(Arena *name);
 void		addstat(int, int);
 void		addstat2(int, int, int, int);
@@ -211,16 +208,8 @@ int		writepart(Part *part, u64int addr, u8int *buf, u32int n);
 int		writeqlump(Lump *u, Packet *p, int creator, uint ms);
 Packet		*zblock2packet(ZBlock *zb, u32int size);
 void		zeropart(Part *part, int blocksize);
-
-/*
-#pragma	varargck	argpos	sysfatal		1
-#pragma	varargck	argpos	logerr		2
-#pragma	varargck	argpos	SetErr		2
-*/
-
 #define scorecmp(h1,h2)		memcmp((h1),(h2),VtScoreSize)
 #define scorecp(h1,h2)		memmove((h1),(h2),VtScoreSize)
-
 #define MK(t)			((t*)emalloc(sizeof(t)))
 #define MKZ(t)			((t*)ezmalloc(sizeof(t)))
 #define MKN(t,n)		((t*)emalloc((n)*sizeof(t)))

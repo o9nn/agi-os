@@ -1,6 +1,5 @@
 import { base64abc } from './_base64abc'
 import { validateBinaryLike } from './_validate-binary-like'
-
 export const encodeBase64 = (data: ArrayBuffer | string | Uint8Array): string => {
   const uint8 = validateBinaryLike(data)
   let result = ''
@@ -34,12 +33,9 @@ export const encodeBase64 = (data: ArrayBuffer | string | Uint8Array): string =>
   }
   return result
 }
-
 export const decodeBase64 = (b64: string): Uint8Array => {
-  // eslint-disable-next-line @masknet/no-builtin-base64
   const binString = atob(b64)
   const size = binString.length
-
   const bytes = new Uint8Array(size)
   for (let i = 0; i < size; i++) {
     bytes[i] = binString.charCodeAt(i)

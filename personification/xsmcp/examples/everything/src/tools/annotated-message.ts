@@ -1,20 +1,16 @@
 import type { AudioContent, EmbeddedResource, ImageContent, TextContent } from '@xsmcp/shared'
-
 import { defineTool } from '@xsmcp/server-shared'
 import { boolean, description, literal, object, optional, pipe, union } from 'valibot'
-
 import { MCP_TINY_IMAGE } from '../assets/mcp-tiny-image'
-
 export const annotatedMessage = defineTool({
   description: 'Demonstrates how annotations can be used to provide metadata about content',
   execute: ({ includeImage, messageType }) => {
     const content: (AudioContent | EmbeddedResource | ImageContent | TextContent)[] = []
-
     if (messageType === 'error') {
       content.push({
         annotations: {
-          audience: ['user', 'assistant'], // Both need to know about errors
-          priority: 1.0, // Errors are highest priority
+          audience: ['user', 'assistant'], 
+          priority: 1.0, 
         },
         text: 'Error: Operation failed',
         type: 'text',
@@ -23,8 +19,8 @@ export const annotatedMessage = defineTool({
     else if (messageType === 'success') {
       content.push({
         annotations: {
-          audience: ['user'], // Success mainly for user consumption
-          priority: 0.7, // Success messages are important but not critical
+          audience: ['user'], 
+          priority: 0.7, 
         },
         text: 'Operation completed successfully',
         type: 'text',
@@ -33,19 +29,17 @@ export const annotatedMessage = defineTool({
     else if (messageType === 'debug') {
       content.push({
         annotations: {
-          audience: ['assistant'], // Technical details for assistant
-          priority: 0.3, // Debug info is low priority
+          audience: ['assistant'], 
+          priority: 0.3, 
         },
         text: 'Debug: Cache hit ratio 0.95, latency 150ms',
         type: 'text',
       })
     }
-
-    // Optional image with its own annotations
     if (includeImage) {
       content.push({
         annotations: {
-          audience: ['user'], // Images primarily for user visualization
+          audience: ['user'], 
           priority: 0.5,
         },
         data: MCP_TINY_IMAGE,
@@ -53,7 +47,6 @@ export const annotatedMessage = defineTool({
         type: 'image',
       })
     }
-
     return content
   },
   name: 'annotatedMessage',

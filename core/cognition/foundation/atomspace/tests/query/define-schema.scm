@@ -1,9 +1,5 @@
-;
-; Demonstrate the used of DefinedSchemaNodes
-;
 (define (get-timestamp)
    (NumberNode (current-time)))
-
 (DefineLink
    (DefinedSchemaNode "set timestamp")
    (PutLink
@@ -12,5 +8,3 @@
       (ExecutionOutputLink
          (GroundedSchemaNode "scm: get-timestamp")
          (ListLink))))
-
-; (cog-execute! (DefinedSchemaNode "set timestamp"))

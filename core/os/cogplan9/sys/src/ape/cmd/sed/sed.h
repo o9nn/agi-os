@@ -1,10 +1,4 @@
 #
-/*
- * sed -- stream  editor
- *
- *
- */
-
 #define CBRA	1
 #define	CCHR	2
 #define	CDOT	4
@@ -18,9 +12,7 @@
 #define CEND	16
 #define CDONT	17
 #define	CBACK	18
-
 #define	STAR	01
-
 #define NLINES	256
 #define	DEPTH	20
 #define PTRSIZE	1024
@@ -29,9 +21,7 @@
 #define	LBSIZE	4000
 #define	LABSIZE	50
 #define NBRA	9
-
 typedef unsigned char uchar;
-
 FILE	*fin;
 union reptr	*abuf[ABUFSIZE];
 union reptr **aptr;
@@ -70,7 +60,6 @@ int	nlno;
 char	fname[MAXFILES][40];
 FILE	*fcode[MAXFILES];
 int	nfiles;
-
 #define ACOM	01
 #define BCOM	020
 #define CCOM	02
@@ -98,56 +87,47 @@ int	nfiles;
 #define	CWCOM	024
 #define	YCOM	026
 #define XCOM	033
-
 uchar	*cp;
 uchar	*reend;
 uchar	*lbend;
-
 union	reptr {
-	struct reptr1 {
-		uchar	*ad1;
-		uchar	*ad2;
-		uchar	*re1;
-		uchar	*rhs;
-		FILE	*fcode;
-		uchar	command;
-		uchar	gfl;
-		uchar	pfl;
-		uchar	inar;
-		uchar	negfl;
-	} r1;
-	struct reptr2 {
-		uchar	*ad1;
-		uchar	*ad2;
-		union reptr	*lb1;
-		uchar	*rhs;
-		FILE	*fcode;
-		uchar	command;
-		uchar	gfl;
-		uchar	pfl;
-		uchar	inar;
-		uchar	negfl;
-	} r2;
+struct reptr1 {
+uchar	*ad1;
+uchar	*ad2;
+uchar	*re1;
+uchar	*rhs;
+FILE	*fcode;
+uchar	command;
+uchar	gfl;
+uchar	pfl;
+uchar	inar;
+uchar	negfl;
+} r1;
+struct reptr2 {
+uchar	*ad1;
+uchar	*ad2;
+union reptr	*lb1;
+uchar	*rhs;
+FILE	*fcode;
+uchar	command;
+uchar	gfl;
+uchar	pfl;
+uchar	inar;
+uchar	negfl;
+} r2;
 } ptrspace[PTRSIZE], *rep;
-
-
 uchar	respace[RESIZE];
-
 struct label {
-	uchar	asc[9];
-	union reptr	*chain;
-	union reptr	*address;
+uchar	asc[9];
+union reptr	*chain;
+union reptr	*address;
 } ltab[LABSIZE];
-
 struct label	*lab;
 struct label	*labend;
-
 int	f;
 int	depth;
-
 int	eargc;
 uchar	**eargv;
-
 uchar	*address(uchar *);
 int		advance(uchar *, uchar *);
 void	arout(void);

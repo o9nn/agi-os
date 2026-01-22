@@ -1,0 +1,29 @@
+{
+  "name": "agi-os",
+  "version": "1.0.0",
+  "description": "Some folks were talking about how minimal they could make a functional coding agent.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/o9nn/agi-os.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/o9nn/agi-os/issues"
+  },
+  "homepage": "https://github.com/o9nn/agi-os#readme",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "terser": "^5.46.0"
+  }
+}

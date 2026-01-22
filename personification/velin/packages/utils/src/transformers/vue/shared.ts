@@ -4,13 +4,11 @@ export class File {
     css: '',
     ssr: '',
   }
-
   constructor(
     public filename: string,
     public code = '',
     public hidden = false,
   ) {}
-
   get language() {
     if (this.filename.endsWith('.vue')) {
       return 'vue'
@@ -27,7 +25,6 @@ export class File {
     if (this.filename.endsWith('.js') || this.filename.endsWith('.mjs')) {
       return 'javascript'
     }
-
     return 'javascript'
   }
 }

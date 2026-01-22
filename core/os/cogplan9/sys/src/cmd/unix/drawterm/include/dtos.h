@@ -9,7 +9,6 @@
 #else
 #	error "Define an OS"
 #endif
-
 #ifdef IRIX
 typedef int socklen_t;
 #endif

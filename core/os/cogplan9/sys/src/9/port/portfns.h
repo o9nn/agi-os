@@ -239,7 +239,7 @@ void		procinit0(void);
 void		procflushseg(Segment*);
 void		procpriority(Proc*, int, int);
 Proc*		proctab(int);
-extern void	(*proctrace)(Proc*, int, vlong); 
+extern void	(*proctrace)(Proc*, int, vlong);
 void		procwired(Proc*, int);
 Pte*		ptealloc(void);
 Pte*		ptecpy(Pte*);
@@ -396,7 +396,6 @@ ulong		µs(void);
 void		_xinc(long*);
 long		_xdec(long*);
 long		lcycles(void);
-
 #pragma varargck argpos iprint	1
 #pragma	varargck argpos	panic	1
 #pragma varargck argpos pprint	1

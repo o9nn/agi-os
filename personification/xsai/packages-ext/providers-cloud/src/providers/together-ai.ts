@@ -5,8 +5,6 @@ import {
   createModelProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://api.together.ai/models} */
 export const createTogetherAI = (apiKey: string, baseURL = 'https://api.together.xyz/v1/') => merge(
   createMetadataProvider('together-ai'),
   createChatProvider<

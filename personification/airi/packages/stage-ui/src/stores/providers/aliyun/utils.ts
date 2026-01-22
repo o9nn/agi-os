@@ -1,10 +1,8 @@
 export function nlsMetaEndpointFromRegion(region: string): URL {
   return new URL(`http://nls-meta.${region}.aliyuncs.com`)
 }
-
 export function nlsWebSocketEndpointFromRegion(region: string = 'cn-shanghai'): URL {
   const websocketURL = new URL('/ws/v1', 'https://example.com')
-
   switch (region) {
     case 'cn-shanghai':
     case 'cn-beijing':
@@ -18,6 +16,5 @@ export function nlsWebSocketEndpointFromRegion(region: string = 'cn-shanghai'): 
       websocketURL.protocol = 'wss:'
       websocketURL.hostname = `nls-gateway-${region}-internal.aliyuncs.com:80`
   }
-
   return websocketURL
 }

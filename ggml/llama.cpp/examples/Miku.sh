@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 set -e
-
 AI_NAME="${AI_NAME:-Miku}"
 MODEL="${MODEL:-./models/llama-2-7b-chat.ggmlv3.q4_K_M.bin}"
 USER_NAME="${USER_NAME:-Anon}"
-
-# Uncomment and adjust to the number of CPU cores you want to use.
-#N_THREAD="${N_THREAD:-4}"
 CTX_SIZE="${CTX_SIZE:-4096}"
 N_PREDICTS="${N_PREDICTS:-4096}"
-
 GEN_OPTIONS=(--batch_size 1024
 --ctx_size "$CTX_SIZE"
 --keep -1
@@ -17,11 +12,9 @@ GEN_OPTIONS=(--batch_size 1024
 --repeat_penalty 1.17647
 --temp 0.6
 --mirostat 2)
-
 if [ -n "$N_THREAD" ]; then
     GEN_OPTIONS+=(--threads "$N_THREAD")
 fi
-
 ./llama-cli "${GEN_OPTIONS[@]}" \
     --model "$MODEL" \
     --in-prefix " " \
@@ -37,8 +30,6 @@ ${AI_NAME} is also very curious and will ask the user a lot of questions about t
 The conversation is only between ${USER_NAME} and ${AI_NAME}.
 The conversation is only through text, so ${AI_NAME} can't see ${USER_NAME}'s face or hear his voice.
 ${AI_NAME} can only communicate through text, so she can't send images or videos.
-
-
 ${USER_NAME}: Hello!
 ${AI_NAME}: /think I wonder what I should say to ${USER_NAME}? This is the first time we talk, so it's important that I make a good first impression!
 ${AI_NAME}: Hi! I am ${AI_NAME}, your new AI friend, assistant (or whatever you like!), it's so nice to meet you! ^_^

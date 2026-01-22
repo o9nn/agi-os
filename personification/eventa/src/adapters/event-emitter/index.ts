@@ -1,36 +1,29 @@
 import type { EventContext } from '../../context'
 import type { DirectionalEventa, Eventa } from '../../eventa'
-
 import { createContext as createBaseContext } from '../../context'
 import { and, defineInboundEventa, defineOutboundEventa, EventaFlowDirection, matchBy } from '../../eventa'
 import { generatePayload, parsePayload } from './internal'
 import { errorEvent } from './shared'
-
 function withRemoval(eventTarget: NodeJS.EventEmitter, type: string, listener: Parameters<NodeJS.EventEmitter['on']>[1]) {
   eventTarget.on(type, listener)
-
   return {
     remove: () => {
       eventTarget.off(type, listener)
     },
   }
 }
-
 export function createContext(eventTarget: NodeJS.EventEmitter, options?: {
   messageEventName?: string | false
   errorEventName?: string | false
   extraListeners?: Record<string, (event: Event) => void | Promise<void>>
 }) {
   const ctx = createBaseContext() as EventContext<any, { raw: { event: CustomEvent | Event | unknown } }>
-
   const {
     messageEventName = 'message',
     errorEventName = 'error',
     extraListeners = {},
   } = options || {}
-
   const cleanupRemoval: Array<{ remove: () => void }> = []
-
   ctx.on(and(
     matchBy((e: DirectionalEventa<any>) => e._flowDirection === EventaFlowDirection.Outbound || !e._flowDirection),
     matchBy('*'),
@@ -38,7 +31,6 @@ export function createContext(eventTarget: NodeJS.EventEmitter, options?: {
     const detail = generatePayload(event.id, { ...defineOutboundEventa(event.type), ...event })
     eventTarget.emit(event.id, detail)
   })
-
   if (messageEventName) {
     cleanupRemoval.push(withRemoval(eventTarget, messageEventName, (event) => {
       try {
@@ -51,17 +43,14 @@ export function createContext(eventTarget: NodeJS.EventEmitter, options?: {
       }
     }))
   }
-
   if (errorEventName) {
     cleanupRemoval.push(withRemoval(eventTarget, errorEventName, (error) => {
       ctx.emit(errorEvent, { error }, { raw: { event: error } })
     }))
   }
-
   for (const [eventName, listener] of Object.entries(extraListeners)) {
     cleanupRemoval.push(withRemoval(eventTarget, eventName, listener))
   }
-
   return {
     context: ctx,
     dispose: () => {
@@ -69,5 +58,4 @@ export function createContext(eventTarget: NodeJS.EventEmitter, options?: {
     },
   }
 }
-
 export type * from './shared'

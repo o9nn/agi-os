@@ -3,5 +3,4 @@ declare global {
     electron: import('@electron-toolkit/preload').ElectronAPI
   }
 }
-
 export {}

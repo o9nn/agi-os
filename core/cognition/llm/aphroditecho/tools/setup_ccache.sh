@@ -1,28 +1,15 @@
 #!/bin/bash
-
-# Aphrodite Engine ccache setup script
-# This script configures ccache for optimal performance when building Aphrodite Engine
-
-# Change to project root directory
 cd "$(dirname "$0")/.."
-
 echo "Setting up ccache for Aphrodite Engine development..."
-
-# Configure ccache with optimal settings
 bin/micromamba run -r conda -n aphrodite-runtime ccache --set-config=max_size=10G
 bin/micromamba run -r conda -n aphrodite-runtime ccache --set-config=compression=true
 bin/micromamba run -r conda -n aphrodite-runtime ccache --set-config=compression_level=6
 bin/micromamba run -r conda -n aphrodite-runtime ccache --set-config=sloppiness=file_macro,locale,time_macros
-
-# Show current configuration
 echo "Current ccache configuration:"
 bin/micromamba run -r conda -n aphrodite-runtime ccache --show-config | grep -E "(cache_dir|max_size|compression)"
-
-# Show current stats
 echo ""
 echo "Current ccache statistics:"
 bin/micromamba run -r conda -n aphrodite-runtime ccache --show-stats
-
 echo ""
 echo "ccache setup complete!"
 echo ""

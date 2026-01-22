@@ -2,39 +2,32 @@
 #include <libc.h>
 #include <bio.h>
 #include <ctype.h>
-
 enum
 {
-	Unbsp = 0x00A0,
-	Uprivate = 0xF000,
-	Uempty,	/* \& */
-	Uamp,	/* raw & */
-	Ult,		/* raw < */
-	Ugt,		/* raw > */
-	Utick,	/* raw ' */
-	Ubtick,	/* raw ` */
-	Uminus,	/* raw - */
-	Uspace,	/* raw space */
-	Upl,		/* symbol + */
-	Ueq,		/* symbol = */
-	Umi,		/* symbol - */
-	Uformatted,	/* start diverted output */
-	Uunformatted,	/* end diverted output */
-
-	UPI = 720,	/* units per inch */
-	UPX = 10,	/* units per pixel */
-	
-	/* special input modes */
-	CopyMode = 1<<1,
-	ExpandMode = 1<<2,
-	ArgMode = 1<<3,
-	HtmlMode = 1<<4,
-	
-	MaxLine = 1024,
+Unbsp = 0x00A0,
+Uprivate = 0xF000,
+Uempty,
+Uamp,
+Ult,
+Ugt,
+Utick,
+Ubtick,
+Uminus,
+Uspace,
+Upl,
+Ueq,
+Umi,
+Uformatted,
+Uunformatted,
+UPI = 720,
+UPX = 10,
+CopyMode = 1<<1,
+ExpandMode = 1<<2,
+ArgMode = 1<<3,
+HtmlMode = 1<<4,
+MaxLine = 1024,
 };
-
 Rune*	L(char*);
-
 void		addesc(Rune, int (*)(void), int);
 void		addraw(Rune*, void(*)(Rune*));
 void		addreq(Rune*, void(*)(int, Rune**), int);
@@ -128,7 +121,6 @@ void		ungetnext(Rune);
 void		ungetrune(Rune);
 void		unitag(void);
 void		warn(char*, ...);
-
 extern	int		backslash;
 extern	int		bol;
 extern	Biobuf	bout;
@@ -140,9 +132,7 @@ extern	int		tick;
 extern	int		utf8;
 extern	int		verbose;
 extern	int		linepos;
-
 #define	runemalloc(n)	(Rune*)emalloc((n)*sizeof(Rune))
 #define	runerealloc(r, n)	(Rune*)erealloc(r, (n)*sizeof(Rune))
 #define	runemove(a, b, n)	memmove(a, b, (n)*sizeof(Rune))
-
 #pragma varargck type "L" void

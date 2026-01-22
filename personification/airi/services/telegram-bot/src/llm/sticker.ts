@@ -1,24 +1,18 @@
 import type { GenerateTextOptions } from '@xsai/generate-text'
 import type { Bot } from 'grammy'
 import type { Message, Sticker } from 'grammy/types'
-
 import { Buffer } from 'node:buffer'
 import { env } from 'node:process'
-
 import Sharp from 'sharp'
-
 import { useLogg } from '@guiiai/logg'
 import { embed } from '@xsai/embed'
 import { generateText } from '@xsai/generate-text'
 import { message } from '@xsai/utils-chat'
-
 import { findStickerDescription, recordSticker } from '../models'
 import { div, span } from '../prompts/utils'
 import { interpretAnimatedSticker } from './animated-sticker'
-
 export async function interpretSticker(bot: Bot, msg: Message, sticker: Sticker) {
   const logger = useLogg('interpretSticker').useGlobalConfig()
-
   if (sticker.is_animated || sticker.is_video) {
     logger
       .withField('sticker_emoji', sticker.emoji)
@@ -26,21 +20,17 @@ export async function interpretSticker(bot: Bot, msg: Message, sticker: Sticker)
       .withField('is_animated', sticker.is_animated)
       .withField('is_video', sticker.is_video)
       .log('Animated or video sticker, interpreting as animated sticker')
-
     return interpretAnimatedSticker(bot, msg, sticker)
   }
-
   try {
     if (await findStickerDescription(sticker.file_id)) {
       logger.withField('sticker', sticker).log('Sticker already interpreted, skipping')
       return
     }
-
     const file = await bot.api.getFile(sticker.file_id)
     const stickerRes = await fetch(`https://api.telegram.org/file/bot${bot.api.token}/${file.file_path}`)
     const buffer = await stickerRes.arrayBuffer()
     const stickerBase64 = Buffer.from(await Sharp(buffer).resize(512, 512).png().toBuffer()).toString('base64')
-
     const req = {
       apiKey: env.LLM_VISION_API_KEY!,
       baseURL: env.LLM_VISION_API_BASE_URL!,
@@ -72,21 +62,17 @@ export async function interpretSticker(bot: Bot, msg: Message, sticker: Sticker)
     if (env.LLM_OLLAMA_DISABLE_THINK) {
       (req as Record<string, unknown>).think = false
     }
-
     const res = await generateText(req)
     res.text = res.text.replace(/<think>[\s\S]*?<\/think>/, '').trim()
     if (!res.text) {
       throw new Error('No response text')
     }
-
-    // Generate embedding for sticker description to enable semantic search
     const embedRes = await embed({
       baseURL: env.EMBEDDING_API_BASE_URL!,
       apiKey: env.EMBEDDING_API_KEY!,
       model: env.EMBEDDING_MODEL!,
-      input: res.text, // Use the sticker description for embedding
+      input: res.text, 
     })
-
     await recordSticker(stickerBase64, sticker.file_id, file.file_path, res.text, sticker.set_name, sticker.emoji, sticker.set_name)
     logger.withField('sticker', res.text).log('Interpreted sticker')
   }

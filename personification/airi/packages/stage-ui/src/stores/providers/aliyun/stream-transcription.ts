@@ -1,19 +1,14 @@
 import type { SpeechProviderWithExtraOptions } from '@xsai-ext/shared-providers'
 import type { StreamTranscriptionDelta } from '@xsai/stream-transcription'
-
 import type { EventStartTranscription, ServerEvent, ServerEvents } from './'
-
 import { createAliyunNLSSession } from './'
 import { nlsWebSocketEndpointFromRegion } from './utils'
-
 type SessionOptions = NonNullable<Parameters<typeof createAliyunNLSSession>[3]>
 type AudioChunk = ArrayBuffer | ArrayBufferView
-
 const DEFAULT_SESSION_OPTIONS: Pick<EventStartTranscription['payload'], 'format' | 'sample_rate'> = {
   format: 'pcm',
   sample_rate: 16000,
 }
-
 export interface AliyunRealtimeSpeechExtraOptions {
   region?: SessionOptions['region']
   abortSignal?: AbortSignal
@@ -28,42 +23,32 @@ export interface AliyunRealtimeSpeechExtraOptions {
   }
   onSessionTerminated?: (error?: unknown) => Promise<void> | void
 }
-
 export interface CreateAliyunStreamTranscriptionOptions extends AliyunRealtimeSpeechExtraOptions {
   accessKeyId: string
   accessKeySecret: string
   appKey: string
   audioStream: ReadableStream<AudioChunk>
 }
-
 export interface AliyunStreamTranscriptionHandle {
   close: () => Promise<void>
 }
-
 function toArrayBuffer(chunk: AudioChunk): ArrayBuffer {
   if (chunk instanceof ArrayBuffer)
     return chunk
-
   if (ArrayBuffer.isView(chunk)) {
     if (chunk.byteOffset === 0 && chunk.byteLength === chunk.buffer.byteLength)
       return chunk.buffer as ArrayBuffer
-
     return chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength) as ArrayBuffer
   }
-
   throw new TypeError('Unsupported audio chunk type for Aliyun streaming transcription')
 }
-
 const sseEncoder = new TextEncoder()
-
 function encodeSSE(payload: StreamTranscriptionDelta): Uint8Array {
   return sseEncoder.encode(`data: ${JSON.stringify(payload)}\n\n`)
 }
-
 interface InternalRealtimeOptions extends CreateAliyunStreamTranscriptionOptions {
   onSentenceFinal?: (payload: ServerEvents['SentenceEnd']) => Promise<void> | void
 }
-
 function mayThrow(fn: () => void | Promise<void>) {
   try {
     return fn()
@@ -72,14 +57,12 @@ function mayThrow(fn: () => void | Promise<void>) {
     return undefined
   }
 }
-
 function eventListenerOf(type: string, listener: EventListenerOrEventListenerObject, on?: EventTarget) {
   return {
     on: () => on?.addEventListener(type, listener),
     off: () => on?.removeEventListener(type, listener),
   }
 }
-
 async function startRealtimeSession(options: InternalRealtimeOptions): Promise<void> {
   const {
     accessKeyId,
@@ -93,23 +76,17 @@ async function startRealtimeSession(options: InternalRealtimeOptions): Promise<v
     onSessionTerminated,
     onSentenceFinal,
   } = options
-
   const session = createAliyunNLSSession(accessKeyId, accessKeySecret, appKey, { region })
   const reader = audioStream.getReader()
   const url = await session.websocketUrl()
-
   mayThrow(() => hooks?.onWebSocketConnecting?.())
-
   const websocket = new WebSocket(url)
   websocket.binaryType = 'arraybuffer'
-
   const abortHandler = eventListenerOf('abort', () => cleanup(abortSignal?.reason ?? new DOMException('Aborted', 'AbortError')), abortSignal)
   abortSignal && abortHandler.on()
-
   async function cleanup(error?: unknown) {
     abortHandler && abortSignal && abortHandler.off()
     mayThrow(async () => await reader.cancel())
-
     if (websocket) {
       if (websocket.readyState === WebSocket.OPEN) {
         mayThrow(() => session.stop(websocket))
@@ -119,22 +96,17 @@ async function startRealtimeSession(options: InternalRealtimeOptions): Promise<v
         mayThrow(() => websocket?.close())
       }
     }
-
     await onSessionTerminated?.(error)
   }
-
   async function onTranscriptionStarted() {
     try {
       while (true) {
         if (abortSignal?.aborted) {
           break
         }
-
         const { done, value } = await reader.read()
-
         if (done)
           break
-
         if (value)
           websocket!.send(toArrayBuffer(value))
       }
@@ -143,12 +115,10 @@ async function startRealtimeSession(options: InternalRealtimeOptions): Promise<v
       await cleanup(error)
     }
   }
-
   async function onMessage(message: MessageEvent) {
     const data = JSON.parse(message.data)
     session.onEvent(data, async (event: ServerEvent) => {
       mayThrow(async () => await hooks?.onServerEvent?.(event))
-
       try {
         switch (event.header.name) {
           case 'TranscriptionStarted':
@@ -169,10 +139,8 @@ async function startRealtimeSession(options: InternalRealtimeOptions): Promise<v
       }
     })
   }
-
   async function onOpen() {
     mayThrow(() => hooks?.onWebSocketOpen?.())
-
     session.start(websocket!, {
       enable_intermediate_result: true,
       enable_punctuation_prediction: true,
@@ -180,16 +148,13 @@ async function startRealtimeSession(options: InternalRealtimeOptions): Promise<v
       ...sessionOptions,
     })
   }
-
   websocket.onerror = event => mayThrow(() => hooks?.onWebSocketError?.(event))
   websocket.onclose = close => mayThrow(() => hooks?.onWebSocketClose?.(close?.code ?? 1006, close?.reason ?? ''))
   websocket.onopen = () => mayThrow(async () => onOpen())
   websocket.onmessage = event => mayThrow(async () => onMessage(event))
-
   if (abortSignal?.aborted)
     throw abortSignal.reason ?? new DOMException('Aborted', 'AbortError')
 }
-
 export function createAliyunNLSProvider(
   accessKeyId: string,
   accessKeySecret: string,
@@ -207,10 +172,8 @@ export function createAliyunNLSProvider(
           const streamSource = (init?.body ?? extraOptions?.inputAudioStream)
           if (!(streamSource instanceof ReadableStream))
             throw new TypeError('Audio stream must be provided as a ReadableStream for Aliyun NLS streaming transcription.')
-
           let sessionHandle: AliyunStreamTranscriptionHandle | undefined
           let controllerClosed = false
-
           const stream = new ReadableStream<Uint8Array>({
             start(controller) {
               startRealtimeSession({
@@ -247,7 +210,6 @@ export function createAliyunNLSProvider(
                 await sessionHandle?.close()
             },
           })
-
           return new Response(stream, {
             headers: {
               'Cache-Control': 'no-cache',

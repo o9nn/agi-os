@@ -1,11 +1,8 @@
 package convert
-
 import (
 	"cmp"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type commandrModel struct {
 	ModelParameters
 	MaxPositionEmbeddings uint32  `json:"max_position_embeddings"`
@@ -21,9 +18,7 @@ type commandrModel struct {
 	LogitScale            float32 `json:"logit_scale"`
 	NCtx                  uint32  `json:"n_ctx"`
 }
-
 var _ ModelConverter = (*commandrModel)(nil)
-
 func (p *commandrModel) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "command-r"
@@ -39,10 +34,8 @@ func (p *commandrModel) KV(t *Tokenizer) ggml.KV {
 	kv["command-r.max_position_embeddings"] = cmp.Or(p.MaxLength, p.MaxPositionEmbeddings)
 	kv["command-r.logit_scale"] = p.LogitScale
 	kv["command-r.rope.scaling.type"] = "none"
-
 	return kv
 }
-
 func (p *commandrModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
 	for _, t := range ts {
@@ -53,10 +46,8 @@ func (p *commandrModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *commandrModel) Replacements() []string {
 	return []string{
 		"self_attn.q_norm", "attn_q_norm",

@@ -1,10 +1,8 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { defineConfig } from 'vite'
-
 export default defineConfig({
   plugins: [
     svelte({
-      /* plugin options */
     }),
   ],
   test: {
@@ -13,6 +11,6 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
     },
     environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,ts}', 'test/**/*.{test,spec}.{js,ts}'],
+    include: ['src*.{test,spec}.{js,ts}', 'test*.{test,spec}.{js,ts}'],
   },
 })

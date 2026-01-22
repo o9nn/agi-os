@@ -1,14 +1,10 @@
 package openai
-
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/moeru-ai/unspeech/pkg/backend/types"
 	"github.com/samber/mo"
 )
-
 var (
-	// Text to speech - OpenAI API
-	// https://platform.openai.com/docs/guides/text-to-speech#supported-languages
 	languages = []types.VoiceLanguage{
 		{Code: "af-ZA", Title: "Afrikaans"},
 		{Code: "ar-SA", Title: "Arabic"},
@@ -68,9 +64,6 @@ var (
 		{Code: "vi-VN", Title: "Vietnamese"},
 		{Code: "cy-GB", Title: "Welsh"},
 	}
-
-	// Text to speech - OpenAI API
-	// https://platform.openai.com/docs/guides/text-to-speech#supported-output-formats
 	formats = []types.VoiceFormat{
 		{Name: "MP3", Extension: ".mp3", MimeType: "audio/mpeg"},
 		{Name: "Opus", Extension: ".opus", MimeType: "audio/opus"},
@@ -80,7 +73,6 @@ var (
 		{Name: "PCM", Extension: ".pcm", MimeType: "audio/pcm"},
 	}
 )
-
 func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions]) mo.Result[any] {
 	return mo.Ok[any](types.ListVoicesResponse{
 		Voices: []types.Voice{
@@ -94,7 +86,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/alloy.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "ash",
@@ -106,7 +98,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/ash.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "coral",
@@ -118,7 +110,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/coral.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "echo",
@@ -130,7 +122,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/echo.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "fable",
@@ -142,7 +134,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/fable.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "onyx",
@@ -154,7 +146,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/onyx.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "nova",
@@ -166,7 +158,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/nova.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "sage",
@@ -178,7 +170,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/sage.wav",
+				PreviewAudioURL:   "https:
 			},
 			{
 				ID:                "shimmer",
@@ -190,7 +182,7 @@ func HandleVoices(c echo.Context, options mo.Option[types.VoicesRequestOptions])
 				Formats:           formats,
 				CompatibleModels:  []string{"tts-1", "tts-1-hd"},
 				PredefinedOptions: nil,
-				PreviewAudioURL:   "https://cdn.openai.com/API/docs/audio/shimmer.wav",
+				PreviewAudioURL:   "https:
 			},
 		},
 	})

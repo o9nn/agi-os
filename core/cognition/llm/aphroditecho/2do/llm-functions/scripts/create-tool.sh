@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
 set -e
-
-# @describe Create a boilplate tool script
-#
-# Examples:
-#   ./scripts/create-tool.sh _test.py foo bar! baz+ qux*
-#
-# @option --description <text> The tool description
-# @flag --force Override the exist tool file
-# @arg name! The script file name
-# @arg params* The script parameters
-
 main() {
     output="tools/$argc_name"
     if [[ -f "$output" ]] && [[ -z "$argc_force" ]]; then
         _die "$output already exists"
     fi
-    ext="${argc_name##*.}"
+    ext="${argc_name
     description="${argc_description:-"The description for the tool"}"
     support_exts=('.sh' '.js' '.py')
     if [[ "$ext" == "$argc_name" ]]; then
@@ -30,39 +19,33 @@ main() {
     esac
     echo "$output generated"
 }
-
 create_sh() {
     cat <<-'EOF' > "$output"
-#!/usr/bin/env bash
 set -e
-
 EOF
-    echo "# @describe $description" >> "$output"
+    echo "
     for param in "${argc_params[@]}"; do
-        echo "# @option --$(echo $param | sed 's/-/_/g')" >> "$output"
+        echo "
     done
     cat <<-'EOF' >> "$output"
-
 main() {
     ( set -o posix ; set ) | grep ^argc_
 }
-
 eval "$(argc --argc-eval "$0" "$@")"
 EOF
     chmod +x "$output"
 }
-
 create_js() {
     properties=''
     for param in "${argc_params[@]}"; do
         if [[ "$param" == *'!' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             property=" * @property {string} $param - "
         elif [[ "$param" == *'+' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             property=" * @property {string[]} $param - "
         elif [[ "$param" == *'*' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             property=" * @property {string[]} [$param] - "
         else
             property=" * @property {string} [$param] - "
@@ -80,7 +63,6 @@ exports.run = function (args) {
 }
 EOF
 }
-
 create_py() {
     has_array_param=false
     has_optional_pram=false
@@ -92,14 +74,14 @@ create_py() {
     for param in "${argc_params[@]}"; do
         optional=false
         if [[ "$param" == *'!' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             type="str"
         elif [[ "$param" == *'+' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             type="List[str]"
             has_array_param=true
         elif [[ "$param" == *'*' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             type="Optional[List[str]] = None"
             optional=true
             has_array_param=true
@@ -140,7 +122,6 @@ def run(${required_arguments}${optional_arguments}):
     pass
 EOF
 }
-
 build_schema() {
     echo '{
         "name": "'"${argc_name%%.*}"'",
@@ -148,21 +129,20 @@ build_schema() {
         "parameters": '"$(build_properties)"'
     }' | jq '.' | sed '2,$s/^/  /g'
 }
-
 build_properties() {
     required_params=()
     properties=''
     for param in "${argc_params[@]}"; do
         if [[ "$param" == *'!' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             required_params+=("$param")
             property='{"'"$param"'":{"type":"string","description":""}}'
         elif [[ "$param" == *'+' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             required_params+=("$param")
             property='{"'"$param"'":{"type":"array","description":"","items": {"type":"string"}}}'
         elif [[ "$param" == *'*' ]]; then
-            param="${param:0:$((${#param}-1))}"
+            param="${param:0:$((${
             property='{"'"$param"'":{"type":"array","description":"","items": {"type":"string"}}}'
         else
             property='{"'"$param"'":{"type":"string","description":""}}'
@@ -177,7 +157,7 @@ build_properties() {
         required+="\"$param\","
     done
     if [[ -n "$required" ]]; then
-        required="${required:0:$((${#required}-1))}"
+        required="${required:0:$((${
         required+="]"
     fi
     echo '{
@@ -185,11 +165,8 @@ build_properties() {
         "properties": '"$(echo "$properties" | jq -s 'add')$required"'
     }' | jq '.'
 }
-
 _die() {
     echo "$*" >&2
     exit 1
 }
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

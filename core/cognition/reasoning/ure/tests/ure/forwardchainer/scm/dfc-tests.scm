@@ -1,4 +1,3 @@
-; Substitution case where $A = Cat and $B = Animal
 (define deduction-ab-substitute-1
     (BindLink
         (VariableSet
@@ -10,7 +9,6 @@
                 (ConceptNode "Animal")
                 (VariableNode "$C")
             )
-            ; To avoid matching (Inheritance A B) and (Inheritance B A)
             (NotLink
                 (IdenticalLink
                     (ConceptNode "Cat")
@@ -30,8 +28,6 @@
                 (InheritanceLink
                     (ConceptNode "Cat")
                     (VariableNode "$C"))))))
-
-; Substitution case where $B = Cat and $C = Animal
 (define deduction-ab-substitute-2
     (BindLink
         (VariableSet
@@ -43,7 +39,6 @@
                 (VariableNode "$A")
                 (ConceptNode  "Cat")
             )
-            ; To avoid matching (Inheritance A B) and (Inheritance B A)
             (NotLink
                 (IdenticalLink
                     (VariableNode "$A")

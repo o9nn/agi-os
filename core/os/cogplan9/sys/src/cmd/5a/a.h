@@ -2,16 +2,13 @@
 #include <libc.h>
 #include <bio.h>
 #include "../5c/5.out.h"
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 typedef	struct	Sym	Sym;
 typedef	struct	Gen	Gen;
 typedef	struct	Io	Io;
 typedef	struct	Hist	Hist;
-
 #define	MAXALIGN	7
 #define	FPCHIP		1
 #define	NSYMB		8192
@@ -25,70 +22,61 @@ typedef	struct	Hist	Hist;
 #define	NHASH		503
 #define	STRINGSZ	200
 #define	NMACRO		10
-
 struct	Sym
 {
-	Sym*	link;
-	char*	macro;
-	long	value;
-	ushort	type;
-	char	*name;
-	char	sym;
+Sym*	link;
+char*	macro;
+long	value;
+ushort	type;
+char	*name;
+char	sym;
 };
 #define	S	((Sym*)0)
-
 EXTERN	struct
 {
-	char*	p;
-	int	c;
+char*	p;
+int	c;
 } fi;
-
 struct	Io
 {
-	Io*	link;
-	char	b[BUFSIZ];
-	char*	p;
-	short	c;
-	short	f;
+Io*	link;
+char	b[BUFSIZ];
+char*	p;
+short	c;
+short	f;
 };
 #define	I	((Io*)0)
-
 EXTERN	struct
 {
-	Sym*	sym;
-	short	type;
+Sym*	sym;
+short	type;
 } h[NSYM];
-
 struct	Gen
 {
-	Sym*	sym;
-	long	offset;
-	short	type;
-	short	reg;
-	short	name;
-	double	dval;
-	char	sval[8];
+Sym*	sym;
+long	offset;
+short	type;
+short	reg;
+short	name;
+double	dval;
+char	sval[8];
 };
-
 struct	Hist
 {
-	Hist*	link;
-	char*	name;
-	long	line;
-	long	offset;
+Hist*	link;
+char*	name;
+long	line;
+long	offset;
 };
 #define	H	((Hist*)0)
-
 enum
 {
-	CLAST,
-	CMACARG,
-	CMACRO,
-	CPREPROC,
-
-	Always	= 14,
+CLAST,
+CMACARG,
+CMACRO,
+CPREPROC,
+Always	= 14,
 };
-
 EXTERN	char	debug[256];
 EXTERN	Sym*	hash[NHASH];
 EXTERN	char*	Dlist[30];
@@ -117,7 +105,6 @@ EXTERN	int	thechar;
 EXTERN	char*	thestring;
 EXTERN	long	thunk;
 EXTERN	Biobuf	obuf;
-
 void*	alloc(long);
 void*	allocn(void*, long, long);
 void	errorexit(void);
@@ -160,16 +147,11 @@ void	yyerror(char*, ...);
 int	yyparse(void);
 void	setinclude(char*);
 int	assemble(char*);
-
-/*
- *	system-dependent stuff from ../cc/compat.c
- */
-
-enum				/* keep in synch with ../cc/cc.h */
+enum
 {
-	Plan9	= 1<<0,
-	Unix	= 1<<1,
-	Windows	= 1<<2,
+Plan9	= 1<<0,
+Unix	= 1<<1,
+Windows	= 1<<2,
 };
 int	mywait(int*);
 int	mycreat(char*, int);

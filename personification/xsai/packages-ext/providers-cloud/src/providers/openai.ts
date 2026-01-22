@@ -8,7 +8,6 @@ import {
   createTranscriptionProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
 export const createOpenAI = (apiKey: string, baseURL = 'https://api.openai.com/v1/') => merge(
   createMetadataProvider('openai'),
   createChatProvider<'gpt-4o' | 'gpt-4o-mini' | 'o1-mini' | 'o1-preview'>({ apiKey, baseURL }),

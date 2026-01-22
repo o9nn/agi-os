@@ -1,11 +1,8 @@
 #ifndef _ASMi386_SIGNAL_H
 #define _ASMi386_SIGNAL_H
-
-typedef unsigned long sigset_t;		/* at least 32 bits */
-
+typedef unsigned long sigset_t;
 #define _NSIG             32
 #define NSIG		_NSIG
-
 #define SIGHUP		 1
 #define SIGINT		 2
 #define SIGQUIT		 3
@@ -37,21 +34,8 @@ typedef unsigned long sigset_t;		/* at least 32 bits */
 #define SIGWINCH	28
 #define SIGIO		29
 #define SIGPOLL		SIGIO
-/*
-#define SIGLOST		29
-*/
 #define SIGPWR		30
 #define	SIGUNUSED	31
-
-/*
- * sa_flags values: SA_STACK is not currently supported, but will allow the
- * usage of signal stacks by using the (now obsolete) sa_restorer field in
- * the sigaction structure as a stack pointer. This is now possible due to
- * the changes in signal handling. LBT 010493.
- * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the
- * SA_RESTART flag to get restarting signals (which were the default long ago)
- * SA_SHIRQ flag is for shared interrupt support on PCI and EISA.
- */
 #define SA_NOCLDSTOP	1
 #define SA_SHIRQ	0x04000000
 #define SA_STACK	0x08000000
@@ -59,39 +43,24 @@ typedef unsigned long sigset_t;		/* at least 32 bits */
 #define SA_INTERRUPT	0x20000000
 #define SA_NOMASK	0x40000000
 #define SA_ONESHOT	0x80000000
-
 #ifdef __KERNEL__
-/*
- * These values of sa_flags are used only by the kernel as part of the
- * irq handling routines.
- *
- * SA_INTERRUPT is also used by the irq handling routines.
- */
 #define SA_PROBE SA_ONESHOT
 #define SA_SAMPLE_RANDOM SA_RESTART
 #endif
-
-
-#define SIG_BLOCK          0	/* for blocking signals */
-#define SIG_UNBLOCK        1	/* for unblocking signals */
-#define SIG_SETMASK        2	/* for setting the signal mask */
-
-/* Type of a signal handler.  */
+#define SIG_BLOCK          0
+#define SIG_UNBLOCK        1
+#define SIG_SETMASK        2
 typedef void (*__sighandler_t)(int);
-
-#define SIG_DFL	((__sighandler_t)0)	/* default signal handling */
-#define SIG_IGN	((__sighandler_t)1)	/* ignore signal */
-#define SIG_ERR	((__sighandler_t)-1)	/* error return from signal */
-
+#define SIG_DFL	((__sighandler_t)0)
+#define SIG_IGN	((__sighandler_t)1)
+#define SIG_ERR	((__sighandler_t)-1)
 struct sigaction {
-	__sighandler_t sa_handler;
-	sigset_t sa_mask;
-	unsigned long sa_flags;
-	void (*sa_restorer)(void);
+__sighandler_t sa_handler;
+sigset_t sa_mask;
+unsigned long sa_flags;
+void (*sa_restorer)(void);
 };
-
 #ifdef __KERNEL__
 #include <asm/sigcontext.h>
 #endif
-
 #endif

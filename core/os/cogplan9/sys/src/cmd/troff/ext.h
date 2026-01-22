@@ -1,5 +1,4 @@
 extern	int	TROFF;
-
 extern	int	alphabet;
 extern	char	**argp;
 extern	char	*eibuf;
@@ -33,7 +32,7 @@ extern	int	ascii;
 extern	int	bd;
 extern	int	bdtab[];
 extern	int	ccs;
-extern	char	*chnames[];	/* chnames[n-ALPHABET] -> name of char n */
+extern	char	*chnames[];
 extern	int	copyf;
 extern	int	cs;
 extern	int	dfact;
@@ -140,22 +139,13 @@ extern	Wcache	widcache[];
 extern	char	gchtab[];
 extern	Diver	d[NDI];
 extern	Diver	*dip;
-
-
 extern	char	xchname[];
 extern	short	xchtab[];
 extern	char	*codestr;
 extern	char	*chnamep;
 extern	short	*chtab;
 extern	int	nchtab;
-
 extern Numtab *numtabp;
-
-/* these characters are used as various signals or values
-/* in miscellaneous places.
-/* values are set in specnames in t10.c
-*/
-
 extern int	c_hyphen;
 extern int	c_emdash;
 extern int	c_rule;
@@ -173,12 +163,6 @@ extern int	c_boxrule;
 extern int	c_lefthand;
 extern int	c_dagger;
 extern int	c_isalnum;
-
-/*
- * String pointers for DWB pathname management.
- */
-
 extern char	*DWBfontdir;
 extern char	*DWBntermdir;
 extern char	*DWBalthyphens;
-

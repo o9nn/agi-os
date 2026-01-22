@@ -1,4 +1,3 @@
-// source: https://huggingface.co/openai/gpt-oss-20b/blob/main/chat_template.jinja
 export const harmonyJinjaTemplate = `
 {# 
   In addition to the normal inputs of \`messages\` and \`tools\`, this template also accepts the
@@ -57,11 +56,11 @@ export const harmonyJinjaTemplate = `
             {%- for variant in param_spec.oneOf -%}
                 {{- render_typescript_type(variant, required_params) -}}
                 {%- if variant.description -%}
-                    {{- "// " + variant.description -}}
+                    {{- "
                 {%- endif -%}
                 {%- if variant.default is defined -%}
                     {{- "                    " -}}
-                    {{- "// default: " + variant.default | tojson -}}
+                    {{- "
                 {%- endif -%}
                 {%- if not loop.last -%}
                     {{- " | " -}}
@@ -112,13 +111,13 @@ export const harmonyJinjaTemplate = `
     {{- "namespace " + namespace_name + " {\\n\\n" -}}
     {%- for tool in tools -%}
         {%- set tool = tool.function -%}
-        {{- "// " + tool.description + "\\n" -}}
+        {{- "
         {{- "type " + tool.name + " = " -}}
         {%- if tool.parameters and tool.parameters.properties -%}
             {{- "(_: {\\n" -}}
             {%- for (param_name, param_spec) in tool.parameters.properties.items() -%}
                 {%- if param_spec.description -%}
-                    {{- "// " + param_spec.description + "\\n" -}}
+                    {{- "
                 {%- endif -%}
                 {{- param_name -}}
                 {%- if param_name not in (tool.parameters.required or []) -%}
@@ -128,11 +127,11 @@ export const harmonyJinjaTemplate = `
                 {{- render_typescript_type(param_spec, (tool.parameters.required or [])) -}}
                 {%- if param_spec.default is defined -%}
                     {%- if param_spec.enum -%}
-                        {{- ", // default: " + param_spec.default -}}
+                        {{- ", 
                     {%- elif param_spec.oneOf -%}
-                        {{- "// default: " + param_spec.default -}}
+                        {{- "
                     {%- else -%}
-                        {{- ", // default: " + param_spec.default | tojson -}}
+                        {{- ", 
                     {%- endif -%}
                 {%- endif -%}
                 {%- if not loop.last -%}
@@ -146,44 +145,44 @@ export const harmonyJinjaTemplate = `
             {{- "() => any;\\n\\n" -}}
         {%- endif -%}
     {%- endfor -%}
-    {{- "} // namespace " + namespace_name -}}
+    {{- "} 
 {%- endmacro -%}
 {%- macro render_builtin_tools(browser_tool, python_tool) -%}
     {%- if browser_tool -%}
         {{- "## browser\\n\\n" -}}
-        {{- "// Tool for browsing.\\n" -}}
-        {{- "// The \`cursor\` appears in brackets before each browsing display: \`[{cursor}]\`.\\n" -}}
-        {{- "// Cite information from the tool using the following format:\\n" -}}
-        {{- "// \`【{cursor}†L{line_start}(-L{line_end})?】\`, for example: \`【6†L9-L11】\` or \`【8†L3】\`.\\n" -}}
-        {{- "// Do not quote more than 10 words directly from the tool output.\\n" -}}
-        {{- "// sources=web (default: web)\\n" -}}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "namespace browser {\\n\\n" -}}
-        {{- "// Searches for information related to \`query\` and displays \`topn\` results.\\n" -}}
+        {{- "
         {{- "type search = (_: {\\n" -}}
         {{- "query: string,\\n" -}}
-        {{- "topn?: number, // default: 10\\n" -}}
+        {{- "topn?: number, 
         {{- "source?: string,\\n" -}}
         {{- "}) => any;\\n\\n" -}}
-        {{- "// Opens the link \`id\` from the page indicated by \`cursor\` starting at line number \`loc\`, showing \`num_lines\` lines.\\n" -}}
-        {{- "// Valid link ids are displayed with the formatting: \`【{id}†.*】\`.\\n" -}}
-        {{- "// If \`cursor\` is not provided, the most recent page is implied.\\n" -}}
-        {{- "// If \`id\` is a string, it is treated as a fully qualified URL associated with \`source\`.\\n" -}}
-        {{- "// If \`loc\` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\\n" -}}
-        {{- "// Use this function without \`id\` to scroll to a new location of an opened page.\\n" -}}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "type open = (_: {\\n" -}}
-        {{- "id?: number | string, // default: -1\\n" -}}
-        {{- "cursor?: number, // default: -1\\n" -}}
-        {{- "loc?: number, // default: -1\\n" -}}
-        {{- "num_lines?: number, // default: -1\\n" -}}
-        {{- "view_source?: boolean, // default: false\\n" -}}
+        {{- "id?: number | string, 
+        {{- "cursor?: number, 
+        {{- "loc?: number, 
+        {{- "num_lines?: number, 
+        {{- "view_source?: boolean, 
         {{- "source?: string,\\n" -}}
         {{- "}) => any;\\n\\n" -}}
-        {{- "// Finds exact matches of \`pattern\` in the current page, or the page given by \`cursor\`.\\n" -}}
+        {{- "
         {{- "type find = (_: {\\n" -}}
         {{- "pattern: string,\\n" -}}
-        {{- "cursor?: number, // default: -1\\n" -}}
+        {{- "cursor?: number, 
         {{- "}) => any;\\n\\n" -}}
-        {{- "} // namespace browser\\n\\n" -}}
+        {{- "} 
     {%- endif -%}
     {%- if python_tool -%}
         {{- "## python\\n\\n" -}}
@@ -323,7 +322,6 @@ export const harmonyJinjaTemplate = `
     {{- "<|start|>assistant" -}}
 {%- endif -%}
 `.slice(1, -1);
-
 export const harmonyJinjaTemplate2 = `
 {# Copyright 2025-present Unsloth. Apache 2.0 License. Unsloth chat template fixes. Edited from ggml-org & OpenAI #}
 {#-
@@ -333,7 +331,6 @@ export const harmonyJinjaTemplate2 = `
   - "model_identity": A string that optionally describes the model identity.
   - "reasoning_effort": A string that describes the reasoning effort, defaults to "medium".
  #}
-
 {#- Tool Definition Rendering ============================================== #}
 {%- macro render_typescript_type(param_spec, required_params, is_nullable=false) -%}
     {%- if param_spec.type == "array" -%}
@@ -384,10 +381,10 @@ export const harmonyJinjaTemplate2 = `
             {%- for variant in param_spec.oneOf -%}
                 {{- render_typescript_type(variant, required_params) -}}
                 {%- if variant.description %}
-                    {{- "// " + variant.description }}
+                    {{- "
                 {%- endif -%}
                 {%- if variant.default is defined %}
-                    {{ "// default: " + variant.default|tojson }}
+                    {{ "
                 {%- endif -%}
                 {%- if not loop.last %}
                     {{- " | " }}
@@ -409,7 +406,6 @@ export const harmonyJinjaTemplate2 = `
         {{- "number" }}
     {%- elif param_spec.type == "boolean" -%}
         {{- "boolean" }}
-
     {%- elif param_spec.type == "object" -%}
         {%- if param_spec.properties -%}
             {{- "{\\n" }}
@@ -432,19 +428,18 @@ export const harmonyJinjaTemplate2 = `
         {{- "any" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {%- macro render_tool_namespace(namespace_name, tools) -%}
     {{- "## " + namespace_name + "\\n\\n" }}
     {{- "namespace " + namespace_name + " {\\n\\n" }}
     {%- for tool in tools %}
         {%- set tool = tool.function %}
-        {{- "// " + tool.description + "\\n" }}
+        {{- "
         {{- "type "+ tool.name + " = " }}
         {%- if tool.parameters and tool.parameters.properties -%}
             {{- "(_: " }}
             {{- "{\\n" }}
             {%- for param_name, param_spec in tool.parameters.properties.items() %}
-                {{- "// " + param_spec.description + "\\n" }}
+                {{- "
                 {{- param_name }}
                 {%- if param_name not in (tool.parameters.required or []) -%}
                     {{- "?" }}
@@ -453,11 +448,11 @@ export const harmonyJinjaTemplate2 = `
                 {{- render_typescript_type(param_spec, tool.parameters.required or []) }}
                 {%- if param_spec.default is defined -%}
                     {%- if param_spec.enum %}
-                        {{- ", // default: " + param_spec.default }}
+                        {{- ", 
                     {%- elif param_spec.oneOf %}
-                        {{- "// default: " + param_spec.default }}
+                        {{- "
                     {%- else %}
-                        {{- ", // default: " + param_spec.default|tojson }}
+                        {{- ", 
                     {%- endif -%}
                 {%- endif -%}
                 {%- if not loop.last %}
@@ -471,54 +466,51 @@ export const harmonyJinjaTemplate2 = `
             {{- "() => any;\\n\\n" }}
         {%- endif -%}
     {%- endfor %}
-    {{- "} // namespace " + namespace_name }}
+    {{- "} 
 {%- endmacro -%}
-
 {%- macro render_builtin_tools(browser_tool, python_tool) -%}
     {%- if browser_tool %}
         {{- "## browser\\n\\n" }}
-        {{- "// Tool for browsing.\\n" }}
-        {{- "// The \`cursor\` appears in brackets before each browsing display: \`[{cursor}]\`.\\n" }}
-        {{- "// Cite information from the tool using the following format:\\n" }}
-        {{- "// \`【{cursor}†L{line_start}(-L{line_end})?】\`, for example: \`【6†L9-L11】\` or \`【8†L3】\`.\\n" }}
-        {{- "// Do not quote more than 10 words directly from the tool output.\\n" }}
-        {{- "// sources=web (default: web)\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "namespace browser {\\n\\n" }}
-        {{- "// Searches for information related to \`query\` and displays \`topn\` results.\\n" }}
+        {{- "
         {{- "type search = (_: {\\n" }}
         {{- "query: string,\\n" }}
-        {{- "topn?: number, // default: 10\\n" }}
+        {{- "topn?: number, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Opens the link \`id\` from the page indicated by \`cursor\` starting at line number \`loc\`, showing \`num_lines\` lines.\\n" }}
-        {{- "// Valid link ids are displayed with the formatting: \`【{id}†.*】\`.\\n" }}
-        {{- "// If \`cursor\` is not provided, the most recent page is implied.\\n" }}
-        {{- "// If \`id\` is a string, it is treated as a fully qualified URL associated with \`source\`.\\n" }}
-        {{- "// If \`loc\` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\\n" }}
-        {{- "// Use this function without \`id\` to scroll to a new location of an opened page.\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "type open = (_: {\\n" }}
-        {{- "id?: number | string, // default: -1\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
-        {{- "loc?: number, // default: -1\\n" }}
-        {{- "num_lines?: number, // default: -1\\n" }}
-        {{- "view_source?: boolean, // default: false\\n" }}
+        {{- "id?: number | string, 
+        {{- "cursor?: number, 
+        {{- "loc?: number, 
+        {{- "num_lines?: number, 
+        {{- "view_source?: boolean, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Finds exact matches of \`pattern\` in the current page, or the page given by \`cursor\`.\\n" }}
+        {{- "
         {{- "type find = (_: {\\n" }}
         {{- "pattern: string,\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
+        {{- "cursor?: number, 
         {{- "}) => any;\\n\\n" }}
-        {{- "} // namespace browser\\n\\n" }}
+        {{- "} 
     {%- endif -%}
-
     {%- if python_tool %}
         {{- "## python\\n\\n" }}
         {{- "Use this tool to execute Python code in your chain of thought. The code will not be shown to the user. This tool should be used for internal reasoning, but not for code that is intended to be visible to the user (e.g. when creating plots, tables, or files).\\n\\n" }}
         {{- "When you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. python will respond with the output of the execution or time out after 120.0 seconds. The drive at '/mnt/data' can be used to save and persist user files. Internet access for this session is UNKNOWN. Depends on the cluster.\\n\\n" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- System Message Construction ============================================ #}
 {%- macro build_system_message() -%}
     {%- if model_identity is not defined %}
@@ -549,15 +541,12 @@ export const harmonyJinjaTemplate2 = `
         {{- "\\nCalls to these tools must go to the commentary channel: 'functions'." }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- Main Template Logic ================================================= #}
 {#- Set defaults #}
-
 {#- Render system message #}
 {{- "<|start|>system<|message|>" }}
 {{- build_system_message() }}
 {{- "<|end|>" }}
-
 {#- Extract developer message #}
 {%- if messages[0].role == "developer" or messages[0].role == "system" %}
     {%- set developer_message = messages[0].content %}
@@ -566,7 +555,6 @@ export const harmonyJinjaTemplate2 = `
     {%- set developer_message = "" %}
     {%- set loop_messages = messages %}
 {%- endif %}
-
 {#- Render developer message #}
 {%- if developer_message or tools %}
     {{- "<|start|>developer<|message|>" }}
@@ -581,7 +569,6 @@ export const harmonyJinjaTemplate2 = `
     {%- endif -%}
     {{- "<|end|>" }}
 {%- endif %}
-
 {#- Render messages #}
 {%- set last_tool_call = namespace(name=none) %}
 {%- for message in loop_messages -%}
@@ -634,15 +621,12 @@ export const harmonyJinjaTemplate2 = `
         {{- "<|start|>user<|message|>" + message.content + "<|end|>" }}
     {%- endif -%}
 {%- endfor -%}
-
 {#- Generation prompt #}
 {%- if add_generation_prompt -%}
 <|start|>assistant
 {%- endif -%}
 {# Copyright 2025-present Unsloth. Apache 2.0 License. Unsloth chat template fixes. Edited from ggml-org & OpenAI #}
 `.slice(1, -1);
-
-
 export const harmonyJinjaTemplate3 = `
 {#-
   In addition to the normal inputs of \`messages\` and \`tools\`, this template also accepts the
@@ -651,7 +635,6 @@ export const harmonyJinjaTemplate3 = `
   - "model_identity": A string that optionally describes the model identity.
   - "reasoning_effort": A string that describes the reasoning effort, defaults to "medium".
  #}
-
 {#- Tool Definition Rendering ============================================== #}
 {%- macro render_typescript_type(param_spec, required_params, is_nullable=false) -%}
     {%- if param_spec.type == "array" -%}
@@ -702,10 +685,10 @@ export const harmonyJinjaTemplate3 = `
             {%- for variant in param_spec.oneOf -%}
                 {{- render_typescript_type(variant, required_params) -}}
                 {%- if variant.description %}
-                    {{- "// " + variant.description }}
+                    {{- "
                 {%- endif -%}
                 {%- if variant.default is defined %}
-                    {{ "// default: " + variant.default|tojson }}
+                    {{ "
                 {%- endif -%}
                 {%- if not loop.last %}
                     {{- " | " }}
@@ -727,7 +710,6 @@ export const harmonyJinjaTemplate3 = `
         {{- "number" }}
     {%- elif param_spec.type == "boolean" -%}
         {{- "boolean" }}
-
     {%- elif param_spec.type == "object" -%}
         {%- if param_spec.properties -%}
             {{- "{\\n" }}
@@ -750,19 +732,18 @@ export const harmonyJinjaTemplate3 = `
         {{- "any" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {%- macro render_tool_namespace(namespace_name, tools) -%}
     {{- "## " + namespace_name + "\\n\\n" }}
     {{- "namespace " + namespace_name + " {\\n\\n" }}
     {%- for tool in tools %}
         {%- set tool = tool.function %}
-        {{- "// " + tool.description + "\\n" }}
+        {{- "
         {{- "type "+ tool.name + " = (" }}
         {%- if tool.parameters and tool.parameters.properties -%}
             {{- "_: " }}
             {{- "{\\n" }}
             {%- for param_name, param_spec in tool.parameters.properties.items() %}
-                {{- "// " + param_spec.description + "\\n" }}
+                {{- "
                 {{- param_name }}
                 {%- if param_name not in (tool.parameters.required or []) -%}
                     {{- "?" }}
@@ -771,9 +752,9 @@ export const harmonyJinjaTemplate3 = `
                 {{- render_typescript_type(param_spec, tool.parameters.required or []) }}
                 {%- if param_spec.default is defined -%}
                     {%- if param_spec.oneOf %}
-                        {{- "// default: " + param_spec.default }}
+                        {{- "
                     {%- else %}
-                        {{- ", // default: " + param_spec.default|tojson }}
+                        {{- ", 
                     {%- endif -%}
                 {%- endif -%}
                 {%- if not loop.last %}
@@ -785,54 +766,51 @@ export const harmonyJinjaTemplate3 = `
             {{- "\\n}) => any;\\n" }}
         {%- endif -%}
     {%- endfor %}
-    {{- "\\n} // namespace " + namespace_name }}
+    {{- "\\n} 
 {%- endmacro -%}
-
 {%- macro render_builtin_tools(browser_tool, python_tool) -%}
     {%- if browser_tool %}
         {{- "## browser\\n\\n" }}
-        {{- "// Tool for browsing.\\n" }}
-        {{- "// The \`cursor\` appears in brackets before each browsing display: \`[{cursor}]\`.\\n" }}
-        {{- "// Cite information from the tool using the following format:\\n" }}
-        {{- "// \`【{cursor}†L{line_start}(-L{line_end})?】\`, for example: \`【6†L9-L11】\` or \`【8†L3】\`.\\n" }}
-        {{- "// Do not quote more than 10 words directly from the tool output.\\n" }}
-        {{- "// sources=web (default: web)\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "namespace browser {\\n\\n" }}
-        {{- "// Searches for information related to \`query\` and displays \`topn\` results.\\n" }}
+        {{- "
         {{- "type search = (_: {\\n" }}
         {{- "query: string,\\n" }}
-        {{- "topn?: number, // default: 10\\n" }}
+        {{- "topn?: number, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Opens the link \`id\` from the page indicated by \`cursor\` starting at line number \`loc\`, showing \`num_lines\` lines.\\n" }}
-        {{- "// Valid link ids are displayed with the formatting: \`【{id}†.*】\`.\\n" }}
-        {{- "// If \`cursor\` is not provided, the most recent page is implied.\\n" }}
-        {{- "// If \`id\` is a string, it is treated as a fully qualified URL associated with \`source\`.\\n" }}
-        {{- "// If \`loc\` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\\n" }}
-        {{- "// Use this function without \`id\` to scroll to a new location of an opened page.\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "type open = (_: {\\n" }}
-        {{- "id?: number | string, // default: -1\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
-        {{- "loc?: number, // default: -1\\n" }}
-        {{- "num_lines?: number, // default: -1\\n" }}
-        {{- "view_source?: boolean, // default: false\\n" }}
+        {{- "id?: number | string, 
+        {{- "cursor?: number, 
+        {{- "loc?: number, 
+        {{- "num_lines?: number, 
+        {{- "view_source?: boolean, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Finds exact matches of \`pattern\` in the current page, or the page given by \`cursor\`.\\n" }}
+        {{- "
         {{- "type find = (_: {\\n" }}
         {{- "pattern: string,\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
+        {{- "cursor?: number, 
         {{- "}) => any;\\n\\n" }}
-        {{- "} // namespace browser\\n\\n" }}
+        {{- "} 
     {%- endif -%}
-
     {%- if python_tool %}
         {{- "## python\\n\\n" }}
         {{- "Use this tool to execute Python code in your chain of thought. The code will not be shown to the user. This tool should be used for internal reasoning, but not for code that is intended to be visible to the user (e.g. when creating plots, tables, or files).\\n\\n" }}
         {{- "When you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. python will respond with the output of the execution or time out after 120.0 seconds. The drive at '/mnt/data' can be used to save and persist user files. Internet access for this session is UNKNOWN. Depends on the cluster.\\n\\n" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- System Message Construction ============================================ #}
 {%- macro build_system_message() -%}
     {%- if model_identity is not defined %}
@@ -861,15 +839,12 @@ export const harmonyJinjaTemplate3 = `
     {{- "# Valid channels: analysis, commentary, final. Channel must be included for every message.\\n" }}
     {{- "Calls to these tools must go to the commentary channel: 'functions'." }}
 {%- endmacro -%}
-
 {#- Main Template Logic ================================================= #}
 {#- Set defaults #}
-
 {#- Render system message #}
 {{- "<|start|>system<|message|>" }}
 {{- build_system_message() }}
 {{- "<|end|>" }}
-
 {#- Extract developer message #}
 {%- if messages[0].role == "developer" or messages[0].role == "system" %}
     {%- set developer_message = messages[0].content %}
@@ -878,7 +853,6 @@ export const harmonyJinjaTemplate3 = `
     {%- set developer_message = "" %}
     {%- set loop_messages = messages %}
 {%- endif %}
-
 {#- Render developer message #}
 {%- if developer_message or tools %}
     {{- "<|start|>developer<|message|>" }}
@@ -893,7 +867,6 @@ export const harmonyJinjaTemplate3 = `
     {%- endif -%}
     {{- "<|end|>" }}
 {%- endif %}
-
 {#- Render messages #}
 {%- set last_tool_call = namespace(name=none) %}
 {%- for message in loop_messages -%}
@@ -946,14 +919,11 @@ export const harmonyJinjaTemplate3 = `
         {{- "<|start|>user<|message|>" + message.content + "<|end|>" }}
     {%- endif -%}
 {%- endfor -%}
-
 {#- Generation prompt #}
 {%- if add_generation_prompt -%}
 <|start|>assistant
 {%- endif -%}
 `.slice(1, -1);
-
-
 export const harmonyJinjaTemplate4 = `
 {# Chat template fixes by Unsloth #}
 {#-
@@ -963,7 +933,6 @@ export const harmonyJinjaTemplate4 = `
   - "model_identity": A string that optionally describes the model identity.
   - "reasoning_effort": A string that describes the reasoning effort, defaults to "medium".
  #}
-
 {#- Tool Definition Rendering ============================================== #}
 {%- macro render_typescript_type(param_spec, required_params, is_nullable=false) -%}
     {%- if param_spec.type == "array" -%}
@@ -1014,10 +983,10 @@ export const harmonyJinjaTemplate4 = `
             {%- for variant in param_spec.oneOf -%}
                 {{- render_typescript_type(variant, required_params) -}}
                 {%- if variant.description %}
-                    {{- "// " + variant.description }}
+                    {{- "
                 {%- endif -%}
                 {%- if variant.default is defined %}
-                    {{ "// default: " + variant.default|tojson }}
+                    {{ "
                 {%- endif -%}
                 {%- if not loop.last %}
                     {{- " | " }}
@@ -1039,7 +1008,6 @@ export const harmonyJinjaTemplate4 = `
         {{- "number" }}
     {%- elif param_spec.type == "boolean" -%}
         {{- "boolean" }}
-
     {%- elif param_spec.type == "object" -%}
         {%- if param_spec.properties -%}
             {{- "{\\n" }}
@@ -1062,19 +1030,18 @@ export const harmonyJinjaTemplate4 = `
         {{- "any" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {%- macro render_tool_namespace(namespace_name, tools) -%}
     {{- "## " + namespace_name + "\\n\\n" }}
     {{- "namespace " + namespace_name + " {\\n\\n" }}
     {%- for tool in tools %}
         {%- set tool = tool.function %}
-        {{- "// " + tool.description + "\\n" }}
+        {{- "
         {{- "type "+ tool.name + " = " }}
         {%- if tool.parameters and tool.parameters.properties %}
             {{- "(_: {\\n" }}
             {%- for param_name, param_spec in tool.parameters.properties.items() %}
                 {%- if param_spec.description %}
-                    {{- "// " + param_spec.description + "\\n" }}
+                    {{- "
                 {%- endif %}
                 {{- param_name }}
                 {%- if param_name not in (tool.parameters.required or []) -%}
@@ -1084,11 +1051,11 @@ export const harmonyJinjaTemplate4 = `
                 {{- render_typescript_type(param_spec, tool.parameters.required or []) }}
                 {%- if param_spec.default is defined -%}
                     {%- if param_spec.enum %}
-                        {{- ", // default: " + param_spec.default }}
+                        {{- ", 
                     {%- elif param_spec.oneOf %}
-                        {{- "// default: " + param_spec.default }}
+                        {{- "
                     {%- else %}
-                        {{- ", // default: " + param_spec.default|tojson }}
+                        {{- ", 
                     {%- endif -%}
                 {%- endif -%}
                 {%- if not loop.last %}
@@ -1102,54 +1069,51 @@ export const harmonyJinjaTemplate4 = `
             {{- "() => any;\\n\\n" }}
         {%- endif -%}
     {%- endfor %}
-    {{- "} // namespace " + namespace_name }}
+    {{- "} 
 {%- endmacro -%}
-
 {%- macro render_builtin_tools(browser_tool, python_tool) -%}
     {%- if browser_tool %}
         {{- "## browser\\n\\n" }}
-        {{- "// Tool for browsing.\\n" }}
-        {{- "// The \`cursor\` appears in brackets before each browsing display: \`[{cursor}]\`.\\n" }}
-        {{- "// Cite information from the tool using the following format:\\n" }}
-        {{- "// \`【{cursor}†L{line_start}(-L{line_end})?】\`, for example: \`【6†L9-L11】\` or \`【8†L3】\`.\\n" }}
-        {{- "// Do not quote more than 10 words directly from the tool output.\\n" }}
-        {{- "// sources=web (default: web)\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "namespace browser {\\n\\n" }}
-        {{- "// Searches for information related to \`query\` and displays \`topn\` results.\\n" }}
+        {{- "
         {{- "type search = (_: {\\n" }}
         {{- "query: string,\\n" }}
-        {{- "topn?: number, // default: 10\\n" }}
+        {{- "topn?: number, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Opens the link \`id\` from the page indicated by \`cursor\` starting at line number \`loc\`, showing \`num_lines\` lines.\\n" }}
-        {{- "// Valid link ids are displayed with the formatting: \`【{id}†.*】\`.\\n" }}
-        {{- "// If \`cursor\` is not provided, the most recent page is implied.\\n" }}
-        {{- "// If \`id\` is a string, it is treated as a fully qualified URL associated with \`source\`.\\n" }}
-        {{- "// If \`loc\` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\\n" }}
-        {{- "// Use this function without \`id\` to scroll to a new location of an opened page.\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "type open = (_: {\\n" }}
-        {{- "id?: number | string, // default: -1\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
-        {{- "loc?: number, // default: -1\\n" }}
-        {{- "num_lines?: number, // default: -1\\n" }}
-        {{- "view_source?: boolean, // default: false\\n" }}
+        {{- "id?: number | string, 
+        {{- "cursor?: number, 
+        {{- "loc?: number, 
+        {{- "num_lines?: number, 
+        {{- "view_source?: boolean, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Finds exact matches of \`pattern\` in the current page, or the page given by \`cursor\`.\\n" }}
+        {{- "
         {{- "type find = (_: {\\n" }}
         {{- "pattern: string,\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
+        {{- "cursor?: number, 
         {{- "}) => any;\\n\\n" }}
-        {{- "} // namespace browser\\n\\n" }}
+        {{- "} 
     {%- endif -%}
-
     {%- if python_tool %}
         {{- "## python\\n\\n" }}
         {{- "Use this tool to execute Python code in your chain of thought. The code will not be shown to the user. This tool should be used for internal reasoning, but not for code that is intended to be visible to the user (e.g. when creating plots, tables, or files).\\n\\n" }}
         {{- "When you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. python will respond with the output of the execution or time out after 120.0 seconds. The drive at '/mnt/data' can be used to save and persist user files. Internet access for this session is UNKNOWN. Depends on the cluster.\\n\\n" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- System Message Construction ============================================ #}
 {%- macro build_system_message() -%}
     {%- if model_identity is not defined %}
@@ -1179,15 +1143,12 @@ export const harmonyJinjaTemplate4 = `
         {{- "\\nCalls to these tools must go to the commentary channel: 'functions'." }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- Main Template Logic ================================================= #}
 {#- Set defaults #}
-
 {#- Render system message #}
 {{- "<|start|>system<|message|>" }}
 {{- build_system_message() }}
 {{- "<|end|>" }}
-
 {#- Extract developer message #}
 {%- if developer_instructions is defined and developer_instructions is not none %}
     {%- set developer_message = developer_instructions %}
@@ -1199,7 +1160,6 @@ export const harmonyJinjaTemplate4 = `
     {%- set developer_message = "" %}
     {%- set loop_messages = messages %}
 {%- endif %}
-
 {#- Render developer message #}
 {%- if developer_message or tools %}
     {{- "<|start|>developer<|message|>" }}
@@ -1216,7 +1176,6 @@ export const harmonyJinjaTemplate4 = `
     {%- endif -%}
     {{- "<|end|>" }}
 {%- endif %}
-
 {#- Render messages #}
 {%- set last_tool_call = namespace(name=none) %}
 {%- for message in loop_messages -%}
@@ -1294,15 +1253,12 @@ export const harmonyJinjaTemplate4 = `
         {{- "<|start|>user<|message|>" + message.content + "<|end|>" }}
     {%- endif -%}
 {%- endfor -%}
-
 {#- Generation prompt #}
 {%- if add_generation_prompt -%}
 <|start|>assistant
 {%- endif -%}
 {# Copyright 2025-present Unsloth. Apache 2.0 License. Unsloth chat template fixes. Edited from ggml-org & OpenAI #}
 `.slice(1, -1);
-
-
 export const harmonyJinjaTemplate5 = `
 {#-
   In addition to the normal inputs of \`messages\` and \`tools\`, this template also accepts the
@@ -1311,7 +1267,6 @@ export const harmonyJinjaTemplate5 = `
   - "model_identity": A string that optionally describes the model identity.
   - "reasoning_effort": A string that describes the reasoning effort, defaults to "medium".
  #}
-
 {#- Tool Definition Rendering ============================================== #}
 {%- macro render_typescript_type(param_spec, required_params, is_nullable=false) -%}
     {%- if param_spec.type == "array" -%}
@@ -1362,10 +1317,10 @@ export const harmonyJinjaTemplate5 = `
             {%- for variant in param_spec.oneOf -%}
                 {{- render_typescript_type(variant, required_params) -}}
                 {%- if variant.description %}
-                    {{- "// " + variant.description }}
+                    {{- "
                 {%- endif -%}
                 {%- if variant.default is defined %}
-                    {{ "// default: " + variant.default|tojson }}
+                    {{ "
                 {%- endif -%}
                 {%- if not loop.last %}
                     {{- " | " }}
@@ -1387,7 +1342,6 @@ export const harmonyJinjaTemplate5 = `
         {{- "number" }}
     {%- elif param_spec.type == "boolean" -%}
         {{- "boolean" }}
-
     {%- elif param_spec.type == "object" -%}
         {%- if param_spec.properties -%}
             {{- "{\\n" }}
@@ -1410,19 +1364,18 @@ export const harmonyJinjaTemplate5 = `
         {{- "any" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {%- macro render_tool_namespace(namespace_name, tools) -%}
     {{- "## " + namespace_name + "\\n\\n" }}
     {{- "namespace " + namespace_name + " {\\n\\n" }}
     {%- for tool in tools %}
         {%- set tool = tool.function %}
-        {{- "// " + tool.description + "\\n" }}
+        {{- "
         {{- "type "+ tool.name + " = " }}
         {%- if tool.parameters and tool.parameters.properties %}
             {{- "(_: {\\n" }}
             {%- for param_name, param_spec in tool.parameters.properties.items() %}
                 {%- if param_spec.description %}
-                    {{- "// " + param_spec.description + "\\n" }}
+                    {{- "
                 {%- endif %}
                 {{- param_name }}
                 {%- if param_name not in (tool.parameters.required or []) -%}
@@ -1432,11 +1385,11 @@ export const harmonyJinjaTemplate5 = `
                 {{- render_typescript_type(param_spec, tool.parameters.required or []) }}
                 {%- if param_spec.default is defined -%}
                     {%- if param_spec.enum %}
-                        {{- ", // default: " + param_spec.default }}
+                        {{- ", 
                     {%- elif param_spec.oneOf %}
-                        {{- "// default: " + param_spec.default }}
+                        {{- "
                     {%- else %}
-                        {{- ", // default: " + param_spec.default|tojson }}
+                        {{- ", 
                     {%- endif -%}
                 {%- endif -%}
                 {%- if not loop.last %}
@@ -1450,54 +1403,51 @@ export const harmonyJinjaTemplate5 = `
             {{- "() => any;\\n\\n" }}
         {%- endif -%}
     {%- endfor %}
-    {{- "} // namespace " + namespace_name }}
+    {{- "} 
 {%- endmacro -%}
-
 {%- macro render_builtin_tools(browser_tool, python_tool) -%}
     {%- if browser_tool %}
         {{- "## browser\\n\\n" }}
-        {{- "// Tool for browsing.\\n" }}
-        {{- "// The \`cursor\` appears in brackets before each browsing display: \`[{cursor}]\`.\\n" }}
-        {{- "// Cite information from the tool using the following format:\\n" }}
-        {{- "// \`【{cursor}†L{line_start}(-L{line_end})?】\`, for example: \`【6†L9-L11】\` or \`【8†L3】\`.\\n" }}
-        {{- "// Do not quote more than 10 words directly from the tool output.\\n" }}
-        {{- "// sources=web (default: web)\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "namespace browser {\\n\\n" }}
-        {{- "// Searches for information related to \`query\` and displays \`topn\` results.\\n" }}
+        {{- "
         {{- "type search = (_: {\\n" }}
         {{- "query: string,\\n" }}
-        {{- "topn?: number, // default: 10\\n" }}
+        {{- "topn?: number, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Opens the link \`id\` from the page indicated by \`cursor\` starting at line number \`loc\`, showing \`num_lines\` lines.\\n" }}
-        {{- "// Valid link ids are displayed with the formatting: \`【{id}†.*】\`.\\n" }}
-        {{- "// If \`cursor\` is not provided, the most recent page is implied.\\n" }}
-        {{- "// If \`id\` is a string, it is treated as a fully qualified URL associated with \`source\`.\\n" }}
-        {{- "// If \`loc\` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\\n" }}
-        {{- "// Use this function without \`id\` to scroll to a new location of an opened page.\\n" }}
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
+        {{- "
         {{- "type open = (_: {\\n" }}
-        {{- "id?: number | string, // default: -1\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
-        {{- "loc?: number, // default: -1\\n" }}
-        {{- "num_lines?: number, // default: -1\\n" }}
-        {{- "view_source?: boolean, // default: false\\n" }}
+        {{- "id?: number | string, 
+        {{- "cursor?: number, 
+        {{- "loc?: number, 
+        {{- "num_lines?: number, 
+        {{- "view_source?: boolean, 
         {{- "source?: string,\\n" }}
         {{- "}) => any;\\n\\n" }}
-        {{- "// Finds exact matches of \`pattern\` in the current page, or the page given by \`cursor\`.\\n" }}
+        {{- "
         {{- "type find = (_: {\\n" }}
         {{- "pattern: string,\\n" }}
-        {{- "cursor?: number, // default: -1\\n" }}
+        {{- "cursor?: number, 
         {{- "}) => any;\\n\\n" }}
-        {{- "} // namespace browser\\n\\n" }}
+        {{- "} 
     {%- endif -%}
-
     {%- if python_tool %}
         {{- "## python\\n\\n" }}
         {{- "Use this tool to execute Python code in your chain of thought. The code will not be shown to the user. This tool should be used for internal reasoning, but not for code that is intended to be visible to the user (e.g. when creating plots, tables, or files).\\n\\n" }}
         {{- "When you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. python will respond with the output of the execution or time out after 120.0 seconds. The drive at '/mnt/data' can be used to save and persist user files. Internet access for this session is UNKNOWN. Depends on the cluster.\\n\\n" }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- System Message Construction ============================================ #}
 {%- macro build_system_message() -%}
     {%- if model_identity is not defined %}
@@ -1527,15 +1477,12 @@ export const harmonyJinjaTemplate5 = `
         {{- "\\nCalls to these tools must go to the commentary channel: 'functions'." }}
     {%- endif -%}
 {%- endmacro -%}
-
 {#- Main Template Logic ================================================= #}
 {#- Set defaults #}
-
 {#- Render system message #}
 {{- "<|start|>system<|message|>" }}
 {{- build_system_message() }}
 {{- "<|end|>" }}
-
 {#- Extract developer message #}
 {%- if messages[0].role == "developer" or messages[0].role == "system" %}
     {%- set developer_message = messages[0].content %}
@@ -1544,7 +1491,6 @@ export const harmonyJinjaTemplate5 = `
     {%- set developer_message = "" %}
     {%- set loop_messages = messages %}
 {%- endif %}
-
 {#- Render developer message #}
 {%- if developer_message or tools %}
     {{- "<|start|>developer<|message|>" }}
@@ -1559,7 +1505,6 @@ export const harmonyJinjaTemplate5 = `
     {%- endif -%}
     {{- "<|end|>" }}
 {%- endif %}
-
 {#- Render messages #}
 {%- set last_tool_call = namespace(name=none) %}
 {%- for message in loop_messages -%}
@@ -1630,7 +1575,6 @@ export const harmonyJinjaTemplate5 = `
         {{- "<|start|>user<|message|>" + message.content + "<|end|>" }}
     {%- endif -%}
 {%- endfor -%}
-
 {#- Generation prompt #}
 {%- if add_generation_prompt -%}
 <|start|>assistant

@@ -1,5 +1,4 @@
 package models
-
 import (
 	_ "github.com/EchoCog/echollama/model/models/gemma2"
 	_ "github.com/EchoCog/echollama/model/models/gemma3"

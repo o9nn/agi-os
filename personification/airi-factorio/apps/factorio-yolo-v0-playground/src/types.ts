@@ -1,7 +1,5 @@
 import type { App } from 'vue'
-
 export type UserModule = (app: App<Element>) => void
-
 export interface Detection {
   topLeftX: number
   topLeftY: number
@@ -9,5 +7,5 @@ export interface Detection {
   bottomRightY: number
   classId: number
   confidence: number
-  area?: number // Pre-computed area for faster IoU calculation
+  area?: number 
 }

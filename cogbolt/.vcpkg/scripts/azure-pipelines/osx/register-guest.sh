@@ -10,7 +10,6 @@ fi
 export AGENT=CPPMAC-ARM64-$2
 echo "THIS IS AGENT: $AGENT"
 export POOL=`echo ~/Parallels/*/ | sed -nr 's/\/Users\/vcpkg\/Parallels\/vcpkg-osx-([0-9]{4}-[0-9]{2}-[0-9]{2})-arm64\/$/PrOsx-\1-arm64/p'`
-# on arm64, DNS works
 export SSH_COOKIE=vcpkg@vcpkgs-Virtual-Machine.local
 echo "POOL: $POOL"
 echo "SSH_COOKIE: $SSH_COOKIE"

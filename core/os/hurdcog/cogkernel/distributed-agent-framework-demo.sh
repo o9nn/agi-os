@@ -1,14 +1,9 @@
 #!/bin/bash
-# Distributed Agent Framework Demo
-# Demonstrates Phase 4: Deploy distributed agent framework functionality
-
 echo "=== HurdCog Distributed Agent Framework Demo ==="
 echo "=================================================="
 echo ""
-
 echo "📋 Phase 4: Cognitive Layer Development - Distributed Agent Framework"
 echo ""
-
 echo "🔧 Initializing distributed agent framework..."
 echo "   - Framework deployment strategy: DISTRIBUTED"
 echo "   - Node registry: LOCAL + DISTRIBUTED nodes"
@@ -17,7 +12,6 @@ echo "   - Load balancing: ROUND_ROBIN"
 echo "   - Health monitoring: ACTIVE"
 echo "   - Auto-scaling: CONFIGURED"
 echo ""
-
 echo "🏗️  Starting distributed agent framework..."
 echo "   ✓ Framework manager initialized"
 echo "   ✓ Node registry established"  
@@ -26,10 +20,8 @@ echo "   ✓ Health checker activated"
 echo "   ✓ Load balancer configured"
 echo "   ✓ Communication system integrated"
 echo ""
-
 echo "🚀 Deploying distributed agents..."
 echo ""
-
 echo "Phase 4.1: Agent Deployment Demonstration"
 echo "   📦 Deploying BUILD coordinator agent..."
 echo "     ✓ Agent: coordinator-build-001 (BUILD role)"
@@ -37,36 +29,30 @@ echo "     ✓ Node: local (load: 25%)"
 echo "     ✓ Status: ACTIVE"
 echo "     ✓ Health: HEALTHY"
 echo ""
-
 echo "   📦 Deploying MONITOR agents cluster..."
 echo "     ✓ Agent: monitor-system-001 (MONITOR role) -> node: local"
 echo "     ✓ Agent: monitor-system-002 (MONITOR role) -> node: local"
 echo "     ✓ Agent: monitor-network-001 (MONITOR role) -> node: local"
 echo "     ✓ Cluster: 3 MONITOR agents deployed"
 echo ""
-
 echo "   📦 Deploying REPAIR agents with redundancy..."
 echo "     ✓ Agent: repair-primary-001 (REPAIR role) -> node: local"
 echo "     ✓ Agent: repair-backup-001 (REPAIR role) -> node: local"
 echo "     ✓ Redundancy: PRIMARY + BACKUP configuration"
 echo ""
-
 echo "   📦 Deploying ANALYZE agents for distributed processing..."
 echo "     ✓ Agent: analyze-data-001 (ANALYZE role) -> node: local"
 echo "     ✓ Agent: analyze-pattern-001 (ANALYZE role) -> node: local"
 echo "     ✓ Processing: DISTRIBUTED analysis pipeline"
 echo ""
-
 echo "📊 Framework Status After Initial Deployment:"
 echo "   - Total agents deployed: 8"
 echo "   - Active nodes: 1 (local)"
 echo "   - Framework state: ACTIVE"
 echo "   - Overall health: 100% HEALTHY"
 echo ""
-
 echo "🎯 Demonstrating framework capabilities..."
 echo ""
-
 echo "Capability 1: Agent Lifecycle Management"
 echo "   🔄 Agent coordinator-build-001 status:"
 echo "     - Status: ACTIVE"
@@ -76,20 +62,17 @@ echo "     - Deployed: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "     - Last heartbeat: $(date '+%H:%M:%S')"
 echo "   ✓ Lifecycle tracking operational"
 echo ""
-
 echo "Capability 2: Auto-scaling Demonstration"
 echo "   📈 Scaling MONITOR agents from 3 to 5 instances..."
 echo "     🔼 Deploying monitor-system-003 -> node: local"
 echo "     🔼 Deploying monitor-network-002 -> node: local"
 echo "     ✓ MONITOR agents scaled to 5 instances"
 echo ""
-
 echo "   📉 Scaling REPAIR agents from 2 to 1 instance..."
 echo "     🔽 Terminating repair-backup-001 (graceful shutdown)"
 echo "     ✓ REPAIR agents scaled to 1 instance"
 echo "     ✓ Primary repair agent maintained"
 echo ""
-
 echo "Capability 3: Health Monitoring System"
 echo "   🏥 Performing comprehensive health check..."
 echo "     ✓ coordinator-build-001: HEALTHY (response: 45ms)"
@@ -102,14 +85,12 @@ echo "     ✓ repair-primary-001: HEALTHY (response: 29ms)"
 echo "     ✓ analyze-data-001: HEALTHY (response: 52ms)"
 echo "     ✓ analyze-pattern-001: HEALTHY (response: 47ms)"
 echo ""
-
 echo "   📊 Health Summary:"
 echo "     - Healthy agents: 9/9 (100%)"
 echo "     - Average response time: 38.6ms"
 echo "     - Node health: local (HEALTHY, load: 45%)"
 echo "     - Framework health: OPTIMAL"
 echo ""
-
 echo "Capability 4: Load Balancing and Resource Management"
 echo "   ⚖️  Load balancer status:"
 echo "     - Strategy: ROUND_ROBIN"
@@ -117,7 +98,6 @@ echo "     - Node: local (45% load, 9 agents)"
 echo "     - Next deployment target: local"
 echo "     - Resource utilization: OPTIMAL"
 echo ""
-
 echo "Capability 5: AtomSpace Integration"
 echo "   🧠 Framework integrated with cognitive atomspace:"
 echo "     📊 Deployment atoms created:"
@@ -133,7 +113,6 @@ echo "       - DEPLOYMENT analyze-pattern-001 (ANALYZE role)"
 echo "     📈 AtomSpace now contains 18 deployment-related atoms"
 echo "     ✓ Cognitive deployment tracking confirmed"
 echo ""
-
 echo "Capability 6: Framework Metrics Collection"
 echo "   📈 Real-time framework metrics:"
 echo "     - Active agents: 9"
@@ -144,7 +123,6 @@ echo "     - Framework uptime: $(date '+%H:%M:%S')"
 echo "     - Communication messages: 0 pending"
 echo "     - Error rate: 0%"
 echo ""
-
 echo "🔗 Integration with SKZ Framework Components:"
 echo "   ✅ Communication System: agent-communication.scm integrated"
 echo "   ✅ AtomSpace: Distributed deployment tracking active"
@@ -152,10 +130,8 @@ echo "   ✅ Agent System: Extended with framework capabilities"
 echo "   ✅ Monitoring: Real-time health and performance tracking"
 echo "   ✅ Cognitive Interface: Framework-level agent coordination"
 echo ""
-
 echo "🧪 Demonstrating Advanced Framework Features:"
 echo ""
-
 echo "Feature 1: Distributed Agent Coordination"
 echo "   🤝 Coordinator agent orchestrating distributed tasks:"
 echo "     → coordinator-build-001 sending TASK-ASSIGNMENT to MONITOR cluster"
@@ -164,7 +140,6 @@ echo "     ← monitor-system-002 acknowledging task assignment"
 echo "     ← monitor-network-001 acknowledging task assignment"
 echo "     ✓ Distributed task coordination successful"
 echo ""
-
 echo "Feature 2: Fault Tolerance and Recovery"
 echo "   🛡️  Simulating agent failure scenario:"
 echo "     ⚠️  Agent analyze-data-001 simulated failure"
@@ -173,7 +148,6 @@ echo "     🔄 Framework initiating automatic recovery"
 echo "     🚀 Deploying replacement: analyze-data-002"
 echo "     ✅ Service continuity maintained"
 echo ""
-
 echo "Feature 3: Resource Optimization"
 echo "   🎯 Framework optimizing resource allocation:"
 echo "     📊 CPU usage: 45% (within optimal range)"
@@ -181,7 +155,6 @@ echo "     💾 Memory usage: 62% (within limits)"
 echo "     🌐 Network utilization: 23% (healthy)"
 echo "     ⚡ Performance: OPTIMAL across all agents"
 echo ""
-
 echo "🎉 DISTRIBUTED AGENT FRAMEWORK DEPLOYMENT COMPLETE!"
 echo "=========================================================="
 echo ""
@@ -198,41 +171,33 @@ echo "   ✅ Fault tolerance and automatic recovery"
 echo "   ✅ Real-time metrics and monitoring"
 echo "   ✅ Graceful shutdown and cleanup procedures"
 echo ""
-
 echo "🚀 System Status:"
 echo "   - Framework state: FULLY OPERATIONAL"
 echo "   - Active agents: 9 distributed agents"
 echo "   - Health status: 100% HEALTHY"
 echo "   - Performance: OPTIMAL"
 echo ""
-
 echo "📋 Implementation Components Added:"
 echo "   - cogkernel/distributed-agent-framework.scm (framework core)"
 echo "   - test-distributed-agent-framework.scm (comprehensive tests)"
 echo "   - distributed-agent-framework-demo.sh (this demonstration)"
 echo ""
-
 echo "🔮 Ready for Phase 4 next steps:"
 echo "   → Implement cognitive workflow engine"
 echo "   → Create real-time learning systems"
 echo "   → Develop autonomous decision making"
 echo ""
-
 echo "🔮 Distributed Agent Framework: MISSION ACCOMPLISHED! 🔮"
-
-# Check if implementation files exist
 if [ -f "../cogkernel/distributed-agent-framework.scm" ]; then
     echo "✓ Framework implementation file verified"
 else
     echo "⚠️  Framework implementation file location needs verification"
 fi
-
 if [ -f "../cogkernel/test-distributed-agent-framework.scm" ]; then
     echo "✓ Framework test file verified"
 else
     echo "⚠️  Framework test file location needs verification"
 fi
-
 echo ""
 echo "Demo completed successfully!"
 echo "Distributed Agent Framework is ready for production deployment!"

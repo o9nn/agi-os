@@ -1,38 +1,22 @@
-/*
- * System dependent header files for research
- */
-
 #include <u.h>
 #include <libc.h>
 #include <regexp.h>
 #include <bio.h>
 #include "String.h"
-
-/*
- *  for the lock routines in libsys.c
- */
 typedef struct Mlock	Mlock;
 struct Mlock {
-	int fd;
-	int pid;
-	String *name;
+int fd;
+int pid;
+String *name;
 };
-
-/*
- *  from config.c
- */
-extern char *MAILROOT;	/* root of mail system */
-extern char *UPASLOG;	/* log directory */
-extern char *UPASLIB;	/* upas library directory */
-extern char *UPASBIN;	/* upas binary directory */
-extern char *UPASTMP;	/* temporary directory */
-extern char *SHELL;	/* path name of shell */
-extern char *POST;	/* path name of post server addresses */
-extern int MBOXMODE;	/* default mailbox protection mode */
-
-/*
- *  files in libsys.c
- */
+extern char *MAILROOT;
+extern char *UPASLOG;
+extern char *UPASLIB;
+extern char *UPASBIN;
+extern char *UPASTMP;
+extern char *SHELL;
+extern char *POST;
+extern int MBOXMODE;
 extern char	*sysname_read(void);
 extern char	*alt_sysname_read(void);
 extern char	*domainname_read(void);
@@ -73,13 +57,8 @@ extern int	sysdirreadall(int, Dir**);
 extern String	*username(String*);
 extern char*	remoteaddr(int, char*);
 extern int	creatembox(char*, char*);
-
 extern String	*readlock(String*);
 extern char	*homedir(char*);
 extern String	*mboxname(char*, String*);
 extern String	*deadletter(String*);
-
-/*
- *  maximum size for a file path
- */
 #define MAXPATHLEN 128

@@ -1,8 +1,6 @@
 import type { Tool, ToolExecuteOptions, ToolExecuteResult } from '@xsai/shared-chat'
 import type { JsonSchema } from 'xsschema'
-
 import { strictJsonSchema } from 'xsschema'
-
 export interface RawToolOptions<T = unknown> {
   description?: string
   execute: (input: T, options: ToolExecuteOptions) => Promise<ToolExecuteResult> | ToolExecuteResult
@@ -10,7 +8,6 @@ export interface RawToolOptions<T = unknown> {
   parameters: JsonSchema
   strict?: boolean
 }
-
 export const rawTool = <T = unknown>({ description, execute, name, parameters, strict }: RawToolOptions<T>): Tool => ({
   execute: execute as Tool['execute'],
   function: {

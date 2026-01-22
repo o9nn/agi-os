@@ -1,9 +1,7 @@
 package thinking
-
 import (
 	"testing"
 )
-
 func TestExtractThinking(t *testing.T) {
 	tests := []struct {
 		in, wantContent, wantThink string
@@ -35,7 +33,6 @@ func TestExtractThinking(t *testing.T) {
 		}
 	}
 }
-
 func TestThinkingStreaming(t *testing.T) {
 	type step struct {
 		input          string
@@ -43,7 +40,6 @@ func TestThinkingStreaming(t *testing.T) {
 		wantContent    string
 		wantStateAfter thinkingState
 	}
-
 	cases := []struct {
 		desc  string
 		skip  bool
@@ -256,7 +252,6 @@ func TestThinkingStreaming(t *testing.T) {
 			},
 		},
 	}
-
 	for _, c := range cases {
 		parser := Parser{
 			OpeningTag: "<think>",

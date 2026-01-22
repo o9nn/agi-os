@@ -1,6 +1,5 @@
 import { GLOB_MARKDOWN_CODE, GLOB_TESTS } from '@antfu/eslint-config'
 import { defineConfig } from '@importantimport/eslint-config'
-
 export default defineConfig({
   vue: true,
 }, [{

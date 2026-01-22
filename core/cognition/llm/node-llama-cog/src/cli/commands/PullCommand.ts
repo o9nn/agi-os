@@ -9,7 +9,6 @@ import {ConsoleInteraction, ConsoleInteractionKey} from "../utils/ConsoleInterac
 import {getIsInDocumentationMode} from "../../state.js";
 import {resolveHeaderFlag} from "../utils/resolveHeaderFlag.js";
 import {withCliCommandDescriptionDocsUrl} from "../utils/withCliCommandDescriptionDocsUrl.js";
-
 type PullCommand = {
     urls: string[],
     header?: string[],
@@ -20,7 +19,6 @@ type PullCommand = {
     filename?: string,
     parallel?: number
 };
-
 export const PullCommand: CommandModule<object, PullCommand> = {
     command: "pull [urls..]",
     aliases: ["get"],
@@ -30,7 +28,6 @@ export const PullCommand: CommandModule<object, PullCommand> = {
     ),
     builder(yargs) {
         const isInDocumentationMode = getIsInDocumentationMode();
-
         return yargs
             .option("urls", {
                 type: "string",
@@ -102,12 +99,10 @@ export const PullCommand: CommandModule<object, PullCommand> = {
     },
     async handler({urls, header: headerArg, override, noProgress, noTempFile, directory, filename, parallel}: PullCommand) {
         const headers = resolveHeaderFlag(headerArg);
-
         if (urls.length === 0)
             throw new Error("At least one URI must be provided");
         else if (urls.length > 1 && filename != null)
             throw new Error("The `--filename` flag can only be used when a single URI is passed");
-
         if (urls.length === 1) {
             const downloader = await createModelDownloader({
                 modelUri: urls[0]!,
@@ -120,25 +115,20 @@ export const PullCommand: CommandModule<object, PullCommand> = {
                 parallelDownloads: parallel,
                 _showUriResolvingProgress: !noProgress
             });
-
             if (!override && downloader.totalFiles === 1 && await fs.pathExists(downloader.entrypointFilePath)) {
                 const fileStats = await fs.stat(downloader.entrypointFilePath);
-
                 if (downloader.totalSize === fileStats.size) {
                     console.info(`${chalk.yellow("File:")} ${getReadablePath(downloader.entrypointFilePath)}`);
                     console.info("Skipping download of an existing file: " + chalk.yellow(getReadablePath(downloader.entrypointFilePath)));
-
                     process.exit(0);
                 }
             }
-
             const consoleInteraction = new ConsoleInteraction();
             consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, async () => {
                 await downloader.cancel();
                 consoleInteraction.stop();
                 process.exit(0);
             });
-
             if (!noProgress) {
                 console.info(`Downloading to ${chalk.yellow(getReadablePath(directory))}${
                     downloader.splitBinaryParts != null
@@ -147,12 +137,9 @@ export const PullCommand: CommandModule<object, PullCommand> = {
                 }`);
                 consoleInteraction.start();
             }
-
             await downloader.download();
-
             if (!noProgress)
                 consoleInteraction.stop();
-
             console.info(`Downloaded to ${chalk.yellow(getReadablePath(downloader.entrypointFilePath))}`);
         } else {
             const downloader = await combineModelDownloaders(
@@ -169,24 +156,19 @@ export const PullCommand: CommandModule<object, PullCommand> = {
                     parallelDownloads: parallel
                 }
             );
-
             const consoleInteraction = new ConsoleInteraction();
             consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, async () => {
                 await downloader.cancel();
                 consoleInteraction.stop();
                 process.exit(0);
             });
-
             if (!noProgress) {
                 console.info(`Downloading to ${chalk.yellow(getReadablePath(directory))}`);
                 consoleInteraction.start();
             }
-
             await downloader.download();
-
             if (!noProgress)
                 consoleInteraction.stop();
-
             console.info(
                 `Downloaded ${downloader.modelDownloaders.length} models to ${chalk.yellow(getReadablePath(directory))}\n${chalk.gray("*")} ` +
                 downloader.modelDownloaders.map((downloader) => chalk.yellow(downloader.entrypointFilename))

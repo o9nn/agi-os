@@ -18,20 +18,14 @@ import {getConsoleLogPrefix} from "../../../../utils/getConsoleLogPrefix.js";
 import {getPrettyBuildGpuName} from "../../../../bindings/consts.js";
 import {getPlatformInfo} from "../../../../bindings/utils/getPlatformInfo.js";
 import {withCliCommandDescriptionDocsUrl} from "../../../utils/withCliCommandDescriptionDocsUrl.js";
-
 type BuildCommand = {
     arch?: typeof process.arch,
     nodeTarget?: string,
     gpu?: BuildGpu | "auto",
     noUsageExample?: boolean,
-
-    /** @internal */
     noCustomCmakeBuildOptionsInBinaryFolderName?: boolean,
-
-    /** @internal */
     ciMode?: boolean
 };
-
 export const BuildCommand: CommandModule<object, BuildCommand> = {
     command: "build",
     aliases: ["compile"],
@@ -55,8 +49,6 @@ export const BuildCommand: CommandModule<object, BuildCommand> = {
             .option("gpu", {
                 type: "string",
                 default: defaultLlamaCppGpuSupport,
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: parseNodeLlamaCppGpuOption,
                 description: "Compute layer implementation type to use for llama.cpp"
@@ -69,61 +61,48 @@ export const BuildCommand: CommandModule<object, BuildCommand> = {
             })
             .option("noCustomCmakeBuildOptionsInBinaryFolderName", {
                 type: "boolean",
-                hidden: true, // this is only for the CI to use
+                hidden: true, 
                 default: false,
                 description: "Don't include custom CMake build options in build folder name"
             })
             .option("ciMode", {
                 type: "boolean",
-                hidden: true, // this is only for the CI to use
+                hidden: true, 
                 default: false,
                 description: "Enable CI only build options"
             });
     },
     handler: BuildLlamaCppCommand
 };
-
 export async function BuildLlamaCppCommand({
     arch = undefined,
     nodeTarget = undefined,
     gpu = defaultLlamaCppGpuSupport,
     noUsageExample = false,
-
-    /** @internal */
     noCustomCmakeBuildOptionsInBinaryFolderName = false,
-
-    /** @internal */
     ciMode = false
 }: BuildCommand) {
     if (!(await isLlamaCppRepoCloned())) {
         console.log(chalk.red('llama.cpp is not downloaded. Please run "node-llama-cpp source download" first'));
         process.exit(1);
     }
-
     const includeBuildOptionsInBinaryFolderName = !noCustomCmakeBuildOptionsInBinaryFolderName || !isCI;
-
     const clonedLlamaCppRepoReleaseInfo = await getClonedLlamaCppRepoReleaseInfo();
-
     const platform = getPlatform();
     const platformInfo = await getPlatformInfo();
     const customCmakeOptions = resolveCustomCmakeOptions();
     const buildGpusToTry: BuildGpu[] = await getGpuTypesToUseForOption(gpu, {platform, arch});
     let downloadedCmake = false;
-
     for (let i = 0; i < buildGpusToTry.length; i++) {
         const gpuToTry = buildGpusToTry[i];
         const isLastItem = i === buildGpusToTry.length - 1;
-
         if (gpuToTry == null)
             continue;
-
         logUsedGpuTypeOption(gpuToTry);
-
         if (!downloadedCmake) {
             await downloadCmakeIfNeeded(true);
             downloadedCmake = true;
         }
-
         const buildOptions: BuildOptions = {
             customCmakeOptions,
             progressLogs: true,
@@ -138,7 +117,6 @@ export async function BuildLlamaCppCommand({
                 release: clonedLlamaCppRepoReleaseInfo?.tag ?? builtinLlamaCppRelease
             }
         };
-
         try {
             await withStatusLogs({
                 loading: chalk.blue("Compiling llama.cpp"),
@@ -166,13 +144,10 @@ export async function BuildLlamaCppCommand({
                 "Error:",
                 err
             );
-
             if (isLastItem)
                 throw err;
-
             continue;
         }
-
         await withOra({
             loading: chalk.blue("Removing temporary files"),
             success: chalk.blue("Removed temporary files"),
@@ -180,13 +155,11 @@ export async function BuildLlamaCppCommand({
         }, async () => {
             await clearTempFolder();
         });
-
         if (!noUsageExample) {
             console.log();
             logBinaryUsageExampleToConsole(buildOptions, gpu !== "auto", true);
             console.log();
         }
-
         break;
     }
 }

@@ -1,8 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-
 import { useChat } from '../src'
-
 describe('useChat', () => {
   it('initializes with default value', () => {
     const { result } = renderHook(() => useChat({
@@ -19,7 +17,6 @@ describe('useChat', () => {
       preventDefault: true,
       toolChoice: 'auto',
     }))
-
     expect(result.current.submitMessage).toBeDefined()
   })
 })

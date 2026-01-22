@@ -2,195 +2,177 @@
 #include	<bio.h>
 #include	"../qc/q.out.h"
 #include	"../ld/elf.h"
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 #define	LIBNAMELEN	300
-
 typedef	struct	Adr	Adr;
 typedef	struct	Sym	Sym;
 typedef	struct	Autom	Auto;
 typedef	struct	Prog	Prog;
 typedef	struct	Optab	Optab;
-
 #define	P		((Prog*)0)
 #define	S		((Sym*)0)
 #define	TNAME		(curtext&&curtext->from.sym?curtext->from.sym->name:noname)
-
 struct	Adr
 {
-	union
-	{
-		long	u0offset;
-		char	u0sval[NSNAME];
-		Ieee	u0ieee;
-	}u0;
-	Sym	*sym;
-	Auto	*autom;
-	char	type;
-	uchar	reg;
-	char	name;
-	char	class;
+union
+{
+long	u0offset;
+char	u0sval[NSNAME];
+Ieee	u0ieee;
+}u0;
+Sym	*sym;
+Auto	*autom;
+char	type;
+uchar	reg;
+char	name;
+char	class;
 };
-
 #define	offset	u0.u0offset
 #define	sval	u0.u0sval
 #define	ieee	u0.u0ieee
-
 struct	Prog
 {
-	Adr	from;
-	Adr	from3;	/* fma and rlwm */
-	Adr	to;
-	Prog	*forwd;
-	Prog	*cond;
-	Prog	*link;
-	long	pc;
-	long	regused;
-	short	line;
-	short	mark;
-	short	optab;		/* could be uchar */
-	ushort	as;
-	char	reg;
+Adr	from;
+Adr	from3;
+Adr	to;
+Prog	*forwd;
+Prog	*cond;
+Prog	*link;
+long	pc;
+long	regused;
+short	line;
+short	mark;
+short	optab;
+ushort	as;
+char	reg;
 };
 struct	Sym
 {
-	char	*name;
-	short	type;
-	short	version;
-	short	become;
-	short	frame;
-	uchar	subtype;
-	ushort	file;
-	long	value;
-	long	sig;
-	Sym	*link;
+char	*name;
+short	type;
+short	version;
+short	become;
+short	frame;
+uchar	subtype;
+ushort	file;
+long	value;
+long	sig;
+Sym	*link;
 };
 struct	Autom
 {
-	Sym	*sym;
-	Auto	*link;
-	long	aoffset;
-	short	type;
+Sym	*sym;
+Auto	*link;
+long	aoffset;
+short	type;
 };
 struct	Optab
 {
-	ushort	as;
-	char	a1;
-	char	a2;
-	char	a3;
-	char	a4;
-	char	type;
-	char	size;
-	char	param;
+ushort	as;
+char	a1;
+char	a2;
+char	a3;
+char	a4;
+char	type;
+char	size;
+char	param;
 };
 struct
 {
-	Optab*	start;
-	Optab*	stop;
+Optab*	start;
+Optab*	stop;
 } oprange[ALAST];
-
 enum
 {
-	FPCHIP		= 1,
-	BIG		= 32768-8,
-	STRINGSZ	= 200,
-	MAXIO		= 8192,
-	MAXHIST		= 20,				/* limit of path elements for history symbols */
-	DATBLK		= 1024,
-	NHASH		= 10007,
-	NHUNK		= 100000,
-	MINSIZ		= 64,
-	NENT		= 100,
-	NSCHED		= 20,
-
-/* mark flags */
-	LABEL		= 1<<0,
-	LEAF		= 1<<1,
-	FLOAT		= 1<<2,
-	BRANCH		= 1<<3,
-	LOAD		= 1<<4,
-	FCMP		= 1<<5,
-	SYNC		= 1<<6,
-	LIST		= 1<<7,
-	FOLL		= 1<<8,
-	NOSCHED		= 1<<9,
-
-	STEXT		= 1,
-	SDATA,
-	SBSS,
-	SDATA1,
-	SXREF,
-	SLEAF,
-	SFILE,
-	SCONST,
-	SUNDEF,
-
-	SIMPORT,
-	SEXPORT,
-
-	C_NONE		= 0,
-	C_REG,
-	C_FREG,
-	C_CREG,
-	C_SPR,		/* special processor register */
-	C_SREG,		/* segment register (32 bit implementations only) */
-	C_ZCON,
-	C_SCON,		/* 16 bit signed */
-	C_UCON,		/* low 16 bits 0 */
-	C_ADDCON,	/* -0x8000 <= v < 0 */
-	C_ANDCON,	/* 0 < v <= 0xFFFF */
-	C_LCON,		/* other */
-	C_SACON,
-	C_SECON,
-	C_LACON,
-	C_LECON,
-	C_SBRA,
-	C_LBRA,
-	C_SAUTO,
-	C_LAUTO,
-	C_SEXT,
-	C_LEXT,
-	C_ZOREG,
-	C_SOREG,
-	C_LOREG,
-	C_FPSCR,
-	C_MSR,
-	C_XER,
-	C_LR,
-	C_CTR,
-	C_ANY,
-	C_GOK,
-	C_ADDR,
-
-	C_NCLASS,
-
-	Roffset	= 22,		/* no. bits for offset in relocation address */
-	Rindex	= 10		/* no. bits for index in relocation address */
+FPCHIP		= 1,
+BIG		= 32768-8,
+STRINGSZ	= 200,
+MAXIO		= 8192,
+MAXHIST		= 20,
+DATBLK		= 1024,
+NHASH		= 10007,
+NHUNK		= 100000,
+MINSIZ		= 64,
+NENT		= 100,
+NSCHED		= 20,
+LABEL		= 1<<0,
+LEAF		= 1<<1,
+FLOAT		= 1<<2,
+BRANCH		= 1<<3,
+LOAD		= 1<<4,
+FCMP		= 1<<5,
+SYNC		= 1<<6,
+LIST		= 1<<7,
+FOLL		= 1<<8,
+NOSCHED		= 1<<9,
+STEXT		= 1,
+SDATA,
+SBSS,
+SDATA1,
+SXREF,
+SLEAF,
+SFILE,
+SCONST,
+SUNDEF,
+SIMPORT,
+SEXPORT,
+C_NONE		= 0,
+C_REG,
+C_FREG,
+C_CREG,
+C_SPR,
+C_SREG,
+C_ZCON,
+C_SCON,
+C_UCON,
+C_ADDCON,
+C_ANDCON,
+C_LCON,
+C_SACON,
+C_SECON,
+C_LACON,
+C_LECON,
+C_SBRA,
+C_LBRA,
+C_SAUTO,
+C_LAUTO,
+C_SEXT,
+C_LEXT,
+C_ZOREG,
+C_SOREG,
+C_LOREG,
+C_FPSCR,
+C_MSR,
+C_XER,
+C_LR,
+C_CTR,
+C_ANY,
+C_GOK,
+C_ADDR,
+C_NCLASS,
+Roffset	= 22,
+Rindex	= 10
 };
-
 EXTERN union
 {
-	struct
-	{
-		uchar	obuf[MAXIO];			/* output buffer */
-		uchar	ibuf[MAXIO];			/* input buffer */
-	} u;
-	char	dbuf[1];
+struct
+{
+uchar	obuf[MAXIO];
+uchar	ibuf[MAXIO];
+} u;
+char	dbuf[1];
 } buf;
-
 #define	cbuf	u.obuf
 #define	xbuf	u.ibuf
-
-EXTERN	long	HEADR;			/* length of header */
-EXTERN	int	HEADTYPE;		/* type of header */
-EXTERN	long	INITDAT;		/* data location */
-EXTERN	long	INITRND;		/* data round above text location */
-EXTERN	long	INITTEXT;		/* text location */
-EXTERN	long	INITTEXTP;		/* text location (physical) */
-EXTERN	char*	INITENTRY;		/* entry point */
+EXTERN	long	HEADR;
+EXTERN	int	HEADTYPE;
+EXTERN	long	INITDAT;
+EXTERN	long	INITRND;
+EXTERN	long	INITTEXT;
+EXTERN	long	INITTEXTP;
+EXTERN	char*	INITENTRY;
 EXTERN	long	autosize;
 EXTERN	Biobuf	bso;
 EXTERN	long	bsssize;
@@ -241,19 +223,15 @@ EXTERN	char	xcmp[C_NCLASS][C_NCLASS];
 EXTERN	int	version;
 EXTERN	Prog	zprg;
 EXTERN	int	dtype;
-
 EXTERN	int	doexp, dlm;
 EXTERN	int	imports, nimports;
 EXTERN	int	exports, nexports;
 EXTERN	char*	EXPTAB;
 EXTERN	Prog	undefp;
-
 #define	UP	(&undefp)
-
 extern	Optab	optab[];
 extern	char*	anames[];
 extern	char*	cnames[];
-
 int	Aconv(Fmt*);
 int	Dconv(Fmt*);
 int	Nconv(Fmt*);
@@ -339,7 +317,6 @@ void	wputl(long);
 void	xdefine(char*, int, long);
 void	xfol(Prog*);
 void	zerosig(char*);
-
 #pragma	varargck	type	"A"	int
 #pragma	varargck	type	"A"	uint
 #pragma	varargck	type	"D"	Adr*
@@ -347,5 +324,4 @@ void	zerosig(char*);
 #pragma	varargck	type	"P"	Prog*
 #pragma	varargck	type	"R"	int
 #pragma	varargck	type	"S"	char*
-
 #pragma	varargck	argpos	diag 1

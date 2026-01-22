@@ -1,12 +1,9 @@
 import { getLogger } from '../../../../shared/logger'
-
 const log = getLogger('render/components/DeepTreeEchoBot/VisionCapabilities')
-
 export interface VisionCapabilitiesOptions {
   enabled: boolean
   modelPath?: string
 }
-
 export interface ImageAnalysisResult {
   description: string
   tags: string[]
@@ -22,36 +19,22 @@ export interface ImageAnalysisResult {
   }>
   error?: string
 }
-
-/**
- * VisionCapabilities - Provides image analysis capabilities for the Deep Tree Echo Bot
- * Uses TensorFlow.js to analyze images and generate descriptions
- */
 export class VisionCapabilities {
   private options: VisionCapabilitiesOptions
   private isInitialized: boolean = false
-
   constructor(options: VisionCapabilitiesOptions) {
     this.options = {
       ...options,
     }
   }
-
-  /**
-   * Initialize the vision model (would load TensorFlow.js and models in a real implementation)
-   */
   async initialize(): Promise<boolean> {
     if (!this.options.enabled) {
       log.info('Vision capabilities are disabled')
       return false
     }
-
     try {
       log.info('Initializing vision capabilities')
-
-      // Simulate model loading with a timeout
       await new Promise(resolve => setTimeout(resolve, 1500))
-
       this.isInitialized = true
       log.info('Vision capabilities initialized successfully')
       return true
@@ -61,10 +44,6 @@ export class VisionCapabilities {
       return false
     }
   }
-
-  /**
-   * Analyze an image and return a description
-   */
   async analyzeImage(_imageData: string | Blob): Promise<ImageAnalysisResult> {
     if (!this.options.enabled) {
       return {
@@ -74,7 +53,6 @@ export class VisionCapabilities {
         error: 'Vision capabilities are disabled',
       }
     }
-
     if (!this.isInitialized) {
       try {
         const initialized = await this.initialize()
@@ -96,14 +74,9 @@ export class VisionCapabilities {
         }
       }
     }
-
     try {
       log.info('Analyzing image')
-
-      // In a real implementation, this would use TensorFlow.js to analyze the image
-      // For now, we'll return simulated results
       await new Promise(resolve => setTimeout(resolve, 2000))
-
       return this.simulateImageAnalysis()
     } catch (error) {
       log.error('Failed to analyze image:', error)
@@ -115,12 +88,7 @@ export class VisionCapabilities {
       }
     }
   }
-
-  /**
-   * Simulate image analysis for demo purposes
-   */
   private simulateImageAnalysis(): ImageAnalysisResult {
-    // Generate random objects with different confidence levels
     const possibleObjects = [
       'person',
       'car',
@@ -136,7 +104,6 @@ export class VisionCapabilities {
       'bird',
       'bicycle',
     ]
-
     const objectCount = Math.floor(Math.random() * 5) + 1
     const objects = Array(objectCount)
       .fill(0)
@@ -144,7 +111,6 @@ export class VisionCapabilities {
         const label =
           possibleObjects[Math.floor(Math.random() * possibleObjects.length)]
         const confidence = Math.random() * 0.5 + 0.5
-
         return {
           label,
           confidence,
@@ -156,8 +122,6 @@ export class VisionCapabilities {
           },
         }
       })
-
-    // Generate random tags
     const possibleTags = [
       'indoor',
       'outdoor',
@@ -173,15 +137,12 @@ export class VisionCapabilities {
       'landscape',
       'closeup',
     ]
-
     const tagCount = Math.floor(Math.random() * 5) + 2
     const tags = Array(tagCount)
       .fill(0)
       .map(() => {
         return possibleTags[Math.floor(Math.random() * possibleTags.length)]
       })
-
-    // Generate a description based on objects and tags
     const descriptions = [
       `An image showing ${objects[0]?.label}`,
       `A ${tags[0]} scene featuring ${objects.map(o => o.label).join(', ')}`,
@@ -193,26 +154,19 @@ export class VisionCapabilities {
         tags[0]
       } image`,
     ]
-
     const description =
       descriptions[Math.floor(Math.random() * descriptions.length)]
-
     return {
       description,
       tags: [...new Set(tags)],
       objects,
     }
   }
-
-  /**
-   * Update options
-   */
   updateOptions(options: Partial<VisionCapabilitiesOptions>): void {
     this.options = {
       ...this.options,
       ...options,
     }
-
     if (options.enabled === false) {
       this.isInitialized = false
     }

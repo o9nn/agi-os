@@ -1,28 +1,6 @@
 #!/bin/sh
-
-# Example attachment decoder script. The attachment comes from stdin, and
-# the script is expected to output UTF-8 data to stdout. (If the output isn't
-# UTF-8, everything except valid UTF-8 sequences are dropped from it.)
-
-# The attachment decoding is enabled by setting:
-#
-# plugin {
-#   fts_decoder = decode2text
-# }
-# service decode2text {
-#   executable = script /usr/local/libexec/dovecot/decode2text.sh
-#   user = dovecot
-#   unix_listener decode2text {
-#     mode = 0666
-#   }
-# }
-
 libexec_dir=`dirname $0`
 content_type=$1
-
-# The second parameter is the format's filename extension, which is used when
-# found from a filename of application/octet-stream. You can also add more
-# extensions by giving more parameters.
 formats='application/pdf pdf
 application/x-pdf pdf
 application/msword doc
@@ -38,27 +16,20 @@ application/vnd.oasis.opendocument.text odt
 application/vnd.oasis.opendocument.spreadsheet ods
 application/vnd.oasis.opendocument.presentation odp
 '
-
 if [ "$content_type" = "" ]; then
   echo "$formats"
   exit 0
 fi
-
 fmt=`echo "$formats" | grep -w "^$content_type" | cut -d ' ' -f 2`
 if [ "$fmt" = "" ]; then
   echo "Content-Type: $content_type not supported" >&2
   exit 1
 fi
-
-# most decoders can't handle stdin directly, so write the attachment
-# to a temp file
 path=`mktemp`
 trap "rm -f $path" 0 1 2 3 14 15
 cat > $path
-
 xmlunzip() {
   name=$1
-
   tempdir=`mktemp -d`
   if [ "$tempdir" = "" ]; then
     exit 1
@@ -69,13 +40,11 @@ xmlunzip() {
   find . -name "$name" -print0 | xargs -0 cat |
     $libexec_dir/xml2text
 }
-
 wait_timeout() {
   childpid=$!
   trap "kill -9 $childpid; rm -f $path" 1 2 3 14 15
   wait $childpid
 }
-
 LANG=en_US.UTF-8
 export LANG
 if [ $fmt = "pdf" ]; then

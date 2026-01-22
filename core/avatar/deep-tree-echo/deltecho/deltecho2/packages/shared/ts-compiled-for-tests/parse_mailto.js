@@ -14,4 +14,3 @@ export function parseMailto(mailtoURL) {
     body: query.get("body") || void 0
   };
 }
-//# sourceMappingURL=parse_mailto.js.map

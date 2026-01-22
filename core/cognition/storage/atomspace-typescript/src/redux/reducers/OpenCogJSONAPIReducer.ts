@@ -1,9 +1,6 @@
-// store/app/reducers.ts
 import {Reducer} from 'redux'
 import {OpenCogJSONAPIActions, OpenCogJSONAPIActionTypes} from '../actions/OpenCogJSONAPIActions'
 import {APICommands, AtomBase} from "../../services/OpenCogAPI";
-
-
 export interface OpenCogJSONAPIState {
     isFetching: boolean;
     subTypes: string[];
@@ -12,7 +9,6 @@ export interface OpenCogJSONAPIState {
     atoms: AtomBase[];
     JSONAPIVersion: string;
 }
-
 const initialOpenCogJSONAPIState: OpenCogJSONAPIState = {
     isFetching: false,
     subTypes: [],
@@ -21,8 +17,6 @@ const initialOpenCogJSONAPIState: OpenCogJSONAPIState = {
     previousCommand: APICommands.None,
     JSONAPIVersion: "",
 }
-
-
 export const OpenCogJSONAPIReducer: Reducer<OpenCogJSONAPIState, OpenCogJSONAPIActions> =
     (state: OpenCogJSONAPIState | undefined = initialOpenCogJSONAPIState, action: OpenCogJSONAPIActions) => {
     switch (action.type) {

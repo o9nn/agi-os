@@ -26,7 +26,6 @@ import {getConsoleLogPrefix} from "../../../../utils/getConsoleLogPrefix.js";
 import {getPrettyBuildGpuName} from "../../../../bindings/consts.js";
 import {getPlatformInfo} from "../../../../bindings/utils/getPlatformInfo.js";
 import {withCliCommandDescriptionDocsUrl} from "../../../utils/withCliCommandDescriptionDocsUrl.js";
-
 type DownloadCommandArgs = {
     repo?: string,
     release?: "latest" | string,
@@ -36,11 +35,8 @@ type DownloadCommandArgs = {
     skipBuild?: boolean,
     noBundle?: boolean,
     noUsageExample?: boolean,
-
-    /** @internal */
     updateBinariesReleaseMetadataAndSaveGitBundle?: boolean
 };
-
 export const DownloadCommand: CommandModule<object, DownloadCommandArgs> = {
     command: "download",
     describe: withCliCommandDescriptionDocsUrl(
@@ -49,7 +45,6 @@ export const DownloadCommand: CommandModule<object, DownloadCommandArgs> = {
     ),
     builder(yargs) {
         const isInDocumentationMode = getIsInDocumentationMode();
-
         return yargs
             .option("repo", {
                 type: "string",
@@ -75,8 +70,6 @@ export const DownloadCommand: CommandModule<object, DownloadCommandArgs> = {
             .option("gpu", {
                 type: "string",
                 default: defaultLlamaCppGpuSupport,
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: parseNodeLlamaCppGpuOption,
                 description: "Compute layer implementation type to use for llama.cpp"
@@ -101,15 +94,13 @@ export const DownloadCommand: CommandModule<object, DownloadCommandArgs> = {
             })
             .option("updateBinariesReleaseMetadataAndSaveGitBundle", {
                 type: "boolean",
-                hidden: true, // this is only for the CI to use
+                hidden: true, 
                 default: false,
                 description: "Update the binariesGithubRelease.json file with the release of llama.cpp that was downloaded"
             });
     },
     handler: DownloadLlamaCppCommand
 };
-
-
 export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
     const {
         repo = defaultLlamaCppGitHubRepo,
@@ -120,10 +111,8 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
         skipBuild = false,
         noBundle = false,
         noUsageExample = false,
-
         updateBinariesReleaseMetadataAndSaveGitBundle = false
     } = args;
-
     const useBundle = noBundle != true;
     const platform = getPlatform();
     const platformInfo = await getPlatformInfo();
@@ -134,20 +123,16 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
     const [githubOwner, githubRepo] = repo.split("/");
     if (githubOwner == null || githubRepo == null)
         throw new Error(`Invalid GitHub repository: ${repo}`);
-
     let downloadedCmake = false;
-
     console.log(`${chalk.yellow("Repo:")} ${repo}`);
     console.log(`${chalk.yellow("Release:")} ${release}`);
     if (!skipBuild) {
         logUsedGpuTypeOption(buildGpusToTry[0]!);
     }
     console.log();
-
     let githubReleaseTag: string | null = (useBundle && (await getGitBundlePathForRelease(githubOwner, githubRepo, release)) != null)
         ? release
         : null;
-
     if (githubReleaseTag == null)
         await withOra({
             loading: chalk.blue("Fetching llama.cpp info"),
@@ -156,9 +141,7 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
         }, async () => {
             githubReleaseTag = await resolveGithubRelease(githubOwner, githubRepo, release);
         });
-
     await clearTempFolder();
-
     await withOra({
         loading: chalk.blue("Removing existing llama.cpp directory"),
         success: chalk.blue("Removed existing llama.cpp directory"),
@@ -167,25 +150,19 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
         await fs.remove(llamaCppDirectory);
         await fs.remove(llamaCppDirectoryInfoFilePath);
     });
-
     await cloneLlamaCppRepo(githubOwner, githubRepo, githubReleaseTag!, useBundle);
-
     if (!skipBuild) {
         for (let i = 0; i < buildGpusToTry.length; i++) {
             const gpuToTry = buildGpusToTry[i];
             const isLastItem = i === buildGpusToTry.length - 1;
-
             if (gpuToTry == null)
                 continue;
-
-            if (i > 0) // we already logged the first gpu before
+            if (i > 0) 
                 logUsedGpuTypeOption(gpuToTry);
-
             if (!downloadedCmake) {
                 await downloadCmakeIfNeeded(true);
                 downloadedCmake = true;
             }
-
             const buildOptions: BuildOptions = {
                 customCmakeOptions,
                 progressLogs: true,
@@ -200,7 +177,6 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
                     release: githubReleaseTag!
                 }
             };
-
             try {
                 await withStatusLogs({
                     loading: chalk.blue("Compiling llama.cpp"),
@@ -227,19 +203,15 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
                     "Error:",
                     err
                 );
-
                 if (isLastItem)
                     throw err;
-
                 continue;
             }
-
             if (!noUsageExample) {
                 console.log();
                 console.log();
                 logBinaryUsageExampleToConsole(buildOptions, gpu !== "auto", true);
             }
-
             break;
         }
     } else if (!noUsageExample) {
@@ -257,17 +229,14 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
                 release: githubReleaseTag!
             }
         };
-
         console.log();
         console.log();
         logBinaryUsageExampleToConsole(buildOptions, gpu !== "auto", true);
     }
-
     if (isCI && updateBinariesReleaseMetadataAndSaveGitBundle) {
         await setBinariesGithubRelease(githubReleaseTag!);
         await unshallowAndSquashCurrentRepoAndSaveItAsReleaseBundle();
     }
-
     console.log();
     console.log();
     console.log(`${chalk.yellow("Repo:")} ${repo}`);
@@ -281,4 +250,3 @@ export async function DownloadLlamaCppCommand(args: DownloadCommandArgs) {
     console.log();
     console.log(chalk.green("Done"));
 }
-

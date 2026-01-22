@@ -16,9 +16,7 @@ import type {
   UnVolcengineOptions,
   VoiceProviderWithExtraOptions,
 } from 'unspeech'
-
 import type { AliyunRealtimeSpeechExtraOptions } from './providers/aliyun/stream-transcription'
-
 import { isStageTamagotchi, isUrl } from '@proj-airi/stage-shared'
 import { computedAsync, useLocalStorage } from '@vueuse/core'
 import {
@@ -59,11 +57,9 @@ import {
 } from 'unspeech'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-
 import { createAliyunNLSProvider as createAliyunNlsStreamProvider } from './providers/aliyun/stream-transcription'
 import { models as elevenLabsModels } from './providers/elevenlabs/list-models'
 import { buildOpenAICompatibleProvider } from './providers/openai-compatible-builder'
-
 const ALIYUN_NLS_REGIONS = [
   'cn-shanghai',
   'cn-shanghai-internal',
@@ -72,52 +68,22 @@ const ALIYUN_NLS_REGIONS = [
   'cn-shenzhen',
   'cn-shenzhen-internal',
 ] as const
-
 type AliyunNlsRegion = typeof ALIYUN_NLS_REGIONS[number]
-
 export interface ProviderMetadata {
   id: string
   order?: number
   category: 'chat' | 'embed' | 'speech' | 'transcription'
   tasks: string[]
-  nameKey: string // i18n key for provider name
-  name: string // Default name (fallback)
+  nameKey: string 
+  name: string 
   localizedName?: string
-  descriptionKey: string // i18n key for description
-  description: string // Default description (fallback)
+  descriptionKey: string 
+  description: string 
   localizedDescription?: string
   configured?: boolean
-  /**
-   * Indicates whether the provider is available.
-   * If not specified, the provider is always available.
-   *
-   * May be specified when any of the following criteria is required:
-   *
-   * Platform requirements:
-   *
-   * - app-* providers are only available on desktop, this is responsible for Tauri runtime checks
-   * - web-* providers are only available on web, this means Node.js and Tauri should not be imported or used
-   *
-   * System spec requirements:
-   *
-   * - may requires WebGPU / NVIDIA / other types of GPU,
-   *   on Web, WebGPU will automatically compiled to use targeting GPU hardware
-   * - may requires significant amount of GPU memory to run, especially for
-   *   using of small language models within browser or Tauri app
-   * - may requires significant amount of memory to run, especially for those
-   *   non-WebGPU supported environments.
-   */
   isAvailableBy?: () => Promise<boolean> | boolean
-  /**
-   * Iconify JSON icon name for the provider.
-   *
-   * Icons are available for most of the AI provides under @proj-airi/lobe-icons.
-   */
   icon?: string
   iconColor?: string
-  /**
-   * In case of having image instead of icon, you can specify the image URL here.
-   */
   iconImage?: string
   defaultOptions?: () => Record<string, unknown>
   createProvider: (
@@ -161,7 +127,6 @@ export interface ProviderMetadata {
     supportsStreamInput: boolean
   }
 }
-
 export interface ModelInfo {
   id: string
   name: string
@@ -171,7 +136,6 @@ export interface ModelInfo {
   contextLength?: number
   deprecated?: boolean
 }
-
 export interface VoiceInfo {
   id: string
   name: string
@@ -186,7 +150,6 @@ export interface VoiceInfo {
     title: string
   }[]
 }
-
 function createAnthropic(apiKey: string, baseURL: string = 'https://api.anthropic.com/v1/') {
   const anthropicFetch = async (input: any, init: any) => {
     init.headers ??= {}
@@ -198,15 +161,12 @@ function createAnthropic(apiKey: string, baseURL: string = 'https://api.anthropi
       init.headers['anthropic-dangerous-direct-browser-access'] = 'true'
     return fetch(input, init)
   }
-
   return merge(
     createMetadataProvider('anthropic'),
-    /** @see {@link https://docs.anthropic.com/en/docs/about-claude/models/all-models} */
     createChatProvider({ apiKey, fetch: anthropicFetch, baseURL }),
     createModelProvider({ apiKey, fetch: anthropicFetch, baseURL }),
   )
 }
-
 export const useProvidersStore = defineStore('providers', () => {
   const providerCredentials = useLocalStorage<Record<string, Record<string, unknown>>>('settings/credentials/providers', {})
   const { t } = useI18n()
@@ -233,28 +193,21 @@ export const useProvidersStore = defineStore('providers', () => {
     }
     return null
   })
-
   async function isBrowserAndMemoryEnough() {
     if (isStageTamagotchi())
       return false
-
     const webGPUAvailable = await isWebGPUSupported()
     if (webGPUAvailable) {
       return true
     }
-
     if ('navigator' in globalThis && globalThis.navigator != null && 'deviceMemory' in globalThis.navigator && typeof globalThis.navigator.deviceMemory === 'number') {
       const memory = globalThis.navigator.deviceMemory
-      // Check if the device has at least 8GB of RAM
       if (memory >= 8) {
         return true
       }
     }
-
     return false
   }
-
-  // Centralized provider metadata with provider factory functions
   const providerMetadata: Record<string, ProviderMetadata> = {
     'openrouter-ai': buildOpenAICompatibleProvider({
       id: 'openrouter-ai',
@@ -269,34 +222,26 @@ export const useProvidersStore = defineStore('providers', () => {
       validators: {
         validateProviderConfig: async (config) => {
           const errors: Error[] = []
-
           if (!config.apiKey) {
             errors.push(new Error('API Key is required'))
           }
-
           if (!config.baseUrl) {
             errors.push(new Error('Base URL is required'))
           }
-
           if (errors.length > 0) {
             return { errors, reason: errors.map(e => e.message).join(', '), valid: false }
           }
-
           if (!isUrl(config.baseUrl as string) || new URL(config.baseUrl as string).host.length === 0) {
             errors.push(new Error('Base URL is not absolute. Check your input.'))
           }
-
           if (!(config.baseUrl as string).endsWith('/')) {
             errors.push(new Error('Base URL must end with a trailing slash (/).'))
           }
-
           if (errors.length > 0) {
             return { errors, reason: errors.map(e => e.message).join(', '), valid: false }
           }
-
           const response = await fetch(`${config.baseUrl as string}chat/completions`, { headers: { Authorization: `Bearer ${config.apiKey}` }, method: 'POST', body: `{"model": "test","messages": [{"role": "user","content": "Hello, world"}],"stream": false}` })
           const responseJson = await response.json()
-
           if (!responseJson.user_id) {
             return {
               errors: [new Error(`OpenRouterError: ${responseJson.error.message}`)],
@@ -304,7 +249,6 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           return {
             errors: [],
             reason: '',
@@ -334,7 +278,6 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           return {
             errors: [],
             reason: '',
@@ -364,7 +307,6 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           return {
             errors: [],
             reason: '',
@@ -394,7 +336,6 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           return {
             errors: [],
             reason: '',
@@ -424,7 +365,6 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           return {
             errors: [],
             reason: '',
@@ -471,19 +411,15 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
-          // Check if the Ollama server is reachable
           return fetch(`${(config.baseUrl as string).trim()}models`, { headers: (config.headers as HeadersInit) || undefined })
             .then((response) => {
               const errors = [
                 !response.ok && new Error(`Ollama server returned non-ok status code: ${response.statusText}`),
               ].filter(Boolean)
-
               return {
                 errors,
                 reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -538,19 +474,15 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
-          // Check if the Ollama server is reachable
           return fetch(`${(config.baseUrl as string).trim()}models`, { headers: (config.headers as HeadersInit) || undefined })
             .then((response) => {
               const errors = [
                 !response.ok && new Error(`Ollama server returned non-ok status code: ${response.statusText}`),
               ].filter(Boolean)
-
               return {
                 errors,
                 reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -586,11 +518,9 @@ export const useProvidersStore = defineStore('providers', () => {
             const response = await fetch(`${(config.baseUrl as string).trim()}models`, {
               headers: (config.headers as HeadersInit) || undefined,
             })
-
             if (!response.ok) {
               throw new Error(`LM Studio server returned non-ok status code: ${response.statusText}`)
             }
-
             const data = await response.json()
             return data.data.map((model: any) => ({
               id: model.id,
@@ -616,19 +546,15 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
-          // Check if the LM Studio server is reachable
           return fetch(`${(config.baseUrl as string).trim()}models`, { headers: (config.headers as HeadersInit) || undefined })
             .then((response) => {
               const errors = [
                 !response.ok && new Error(`LM Studio server returned non-ok status code: ${response.statusText}`),
               ].filter(Boolean)
-
               return {
                 errors,
                 reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -787,12 +713,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API Key is required'),
             !config.baseUrl && new Error('Base URL is required. Default to https://api.openai.com/v1/ for official OpenAI API.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -835,12 +759,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API Key is required'),
             !config.baseUrl && new Error('Base URL is required. Default to https://api.openai.com/v1/ for official OpenAI API.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -882,18 +804,14 @@ export const useProvidersStore = defineStore('providers', () => {
       },
       createProvider: async (config) => {
         const toString = (value: unknown) => typeof value === 'string' ? value.trim() : ''
-
         const accessKeyId = toString(config.accessKeyId)
         const accessKeySecret = toString(config.accessKeySecret)
         const appKey = toString(config.appKey)
         const region = toString(config.region)
         const resolvedRegion = ALIYUN_NLS_REGIONS.includes(region as AliyunNlsRegion) ? region as AliyunNlsRegion : 'cn-shanghai'
-
         if (!accessKeyId || !accessKeySecret || !appKey)
           throw new Error('Aliyun NLS credentials are incomplete.')
-
         const provider = createAliyunNlsStreamProvider(accessKeyId, accessKeySecret, appKey, { region: resolvedRegion })
-
         return {
           transcription(model: string, extraOptions?: AliyunRealtimeSpeechExtraOptions) {
             return provider.speech(model, extraOptions)
@@ -918,12 +836,10 @@ export const useProvidersStore = defineStore('providers', () => {
         validateProviderConfig: (config) => {
           const errors: Error[] = []
           const toString = (value: unknown) => typeof value === 'string' ? value.trim() : ''
-
           const accessKeyId = toString(config.accessKeyId)
           const accessKeySecret = toString(config.accessKeySecret)
           const appKey = toString(config.appKey)
           const region = toString(config.region)
-
           if (!accessKeyId)
             errors.push(new Error('Access Key ID is required.'))
           if (!accessKeySecret)
@@ -932,7 +848,6 @@ export const useProvidersStore = defineStore('providers', () => {
             errors.push(new Error('App Key is required.'))
           if (region && !ALIYUN_NLS_REGIONS.includes(region as AliyunNlsRegion))
             errors.push(new Error('Region is invalid.'))
-
           return {
             errors,
             reason: errors.length > 0 ? errors.map(error => error.message).join(', ') : '',
@@ -1024,28 +939,20 @@ export const useProvidersStore = defineStore('providers', () => {
         },
         listVoices: async (config) => {
           const provider = createUnElevenLabs((config.apiKey as string).trim(), (config.baseUrl as string).trim()) as VoiceProviderWithExtraOptions<UnElevenLabsOptions>
-
           const voices = await listVoices({
             ...provider.voice(),
           })
-
-          // Find indices of Aria and Bill
           const ariaIndex = voices.findIndex(voice => voice.name.includes('Aria'))
           const billIndex = voices.findIndex(voice => voice.name.includes('Bill'))
-
-          // Determine the range to move (ensure valid indices and proper order)
           const startIndex = ariaIndex !== -1 ? ariaIndex : 0
           const endIndex = billIndex !== -1 ? billIndex : voices.length - 1
           const lowerIndex = Math.min(startIndex, endIndex)
           const higherIndex = Math.max(startIndex, endIndex)
-
-          // Rearrange voices: voices outside the range first, then voices within the range
           const rearrangedVoices = [
             ...voices.slice(0, lowerIndex),
             ...voices.slice(higherIndex + 1),
             ...voices.slice(lowerIndex, higherIndex + 1),
           ]
-
           return rearrangedVoices.map((voice) => {
             return {
               id: voice.id,
@@ -1063,12 +970,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API key is required.'),
             !config.baseUrl && new Error('Base URL is required.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1105,11 +1010,9 @@ export const useProvidersStore = defineStore('providers', () => {
         },
         listVoices: async (config) => {
           const provider = createUnMicrosoft((config.apiKey as string).trim(), (config.baseUrl as string).trim()) as VoiceProviderWithExtraOptions<UnMicrosoftOptions>
-
           const voices = await listVoices({
             ...provider.voice({ region: config.region as string }),
           })
-
           return voices.map((voice) => {
             return {
               id: voice.id,
@@ -1128,12 +1031,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API key is required.'),
             !config.baseUrl && new Error('Base URL is required.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1179,7 +1080,6 @@ export const useProvidersStore = defineStore('providers', () => {
               id: voice,
               name: voice,
               provider: 'index-tts-vllm',
-              // previewURL: voice.preview_audio_url,
               languages: [{ code: 'cn', title: 'Chinese' }, { code: 'en', title: 'English' }],
             }
           })
@@ -1190,12 +1090,10 @@ export const useProvidersStore = defineStore('providers', () => {
           const errors = [
             !config.baseUrl && new Error('Base URL is required. Default to http://localhost:11996/tts/ for Index-TTS.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1220,11 +1118,9 @@ export const useProvidersStore = defineStore('providers', () => {
       capabilities: {
         listVoices: async (config) => {
           const provider = createUnAlibabaCloud((config.apiKey as string).trim(), (config.baseUrl as string).trim()) as VoiceProviderWithExtraOptions<UnAlibabaCloudOptions>
-
           const voices = await listVoices({
             ...provider.voice(),
           })
-
           return voices.map((voice) => {
             return {
               id: voice.id,
@@ -1264,12 +1160,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API key is required.'),
             !config.baseUrl && new Error('Base URL is required.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1294,11 +1188,9 @@ export const useProvidersStore = defineStore('providers', () => {
       capabilities: {
         listVoices: async (config) => {
           const provider = createUnVolcengine((config.apiKey as string).trim(), (config.baseUrl as string).trim()) as VoiceProviderWithExtraOptions<UnVolcengineOptions>
-
           const voices = await listVoices({
             ...provider.voice(),
           })
-
           return voices.map((voice) => {
             return {
               id: voice.id,
@@ -1330,12 +1222,10 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.baseUrl && new Error('Base URL is required.'),
             !((config.app as any)?.appId) && new Error('App ID is required.'),
           ].filter(Boolean)
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1433,14 +1323,11 @@ export const useProvidersStore = defineStore('providers', () => {
       },
       validators: {
         validateProviderConfig: (config) => {
-          // return !!config.apiKey && !!config.resourceName && !!config.modelId
-
           const errors = [
             !config.apiKey && new Error('API key is required'),
             !config.resourceName && new Error('Resource name is required'),
             !config.modelId && new Error('Model ID is required'),
           ]
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1527,19 +1414,15 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
-          // Check if the vLLM is reachable
           return fetch(`${(config.baseUrl as string).trim()}models`, { headers: (config.headers as HeadersInit) || undefined })
             .then((response) => {
               const errors = [
                 !response.ok && new Error(`vLLM returned non-ok status code: ${response.statusText}`),
               ].filter(Boolean)
-
               return {
                 errors,
                 reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1611,7 +1494,6 @@ export const useProvidersStore = defineStore('providers', () => {
             !config.apiKey && new Error('API key is required.'),
             !config.accountId && new Error('Account ID is required.'),
           ].filter(Boolean)
-
           return {
             errors,
             reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1713,13 +1595,10 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
-          // Check if the local running Player 2 is reachable
           return await fetch(`${config.baseUrl}health`, {
             method: 'GET',
             headers: {
@@ -1730,7 +1609,6 @@ export const useProvidersStore = defineStore('providers', () => {
               const errors = [
                 !response.ok && new Error(`Player 2 returned non-ok status code: ${response.statusText}`),
               ].filter(Boolean)
-
               return {
                 errors,
                 reason: errors.filter(e => e).map(e => String(e)).join(', ') || '',
@@ -1765,7 +1643,6 @@ export const useProvidersStore = defineStore('providers', () => {
           const baseUrl = (config.baseUrl as string).endsWith('/') ? (config.baseUrl as string).slice(0, -1) : config.baseUrl as string
           return await fetch(`${baseUrl}/tts/voices`).then(res => res.json()).then(({ voices }) => (voices as { id: string, language: 'american_english' | 'british_english' | 'japanese' | 'mandarin_chinese' | 'spanish' | 'french' | 'hindi' | 'italian' | 'brazilian_portuguese', name: string, gender: string }[]).map(({ id, language, name, gender }) => (
             {
-
               id,
               name,
               provider: 'player2-speech',
@@ -1799,7 +1676,6 @@ export const useProvidersStore = defineStore('providers', () => {
                   code: 'hi',
                   title: 'Hindi',
                 },
-
                 italian: {
                   code: 'it',
                   title: 'Italian',
@@ -1809,7 +1685,6 @@ export const useProvidersStore = defineStore('providers', () => {
                   code: 'pt',
                   title: 'Portuguese',
                 },
-
               }[language]],
             }
           )))
@@ -1824,12 +1699,10 @@ export const useProvidersStore = defineStore('providers', () => {
               valid: false,
             }
           }
-
           const res = baseUrlValidator.value(config.baseUrl)
           if (res) {
             return res
           }
-
           return {
             errors: [],
             reason: '',
@@ -1839,37 +1712,23 @@ export const useProvidersStore = defineStore('providers', () => {
       },
     },
   }
-
   const configuredProviders = ref<Record<string, boolean>>({})
   const validatedCredentials = ref<Record<string, string>>({})
-
-  // Configuration validation functions
   async function validateProvider(providerId: string): Promise<boolean> {
     const config = providerCredentials.value[providerId]
     if (!config)
       return false
-
     const configString = JSON.stringify(config || {})
     if (validatedCredentials.value[providerId] === configString && typeof configuredProviders.value[providerId] === 'boolean')
       return configuredProviders.value[providerId]
-
     const metadata = providerMetadata[providerId]
     if (!metadata)
       return false
-
-    // Always cache the current config string to prevent re-validating the same config
     validatedCredentials.value[providerId] = configString
-
     const validationResult = await metadata.validators.validateProviderConfig(config)
-
     configuredProviders.value[providerId] = validationResult.valid
-
     return validationResult.valid
   }
-
-  // Create computed properties for each provider's configuration status
-
-  // Initialize provider configurations
   function initializeProvider(providerId: string) {
     if (!providerCredentials.value[providerId]) {
       const metadata = providerMetadata[providerId]
@@ -1880,15 +1739,9 @@ export const useProvidersStore = defineStore('providers', () => {
       }
     }
   }
-
-  // Initialize all providers
   Object.keys(providerMetadata).forEach(initializeProvider)
-
-  // Update configuration status for all configured providers
   async function updateConfigurationStatus() {
     await Promise.all(Object.entries(providerMetadata)
-      // TODO: ignore un-configured provider
-      // .filter(([_, provider]) => provider.configured)
       .map(async ([providerId]) => {
         try {
           configuredProviders.value[providerId] = await validateProvider(providerId)
@@ -1898,35 +1751,22 @@ export const useProvidersStore = defineStore('providers', () => {
         }
       }))
   }
-
-  // Call initially and watch for changes
   watch(providerCredentials, updateConfigurationStatus, { deep: true, immediate: true })
-
-  // Available providers (only those that are properly configured)
   const availableProviders = computed(() => Object.keys(providerMetadata).filter(providerId => configuredProviders.value[providerId]))
-
-  // Store available models for each provider
   const availableModels = ref<Record<string, ModelInfo[]>>({})
   const isLoadingModels = ref<Record<string, boolean>>({})
   const modelLoadError = ref<Record<string, string | null>>({})
-
-  // Function to fetch models for a specific provider
   async function fetchModelsForProvider(providerId: string) {
     const config = providerCredentials.value[providerId]
     if (!config)
       return []
-
     const metadata = providerMetadata[providerId]
     if (!metadata)
       return []
-
     isLoadingModels.value[providerId] = true
     modelLoadError.value[providerId] = null
-
     try {
       const models = metadata.capabilities.listModels ? await metadata.capabilities.listModels(config) : []
-
-      // Transform and store the models
       availableModels.value[providerId] = models.map(model => ({
         id: model.id,
         name: model.name,
@@ -1935,7 +1775,6 @@ export const useProvidersStore = defineStore('providers', () => {
         deprecated: model.deprecated,
         provider: providerId,
       }))
-
       return availableModels.value[providerId]
     }
     catch (error) {
@@ -1947,13 +1786,9 @@ export const useProvidersStore = defineStore('providers', () => {
       isLoadingModels.value[providerId] = false
     }
   }
-
-  // Get models for a specific provider
   function getModelsForProvider(providerId: string) {
     return availableModels.value[providerId] || []
   }
-
-  // Get all available models across all configured providers
   const allAvailableModels = computed(() => {
     const models: ModelInfo[] = []
     for (const providerId of availableProviders.value) {
@@ -1961,8 +1796,6 @@ export const useProvidersStore = defineStore('providers', () => {
     }
     return models
   })
-
-  // Load models for all configured providers
   async function loadModelsForConfiguredProviders() {
     for (const providerId of availableProviders.value) {
       if (providerMetadata[providerId]?.capabilities.listModels) {
@@ -1970,36 +1803,26 @@ export const useProvidersStore = defineStore('providers', () => {
       }
     }
   }
-  // Watch for credential changes and refetch models accordingly
   watch(providerCredentials, (newCreds, oldCreds) => {
-    // Determine which providers have changed credentials
     const changedProviders = Object.keys(newCreds).filter(providerId =>
       JSON.stringify(newCreds[providerId]) !== JSON.stringify(oldCreds?.[providerId]),
     )
-
     for (const providerId of changedProviders) {
-      // If the provider is configured and has the capability, refetch its models
       if (configuredProviders.value[providerId] && providerMetadata[providerId]?.capabilities.listModels) {
         fetchModelsForProvider(providerId)
       }
     }
   }, { deep: true })
-
-  // Function to get localized provider metadata
   function getProviderMetadata(providerId: string) {
     const metadata = providerMetadata[providerId]
-
     if (!metadata)
       throw new Error(`Provider metadata for ${providerId} not found`)
-
     return {
       ...metadata,
       localizedName: t(metadata.nameKey, metadata.name),
       localizedDescription: t(metadata.descriptionKey, metadata.description),
     }
   }
-
-  // Get all providers metadata (for settings page)
   const allProvidersMetadata = computed(() => {
     return Object.values(providerMetadata).map(metadata => ({
       ...metadata,
@@ -2008,19 +1831,15 @@ export const useProvidersStore = defineStore('providers', () => {
       configured: configuredProviders.value[metadata.id] || false,
     }))
   })
-
   function getTranscriptionFeatures(providerId: string) {
     const metadata = providerMetadata[providerId]
     const features = metadata?.transcriptionFeatures
-
     return {
       supportsGenerate: features?.supportsGenerate ?? true,
       supportsStreamOutput: features?.supportsStreamOutput ?? false,
       supportsStreamInput: features?.supportsStreamInput ?? false,
     }
   }
-
-  // Function to get provider object by provider id
   async function getProviderInstance<R extends
   | ChatProvider
   | ChatProviderWithExtraOptions
@@ -2034,11 +1853,9 @@ export const useProvidersStore = defineStore('providers', () => {
     const config = providerCredentials.value[providerId]
     if (!config)
       throw new Error(`Provider credentials for ${providerId} not found`)
-
     const metadata = providerMetadata[providerId]
     if (!metadata)
       throw new Error(`Provider metadata for ${providerId} not found`)
-
     try {
       return await metadata.createProvider(config) as R
     }
@@ -2047,51 +1864,39 @@ export const useProvidersStore = defineStore('providers', () => {
       throw error
     }
   }
-
   const availableProvidersMetadata = computedAsync<ProviderMetadata[]>(async () => {
     const providers: ProviderMetadata[] = []
-
     for (const provider of allProvidersMetadata.value) {
       const p = getProviderMetadata(provider.id)
       const isAvailableBy = p.isAvailableBy || (() => true)
-
       const isAvailable = await isAvailableBy()
       if (isAvailable) {
         providers.push(provider)
       }
     }
-
     return providers
   }, [])
-
   const allChatProvidersMetadata = computed(() => {
     return availableProvidersMetadata.value.filter(metadata => metadata.category === 'chat')
   })
-
   const allAudioSpeechProvidersMetadata = computed(() => {
     return availableProvidersMetadata.value.filter(metadata => metadata.category === 'speech')
   })
-
   const allAudioTranscriptionProvidersMetadata = computed(() => {
     return availableProvidersMetadata.value.filter(metadata => metadata.category === 'transcription')
   })
-
   const configuredChatProvidersMetadata = computed(() => {
     return allChatProvidersMetadata.value.filter(metadata => configuredProviders.value[metadata.id])
   })
-
   const configuredSpeechProvidersMetadata = computed(() => {
     return allAudioSpeechProvidersMetadata.value.filter(metadata => configuredProviders.value[metadata.id])
   })
-
   const configuredTranscriptionProvidersMetadata = computed(() => {
     return allAudioTranscriptionProvidersMetadata.value.filter(metadata => configuredProviders.value[metadata.id])
   })
-
   function getProviderConfig(providerId: string) {
     return providerCredentials.value[providerId]
   }
-
   return {
     providers: providerCredentials,
     getProviderConfig,

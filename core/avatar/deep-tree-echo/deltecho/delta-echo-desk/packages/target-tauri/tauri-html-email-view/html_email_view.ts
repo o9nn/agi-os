@@ -1,6 +1,5 @@
 import { invoke } from '@tauri-apps/api/core'
 import type { Theme } from '@deltachat-desktop/shared/shared-types'
-
 const subjectElement = document.getElementById('subject')!
 const fromElement = document.getElementById('sender')!
 const receiveTimeElement = document.getElementById('receive-time')!
@@ -11,9 +10,7 @@ const networkButtonLabel = document.getElementById('toggle_network_label')!
 const networkMoreButton = document.getElementById(
   'toggle_network_more_button'
 )! as HTMLButtonElement
-
 let network_enabled = false
-
 type HtmlInfoType = {
   subject: string
   sender: string
@@ -22,7 +19,6 @@ type HtmlInfoType = {
   networkButtonLabelText: string
   blockedByProxy: boolean
 }
-
 invoke<HtmlInfoType>('get_html_window_info').then(
   ({
     subject,
@@ -36,7 +32,6 @@ invoke<HtmlInfoType>('get_html_window_info').then(
       networkMoreButton.disabled = true
       networkCheckbox.disabled = true
     }
-
     subjectElement.innerText = subject
     fromElement.innerText = sender
     networkButtonLabel.innerText = networkButtonLabelText
@@ -44,7 +39,6 @@ invoke<HtmlInfoType>('get_html_window_info').then(
     receiveTimeElement.innerText = receiveTime
   }
 )
-
 networkCheckbox.onclick = ev => {
   ev.preventDefault()
   const new_value = !network_enabled
@@ -55,9 +49,7 @@ networkCheckbox.onclick = ev => {
     network_enabled = new_value
   })
 }
-
 networkMoreButton.onclick = _ => {
-  // const { x, y } = event
   invoke('html_email_open_menu')
 }
 ;(window as any).updateTheme = async () => {
@@ -72,7 +64,6 @@ networkMoreButton.onclick = _ => {
   const [_theme, theme_content] = await invoke<
     [theme: Theme, theme_content: string]
   >('get_theme', { themeAddress })
-
   const themeVars = window.document.getElementById('theme-vars')
   if (!themeVars) {
     throw new Error('#theme-vars element not found')
@@ -82,7 +73,6 @@ networkMoreButton.onclick = _ => {
 window
   .matchMedia('(prefers-color-scheme: dark)')
   .addEventListener('change', event => {
-    /* ignore-console-log */
     console.debug('system theme changed:', { dark_theme: event.matches })
     ;(window as any).updateTheme()
   })

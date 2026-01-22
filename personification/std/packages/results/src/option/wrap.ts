@@ -1,8 +1,5 @@
 import type { Option } from '../core'
-
 import { isOption } from './is'
-
-/** @experimental */
 export const wrap = <T>(cb: () => Option<T>): Option<T> => {
   try {
     return cb()
@@ -14,8 +11,6 @@ export const wrap = <T>(cb: () => Option<T>): Option<T> => {
       throw error
   }
 }
-
-/** @experimental */
 export const wrapAsync = async <T>(cb: () => Promise<Option<T>>): Promise<Option<T>> => {
   try {
     return await cb()

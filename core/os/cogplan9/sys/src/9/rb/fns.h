@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 void	arginit(void);
 int	busprobe(ulong);
 ulong	cankaddr(ulong);
@@ -134,13 +133,9 @@ ulong	wiredpte(vlong);
 void	machwire(void);
 void	_uartputs(char*, int);
 int	_uartprint(char*, ...);
-
 #define PTR2UINT(p)	((uintptr)(p))
 #define UINT2PTR(i)	((void*)(i))
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-
 #define KADDR(a)	((void*)((ulong)(a)|KSEG0))
 #define PADDR(a)	((ulong)(a)&~KSEGM)
-
 #define KSEG1ADDR(a)	((void*)((ulong)(a)|KSEG1))

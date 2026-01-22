@@ -1,31 +1,23 @@
 package convert
-
 import (
 	"fmt"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type mixtralModel struct {
 	llamaModel
 	NumLocalExperts    uint32 `json:"num_local_experts"`
 	NumExpertsPerToken uint32 `json:"num_experts_per_tok"`
 }
-
 func (p *mixtralModel) KV(t *Tokenizer) ggml.KV {
 	kv := p.llamaModel.KV(t)
-
 	if p.NumLocalExperts > 0 {
 		kv["llama.expert_count"] = p.NumLocalExperts
 	}
-
 	if p.NumExpertsPerToken > 0 {
 		kv["llama.expert_used_count"] = p.NumExpertsPerToken
 	}
-
 	return kv
 }
-
 func (p *mixtralModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	merges := make([]merge, 0, p.NumHiddenLayers*6)
 	for i := range p.NumHiddenLayers {
@@ -49,11 +41,9 @@ func (p *mixtralModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			fmt.Sprintf("blk.%d.ffn_down_exps.bias", i),
 		})
 	}
-
 	out, ts := mergeTensors(ts, merges...)
 	return append(out, p.llamaModel.Tensors(ts)...)
 }
-
 func (p *mixtralModel) Replacements() []string {
 	return append(
 		p.llamaModel.Replacements(),

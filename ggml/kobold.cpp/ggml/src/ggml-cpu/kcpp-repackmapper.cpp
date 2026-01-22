@@ -1,6 +1,3 @@
-//LCPP had to go and split up our nice all in one cpu quant handling. It's always something eh?
-//Now, we need to determine at compile time which subfile to load for kcpp.
-//priority goes X86_64 > ARM/AARCH > everything else. may god help us all.
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86) || defined(__amd64__) || defined(__AMD64__)
 #pragma message("KoboldCpp Compiling Repack for x86/x64")
 #include "arch/x86/repack.cpp"

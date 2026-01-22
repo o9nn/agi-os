@@ -1,13 +1,10 @@
 import type { CompletionStepType, FinishReason } from '../types'
-
 export interface DetermineStepTypeOptions {
   finishReason: FinishReason
   maxSteps: number
   stepsLength: number
   toolCallsLength: number
 }
-
-/** @internal */
 export const determineStepType = ({ finishReason, maxSteps, stepsLength, toolCallsLength }: DetermineStepTypeOptions): CompletionStepType => {
   if (stepsLength === 0) {
     return 'initial'
@@ -18,6 +15,5 @@ export const determineStepType = ({ finishReason, maxSteps, stepsLength, toolCal
     else if (!['error', 'length'].includes(finishReason))
       return 'continue'
   }
-
   return 'done'
 }

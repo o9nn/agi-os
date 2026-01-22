@@ -1,10 +1,7 @@
 import pytest
 import torch
-
 from tests.kernels.utils import opcheck
 from aphrodite._custom_ops import permute_cols
-
-
 @pytest.mark.parametrize('shape', [(1, 512), (544, 4096), (67, 8192)])
 @pytest.mark.parametrize('dtype', [torch.bfloat16, torch.float16])
 def test_permute_cols(shape, dtype):

@@ -3,16 +3,13 @@ import {LlamaChatSession, Token, DraftSequenceTokenPredictor, InputLookupTokenPr
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
 import {compareTokens} from "../../../src/utils/compareTokens.js";
-
 describe("llama 3.1", () => {
     describe("token predictor", () => {
         test("DraftModelTokenPredictor", {timeout: 1000 * 60 * 60 * 2}, async (test) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
             if (llama.gpu !== "metal")
-                test.skip(); // the outputs are a bit different on different platforms, so skipping on other platforms due to flakiness
-
+                test.skip(); 
             const model = await llama.loadModel({
                 modelPath
             });
@@ -26,20 +23,16 @@ describe("llama 3.1", () => {
                 maxTokens: 2,
                 minConfidence: 0.2
             });
-
             const mainSequence = context.getSequence();
             const chatSession = new LlamaChatSession({
                 contextSequence: mainSequence
             });
-
             await chatSession.preloadPrompt("Hello");
-
             await predictor.reset({
                 targetSequence: mainSequence,
                 stateTokens: mainSequence.contextTokens,
                 evaluateOptions: {}
             });
-
             const predictedTokens = await predictor.predictTokens();
             expect(predictedTokens.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
               [
@@ -47,10 +40,8 @@ describe("llama 3.1", () => {
                 " I",
               ]
             `);
-
             const textTokens = model.tokenize("! How are");
             predictor.pushTokens(textTokens);
-
             const predictedTokens2 = await predictor.predictTokens();
             expect(predictedTokens2.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
               [
@@ -58,16 +49,12 @@ describe("llama 3.1", () => {
                 " today",
               ]
             `);
-
-
             await chatSession.preloadPrompt("What ");
-
             await predictor.reset({
                 targetSequence: mainSequence,
                 stateTokens: mainSequence.contextTokens,
                 evaluateOptions: {}
             });
-
             const predictedTokens3 = await predictor.predictTokens();
             expect(predictedTokens3.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
               [
@@ -75,10 +62,8 @@ describe("llama 3.1", () => {
                 " the",
               ]
             `);
-
             const text2Tokens = model.tokenize("can be");
             predictor.pushTokens(text2Tokens);
-
             const predictedTokens4 = await predictor.predictTokens();
             expect(predictedTokens4.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
               [
@@ -86,26 +71,18 @@ describe("llama 3.1", () => {
                 " to",
               ]
             `);
-
-
             await chatSession.preloadPrompt("If all");
-
             await predictor.reset({
                 targetSequence: mainSequence,
                 stateTokens: mainSequence.contextTokens,
                 evaluateOptions: {}
             });
-
             const text3Tokens = model.tokenize("exquisite");
             predictor.pushTokens(text3Tokens);
-
-            // no prediction with the given minimum confidence
             const predictedTokens5 = await predictor.predictTokens();
             expect(predictedTokens5.map((token) => model.detokenize([token], true))).to.eql([]);
         });
-
         describe("InputLookupTokenPredictor", () => {
-            // made up example paragraph
             const exampleParagraph = [
                 "The Luminawing (genus: Luxavis, species: nocturna) is a rare and enigmatic nocturnal creature native to the dense forests of the remote continent of Aethoria.",
                 "Characterized by its striking appearance and unique adaptations, this mystical animal has garnered significant attention from scientists and naturalists.",
@@ -127,11 +104,9 @@ describe("llama 3.1", () => {
                 "Due to its elusive nature and limited range, the Luminawing is currently listed as a species of special concern by the Aethorian Conservation Society.",
                 "Efforts are being made to protect its habitat and study its behavior, but more research is needed to fully understand this enigmatic creature's place in the ecosystem."
             ].join("\n");
-
             test("no evaluation", {timeout: 1000 * 60 * 60 * 2}, async () => {
                 const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
                 const llama = await getTestLlama();
-
                 const model = await llama.loadModel({
                     modelPath
                 });
@@ -147,26 +122,21 @@ describe("llama 3.1", () => {
                         max: 5
                     }
                 });
-
                 const sequence = context.getSequence();
                 const chatSession = new LlamaChatSession({
                     contextSequence: sequence
                 });
-
                 const paragraphTokens = model.tokenize(exampleParagraph);
                 let endIndex = 3 + 4;
                 const tokensExcerpt = [
                     ...model.tokenize("Some random text here"),
                     ...paragraphTokens.slice(3, endIndex)
                 ];
-
                 await chatSession.preloadPrompt("Hello");
-
                 predictor.reset({
                     stateTokens: tokensExcerpt.slice()
                 });
                 predictor.updateInputTokens(paragraphTokens.slice());
-
                 const predictedTokens = predictor.predictTokens();
                 expect(predictedTokens.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
                   [
@@ -177,10 +147,8 @@ describe("llama 3.1", () => {
                     " species",
                   ]
                 `);
-
                 predictor.pushTokens(paragraphTokens.slice(endIndex, endIndex + 2));
                 endIndex += 2;
-
                 const predictedTokens2 = predictor.predictTokens();
                 expect(predictedTokens2.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
                   [
@@ -191,13 +159,10 @@ describe("llama 3.1", () => {
                     " noct",
                   ]
                 `);
-
-
                 predictor.reset({
                     stateTokens: [...paragraphTokens, ...tokensExcerpt]
                 });
                 predictor.updateInputTokens(paragraphTokens.slice());
-
                 const predictedTokens3 = predictor.predictTokens();
                 expect(predictedTokens3.map((token) => model.detokenize([token], true))).toMatchInlineSnapshot(`
                   [
@@ -209,12 +174,9 @@ describe("llama 3.1", () => {
                   ]
                 `);
             });
-
-            // disabled for now due to flakiness
             test.skip("with evaluation", {timeout: 1000 * 60 * 60 * 2}, async () => {
                 const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
                 const llama = await getTestLlama();
-
                 const model = await llama.loadModel({
                     modelPath
                 });
@@ -230,78 +192,47 @@ describe("llama 3.1", () => {
                         max: 5
                     }
                 });
-
                 const sequence = context.getSequence({
                     tokenPredictor: predictor
                 });
-
-                // // script to find the right maxTokens value for this test
-                // {
-                //     for (let maxTokens = 0; maxTokens < 80; maxTokens++) {
-                //         const chatSession = new LlamaChatSession({
-                //             contextSequence: sequence
-                //         });
-                //
-                //         await chatSession.prompt("Summarize this text:\n\n" + exampleParagraph, {
-                //             maxTokens
-                //         });
-                //         const actualContextTokensLength = sequence._contextTokens.length;
-                //         const exposedContextTokensLength = sequence.contextTokens.length;
-                //
-                //         if (actualContextTokensLength !== exposedContextTokensLength)
-                //             console.log("max tokens with validated predictions:", maxTokens);
-                //     }
-                // }
-
                 const chatSession = new LlamaChatSession({
                     contextSequence: sequence
                 });
-
                 await chatSession.prompt("Summarize this text:\n\n" + exampleParagraph, {
                     maxTokens: 23
                 });
-
                 expect(sequence.tokenPredictions.validated).toMatchInlineSnapshot("2");
                 expect(sequence.tokenPredictions.refuted).toMatchInlineSnapshot("8");
                 expect(sequence.tokenPredictions.used).toMatchInlineSnapshot("1");
                 expect(sequence.tokenPredictions.unused).toMatchInlineSnapshot("1");
-
                 const exposedNextTokenIndex = sequence.nextTokenIndex;
-
                 {
                     const actualContextTokensLength = sequence._contextTokens.length;
                     const exposedContextTokensLength = sequence.contextTokens.length;
-
                     expect(exposedContextTokensLength).toMatchInlineSnapshot("541");
                     expect(actualContextTokensLength).toMatchInlineSnapshot("542");
                     expect(exposedNextTokenIndex).toMatchInlineSnapshot("541");
                     expect(exposedContextTokensLength).to.not.be.eql(actualContextTokensLength);
                 }
-
                 const lastToken = sequence.contextTokens.at(-1)!;
                 const exampleToken = sequence.contextTokens
                     .slice()
                     .reverse()
                     .find((token) => !compareTokens(token, lastToken))!;
-
                 const addedTokens: Token[] = [];
                 for await (const token of sequence.evaluate([exampleToken])) {
                     addedTokens.push(token);
-                    break; // evaluate only one token
+                    break; 
                 }
-
                 expect(addedTokens).toMatchInlineSnapshot(`
                   [
                     315,
                   ]
                 `);
-
                 await sequence.eraseContextTokenRanges([{start: sequence.nextTokenIndex - 1, end: sequence.nextTokenIndex}]);
-
                 {
                     const actualContextTokensLength = sequence._contextTokens.length;
                     const exposedContextTokensLength = sequence.contextTokens.length;
-
                     expect(exposedContextTokensLength).toMatchInlineSnapshot("541");
                     expect(actualContextTokensLength).toMatchInlineSnapshot("541");
                     expect(exposedNextTokenIndex).toMatchInlineSnapshot("541");

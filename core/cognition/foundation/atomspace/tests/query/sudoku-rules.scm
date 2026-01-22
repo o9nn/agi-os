@@ -1,13 +1,5 @@
-;
-; Sudoku puzzle rules, encoded in such a way that the pattern matcher
-; can try to do a brute-force exploration.
-;
 (use-modules (opencog))
 (use-modules (opencog exec))
-
-
-; Definition of a number.  Cells in the sudoku puzzle can only contain
-; numbers.
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "one"))
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "two"))
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "three"))
@@ -17,9 +9,6 @@
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "seven"))
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "eight"))
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "nine"))
-
-; The set of numbers that can be chosen from. Every row, column
-; and three-by-three box must hold this set.
 (SetLink
 	(ConceptNode "one")
 	(ConceptNode "two")
@@ -31,11 +20,6 @@
 	(ConceptNode "eight")
 	(ConceptNode "nine")
 )
-
-; The contents of the cells must be numbers!
-; Actually, this constraint will not be needed, as the requirement that
-; the columns, rows and boxes be a number set is sufficient.  So the
-; below only adds complexity to the problem, slowing down solving.
 (define (cells_are_numbers)
 	(list
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_11"))
@@ -47,7 +31,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_17"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_18"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_19"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_21"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_22"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_23"))
@@ -57,7 +40,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_27"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_28"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_29"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_31"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_32"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_33"))
@@ -67,7 +49,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_37"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_38"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_39"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_41"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_42"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_43"))
@@ -77,7 +58,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_47"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_48"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_49"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_51"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_52"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_53"))
@@ -87,7 +67,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_57"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_58"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_59"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_61"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_62"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_63"))
@@ -97,7 +76,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_67"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_68"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_69"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_71"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_72"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_73"))
@@ -107,7 +85,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_77"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_78"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_79"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_81"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_82"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_83"))
@@ -117,7 +94,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_87"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_88"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_89"))
-
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_91"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_92"))
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_93"))
@@ -129,16 +105,6 @@
 		(EvaluationLink (PredicateNode "IsNumber") (VariableNode "$cell_99"))
 	)
 )
-
-; Twenty-seven solution constraints.  There are nine row, nine column,
-; and nine box constraints: each row, column and box must form the 
-; set of numerals.
-;
-; I've avoided using whizzy scheme for-loops to specify these, and
-; instead tediously wrote them out by hand.  The goal here is to make
-; the structure slightly easier to read and understand.
-;
-; First, nine row constraints
 (define (row1)
 	(SetLink
 		(VariableNode "$cell_11")
@@ -256,8 +222,6 @@
 		(VariableNode "$cell_99")
 	)
 )
-
-;; Next, nine column constraints
 (define (col1)
 	(SetLink
 		(VariableNode "$cell_11")
@@ -375,8 +339,6 @@
 		(VariableNode "$cell_99")
 	)
 )
-
-;; And finally, 9 box constraints
 (define (box11)
 	(SetLink
 		(VariableNode "$cell_11")
@@ -390,7 +352,6 @@
 		(VariableNode "$cell_33")
 	)
 )
-
 (define (box14)
 	(SetLink
 		(VariableNode "$cell_14")
@@ -404,7 +365,6 @@
 		(VariableNode "$cell_36")
 	)
 )
-
 (define (box17)
 	(SetLink
 		(VariableNode "$cell_17")
@@ -418,7 +378,6 @@
 		(VariableNode "$cell_39")
 	)
 )
-
 (define (box41)
 	(SetLink
 		(VariableNode "$cell_41")
@@ -432,7 +391,6 @@
 		(VariableNode "$cell_63")
 	)
 )
-
 (define (box44)
 	(SetLink
 		(VariableNode "$cell_44")
@@ -446,7 +404,6 @@
 		(VariableNode "$cell_66")
 	)
 )
-
 (define (box47)
 	(SetLink
 		(VariableNode "$cell_47")
@@ -460,7 +417,6 @@
 		(VariableNode "$cell_69")
 	)
 )
-
 (define (box71)
 	(SetLink
 		(VariableNode "$cell_71")
@@ -474,7 +430,6 @@
 		(VariableNode "$cell_93")
 	)
 )
-
 (define (box74)
 	(SetLink
 		(VariableNode "$cell_74")
@@ -488,7 +443,6 @@
 		(VariableNode "$cell_96")
 	)
 )
-
 (define (box77)
 	(SetLink
 		(VariableNode "$cell_77")
@@ -502,11 +456,8 @@
 		(VariableNode "$cell_99")
 	)
 )
-
-;; The grand-total set of constraints.
 (define (sudoku-constraints)
 	(list
-		;; (cells_are_numbers) ; constraint isn't needed.
 		(row1)
 		(row2)
 		(row3)
@@ -536,10 +487,6 @@
 		(box77)
 	)
 )
-
-; Define the variables to be solved for.
-; This is just a big list of all the cells.
-;
 (define (variable-decls)
 	(begin
 		(VariableNode "$cell_11")
@@ -551,7 +498,6 @@
 		(VariableNode "$cell_17")
 		(VariableNode "$cell_18")
 		(VariableNode "$cell_19")
-
 		(VariableNode "$cell_21")
 		(VariableNode "$cell_22")
 		(VariableNode "$cell_23")
@@ -561,7 +507,6 @@
 		(VariableNode "$cell_27")
 		(VariableNode "$cell_28")
 		(VariableNode "$cell_29")
-
 		(VariableNode "$cell_31")
 		(VariableNode "$cell_32")
 		(VariableNode "$cell_33")
@@ -571,7 +516,6 @@
 		(VariableNode "$cell_37")
 		(VariableNode "$cell_38")
 		(VariableNode "$cell_39")
-
 		(VariableNode "$cell_41")
 		(VariableNode "$cell_42")
 		(VariableNode "$cell_43")
@@ -581,7 +525,6 @@
 		(VariableNode "$cell_47")
 		(VariableNode "$cell_48")
 		(VariableNode "$cell_49")
-
 		(VariableNode "$cell_51")
 		(VariableNode "$cell_52")
 		(VariableNode "$cell_53")
@@ -591,7 +534,6 @@
 		(VariableNode "$cell_57")
 		(VariableNode "$cell_58")
 		(VariableNode "$cell_59")
-
 		(VariableNode "$cell_61")
 		(VariableNode "$cell_62")
 		(VariableNode "$cell_63")
@@ -601,7 +543,6 @@
 		(VariableNode "$cell_67")
 		(VariableNode "$cell_68")
 		(VariableNode "$cell_69")
-
 		(VariableNode "$cell_71")
 		(VariableNode "$cell_72")
 		(VariableNode "$cell_73")
@@ -611,7 +552,6 @@
 		(VariableNode "$cell_77")
 		(VariableNode "$cell_78")
 		(VariableNode "$cell_79")
-
 		(VariableNode "$cell_81")
 		(VariableNode "$cell_82")
 		(VariableNode "$cell_83")
@@ -621,7 +561,6 @@
 		(VariableNode "$cell_87")
 		(VariableNode "$cell_88")
 		(VariableNode "$cell_89")
-
 		(VariableNode "$cell_91")
 		(VariableNode "$cell_92")
 		(VariableNode "$cell_93")
@@ -633,5 +572,3 @@
 		(VariableNode "$cell_99")
 	)
 )
-
-

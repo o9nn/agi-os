@@ -10,7 +10,6 @@ export function toErrorObject(err: unknown, depth?: number, maxDepth: number = 5
       message: `Error object too deep: ${JSON.stringify(err)}`,
     }
   }
-
   if (err instanceof Error) {
     const errorObject: {
       name: string
@@ -26,7 +25,6 @@ export function toErrorObject(err: unknown, depth?: number, maxDepth: number = 5
       errorObject.cause = toErrorObject(err.cause, depth ? depth + 1 : 1)
     }
   }
-
   const e = err as {
     name?: string
     message?: string
@@ -46,10 +44,8 @@ export function toErrorObject(err: unknown, depth?: number, maxDepth: number = 5
   if (e.cause != null) {
     errorObject.cause = toErrorObject(e.cause, depth ? depth + 1 : 1)
   }
-
   return errorObject
 }
-
 export function fromErrorObject(object?: {
   name: string
   message: string
@@ -59,11 +55,9 @@ export function fromErrorObject(object?: {
   if (object == null) {
     return undefined
   }
-
   const error = new Error(object.message)
   error.name = object.name
   error.stack = object.stack
-
   if (object.cause != null) {
     if (typeof object.cause === 'object' && 'name' in object.cause && 'message' in object.cause) {
       error.cause = fromErrorObject(object.cause as { name: string, message: string, stack?: string, cause?: unknown })
@@ -72,6 +66,5 @@ export function fromErrorObject(object?: {
       error.cause = new Error(`Caused by: ${JSON.stringify(object.cause)}`)
     }
   }
-
   return error
 }

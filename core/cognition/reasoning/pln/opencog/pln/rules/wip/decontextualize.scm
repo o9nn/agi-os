@@ -1,20 +1,3 @@
-; =====================================================================
-; DecontextualizeRule
-; http://wiki.opencog.org/w/DecontextualizerRule
-; 
-; a)
-; ContextLink <TV>
-;     C
-;     R A B
-; |-
-; R <TV>
-;     C ANDLink A
-;     C ANDLink B
-;----------------------------------------------------------------------
-
-; Inverse of (contextualize-inheritance-rule):
-; a ContextLink consisting of an InheritanceLink is decontextualized,
-; i.e. reduced to an inheritance relationship
 (define decontextualize-inheritance-rule
     (BindLink
         (VariableList
@@ -41,10 +24,6 @@
                     (InheritanceLink
                         (VariableNode "$A")
                         (VariableNode "$B")))))))
-
-; Inverse of (contextualize-evaluation-rule):
-; in an EvaluationLink, the PredicateNode is not 'andified';
-; gets rid of the ContextLink enclosing an EvaluationLink
 (define decontextualize-evaluation-rule
     (BindLink
         (VariableList
@@ -74,19 +53,6 @@
                         (VariableNode "$A")
                         (ListLink
                             (VariableNode "$B"))))))))
-
-;----------------------------------------------------------------------
-; b)
-; ContextLink <TV>
-;     C
-;     A
-; |-
-; SubsetLink <TV>
-;     C
-;     A
-;----------------------------------------------------------------------
-; Inverse of (contextualize-subset-rule):
-; ContextLink is transformed into a SubsetLink
 (define decontextualize-subset-rule
     (BindLink
         (VariableList
@@ -104,11 +70,8 @@
                 (ContextLink
                     (VariableNode "$C")
                     (VariableNode "$A"))))))
-
 (define (context-formula Relation Context)
     (cog-set-tv! Relation (cog-tv Context)))
-
-; Name the rule
 (define contextualize-inheritance-rule-name
   (DefinedSchemaNode "contextualize-inheritance-rule"))
 (DefineLink

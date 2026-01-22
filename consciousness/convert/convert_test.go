@@ -1,5 +1,4 @@
 package convert
-
 import (
 	"bytes"
 	"crypto/sha256"
@@ -17,47 +16,37 @@ import (
 	"slices"
 	"strings"
 	"testing"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type tensorData struct {
 	Offsets []int  `json:"data_offsets"`
 	Type    string `json:"dtype"`
 	Shape   []int  `json:"shape"`
 }
-
 func convertFull(t *testing.T, fsys fs.FS) (*os.File, ggml.KV, ggml.Tensors) {
 	t.Helper()
-
 	f, err := os.CreateTemp(t.TempDir(), "f16")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	if err := ConvertModel(fsys, f); err != nil {
 		t.Fatal(err)
 	}
-
 	r, err := os.Open(f.Name())
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { r.Close() })
-
 	m, err := ggml.Decode(r, -1)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	if _, err := r.Seek(0, io.SeekStart); err != nil {
 		t.Fatal(err)
 	}
-
 	return r, m.KV(), m.Tensors()
 }
-
 func generateResultsJSON(t *testing.T, f *os.File, kv ggml.KV, tensors ggml.Tensors) map[string]string {
 	actual := make(map[string]string)
 	for k, v := range kv {
@@ -68,24 +57,19 @@ func generateResultsJSON(t *testing.T, f *os.File, kv ggml.KV, tensors ggml.Tens
 			if err != nil {
 				t.Fatal(err)
 			}
-
 			actual[k] = fmt.Sprintf("%x", sha256.Sum256(bts))
 		}
 	}
-
 	for _, tensor := range tensors.Items() {
 		sha256sum := sha256.New()
 		sr := io.NewSectionReader(f, int64(tensors.Offset+tensor.Offset), int64(tensor.Size()))
 		if _, err := io.Copy(sha256sum, sr); err != nil {
 			t.Fatal(err)
 		}
-
 		actual[tensor.Name] = hex.EncodeToString(sha256sum.Sum(nil))
 	}
-
 	return actual
 }
-
 func TestMain(m *testing.M) {
 	var level slog.Level
 	flag.TextVar(&level, "level", slog.LevelInfo, "log level")
@@ -93,7 +77,6 @@ func TestMain(m *testing.M) {
 	slog.SetLogLoggerLevel(level)
 	os.Exit(m.Run())
 }
-
 func TestConvertModel(t *testing.T) {
 	cases := []string{
 		"Meta-Llama-3-8B-Instruct",
@@ -102,40 +85,33 @@ func TestConvertModel(t *testing.T) {
 		"Mixtral-8x7B-Instruct-v0.1",
 		"gemma-2b-it",
 		"gemma-2-2b-it",
-		// microsoft/Phi-3-mini-128-instruct@d548c233192db00165d842bf8edff054bb3212f8
 		"Phi-3-mini-128k-instruct",
 		"all-MiniLM-L6-v2",
 		"gemma-2-9b-it",
 		"Qwen2.5-0.5B-Instruct",
 		"c4ai-command-r-v01",
 	}
-
 	for i := range cases {
 		tt := cases[i]
 		t.Run(tt, func(t *testing.T) {
 			t.Parallel()
-
 			p := filepath.Join("testdata", tt)
 			if testing.Short() {
 				t.Skip("skipping in short mode")
 			} else if _, err := os.Stat(p); err != nil {
 				t.Skipf("%s not found", p)
 			}
-
 			f, kv, tensors := convertFull(t, os.DirFS(p))
 			actual := generateResultsJSON(t, f, kv, tensors)
-
 			expectFile, err := os.Open(filepath.Join("testdata", fmt.Sprintf("%s.json", tt)))
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer expectFile.Close()
-
 			var expect map[string]string
 			if err := json.NewDecoder(expectFile).Decode(&expect); err != nil {
 				t.Fatal(err)
 			}
-
 			for _, k := range slices.Sorted(maps.Keys(expect)) {
 				if v, ok := actual[k]; !ok {
 					t.Errorf("missing %s", k)
@@ -146,19 +122,15 @@ func TestConvertModel(t *testing.T) {
 		})
 	}
 }
-
 func TestConvertInvalidTensorNames(t *testing.T) {
 	f, err := os.CreateTemp(t.TempDir(), "testmodel")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	tempDir := t.TempDir()
-
 	td := map[string]*tensorData{}
 	offset := 4096
-
 	td["model.layers.0.self_attn.q_proj.weight"] = &tensorData{
 		Offsets: []int{0, offset},
 		Type:    "F32",
@@ -170,25 +142,20 @@ func TestConvertInvalidTensorNames(t *testing.T) {
 		Shape:   []int{4096, 4096},
 	}
 	generateSafetensorTestData(t, tempDir, td)
-
 	err = ConvertModel(os.DirFS(tempDir), f)
 	if err == nil || !strings.HasPrefix(err.Error(), "duplicate tensor name") {
 		t.Errorf("expected error but didn't get one")
 	}
 }
-
 func TestConvertInvalidDatatype(t *testing.T) {
 	f, err := os.CreateTemp(t.TempDir(), "testmodel")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	tempDir := t.TempDir()
-
 	td := map[string]*tensorData{}
 	offset := 4096 * 14336
-
 	td["model.layers.0.mlp.down_proj.weight"] = &tensorData{
 		Offsets: []int{0, offset},
 		Type:    "I8",
@@ -200,43 +167,35 @@ func TestConvertInvalidDatatype(t *testing.T) {
 		Shape:   []int{},
 	}
 	generateSafetensorTestData(t, tempDir, td)
-
 	err = ConvertModel(os.DirFS(tempDir), f)
 	if err == nil || err.Error() != "unsupported safetensors model" {
 		t.Errorf("expected error but didn't get one")
 	}
 }
-
 func generateSafetensorTestData(t *testing.T, tempDir string, tensorData map[string]*tensorData) {
 	data, err := json.Marshal(tensorData)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	var buf bytes.Buffer
-
 	l := int64(len(data))
 	err = binary.Write(&buf, binary.LittleEndian, l)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	_, err = buf.Write(data)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	fdata, err := os.Create(filepath.Join(tempDir, "model-00001-of-00001.safetensors"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer fdata.Close()
-
 	_, err = fdata.Write(buf.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	configData := `
 {
   "architectures": [
@@ -244,42 +203,35 @@ func generateSafetensorTestData(t *testing.T, tempDir string, tensorData map[str
   ]
 }
 `
-
 	f, err := os.Create(filepath.Join(tempDir, "config.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	_, err = f.WriteString(configData)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	tokenizerData := `
 {
 }
 `
-
 	f, err = os.Create(filepath.Join(tempDir, "tokenizer.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	_, err = f.WriteString(tokenizerData)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
-
 func TestConvertAdapter(t *testing.T) {
 	type AdapterCase struct {
 		Name     string
 		BaseKV   map[string]any
 		Expected map[string]string
 	}
-
 	cases := []AdapterCase{
 		{
 			Name: "discollama",
@@ -305,41 +257,32 @@ func TestConvertAdapter(t *testing.T) {
 			},
 		},
 	}
-
 	for _, c := range cases {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
-
 			f, err := os.CreateTemp(t.TempDir(), "f16")
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer f.Close()
-
 			tempDir := t.TempDir()
 			generateLoraTestData(t, tempDir)
-
 			if err = ConvertAdapter(os.DirFS(tempDir), f, c.BaseKV); err != nil {
 				t.Fatal(err)
 			}
-
 			r, err := os.Open(f.Name())
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer r.Close()
-
 			m, err := ggml.Decode(r, -1)
 			if err != nil {
 				t.Fatal(err)
 			}
-
 			if _, err := r.Seek(0, io.SeekStart); err != nil {
 				t.Fatal(err)
 			}
-
 			actual := generateResultsJSON(t, r, m.KV(), m.Tensors())
-
 			for _, k := range slices.Sorted(maps.Keys(c.Expected)) {
 				if v, ok := actual[k]; !ok {
 					t.Errorf("missing %s", k)
@@ -350,10 +293,8 @@ func TestConvertAdapter(t *testing.T) {
 		})
 	}
 }
-
 func generateLoraTestData(t *testing.T, tempDir string) {
 	offset := 4096 * 8 * 4
-
 	td := map[string]*tensorData{"__metadata__": nil}
 	td["model.layers.31.self_attn.q_proj.lora_a"] = &tensorData{
 		Offsets: []int{0, offset},
@@ -375,60 +316,47 @@ func generateLoraTestData(t *testing.T, tempDir string) {
 		Type:    "F32",
 		Shape:   []int{8, 1024},
 	}
-
 	data, err := json.Marshal(td)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	var buf bytes.Buffer
-
 	l := int64(len(data))
 	err = binary.Write(&buf, binary.LittleEndian, l)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	_, err = buf.Write(data)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// write some data for the tensors
-
 	ones := make([]float32, 4096*8)
 	for i := range ones {
 		ones[i] = float32(1)
 	}
-
 	for range 3 {
 		err = binary.Write(&buf, binary.LittleEndian, ones)
 		if err != nil {
 			t.Fatal(err)
 		}
 	}
-
 	ones = make([]float32, 1024*8)
 	for i := range ones {
 		ones[i] = float32(1)
 	}
-
 	err = binary.Write(&buf, binary.LittleEndian, ones)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	fdata, err := os.Create(filepath.Join(tempDir, "adapters.safetensors"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer fdata.Close()
-
 	_, err = fdata.Write(buf.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	configData := `
 {
     "adapter_path": "adapters-test",
@@ -465,7 +393,6 @@ func generateLoraTestData(t *testing.T, tempDir string) {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	_, err = f.WriteString(configData)
 	if err != nil {
 		t.Fatal(err)

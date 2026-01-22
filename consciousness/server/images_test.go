@@ -1,47 +1,35 @@
 package server
-
 import (
 	"strings"
 	"testing"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 	"github.com/EchoCog/echollama/template"
 	"github.com/EchoCog/echollama/types/model"
 )
-
 func TestModelCapabilities(t *testing.T) {
-	// Create completion model (llama architecture without vision)
 	completionModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture": "llama",
 	}, []*ggml.Tensor{})
-
-	// Create vision model (llama architecture with vision block count)
 	visionModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture":     "llama",
 		"llama.vision.block_count": uint32(1),
 	}, []*ggml.Tensor{})
-
-	// Create embedding model (bert architecture with pooling type)
 	embeddingModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture": "bert",
 		"bert.pooling_type":    uint32(1),
 	}, []*ggml.Tensor{})
-
 	toolsInsertTemplate, err := template.Parse("{{ .prompt }}{{ if .tools }}{{ .tools }}{{ end }}{{ if .suffix }}{{ .suffix }}{{ end }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	chatTemplate, err := template.Parse("{{ .prompt }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	toolsTemplate, err := template.Parse("{{ .prompt }}{{ if .tools }}{{ .tools }}{{ end }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	testModels := []struct {
 		name         string
 		model        Model
@@ -55,7 +43,6 @@ func TestModelCapabilities(t *testing.T) {
 			},
 			expectedCaps: []model.Capability{model.CapabilityCompletion},
 		},
-
 		{
 			name: "model with completion, tools, and insert capability",
 			model: Model{
@@ -97,35 +84,27 @@ func TestModelCapabilities(t *testing.T) {
 			expectedCaps: []model.Capability{model.CapabilityEmbedding},
 		},
 	}
-
-	// compare two slices of model.Capability regardless of order
 	compareCapabilities := func(a, b []model.Capability) bool {
 		if len(a) != len(b) {
 			return false
 		}
-
 		aCount := make(map[model.Capability]int)
 		for _, cap := range a {
 			aCount[cap]++
 		}
-
 		bCount := make(map[model.Capability]int)
 		for _, cap := range b {
 			bCount[cap]++
 		}
-
 		for cap, count := range aCount {
 			if bCount[cap] != count {
 				return false
 			}
 		}
-
 		return true
 	}
-
 	for _, tt := range testModels {
 		t.Run(tt.name, func(t *testing.T) {
-			// Test Capabilities method
 			caps := tt.model.Capabilities()
 			if !compareCapabilities(caps, tt.expectedCaps) {
 				t.Errorf("Expected capabilities %v, got %v", tt.expectedCaps, caps)
@@ -133,40 +112,30 @@ func TestModelCapabilities(t *testing.T) {
 		})
 	}
 }
-
 func TestModelCheckCapabilities(t *testing.T) {
-	// Create simple model file for tests that don't depend on GGUF content
 	completionModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture": "llama",
 	}, []*ggml.Tensor{})
-
-	// Create vision model (llama architecture with vision block count)
 	visionModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture":     "llama",
 		"llama.vision.block_count": uint32(1),
 	}, []*ggml.Tensor{})
-
-	// Create embedding model (bert architecture with pooling type)
 	embeddingModelPath, _ := createBinFile(t, ggml.KV{
 		"general.architecture": "bert",
 		"bert.pooling_type":    uint32(1),
 	}, []*ggml.Tensor{})
-
 	toolsInsertTemplate, err := template.Parse("{{ .prompt }}{{ if .tools }}{{ .tools }}{{ end }}{{ if .suffix }}{{ .suffix }}{{ end }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	chatTemplate, err := template.Parse("{{ .prompt }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	toolsTemplate, err := template.Parse("{{ .prompt }}{{ if .tools }}{{ .tools }}{{ end }}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	tests := []struct {
 		name           string
 		model          Model
@@ -234,10 +203,8 @@ func TestModelCheckCapabilities(t *testing.T) {
 			expectedErrMsg: "unknown capability",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Test CheckCapabilities method
 			err := tt.model.CheckCapabilities(tt.checkCaps...)
 			if tt.expectedErrMsg == "" {
 				if err != nil {

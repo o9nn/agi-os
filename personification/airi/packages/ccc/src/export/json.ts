@@ -1,11 +1,5 @@
 import type { Card } from '../define'
 import type { CharacterCardV3 } from './types/character_card_v3'
-
-/**
- * Exports a Card object to CharacterCardV3 format
- * @param data The card data to export
- * @returns A CharacterCardV3 compatible object
- */
 export function exportToJSON(data: Card): CharacterCardV3 {
   return {
     spec: 'chara_card_v3',
@@ -13,12 +7,6 @@ export function exportToJSON(data: Card): CharacterCardV3 {
     data: createCardData(data),
   }
 }
-
-/**
- * Creates the data portion of a CharacterCardV3 object
- * @param data Source card data
- * @returns The formatted card data
- */
 function createCardData(data: Card): CharacterCardV3['data'] {
   return {
     name: data.name,
@@ -40,26 +28,13 @@ function createCardData(data: Card): CharacterCardV3['data'] {
     extensions: createExtensions(data),
   }
 }
-
-/**
- * Formats message examples into the required string format
- * @param messageExample The message example array
- * @returns Formatted message example string
- */
 function formatMessageExample(messageExample: string[][] | undefined): string {
   if (!messageExample)
     return ''
-
   return messageExample
     .map(arr => `<START>\n${arr.join('\n')}`)
     .join('\n')
 }
-
-/**
- * Creates the extensions object with default values and user extensions
- * @param data Source card data
- * @returns Extensions object
- */
 function createExtensions(data: Card): Record<string, any> {
   return {
     depth_prompt: {

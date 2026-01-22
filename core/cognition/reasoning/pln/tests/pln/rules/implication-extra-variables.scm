@@ -1,5 +1,3 @@
-;; Define implication with extra variable in the implicand
-
 (ImplicationScopeLink (stv 1 1)
    (VariableList
       (TypedVariableLink
@@ -16,7 +14,6 @@
       (List
          (VariableNode "$X")
          (VariableNode "$Y"))))
-
 (EvaluationLink (stv 1 1)
    (PredicateNode "P")
    (ConceptNode "A"))

@@ -3,31 +3,22 @@ export interface DiscordGuildMember {
   displayName: string
   id: string
 }
-
 export interface Discord {
   guildMember?: DiscordGuildMember
   guildId?: string
   channelId?: string
 }
-
 interface InputSource {
   browser: string
   discord: Discord
 }
-
 export interface WebSocketBaseEvent<T, D> {
   type: T
   data: D
 }
-
 export type WithInputSource<Source extends keyof InputSource> = {
   [S in Source]: InputSource[S]
 }
-
-// Thanks to:
-//
-// A little hack for creating extensible discriminated unions : r/typescript
-// https://www.reddit.com/r/typescript/comments/1064ibt/a_little_hack_for_creating_extensible/
 export interface WebSocketEvents<C = undefined> {
   'error': {
     message: string
@@ -61,7 +52,6 @@ export interface WebSocketEvents<C = undefined> {
   } & Partial<WithInputSource<'browser' | 'discord'>>
   'vscode:context': C
 }
-
 export type WebSocketEvent<C = undefined> = {
   [K in keyof WebSocketEvents<C>]: WebSocketBaseEvent<K, WebSocketEvents<C>[K]>;
 }[keyof WebSocketEvents<C>]

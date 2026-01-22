@@ -3,37 +3,33 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-
 void
 rlock(RWlock *l)
 {
-	qlock(&l->x);		/* wait here for writers and exclusion */
-	lock(&l->lk);
-	l->readers++;
-	canqlock(&l->k);	/* block writers if we are the first reader */
-	unlock(&l->lk);
-	qunlock(&l->x);
+qlock(&l->x);
+lock(&l->lk);
+l->readers++;
+canqlock(&l->k);
+unlock(&l->lk);
+qunlock(&l->x);
 }
-
 void
 runlock(RWlock *l)
 {
-	lock(&l->lk);
-	if(--l->readers == 0)	/* last reader out allows writers */
-		qunlock(&l->k);
-	unlock(&l->lk);
+lock(&l->lk);
+if(--l->readers == 0)
+qunlock(&l->k);
+unlock(&l->lk);
 }
-
 void
 wlock(RWlock *l)
 {
-	qlock(&l->x);		/* wait here for writers and exclusion */
-	qlock(&l->k);		/* wait here for last reader */
+qlock(&l->x);
+qlock(&l->k);
 }
-
 void
 wunlock(RWlock *l)
 {
-	qunlock(&l->k);
-	qunlock(&l->x);
+qunlock(&l->k);
+qunlock(&l->x);
 }

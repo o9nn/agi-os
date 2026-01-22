@@ -1,5 +1,4 @@
 import { definePrompt } from '@xsmcp/server-shared'
-
 export const simple = definePrompt({
   description: 'A prompt without arguments',
   execute: () => [

@@ -1,7 +1,5 @@
 import Yaml from 'unplugin-yaml/rolldown'
-
 import { defineConfig } from 'tsdown'
-
 export default defineConfig({
   entry: {
     'index': 'src/index.ts',

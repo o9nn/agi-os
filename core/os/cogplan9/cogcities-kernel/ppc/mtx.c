@@ -1,7 +1,3 @@
-/*
- *	mtx specific stuff:
- *		Interrupt handling
- */
 #include	"u.h"
 #include	"../port/lib.h"
 #include	"mem.h"

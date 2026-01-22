@@ -1,5 +1,4 @@
 #include "../pc/fns.h"
-
 vlong biossize(uint);
 long biossectsz(uint);
 void bootloadproc(void *);
@@ -21,34 +20,18 @@ void readlsconf(void);
 void trimnl(char *s);
 void unionrewind(Chan *c);
 void warp64(uvlong);
-
-/* boot.c */
 int bootpass(Boot *b, void *vbuf, int nbuf);
-
-/* conf.c */
 void askbootfile(char *buf, int len, char **bootfp, int secs, char *def);
 void addconf(char *fmt, ...);
 int dotini(char *inibuf);
-
-/* devether.c */
 Chan *etherattach(char *spec);
 int parseether(uchar*, char*);
-
-/* fs.c */
 typedef struct File File;
-
-/* parts.c */
 int readparts(char *);
-
-/* pxe.c */
 int bind(char *old, char *new, int flag);
 long unmount(char *old, char *new);
-
-/* rand.c */
 void srand(long);
 int nrand(int);
-
-/* stub.c */
 long chdir(char *dir);
 Chan *namecopen(char *name, int mode);
 Chan *enamecopen(char *name, int mode);
@@ -56,9 +39,6 @@ Chan *nameccreate(char *name, int mode);
 Chan *enameccreate(char *name, int mode);
 int myreadn(Chan *c, void *vp, long n);
 int readfile(char *file, void *buf, int len);
-
 long dirpackage(uchar *buf, long ts, Dir **d);
-
-/* libip */
 int equivip4(uchar *, uchar *);
 int equivip6(uchar *, uchar *);

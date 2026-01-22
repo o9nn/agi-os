@@ -1,5 +1,4 @@
 import type { LoadingManager, SkinnedMesh } from 'three'
-
 import { PmdReader } from 'babylon-mmd/esm/Loader/Parser/pmdReader'
 import { PmxReader } from 'babylon-mmd/esm/Loader/Parser/pmxReader'
 import {
@@ -7,16 +6,12 @@ import {
   Loader,
   LoaderUtils,
 } from 'three'
-
 import { extractModelExtension } from '../../../three-mmd/src/utils/_extract-model-extension'
 import { buildMesh } from '../utils/build-mesh'
-
-/** @experimental */
 export class MMDLoader extends Loader<SkinnedMesh> {
   constructor(manager?: LoadingManager) {
     super(manager)
   }
-
   public load(
     url: string,
     onLoad: (mesh: SkinnedMesh) => void,
@@ -30,7 +25,6 @@ export class MMDLoader extends Loader<SkinnedMesh> {
       resourcePath = LoaderUtils.resolveURL(LoaderUtils.extractUrlBase(url), this.path)
     else
       resourcePath = LoaderUtils.extractUrlBase(url)
-
     const loader = new FileLoader(this.manager)
     loader.setResponseType('arraybuffer')
     loader.setPath(this.path)
@@ -41,14 +35,10 @@ export class MMDLoader extends Loader<SkinnedMesh> {
       (buffer) => {
         try {
           const modelExtension = extractModelExtension(buffer as ArrayBuffer)
-
           if (!['pmd', 'pmx'].includes(modelExtension)) {
-            // eslint-disable-next-line @masknet/type-no-force-cast-via-top-type
             onError?.(new Error(`ExperimentalMMDLoader: Unknown model file extension .${modelExtension}.`) as unknown as ErrorEvent)
-
             return
           }
-
           void (modelExtension === 'pmd' ? PmdReader : PmxReader)
             .ParseAsync(buffer as ArrayBuffer)
             .then(pmx => onLoad(buildMesh(pmx, resourcePath)))
@@ -62,7 +52,6 @@ export class MMDLoader extends Loader<SkinnedMesh> {
       onError as (error: unknown) => void,
     )
   }
-
   public async loadAsync(
     url: string,
     onProgress?: (event: ProgressEvent) => void,

@@ -1,5 +1,4 @@
 (define soln (SetLink (ListLink (ConceptNode "A") (ConceptNode "B"))))
-
 (define test
     (BindLink
         (VariableList

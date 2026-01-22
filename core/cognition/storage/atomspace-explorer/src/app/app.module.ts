@@ -20,7 +20,6 @@ import { InitializeDropdown } from './shared/directives/intitialise-dropdown.dir
 import { ConnectModule } from './connect/connect.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { AtomspaceVisualizerModule } from 'ng2-atomspace-visualizer';
-
 @NgModule({
   declarations: [
       AppComponent,
@@ -47,5 +46,4 @@ import { AtomspaceVisualizerModule } from 'ng2-atomspace-visualizer';
   providers: [ APIService ],
   bootstrap: [ AppComponent ],
 })
-
 export class AppModule { }

@@ -1,47 +1,30 @@
-//go:build simple
-// +build simple
-
 package main
-
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-
 	"github.com/EchoCog/echollama/core/echobeats"
 )
-
 var fiveChannelManager *echobeats.FiveChannelManager
-
 func main() {
 	fmt.Println("🌳 Deep Tree Echo - 5-Channel Stream-of-Consciousness System")
 	fmt.Println("==============================================================")
 	fmt.Println("3 Embodied Phases + 2 Global Orchestrators")
 	fmt.Println("Opponent Processing + Narrative Continuity")
-
-	// Create processor and integrator
 	processor := echobeats.NewDefaultPhaseProcessor()
 	integrator := echobeats.NewConsciousnessAdapter(nil)
-
-	// Create 5-channel manager
 	fiveChannelManager = echobeats.NewFiveChannelManager(processor, integrator)
-
-	// Start the 5-channel system
 	if err := fiveChannelManager.Start(); err != nil {
 		log.Fatalf("Failed to start 5-channel system: %v", err)
 	}
-
-	// Setup HTTP handlers
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/api/status", handleStatus)
 	http.HandleFunc("/api/metrics", handleMetrics)
 	http.HandleFunc("/api/stabilizer", handleStabilizer)
 	http.HandleFunc("/api/stop", handleStop)
-
-	// Start server
 	port := ":5002"
-	fmt.Printf("\n🚀 Server starting on http://localhost%s\n", port)
+	fmt.Printf("\n🚀 Server starting on http:
 	fmt.Println("\nEndpoints:")
 	fmt.Println("  GET  /                - Dashboard")
 	fmt.Println("  GET  /api/status      - System status")
@@ -49,12 +32,10 @@ func main() {
 	fmt.Println("  GET  /api/stabilizer  - Current stabilizer")
 	fmt.Println("  POST /api/stop        - Stop system")
 	fmt.Println()
-
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }
-
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	html := `
 <!DOCTYPE html>
@@ -161,11 +142,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
     <div class="container">
         <h1>🌳 Deep Tree Echo - 5-Channel Stream-of-Consciousness</h1>
         <div class="subtitle">3 Embodied Phases + 2 Global Orchestrators</div>
-        
         <div class="stabilizer" id="stabilizer">
             <strong>Current Stabilizer:</strong> <span id="stabilizer-value">-</span>
         </div>
-        
         <div class="channel-grid">
             <div class="card">
                 <h2>Phase 0 (p0)</h2>
@@ -182,7 +161,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="p0-reflective">0</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Phase 1 (p1)</h2>
                 <div class="metric">
@@ -198,7 +176,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="p1-reflective">0</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Phase 2 (p2)</h2>
                 <div class="metric">
@@ -214,7 +191,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="p2-reflective">0</span>
                 </div>
             </div>
-            
             <div class="card global-card">
                 <h2>g2: Opponent</h2>
                 <div class="metric">
@@ -230,7 +206,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value">T9E-T9E-T8R-T8R</span>
                 </div>
             </div>
-            
             <div class="card global-card">
                 <h2>g3: Narrative</h2>
                 <div class="metric">
@@ -247,7 +222,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 </div>
             </div>
         </div>
-        
         <div class="metrics-grid">
             <div class="card">
                 <h2>System Metrics</h2>
@@ -272,7 +246,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="uptime">-</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Coherence Metrics</h2>
                 <div class="metric">
@@ -293,39 +266,30 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 </div>
             </div>
         </div>
-        
         <div class="card" style="text-align: center;">
             <button class="button" onclick="refreshStatus()">🔄 Refresh</button>
             <button class="button" onclick="stopSystem()">⏹️ Stop System</button>
         </div>
     </div>
-    
     <script>
         function updateStatus() {
             fetch('/api/status')
                 .then(response => response.json())
                 .then(data => {
-                    // System metrics
                     document.getElementById('running').textContent = data.running ? '✅ Active' : '❌ Stopped';
                     document.getElementById('current-step').textContent = data.current_step;
                     document.getElementById('cycle-number').textContent = data.cycle_number;
                     document.getElementById('total-steps').textContent = data.total_steps;
                     document.getElementById('uptime').textContent = data.uptime;
-                    
-                    // Coherence metrics
                     document.getElementById('cognitive-load').textContent = data.cognitive_load.toFixed(3);
                     document.getElementById('stream-coherence').textContent = data.stream_coherence.toFixed(3);
                     document.getElementById('identity-coherence').textContent = data.identity_coherence.toFixed(3);
                     document.getElementById('narrative-alignment').textContent = data.narrative_alignment.toFixed(3);
-                    
-                    // Embodied phases
                     data.embodied_phases.forEach((phase, idx) => {
                         document.getElementById('p' + idx + '-steps').textContent = phase.steps_processed;
                         document.getElementById('p' + idx + '-expressive').textContent = phase.expressive_steps;
                         document.getElementById('p' + idx + '-reflective').textContent = phase.reflective_steps;
                     });
-                    
-                    // Global channels
                     data.global_channels.forEach(channel => {
                         const prefix = 'g' + channel.id;
                         document.getElementById(prefix + '-steps').textContent = channel.steps_processed;
@@ -334,8 +298,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     });
                 })
                 .catch(error => console.error('Error fetching status:', error));
-            
-            // Update stabilizer
             fetch('/api/stabilizer')
                 .then(response => response.json())
                 .then(data => {
@@ -343,11 +305,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 })
                 .catch(error => console.error('Error fetching stabilizer:', error));
         }
-        
         function refreshStatus() {
             updateStatus();
         }
-        
         function stopSystem() {
             if (confirm('Stop the 5-channel system?')) {
                 fetch('/api/stop', {method: 'POST'})
@@ -359,11 +319,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     .catch(error => console.error('Error stopping system:', error));
             }
         }
-        
-        // Initialize
         updateStatus();
-        
-        // Update every 500ms
         setInterval(updateStatus, 500);
     </script>
 </body>
@@ -372,38 +328,29 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
-
 func handleStatus(w http.ResponseWriter, r *http.Request) {
 	status := fiveChannelManager.GetStatus()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(status)
 }
-
 func handleMetrics(w http.ResponseWriter, r *http.Request) {
 	metrics := fiveChannelManager.GetMetrics()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(metrics)
 }
-
 func handleStabilizer(w http.ResponseWriter, r *http.Request) {
 	stabilizer := fiveChannelManager.GetStabilizer()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"stabilizer": stabilizer.String(),
 	})
 }
-
 func handleStop(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 	fiveChannelManager.Stop()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "5-channel system stopped",

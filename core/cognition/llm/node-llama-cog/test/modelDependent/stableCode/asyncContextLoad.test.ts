@@ -1,7 +1,6 @@
 import {describe, expect, test} from "vitest";
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
 describe("stableCode", () => {
     describe("async context load", () => {
         test("load asynchronously", {timeout: 1000 * 60 * 60 * 2}, async () => {
@@ -10,7 +9,6 @@ describe("stableCode", () => {
             const model = await llama.loadModel({
                 modelPath
             });
-
             let loopIterationsBeforeLoad = 0;
             let loadDone = false;
             let loadFailed = false;
@@ -24,14 +22,11 @@ describe("stableCode", () => {
                 .catch(() => {
                     loadFailed = true;
                 });
-
             while (!loadDone && !loadFailed) {
                 loopIterationsBeforeLoad++;
                 await new Promise((resolve) => setTimeout(resolve, 0));
             }
-
             expect(loopIterationsBeforeLoad).toBeGreaterThanOrEqual(2);
-
             const context = await contextPromise;
             let loopIterationsBeforeUnload = 0;
             let disposeDone = false;
@@ -44,12 +39,10 @@ describe("stableCode", () => {
                 .catch(() => {
                     disposeFailed = true;
                 });
-
             while (!disposeDone && !disposeFailed) {
                 loopIterationsBeforeUnload++;
                 await new Promise((resolve) => setTimeout(resolve, 0));
             }
-
             expect(loopIterationsBeforeUnload).toBeGreaterThanOrEqual(2);
             await expect(disposePromise).resolves.toBeUndefined();
         });

@@ -1,22 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
-
 interface SignUpResponse {
-  // Placeholder
 } 
-
 interface LoginResponse {
-  // Placeholder
 }
-
 interface AuthStatusResponse {
-  // Placeholder
 }
-
-const currentURL = `${window.location.protocol}//${window.location.host}`;
-// const apiURL = `${currentURL}/v1`;
+const currentURL = `${window.location.protocol}
 const tsAPI = `${currentURL}/api`;
-
-// Sign up the user with firebase
 export async function signUp(
   email: string,
   username: string,
@@ -37,8 +27,6 @@ export async function signUp(
     throw error;
   }
 }
-
-// Log the user in to the database
 export async function logIn(
   email: string,
   password: string
@@ -57,8 +45,6 @@ export async function logIn(
     throw error;
   }
 }
-
-// Check if the user is signed in to the database
 export async function checkAuth(): Promise<AuthStatusResponse> {
   try {
     const response: AxiosResponse<AuthStatusResponse> = await axios.get(
@@ -70,8 +56,6 @@ export async function checkAuth(): Promise<AuthStatusResponse> {
     throw error;
   }
 }
-
-// Log the user out
 export async function signOut(): Promise<void> {
   try {
     const response: AxiosResponse<void> = await axios.get(`${tsAPI}/auth/logout`);

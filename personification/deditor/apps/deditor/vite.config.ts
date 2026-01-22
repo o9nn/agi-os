@@ -1,16 +1,12 @@
 import { join, resolve } from 'node:path'
-
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import DevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
-
 import { templateCompilerOptions } from '@tresjs/core'
 import { defineConfig } from 'vite'
-
-// https://vitejs.dev/config/
 export default defineConfig(async () => ({
   root: resolve(join('src', 'renderer')),
   optimizeDeps: {
@@ -36,14 +32,12 @@ export default defineConfig(async () => ({
         vueJsx: false,
       },
     }),
-    // https://github.com/posva/unplugin-vue-router
     VueRouter({
       routesFolder: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'pages')),
       extensions: ['.vue'],
       dts: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'typed-router.d.ts')),
     }),
     DevTools(),
-    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
     Layouts(),
     UnoCSS(),
   ],

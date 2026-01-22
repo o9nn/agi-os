@@ -1,5 +1,3 @@
-;; For BITUtest
-
 (define fcs-1
 (BindLink
   (AndLink
@@ -310,7 +308,6 @@
   )
 )
 )
-
 (define fcs-2
 (BindLink
   (AndLink
@@ -520,7 +517,6 @@
                   (VariableNode "$X")
                   (ConceptNode "treatment-1"))))))))))
 )
-
 (define fcs-3
 (BindLink
   (VariableList
@@ -780,7 +776,6 @@
   )
 )
 )
-
 (define fcs-4
 (BindLink
   (VariableList
@@ -1091,7 +1086,6 @@
   )
 )
 )
-
 (define fcs-5
 (BindLink
   (VariableList

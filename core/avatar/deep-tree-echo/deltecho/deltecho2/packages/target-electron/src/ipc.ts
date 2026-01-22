@@ -23,7 +23,6 @@ import { platform } from 'os'
 import { existsSync } from 'fs'
 import { versions } from 'process'
 import { fileURLToPath } from 'url'
-
 import { getLogger } from '../../shared/logger.js'
 import {
   getDraftTempDir,
@@ -45,23 +44,16 @@ import DeltaChatController from './deltachat/controller.js'
 import { BuildInfo } from './get-build-info.js'
 import { updateContentProtectionOnAllActiveWindows } from './content-protection.js'
 import { MediaType } from '@deltachat-desktop/runtime-interface'
-
 const __dirname = dirname(fileURLToPath(import.meta.url))
-
 const log = getLogger('main/ipc')
-
 const app = rawApp as ExtendedAppMainProcess
-
 let dcController: typeof DeltaChatController.prototype
 export function getDCJsonrpcClient() {
   return dcController.jsonrpcRemote.rpc
 }
-
-/** returns shutdown function */
 export async function init(cwd: string, logHandler: LogHandler) {
   const main = mainWindow
   dcController = new DeltaChatController(cwd)
-
   try {
     await dcController.init()
   } catch (error) {
@@ -70,13 +62,11 @@ export async function init(cwd: string, logHandler: LogHandler) {
       error,
       dcController.rpcServerPath
     )
-    /* ignore-console-log */
     console.error(
       "Fatal: The DeltaChat Module couldn't be loaded. Please check if all dependencies for deltachat-core are installed!",
       error,
       dcController.rpcServerPath
     )
-
     dialog.showErrorBox(
       'Fatal Error',
       `The DeltaChat Module couldn't be loaded.
@@ -85,22 +75,16 @@ export async function init(cwd: string, logHandler: LogHandler) {
   ${dcController.rpcServerPath}\n
   ${error instanceof Error ? error.message : inspect(error, { depth: null })}`
     )
-
     rawApp.exit(1)
   }
-
   ipcMain.once('ipcReady', _e => {
     app.ipcReady = true
     app.emit('ipcReady')
   })
-
   ipcMain.on('show', () => main.show())
-  // ipcMain.on('setAllowNav', (e, ...args) => menu.setAllowNav(...args))
-
   ipcMain.on('handleLogMessage', (_e, channel, level, stacktrace, ...args) =>
     logHandler.log(channel, level, stacktrace, ...args)
   )
-
   ipcMain.on('ondragstart', (event, filePath) => {
     let icon: NativeImage
     try {
@@ -112,7 +96,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
       }
     } catch (error) {
       log.warn('drag out icon could not be loaded', error)
-      // create dummy black image
       const size = 64 ** 2 * 4
       const buffer = Buffer.alloc(size)
       for (let i = 0; i < size; i += 4) {
@@ -123,36 +106,29 @@ export async function init(cwd: string, logHandler: LogHandler) {
       }
       icon = nativeImage.createFromBitmap(buffer, { height: 64, width: 64 })
     }
-
     event.sender.startDrag({
       file: filePath,
       icon,
     })
   })
-
   ipcMain.on('help', async (_ev, locale, anchor?: string) => {
     await openHelpWindow(locale, anchor)
   })
-
   ipcMain.on('reload-main-window', () => {
     if (!mainWindow.window) {
       throw new Error('window does not exist, this should never happen')
     }
     mainWindow.window.webContents.reload()
   })
-
   ipcMain.on('get-log-path', ev => {
     ev.returnValue = logHandler.logFilePath()
   })
-
   ipcMain.on('get-config-path', ev => {
     ev.returnValue = getConfigPath().split(sep).join(posix.sep)
   })
-
   ipcMain.on('get-rc-config', ev => {
     ev.returnValue = app.rc
   })
-
   ipcMain.on('get-runtime-info', ev => {
     const info: RuntimeInfo = {
       isMac: platform() === 'darwin',
@@ -170,14 +146,9 @@ export async function init(cwd: string, logHandler: LogHandler) {
     }
     ev.returnValue = info
   })
-
   ipcMain.on('app-get-path', (ev, arg) => {
     ev.returnValue = app.getPath(arg)
   })
-
-  /**
-   * https://www.electronjs.org/docs/latest/api/system-preferences#systempreferencesgetmediaaccessstatusmediatype-windows-macos
-   */
   ipcMain.handle('checkMediaAccess', (_ev, mediaType: MediaType) => {
     if (!systemPreferences.getMediaAccessStatus) {
       return new Promise(resolve => {
@@ -192,10 +163,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
       throw new Error('checkMediaAccess: unsupported media type')
     }
   })
-
-  /**
-   * https://www.electronjs.org/docs/latest/api/system-preferences#systempreferencesaskformediaaccessmediatype-macos
-   */
   ipcMain.handle(
     'askForMediaAccess',
     (_ev, mediaType: MediaType): Promise<boolean | undefined> => {
@@ -211,7 +178,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
       })
     }
   )
-
   ipcMain.handle('fileChooser', async (_ev, options) => {
     if (!mainWindow.window) {
       throw new Error('window does not exist, this should never happen')
@@ -220,7 +186,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
     mainWindow.window.filePathWhiteList.push(...returnValue.filePaths)
     return returnValue
   })
-
   let lastSaveDialogLocation: string | undefined = undefined
   ipcMain.handle(
     'saveFile',
@@ -228,20 +193,16 @@ export async function init(cwd: string, logHandler: LogHandler) {
       if (!mainWindow.window) {
         throw new Error('window does not exist, this should never happen')
       }
-
       let base_path = lastSaveDialogLocation || app.getPath('downloads')
-
       if (!existsSync(base_path)) {
         base_path = app.getPath('downloads')
       }
-
       const { canceled, filePath } = await dialog.showSaveDialog(
         mainWindow.window,
         {
           defaultPath: join(base_path, filename),
         }
       )
-
       if (!canceled && filePath) {
         try {
           await copyFile(pathToSource, filePath)
@@ -262,11 +223,9 @@ export async function init(cwd: string, logHandler: LogHandler) {
       }
     }
   )
-
   ipcMain.handle('get-desktop-settings', async _ev => {
     return DesktopSettings.state
   })
-
   ipcMain.handle(
     'set-desktop-setting',
     (
@@ -275,17 +234,14 @@ export async function init(cwd: string, logHandler: LogHandler) {
       value: string | number | boolean | undefined
     ) => {
       DesktopSettings.update({ [key]: value })
-
       if (key === 'minimizeToTray') {
         updateTrayIcon()
       } else if (key === 'contentProtectionEnabled') {
         updateContentProtectionOnAllActiveWindows(Boolean(value))
       }
-
       return true
     }
   )
-
   ipcMain.handle(
     'app.setBadgeCountAndTrayIconIndicator',
     (_, count: number) => {
@@ -293,7 +249,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
       set_has_unread(count !== 0)
     }
   )
-
   ipcMain.handle('app.writeTempFileFromBase64', (_ev, name, content) =>
     writeTempFileFromBase64(name, content)
   )
@@ -304,12 +259,10 @@ export async function init(cwd: string, logHandler: LogHandler) {
     return copyFileToInternalTmpDir(name, pathToFile)
   })
   ipcMain.handle('app.removeTempFile', (_ev, path) => removeTempFile(path))
-
   ipcMain.handle('electron.shell.openExternal', (_ev, url) =>
     shell.openExternal(url)
   )
   ipcMain.handle('electron.shell.openPath', (_ev, path) => {
-    // map sandbox path if on Windows
     return shell.openPath(mapPackagePath(path))
   })
   ipcMain.handle('electron.clipboard.readText', () => {
@@ -317,14 +270,9 @@ export async function init(cwd: string, logHandler: LogHandler) {
   })
   ipcMain.handle('electron.clipboard.readImage', () => {
     const image = clipboard.readImage()
-
-    // Electron just returns an empty base64 string (for example
-    // 'data:image/png;base64,' when no image was in the clipboard),
-    // we check that here and more conveniently return null instead
     if (image.isEmpty()) {
       return null
     }
-
     return image.toDataURL()
   })
   ipcMain.handle('electron.clipboard.writeText', (_ev, text) => {
@@ -333,14 +281,12 @@ export async function init(cwd: string, logHandler: LogHandler) {
   ipcMain.handle('electron.clipboard.writeImage', (_ev, path) => {
     return clipboard.writeImage(nativeImage.createFromPath(path))
   })
-
   ipcMain.handle(
     'saveBackgroundImage',
     async (_ev, file: string, isDefaultPicture: boolean) => {
       const originalFilePath = !isDefaultPicture
         ? file
         : join(htmlDistDir(), 'images/backgrounds/', file)
-
       const bgDir = join(getConfigPath(), 'background')
       await rm(bgDir, { recursive: true, force: true })
       await mkdir(bgDir, { recursive: true })
@@ -355,7 +301,6 @@ export async function init(cwd: string, logHandler: LogHandler) {
       return `img: ${fileName.replace(/\\/g, '/')}`
     }
   )
-
   ipcMain.handle(
     'openMessageHTML',
     async (
@@ -379,13 +324,10 @@ export async function init(cwd: string, logHandler: LogHandler) {
       )
     }
   )
-
   return () => {
-    // the shutdown function
     dcController.jsonrpcRemote.rpc.stopIoForAllAccounts()
   }
 }
-
 export async function writeTempFileFromBase64(
   name: string,
   content: string
@@ -396,14 +338,6 @@ export async function writeTempFileFromBase64(
   await writeFile(pathToFile, Buffer.from(content, 'base64'), 'binary')
   return pathToFile
 }
-
-/**
- * this function is only needed to temporarily
- * save a VCard to attach it to a draft message
- * should be removed once composer uses draft
- * message id and set_draft_vcard can be used
- * see https://github.com/deltachat/deltachat-core-rust/pull/5677
- */
 export async function writeTempFile(
   name: string,
   content: string
@@ -414,19 +348,15 @@ export async function writeTempFile(
   await writeFile(pathToFile, Buffer.from(content, 'utf8'), 'binary')
   return pathToFile
 }
-
 export async function copyFileToInternalTmpDir(
   fileName: string,
   sourcePath: string
 ): Promise<string> {
   const sourceFileName = basename(sourcePath)
   const sourceDir = dirname(sourcePath)
-  // make sure fileName includes only a file name, no path or whatever
   fileName = basename(normalize(fileName))
   let destinationDir = join(sourceDir, '..', INTERNAL_TMP_DIR_NAME)
   if (sourceFileName !== fileName) {
-    // this is the case, when we copy a file that has an identifier
-    //  as name (given during the file deduplications process)
     destinationDir = join(destinationDir, sourceFileName)
   }
   await mkdir(destinationDir, { recursive: true })
@@ -434,7 +364,6 @@ export async function copyFileToInternalTmpDir(
   await copyFile(sourcePath, targetPath)
   return targetPath
 }
-
 async function removeTempFile(path: string) {
   if (
     path.indexOf(rawApp.getPath('temp')) === -1 ||

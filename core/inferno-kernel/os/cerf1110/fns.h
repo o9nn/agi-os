@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 ulong	aifinit(uchar *aifarr);
 void	aamloop(int);
 int	archaudiopower(int);
@@ -31,7 +30,7 @@ void	cisread(int slotno, void (*f)(int, uchar *));
 void	clockcheck(void);
 void	clockinit(void);
 void	clockpoll(void);
-#define	coherence()		/* nothing to do for cache coherence for uniprocessor */
+#define	coherence()
 void	cursorhide(void);
 void	cursorunhide(void);
 void	dcflush(void*, ulong);
@@ -56,7 +55,6 @@ ulong	getcpsr(void);
 ulong	getcpuid(void);
 ulong	getspsr(void);
 void	gotopc(ulong);
-
 void	icflushall(void);
 void	_idlemode(void);
 void	(*idle)(void);
@@ -160,12 +158,8 @@ void	vectors(void);
 void	vtable(void);
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 int	wasbusy(int);
-
 #define KADDR(p)	((void *) p)
 #define PADDR(v)	va2pa((void*)(v))
-
-// #define timer_start()	(*OSCR)
-// #define timer_ticks(t)	(*OSCR - (ulong)(t))
 ulong	timer_start(void);
 ulong	timer_ticks(ulong);
 int 	timer_devwait(ulong *adr, ulong mask, ulong val, int ost);

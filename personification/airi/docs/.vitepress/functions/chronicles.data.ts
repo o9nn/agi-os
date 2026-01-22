@@ -1,11 +1,7 @@
 import type { SiteConfig } from 'vitepress'
-
 import { createContentLoader } from 'vitepress'
-
 import { formatDate } from '../utils/utils'
-
 const config: SiteConfig = (globalThis as any).VITEPRESS_CONFIG
-
 interface ChronicleEntry {
   title: string
   url: string
@@ -15,11 +11,9 @@ interface ChronicleEntry {
   excerpt: string | undefined
   frontmatter?: Record<string, any>
 }
-
 declare const data: ChronicleEntry[]
 export { data }
-
-export default createContentLoader('**/chronicles/**/*.md', {
+export default createContentLoader('**/chronicles*.md', {
   includeSrc: true,
   render: true,
   excerpt: true,
@@ -31,10 +25,8 @@ export default createContentLoader('**/chronicles/**/*.md', {
           if (!normalizedLanguagePrefix.startsWith('/')) {
             normalizedLanguagePrefix = `/${normalizedLanguagePrefix}`
           }
-
           return url.startsWith(normalizedLanguagePrefix)
         })
-
         return {
           title: frontmatter.title,
           url,

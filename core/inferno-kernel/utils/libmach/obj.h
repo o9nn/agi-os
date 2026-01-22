@@ -1,25 +1,18 @@
-/*
- * obj.h -- defs for dealing with object files
- */
-
-typedef enum Kind		/* variable defs and references in obj */
+typedef enum Kind
 {
-	aNone,			/* we don't care about this prog */
-	aName,			/* introduces a name */
-	aText,			/* starts a function */
-	aData,			/* references to a global object */
+aNone,
+aName,
+aText,
+aData,
 } Kind;
-
 typedef struct	Prog	Prog;
-
-struct Prog		/* info from .$O files */
+struct Prog
 {
-	Kind	kind;		/* what kind of symbol */
-	char	type;		/* type of the symbol: ie, 'T', 'a', etc. */
-	char	sym;		/* index of symbol's name */
-	char	*id;		/* name for the symbol, if it introduces one */
-	uint	sig;		/* type signature for symbol */
+Kind	kind;
+char	type;
+char	sym;
+char	*id;
+uint	sig;
 };
-
 #define UNKNOWN	'?'
 void		_offset(int, vlong);

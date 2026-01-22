@@ -1,7 +1,5 @@
 import type { Eventa, EventTag } from './eventa'
-
 import { defineEventa, nanoid } from './eventa'
-
 export enum InvokeEventType {
   SendEvent,
   SendEventError,
@@ -9,7 +7,6 @@ export enum InvokeEventType {
   ReceiveEventError,
   ReceiveEventStreamEnd,
 }
-
 export interface SendEvent<Res, Req = undefined, _ = undefined, __ = undefined> extends Eventa<{ invokeId: string, content: Req }> {
   id: EventTag<Res, Req>
   invokeType: InvokeEventType.SendEvent
@@ -30,7 +27,6 @@ export interface ReceiveEventStreamEnd<Res, Req = undefined, _ = undefined, __ =
   id: EventTag<Res, Req>
   invokeType: InvokeEventType.ReceiveEventStreamEnd
 }
-
 export interface InvokeEventa<Res, Req = undefined, ResErr = Error, ReqErr = Error> {
   sendEvent: SendEvent<Res, Req, ResErr, ReqErr>
   sendEventError: SendEventError<Res, Req, ResErr, ReqErr>
@@ -38,12 +34,10 @@ export interface InvokeEventa<Res, Req = undefined, ResErr = Error, ReqErr = Err
   receiveEventError: ReceiveEventError<Res, Req, ResErr, ReqErr>
   receiveEventStreamEnd: ReceiveEventStreamEnd<Res, Req, ResErr, ReqErr>
 }
-
 export function defineInvokeEventa<Res, Req = undefined, ResErr = Error, ReqErr = Error>(tag?: string) {
   if (!tag) {
     tag = nanoid()
   }
-
   const sendEvent = {
     ...defineEventa<InvokeEventType.SendEvent>(`${tag}-send`),
     invokeType: InvokeEventType.SendEvent,
@@ -64,7 +58,6 @@ export function defineInvokeEventa<Res, Req = undefined, ResErr = Error, ReqErr 
     ...defineEventa<InvokeEventType.ReceiveEventStreamEnd>(`${tag}-receive-stream-end`),
     invokeType: InvokeEventType.ReceiveEventStreamEnd,
   } as ReceiveEventStreamEnd<Res, Req, ResErr, ReqErr>
-
   return {
     sendEvent,
     sendEventError,
@@ -73,7 +66,6 @@ export function defineInvokeEventa<Res, Req = undefined, ResErr = Error, ReqErr 
     receiveEventStreamEnd,
   } satisfies InvokeEventa<Res, Req, ResErr, ReqErr>
 }
-
 export function isInvokeEventa(event: Eventa<any>): event is SendEvent<any, any, any, any> | SendEventError<any, any, any, any> | ReceiveEvent<any, any, any, any> | ReceiveEventError<any, any, any, any> | ReceiveEventStreamEnd<any, any, any, any> {
   if (typeof event !== 'object') {
     return false
@@ -81,22 +73,17 @@ export function isInvokeEventa(event: Eventa<any>): event is SendEvent<any, any,
   if ('invokeType' in event) {
     return true
   }
-
   return false
 }
-
 export function isSendEvent(event: Eventa<any>): event is SendEvent<any, any, any, any> | SendEventError<any, any, any, any> {
   if (!isInvokeEventa(event)) {
     return false
   }
-
   return event.invokeType === InvokeEventType.SendEvent || event.invokeType === InvokeEventType.SendEventError
 }
-
 export function isReceiveEvent(event: Eventa<any>): event is ReceiveEvent<any, any, any, any> | ReceiveEventError<any, any, any, any> | ReceiveEventStreamEnd<any, any, any, any> {
   if (!isInvokeEventa(event)) {
     return false
   }
-
   return event.invokeType === InvokeEventType.ReceiveEvent || event.invokeType === InvokeEventType.ReceiveEventError || event.invokeType === InvokeEventType.ReceiveEventStreamEnd
 }

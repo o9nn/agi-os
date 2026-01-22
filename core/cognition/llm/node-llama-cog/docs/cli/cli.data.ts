@@ -23,11 +23,9 @@ import {htmlEscapeWithCodeMarkdown} from "../../.vitepress/utils/htmlEscapeWithC
 import {getInlineCodeBlockHtml} from "../../.vitepress/utils/getInlineCodeBlockHtml.js";
 import {getMarkdownRenderer} from "../../.vitepress/utils/getMarkdownRenderer.js";
 import {withoutCliCommandDescriptionDocsUrl} from "../../src/cli/utils/withCliCommandDescriptionDocsUrl.js";
-
 export default {
     async load() {
         setIsInDocumentationMode(true);
-
         return {
             index: await buildIndexTable([
                 ["pull", PullCommand],
@@ -38,7 +36,6 @@ export default {
                 ["inspect", InspectCommand],
                 ["source", SourceCommand]
             ]),
-
             pull: await getCommandHtmlDoc(PullCommand),
             chat: await getCommandHtmlDoc(ChatCommand),
             init: await getCommandHtmlDoc(InitCommand),
@@ -78,11 +75,9 @@ export default {
         };
     }
 };
-
 async function buildIndexTable(commands: [pageLink: string, command: CommandModule<any, any>][], cliName: string = cliBinName) {
     let res = "";
     const markdownRenderer = await getMarkdownRenderer();
-
     res += buildHtmlHeading("h2", htmlEscape("Commands"), "commands");
     res += buildHtmlTable(
         [
@@ -93,7 +88,6 @@ async function buildIndexTable(commands: [pageLink: string, command: CommandModu
             .map(([pageLink, command]) => {
                 if (command.describe === false)
                     return null;
-
                 return [
                     getInlineCodeBlockHtml(markdownRenderer, cliName + " " + command.command, "shell", pageLink),
                     htmlEscapeWithCodeMarkdown(withoutCliCommandDescriptionDocsUrl(String(command.describe ?? "")))
@@ -101,7 +95,6 @@ async function buildIndexTable(commands: [pageLink: string, command: CommandModu
             })
             .filter((row): row is string[] => row != null)
     );
-
     res += buildHtmlHeading("h2", htmlEscape("Options"), "options");
     res += buildHtmlTable(
         [
@@ -113,21 +106,17 @@ async function buildIndexTable(commands: [pageLink: string, command: CommandModu
                 `<code style="white-space: nowrap">${htmlEscape("-h")}</code>` +
                 `${htmlEscape(", ")}` +
                 `<code style="white-space: nowrap">${htmlEscape("--help")}</code>`,
-
                 htmlEscape("Show help")
             ],
             [
                 `<code style="white-space: nowrap">${htmlEscape("-v")}</code>` +
                 `${htmlEscape(", ")}` +
                 `<code style="white-space: nowrap">${htmlEscape("--version")}</code>`,
-
                 htmlEscape("Show version number")
             ]
         ]
     );
-
     const usage = npxRunPrefix + cliName + " <command> [options]";
-
     return {
         title: "CLI",
         description: null,

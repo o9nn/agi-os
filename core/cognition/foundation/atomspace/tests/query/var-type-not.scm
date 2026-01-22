@@ -1,8 +1,4 @@
-
 (define (stv mean conf) (cog-new-stv mean conf))
-
-; SENTENCE: [The color of the sky is blue.]
-; _predadj (<<color>>, <<blue>>)
 (EvaluationLink (stv 1.0 1.0)
    (DefinedLinguisticRelationshipNode "_predadj")
    (ListLink
@@ -10,7 +6,6 @@
       (WordInstanceNode "blue@cf040834-cf7a-42ae-bd42-83a001d3c3e3")
    )
 )
-; of (<<color>>, <<sky>>)
 (EvaluationLink (stv 1.0 1.0)
    (PrepositionalRelationshipNode "of")
    (ListLink
@@ -18,13 +13,6 @@
       (WordInstanceNode "sky@d30ab6dd-0785-4b14-8969-f23697d384a7")
    )
 )
-
-
-; The whole point here is that the AbsentLink means that no match at
-; all should be found. i.e. $prep can match "of" and should thus be
-; rejected.
-;
-
 (define (rule-good)
    (BindLink
       (VariableList
@@ -66,11 +54,6 @@
       )
    )
 )
-
-
-; This rule has an explicitly bad TypeNode --
-; PreposxitionalRelationshipNode is misspelled (on purpose,
-; since we want to test for the mis-spelled case).
 (define (rule-bad)
    (BindLink
       (VariableList

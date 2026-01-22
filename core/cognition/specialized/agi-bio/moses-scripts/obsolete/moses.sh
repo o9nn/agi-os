@@ -1,5 +1,3 @@
-# To be sourced in test.sh
-
 moses \
     -i "$data_basename_train" \
     --log-level $log_level \

@@ -1,8 +1,6 @@
 import {contextSizePad} from "../../../config.js";
-
 export function padSafeContextSize(value: number, padDirection: "up" | "down", padding: number = contextSizePad) {
     const paddedSize = ggmlPad(value, padding);
-
     if (paddedSize === value)
         return value;
     else if (padDirection === "up")
@@ -12,7 +10,6 @@ export function padSafeContextSize(value: number, padDirection: "up" | "down", p
         if (smallerPaddedSize >= padding)
             return smallerPaddedSize;
     }
-
     return paddedSize;
 }
 function ggmlPad(value: number, padding: number): number {

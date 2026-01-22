@@ -1,5 +1,4 @@
 import Message from "../../models/Message";
-
 export const mockMessages: Message[] = [
   {
     speaker: {

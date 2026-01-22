@@ -1,18 +1,17 @@
 typedef struct Method	Method;
 struct Method
 {
-	char	*name;
-	void	(*config)(Method*);
-	int	(*connect)(void);
-	char	*arg;
+char	*name;
+void	(*config)(Method*);
+int	(*connect)(void);
+char	*arg;
 };
 enum
 {
-	Statsz=	256,
-	Nbarg=	16,
+Statsz=	256,
+Nbarg=	16,
 };
-
-extern char*	bootdisk;		/* defined in ../$arch/boot$CONF.c */
+extern char*	bootdisk;
 extern char*	rootdir;
 extern int	(*cfs)(int);
 extern int	cpuflag;
@@ -20,7 +19,7 @@ extern char	cputype[];
 extern int	debugboot;
 extern int	fflag;
 extern int	kflag;
-extern Method	method[];		/* defined in ../$arch/boot$CONF.c */
+extern Method	method[];
 extern void	(*pword)(int, Method*);
 extern char	sys[];
 extern uchar	hostkey[];
@@ -28,8 +27,6 @@ extern uchar	statbuf[Statsz];
 extern int	bargc;
 extern char	*bargv[Nbarg];
 extern int	pcload;
-
-/* libc equivalent */
 extern void	authentication(int);
 extern int	cache(int);
 extern char*	checkkey(Method*, char*, char*);
@@ -56,21 +53,13 @@ extern void	boot(int, char **);
 extern void	doauthenticate(int, Method*);
 extern int		old9p(int);
 extern int	parsefields(char*, char**, int, char*);
-
-/* methods */
 extern void	configtcp(Method*);
 extern int	connecttcp(void);
-
 extern void	configlocal(Method*);
 extern int	connectlocal(void);
-
 extern void	configpaq(Method*);
 extern int	connectpaq(void);
-
 extern void	configembed(Method*);
 extern int	connectembed(void);
-
 extern void	configip(int, char**, int);
-
-/* hack for passing authentication address */
 extern char	*authaddr;

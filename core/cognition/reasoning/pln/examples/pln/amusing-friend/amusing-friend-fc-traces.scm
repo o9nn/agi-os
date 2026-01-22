@@ -1,7 +1,3 @@
-;; Print the inference steps leading to this target
-
-;; Just paste the following 2 functions, then paste the steps you
-;; would like to query (only the target queries are given)
 (define (get-target-inference-steps target)
   (let* ((pat (Execution
                 (Variable "$rule")
@@ -11,7 +7,6 @@
                 target))
          (gl (Get pat)))
     (List (cog-execute! gl) target (Number (cog-handle target)))))
-
 (define (get-source-inference-steps source)
   (let* ((pat (Execution
                 (Variable "$rule")
@@ -21,12 +16,8 @@
                 (Variable "$target")))
          (gl (Get pat)))
     (List (cog-execute! gl) source (Number (cog-handle source)))))
-
-;; (1)
 (define target-1 (Evaluation (Predicate "is-honest") (Concept "Bob")))
 (get-target-inference-steps target-1)
-
-;; (2)
 (define target-2 (Implication
    (Lambda
       (VariableList
@@ -57,8 +48,6 @@
             (Predicate "is-honest")
             (Variable "$Y"))))))
 (get-target-inference-steps target-2)
-
-;; (3)
 (define target-3 (Lambda
    (VariableList
       (TypedVariable
@@ -73,8 +62,6 @@
          (Variable "$X")
          (Variable "$Y")))))
 (get-target-inference-steps target-3)
-
-;; (5)
 (define target-5 (Implication
    (Lambda
       (VariableList
@@ -105,8 +92,6 @@
             (Variable "$X")
             (Variable "$Y"))))))
 (get-target-inference-steps target-5)
-  
-;; (6)
 (define target-6
 (Implication
    (LambdaLink
@@ -143,8 +128,6 @@
             (Variable "$X")
             (Variable "$Y"))))))
 (get-target-inference-steps target-6)
-
-;; (7)
 (define target-7
 (ImplicationLink
    (AndLink
@@ -222,8 +205,6 @@
 )
 )
 (get-target-inference-steps target-7)
-
-;; (8)
 (define target-8
 (ImplicationLink
    (LambdaLink
@@ -319,8 +300,6 @@
 )
 )
 (get-target-inference-steps target-8)
-
-;; (9)
 (define target-9
 (ImplicationLink
    (LambdaLink
@@ -382,8 +361,6 @@
 )
 )
 (get-target-inference-steps target-9)
-
-;; (10)
 (define target-10
 (ImplicationScopeLink
    (VariableList
@@ -431,8 +408,6 @@
 )
 )
 (get-target-inference-steps target-10)
-
-;; (11)
 (define target-11
 (EvaluationLink
    (PredicateNode "will-be-friends")
@@ -443,16 +418,12 @@
 )
 )
 (get-target-inference-steps target-11)
-
-;; (12)
 (define target-12
 (Evaluation
   (Predicate "is-funny")
   (Concept "Bob"))
 )
 (get-target-inference-steps target-12)
-
-;; (13)
 (define target-13
 (Equivalence
    (Lambda
@@ -470,8 +441,6 @@
          (Predicate "is-amusing")
          (Variable "$X")))))
 (get-target-inference-steps target-13)
-
-;; (14)
 (define target-14
 (Implication
    (Lambda
@@ -489,8 +458,6 @@
          (Predicate "is-amusing")
          (Variable "$X")))))
 (get-target-inference-steps target-14)
-
-;; (15)
 (define target-15
 (ImplicationScopeLink
    (TypedVariableLink
@@ -508,15 +475,11 @@
 )
 )
 (get-target-inference-steps target-15)
-
-;; (16)
 (define target-16
 (Evaluation
   (Predicate "is-amusing")
   (Concept "Bob")))
 (get-target-inference-steps target-16)
-
-;; (17)
 (define target-17
 (And
    (Evaluation

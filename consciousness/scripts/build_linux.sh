@@ -1,19 +1,7 @@
 #!/bin/sh
-#
-# Mac ARM users, rosetta can be flaky, so to use a remote x86 builder
-#
-# docker context create amd64 --docker host=ssh://mybuildhost
-# docker buildx create --name mybuilder amd64 --platform linux/amd64
-# docker buildx create --name mybuilder --append desktop-linux --platform linux/arm64
-# docker buildx use mybuilder
-
-
 set -eu
-
 . $(dirname $0)/env.sh
-
 mkdir -p dist
-
 docker buildx build \
         --output type=local,dest=./dist/ \
         --platform=${PLATFORM} \
@@ -21,7 +9,6 @@ docker buildx build \
         --target archive \
         -f Dockerfile \
         .
-
 if echo $PLATFORM | grep "amd64" > /dev/null; then
     outDir="./dist"
     if echo $PLATFORM | grep "," > /dev/null ; then
@@ -36,8 +23,6 @@ if echo $PLATFORM | grep "amd64" > /dev/null; then
         -f Dockerfile \
         .
 fi
-
-# buildx behavior changes for single vs. multiplatform
 echo "Compressing linux tar bundles..."
 if echo $PLATFORM | grep "," > /dev/null ; then
         tar c -C ./dist/linux_arm64 --exclude cuda_jetpack5 --exclude cuda_jetpack6 . | pigz -9vc >./dist/ollama-linux-arm64.tgz

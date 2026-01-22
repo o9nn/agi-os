@@ -1,7 +1,3 @@
-;;; Hypergraph Flowchart Visualization
-;;; Generates flowchart diagrams for cognitive fragment hypergraphs
-;;; Mermaid diagram generation for documentation
-
 (define-module (cogkernel hypergraph-viz)
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
@@ -13,15 +9,11 @@
             save-flowchart-file
             generate-all-primitive-diagrams
             *diagram-templates*))
-
-;;; Mermaid diagram templates
 (define *diagram-templates*
   '((flowchart . "flowchart TD")
     (graph . "graph TD") 
     (sequence . "sequenceDiagram")
     (class . "classDiagram")))
-
-;;; Generate Mermaid flowchart for hypergraph
 (define (generate-hypergraph-mermaid fragment primitive-name)
   "Generate Mermaid flowchart diagram for cognitive fragment hypergraph"
   (let* ((atoms (cognitive-fragment-atoms fragment))
@@ -29,7 +21,6 @@
          (modality (cognitive-fragment-modality fragment))
          (metadata (cognitive-fragment-metadata fragment))
          (pattern (create-hypergraph-pattern fragment)))
-    
     (string-append
       "flowchart TD\n"
       (format #f "    %PRIMITIVE%[\"~a Primitive\"]:::primitive\n" primitive-name)
@@ -41,23 +32,17 @@
       (generate-pattern-signature-node pattern)
       (generate-connections primitive-name modality metadata)
       (generate-css-styles))))
-
-;;; Generate modality node
 (define (generate-modality-node modality)
   "Generate modality node for the diagram"
   (let ((modality-name (car (find (lambda (pair) (= (cdr pair) modality)) 
                                   *cognitive-modalities*))))
     (format #f "    %MODALITY%[\"~a Modality\"]:::modality\n" modality-name)))
-
-;;; Generate context node
 (define (generate-context-node metadata)
   "Generate context node for the diagram"
   (let* ((context (assoc-ref metadata 'context))
          (context-name (car (find (lambda (pair) (= (cdr pair) context)) 
                                   *cognitive-contexts*))))
     (format #f "    %CONTEXT%[\"~a Context\"]:::context\n" context-name)))
-
-;;; Generate atom nodes
 (define (generate-atom-nodes atoms)
   "Generate nodes for atoms in the hypergraph"
   (string-concatenate
@@ -68,8 +53,6 @@
                (format #f "    LINK~a[\"~a Link\"]:::link\n"
                        index (link-type atom))))
          atoms (iota (length atoms)))))
-
-;;; Generate link connections
 (define (generate-link-connections atoms)
   "Generate connections between atoms based on links"
   (let ((links (filter link? atoms))
@@ -87,16 +70,12 @@
                        ""))
                  ""))
            links (iota (length links))))))
-
-;;; Generate tensor info node
 (define (generate-tensor-info-node tensor)
   "Generate tensor information node"
   (let ((shape (tensor-shape tensor))
         (data-size (length (tensor-data tensor))))
     (format #f "    %TENSOR%[\"Tensor Shape: ~a<br/>Elements: ~a\"]:::tensor\n"
             shape data-size)))
-
-;;; Generate pattern signature node
 (define (generate-pattern-signature-node pattern)
   "Generate pattern signature node"
   (let ((signature (assoc-ref pattern 'pattern-signature))
@@ -104,8 +83,6 @@
         (links-count (length (assoc-ref pattern 'links))))
     (format #f "    %PATTERN%[\"Pattern Signature: ~a<br/>Nodes: ~a, Links: ~a\"]:::pattern\n"
             signature nodes-count links-count)))
-
-;;; Generate main connections
 (define (generate-connections primitive-name modality metadata)
   "Generate main connections between components"
   (string-append
@@ -115,8 +92,6 @@
     "    %MODALITY% --> %PATTERN%\n"
     "    %CONTEXT% --> %PATTERN%\n"
     "    %TENSOR% --> %PATTERN%\n"))
-
-;;; Generate CSS styles
 (define (generate-css-styles)
   "Generate CSS styling for the diagram"
   (string-append
@@ -127,8 +102,6 @@
     "    classDef link fill:#cc99ff,stroke:#333,stroke-width:1px,color:#000\n"
     "    classDef tensor fill:#ffff99,stroke:#333,stroke-width:2px,color:#000\n"
     "    classDef pattern fill:#ff99cc,stroke:#333,stroke-width:2px,color:#000\n"))
-
-;;; Helper function to create atom index map
 (define (make-atom-index-map atoms)
   "Create a mapping from atom names to indices"
   (let loop ((atoms atoms) (index 0) (map '()))
@@ -138,14 +111,10 @@
           (loop (cdr atoms) (+ index 1)
                 (cons (cons (if (atom? atom) (atom-name atom) 
                                 (link-type atom)) index) map))))))
-
-;;; Helper function to find atom index
 (define (find-atom-index atom-name index-map)
   "Find the index of an atom by name"
   (let ((entry (assoc atom-name index-map)))
     (if entry (cdr entry) 0)))
-
-;;; Create flowchart for a specific primitive
 (define (create-primitive-flowchart primitive-name properties)
   "Create a flowchart diagram for a specific GNUMach primitive"
   (let* ((fragment (encode-gnumach-primitive primitive-name properties))
@@ -153,8 +122,6 @@
     (format #t "=== Hypergraph Flowchart for ~a ===~%~%" primitive-name)
     (format #t "~a~%" diagram)
     diagram))
-
-;;; Save flowchart to file
 (define (save-flowchart-file primitive-name diagram)
   "Save flowchart diagram to a markdown file"
   (let ((filename (format #f "docs/flowchart-~a.md" 
@@ -180,12 +147,9 @@
         (format port "~%Generated: ~a~%" (current-time))))
     (format #t "Saved flowchart to: ~a~%" filename)
     filename))
-
-;;; Generate diagrams for all primitives
 (define (generate-all-primitive-diagrams)
   "Generate flowchart diagrams for all example primitives"
   (format #t "=== Generating All Primitive Flowcharts ===~%~%")
-  
   (let ((generated-files '()))
     (for-each
       (lambda (primitive-example)
@@ -196,17 +160,11 @@
                   (filename (save-flowchart-file name diagram)))
              (set! generated-files (cons filename generated-files))))))
       gnumach-primitives-examples)
-    
     (format #t "~%Generated ~a flowchart files:~%" (length generated-files))
     (for-each (lambda (file) (format #t "  - ~a~%" file)) 
               (reverse generated-files))
-    
-    ;; Create index file
     (create-flowchart-index generated-files)
-    
     generated-files))
-
-;;; Create index file for all flowcharts
 (define (create-flowchart-index files)
   "Create an index file linking to all flowcharts"
   (let ((index-file "docs/HYPERGRAPH_FLOWCHARTS.md"))
@@ -236,16 +194,10 @@
         (format port "Generated: ~a~%" (current-time))))
     (format #t "Created flowchart index: ~a~%" index-file)
     index-file))
-
-;;; Demonstration function
 (define (demo-hypergraph-visualization)
   "Demonstrate hypergraph visualization capabilities"
   (format #t "=== Hypergraph Visualization Demo ===~%~%")
-  
-  ;; Generate a single example
   (create-primitive-flowchart 'PORT_ALLOCATE '(IPC 1 SERVER 9 2))
-  
   (format #t "~%To generate all flowcharts, run:~%")
   (format #t "(generate-all-primitive-diagrams)~%~%")
-  
   #t)

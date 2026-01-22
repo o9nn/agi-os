@@ -1,53 +1,36 @@
 typedef struct Ibuf	Ibuf;
 typedef struct Imap	Imap;
 typedef struct Icache	Icache;
-
 enum
 {
-	Nicache=	64,		/* number of inodes kept in pool */
+Nicache=	64,
 };
-
-/*
- *  a cached inode buffer
- */
 struct Ibuf
 {
-	Lru;			/* must be first in structure */
-	int	inuse;		/* non-0 if in use */
-	ulong	ino;		/* index into inode table */
-	Inode	inode;		/* the inode contents */
+Lru;
+int	inuse;
+ulong	ino;
+Inode	inode;
 };
-
-/*
- *  in-core qid to inode mapping
- */
 struct Imap
 {
-	Lru;			/* must be first in structure */
-	Qid	qid;
-	Ibuf	*b;		/* cache buffer */
-	int	inuse;		/* non-0 if in use */
+Lru;
+Qid	qid;
+Ibuf	*b;
+int	inuse;
 };
-
-/*
- *  the inode cache
- */
 struct Icache
 {
-	Disk;
-
-	int	nino;		/* number of inodes */
-	ulong	ib0;		/* first inode block */
-	int	nib;		/* number of inode blocks */
-	int	i2b;		/* inodes to a block */
-
-	Ibuf	ib[Nicache];	/* inode buffers */
-	Lru	blru;
-
-	Imap	*map;		/* inode to qid mapping */
-	Lru	mlru;
+Disk;
+int	nino;
+ulong	ib0;
+int	nib;
+int	i2b;
+Ibuf	ib[Nicache];
+Lru	blru;
+Imap	*map;
+Lru	mlru;
 };
-
 Ibuf*	ialloc(Icache*, ulong);
 Ibuf*	iget(Icache*, Qid);
 Ibuf*	iread(Icache*, ulong);

@@ -1,5 +1,4 @@
 package cmd
-
 import (
 	"bytes"
 	"encoding/json"
@@ -10,14 +9,11 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 	"github.com/google/go-cmp/cmp"
 	"github.com/spf13/cobra"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/types/model"
 )
-
 func TestShowInfo(t *testing.T) {
 	t.Run("bare details", func(t *testing.T) {
 		var b bytes.Buffer
@@ -30,19 +26,15 @@ func TestShowInfo(t *testing.T) {
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture    test    
     parameters      7B      
     quantization    FP16    
-
 `
-
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("bare model info", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -60,20 +52,17 @@ func TestShowInfo(t *testing.T) {
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture        test    
     parameters          7B      
     context length      0       
     embedding length    0       
     quantization        FP16    
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("verbose model", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -99,17 +88,14 @@ func TestShowInfo(t *testing.T) {
 		}, true, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture        test     
     parameters          8B       
     context length      1000     
     embedding length    11434    
     quantization        FP16     
-
   Parameters
     stop    up    
-
   Metadata
     general.architecture       test     
     general.parameter_count    8e+09    
@@ -117,17 +103,14 @@ func TestShowInfo(t *testing.T) {
     some.true_bool             true     
     test.context_length        1000     
     test.embedding_length      11434    
-
   Tensors
     blk.0.attn_k.weight    BF16    [42 3117]    
     blk.0.attn_q.weight    FP16    [3117 42]    
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("parameters", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -146,12 +129,10 @@ func TestShowInfo(t *testing.T) {
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture    test    
     parameters      7B      
     quantization    FP16    
-
   Parameters
     stop           never    
     stop           gonna    
@@ -159,13 +140,11 @@ func TestShowInfo(t *testing.T) {
     stop           you      
     stop           up       
     temperature    99       
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("project info", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -183,24 +162,20 @@ func TestShowInfo(t *testing.T) {
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture    test    
     parameters      7B      
     quantization    FP16    
-
   Projector
     architecture        clip       
     parameters          133.70M    
     embedding length    0          
     dimensions          0          
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("system", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -216,23 +191,19 @@ Weigh anchor!
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture    test    
     parameters      7B      
     quantization    FP16    
-
   System
     You are a pirate!    
     Ahoy, matey!         
     ...                  
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("license", func(t *testing.T) {
 		var b bytes.Buffer
 		license := "MIT License\nCopyright (c) Ollama\n"
@@ -246,22 +217,18 @@ Weigh anchor!
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := `  Model
     architecture    test    
     parameters      7B      
     quantization    FP16    
-
   License
     MIT License             
     Copyright (c) Ollama    
-
 `
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
-
 	t.Run("capabilities", func(t *testing.T) {
 		var b bytes.Buffer
 		if err := showInfo(&api.ShowResponse{
@@ -274,7 +241,6 @@ Weigh anchor!
 		}, false, &b); err != nil {
 			t.Fatal(err)
 		}
-
 		expect := "  Model\n" +
 			"    architecture    test    \n" +
 			"    parameters      7B      \n" +
@@ -284,13 +250,11 @@ Weigh anchor!
 			"    vision    \n" +
 			"    tools     \n" +
 			"\n"
-
 		if diff := cmp.Diff(expect, b.String()); diff != "" {
 			t.Errorf("unexpected output (-want +got):\n%s", diff)
 		}
 	})
 }
-
 func TestDeleteHandler(t *testing.T) {
 	stopped := false
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -332,10 +296,8 @@ func TestDeleteHandler(t *testing.T) {
 			}
 		}
 	}))
-
 	t.Setenv("OLLAMA_HOST", mockServer.URL)
 	t.Cleanup(mockServer.Close)
-
 	cmd := &cobra.Command{}
 	cmd.SetContext(t.Context())
 	if err := DeleteHandler(cmd, []string{"test-model"}); err != nil {
@@ -344,13 +306,11 @@ func TestDeleteHandler(t *testing.T) {
 	if !stopped {
 		t.Fatal("Model was not stopped before deletion")
 	}
-
 	err := DeleteHandler(cmd, []string{"test-model-not-found"})
 	if err == nil || !strings.Contains(err.Error(), "unable to stop existing running model \"test-model-not-found\"") {
 		t.Fatalf("DeleteHandler failed: expected error about stopping non-existent model, got %v", err)
 	}
 }
-
 func TestGetModelfileName(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -388,16 +348,13 @@ func TestGetModelfileName(t *testing.T) {
 			expectedErr:   nil,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			cmd := &cobra.Command{
 				Use: "fakecmd",
 			}
 			cmd.Flags().String("file", "", "path to modelfile")
-
 			var expectedFilename string
-
 			if tt.fileExists {
 				var fn string
 				if tt.modelfileName != "" {
@@ -405,13 +362,11 @@ func TestGetModelfileName(t *testing.T) {
 				} else {
 					fn = "Modelfile"
 				}
-
 				tempFile, err := os.CreateTemp(t.TempDir(), fn)
 				if err != nil {
 					t.Fatalf("temp modelfile creation failed: %v", err)
 				}
 				defer tempFile.Close()
-
 				expectedFilename = tempFile.Name()
 				err = cmd.Flags().Set("file", expectedFilename)
 				if err != nil {
@@ -426,13 +381,10 @@ func TestGetModelfileName(t *testing.T) {
 					}
 				}
 			}
-
 			actualFilename, actualErr := getModelfileName(cmd)
-
 			if actualFilename != expectedFilename {
 				t.Errorf("expected filename: '%s' actual filename: '%s'", expectedFilename, actualFilename)
 			}
-
 			if tt.expectedErr != os.ErrNotExist {
 				if actualErr != tt.expectedErr {
 					t.Errorf("expected err: %v actual err: %v", tt.expectedErr, actualErr)
@@ -445,7 +397,6 @@ func TestGetModelfileName(t *testing.T) {
 		})
 	}
 }
-
 func TestPushHandler(t *testing.T) {
 	tests := []struct {
 		name           string
@@ -462,24 +413,19 @@ func TestPushHandler(t *testing.T) {
 					if r.Method != http.MethodPost {
 						t.Errorf("expected POST request, got %s", r.Method)
 					}
-
 					var req api.PushRequest
 					if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 						http.Error(w, err.Error(), http.StatusBadRequest)
 						return
 					}
-
 					if req.Name != "test-model" {
 						t.Errorf("expected model name 'test-model', got %s", req.Name)
 					}
-
-					// Simulate progress updates
 					responses := []api.ProgressResponse{
 						{Status: "preparing manifest"},
 						{Digest: "sha256:abc123456789", Total: 100, Completed: 50},
 						{Digest: "sha256:abc123456789", Total: 100, Completed: 100},
 					}
-
 					for _, resp := range responses {
 						if err := json.NewEncoder(w).Encode(resp); err != nil {
 							http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -489,7 +435,7 @@ func TestPushHandler(t *testing.T) {
 					}
 				},
 			},
-			expectedOutput: "\nYou can find your model at:\n\n\thttps://ollama.com/test-model\n",
+			expectedOutput: "\nYou can find your model at:\n\n\thttps:
 		},
 		{
 			name:      "unauthorized push",
@@ -509,7 +455,6 @@ func TestPushHandler(t *testing.T) {
 			expectedError: "you are not authorized to push to this namespace, create the model under a namespace you own",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -520,38 +465,25 @@ func TestPushHandler(t *testing.T) {
 				http.Error(w, "not found", http.StatusNotFound)
 			}))
 			defer mockServer.Close()
-
 			t.Setenv("OLLAMA_HOST", mockServer.URL)
-
 			cmd := &cobra.Command{}
 			cmd.Flags().Bool("insecure", false, "")
 			cmd.SetContext(t.Context())
-
-			// Redirect stderr to capture progress output
 			oldStderr := os.Stderr
 			r, w, _ := os.Pipe()
 			os.Stderr = w
-
-			// Capture stdout for the "Model pushed" message
 			oldStdout := os.Stdout
 			outR, outW, _ := os.Pipe()
 			os.Stdout = outW
-
 			err := PushHandler(cmd, []string{tt.modelName})
-
-			// Restore stderr
 			w.Close()
 			os.Stderr = oldStderr
-			// drain the pipe
 			if _, err := io.ReadAll(r); err != nil {
 				t.Fatal(err)
 			}
-
-			// Restore stdout and get output
 			outW.Close()
 			os.Stdout = oldStdout
 			stdout, _ := io.ReadAll(outR)
-
 			if tt.expectedError == "" {
 				if err != nil {
 					t.Errorf("expected no error, got %v", err)
@@ -569,7 +501,6 @@ func TestPushHandler(t *testing.T) {
 		})
 	}
 }
-
 func TestListHandler(t *testing.T) {
 	tests := []struct {
 		name           string
@@ -605,7 +536,6 @@ func TestListHandler(t *testing.T) {
 			expectedError: "server error",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -614,36 +544,26 @@ func TestListHandler(t *testing.T) {
 					http.Error(w, "not found", http.StatusNotFound)
 					return
 				}
-
 				if tt.expectedError != "" {
 					http.Error(w, tt.expectedError, http.StatusInternalServerError)
 					return
 				}
-
 				response := api.ListResponse{Models: tt.serverResponse}
 				if err := json.NewEncoder(w).Encode(response); err != nil {
 					t.Fatal(err)
 				}
 			}))
 			defer mockServer.Close()
-
 			t.Setenv("OLLAMA_HOST", mockServer.URL)
-
 			cmd := &cobra.Command{}
 			cmd.SetContext(t.Context())
-
-			// Capture stdout
 			oldStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
-
 			err := ListHandler(cmd, tt.args)
-
-			// Restore stdout and get output
 			w.Close()
 			os.Stdout = oldStdout
 			output, _ := io.ReadAll(r)
-
 			if tt.expectedError == "" {
 				if err != nil {
 					t.Errorf("expected no error, got %v", err)
@@ -659,7 +579,6 @@ func TestListHandler(t *testing.T) {
 		})
 	}
 }
-
 func TestCreateHandler(t *testing.T) {
 	tests := []struct {
 		name           string
@@ -678,27 +597,22 @@ func TestCreateHandler(t *testing.T) {
 					if r.Method != http.MethodPost {
 						t.Errorf("expected POST request, got %s", r.Method)
 					}
-
 					req := api.CreateRequest{}
 					if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 						http.Error(w, err.Error(), http.StatusBadRequest)
 						return
 					}
-
 					if req.Model != "test-model" {
 						t.Errorf("expected model name 'test-model', got %s", req.Name)
 					}
-
 					if req.From != "foo" {
 						t.Errorf("expected from 'foo', got %s", req.From)
 					}
-
 					responses := []api.ProgressResponse{
 						{Status: "using existing layer sha256:56bb8bd477a519ffa694fc449c2413c6f0e1d3b1c88fa7e3c9d88d3ae49d4dcb"},
 						{Status: "writing manifest"},
 						{Status: "success"},
 					}
-
 					for _, resp := range responses {
 						if err := json.NewEncoder(w).Encode(resp); err != nil {
 							http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -711,7 +625,6 @@ func TestCreateHandler(t *testing.T) {
 			expectedOutput: "",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -730,53 +643,38 @@ func TestCreateHandler(t *testing.T) {
 				t.Fatal(err)
 			}
 			defer os.Remove(tempFile.Name())
-
 			if _, err := tempFile.WriteString(tt.modelFile); err != nil {
 				t.Fatal(err)
 			}
 			if err := tempFile.Close(); err != nil {
 				t.Fatal(err)
 			}
-
 			cmd := &cobra.Command{}
 			cmd.Flags().String("file", "", "")
 			if err := cmd.Flags().Set("file", tempFile.Name()); err != nil {
 				t.Fatal(err)
 			}
-
 			cmd.Flags().Bool("insecure", false, "")
 			cmd.SetContext(t.Context())
-
-			// Redirect stderr to capture progress output
 			oldStderr := os.Stderr
 			r, w, _ := os.Pipe()
 			os.Stderr = w
-
-			// Capture stdout for the "Model pushed" message
 			oldStdout := os.Stdout
 			outR, outW, _ := os.Pipe()
 			os.Stdout = outW
-
 			err = CreateHandler(cmd, []string{tt.modelName})
-
-			// Restore stderr
 			w.Close()
 			os.Stderr = oldStderr
-			// drain the pipe
 			if _, err := io.ReadAll(r); err != nil {
 				t.Fatal(err)
 			}
-
-			// Restore stdout and get output
 			outW.Close()
 			os.Stdout = oldStdout
 			stdout, _ := io.ReadAll(outR)
-
 			if tt.expectedError == "" {
 				if err != nil {
 					t.Errorf("expected no error, got %v", err)
 				}
-
 				if tt.expectedOutput != "" {
 					if got := string(stdout); got != tt.expectedOutput {
 						t.Errorf("expected output %q, got %q", tt.expectedOutput, got)
@@ -786,7 +684,6 @@ func TestCreateHandler(t *testing.T) {
 		})
 	}
 }
-
 func TestNewCreateRequest(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -905,7 +802,6 @@ func TestNewCreateRequest(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := NewCreateRequest(tt.from, tt.opts)

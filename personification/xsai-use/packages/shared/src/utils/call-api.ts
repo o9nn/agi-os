@@ -2,7 +2,6 @@ import type { StreamTextOptions } from '@xsai/stream-text'
 import type { UIMessage, UIMessageToolCallPart } from '../types'
 import { streamText } from '@xsai/stream-text'
 import { generateWeakID } from './generate-weak-id'
-
 export async function callApi(streamTextOptions: Omit<StreamTextOptions, 'onEvent'>, {
   onUpdate,
   updatingMessage,
@@ -17,14 +16,11 @@ export async function callApi(streamTextOptions: Omit<StreamTextOptions, 'onEven
     parts: [],
     role: 'assistant',
   }
-
   let shouldNewTextNext = true
-
   const { fullStream } = await streamText({
     ...streamTextOptions as StreamTextOptions,
     onEvent: (event) => {
       const parts = message.parts
-
       switch (event.type) {
         case 'text-delta': {
           const part = parts.findLast(part => part.type === 'text')
@@ -34,9 +30,7 @@ export async function callApi(streamTextOptions: Omit<StreamTextOptions, 'onEven
           else {
             parts.push({ text: event.text, type: 'text' })
           }
-
           message.content = (message.content as string ?? '') + event.text
-
           shouldNewTextNext = false
           break
         }
@@ -92,10 +86,8 @@ export async function callApi(streamTextOptions: Omit<StreamTextOptions, 'onEven
         }
         default:
       }
-
       onUpdate(message)
     },
   })
-
   await fullStream.pipeTo(new WritableStream({ write() { } }))
 }

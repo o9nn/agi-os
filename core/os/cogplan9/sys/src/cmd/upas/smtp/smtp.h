@@ -1,40 +1,34 @@
 enum {
-	Maxbustedmx = 100,
-	Maxdomain = 1024,
+Maxbustedmx = 100,
+Maxdomain = 1024,
 };
-
 typedef struct Node Node;
 typedef struct Field Field;
 typedef Node *Nodeptr;
 #define YYSTYPE Nodeptr
-
 struct Node {
-	Node	*next;
-	int	c;	/* token type */
-	char	addr;	/* true if this is an address */
-	String	*s;	/* string representing token */
-	String	*white;	/* white space following token */
-	char	*start;	/* first byte for this token */
-	char	*end;	/* next byte in input */
+Node	*next;
+int	c;
+char	addr;
+String	*s;
+String	*white;
+char	*start;
+char	*end;
 };
-
 struct Field {
-	Field	*next;
-	Node	*node;
-	int	source;
+Field	*next;
+Node	*node;
+int	source;
 };
-
 typedef struct DS	DS;
 struct DS {
-	/* dist string */
-	char	buf[128];
-	char	expand[128];
-	char	*netdir;
-	char	*proto;
-	char	*host;
-	char	*service;
+char	buf[128];
+char	expand[128];
+char	*netdir;
+char	*proto;
+char	*host;
+char	*service;
 };
-
 extern Field	*firstfield;
 extern Field	*lastfield;
 extern Node	*usender;
@@ -46,7 +40,6 @@ extern int	date;
 extern int	debug;
 extern int	messageid;
 extern char	*bustedmxs[Maxbustedmx];
-
 Node*	address(Node*);
 Node*	anonymous(Node*);
 int	badfieldname(Node*);

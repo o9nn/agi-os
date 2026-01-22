@@ -1,11 +1,7 @@
-
 (use-modules (opencog) (opencog exec))
-
 (define soln (SetLink))
-
 (ListLink (ConceptNode "A") (ConceptNode "B"))
 (ListLink (ConceptNode "Y") (ConceptNode "X"))
-
 (define test
     (BindLink
         (VariableList

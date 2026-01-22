@@ -1,26 +1,15 @@
 #!/bin/bash
-#
-# Performance Analysis Utility Script
-# Command-line interface for GNU Mach performance monitoring
-#
-# Copyright (C) 2024 Free Software Foundation, Inc.
-
 SCRIPT_NAME="perf-analysis"
 SCRIPT_VERSION="1.0"
-
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
+NC='\033[0m'
 usage() {
     cat << EOF
 GNU Mach Performance Analysis Utility v${SCRIPT_VERSION}
-
 Usage: $0 [COMMAND] [OPTIONS]
-
 COMMANDS:
     enable              Enable performance monitoring
     disable             Disable performance monitoring
@@ -31,7 +20,6 @@ COMMANDS:
     reset               Reset performance statistics
     monitor             Real-time performance monitoring
     test                Run performance framework tests
-    
 OPTIONS:
     -r, --rate RATE     Sample rate (samples/sec, default: 1000)
     -b, --buffer SIZE   Buffer size (samples, default: 4096)
@@ -39,7 +27,6 @@ OPTIONS:
     -e, --event TYPE    Event type (0-11, see event types below)
     -i, --interval SEC  Monitoring interval in seconds (default: 1)
     -h, --help          Show this help message
-
 EVENT TYPES:
     0  IPC_SEND          IPC message send operations
     1  IPC_RECEIVE       IPC message receive operations  
@@ -53,38 +40,28 @@ EVENT TYPES:
     9  INTERRUPT         Interrupt handling
     10 SYSCALL           System call execution
     11 PAGE_FAULT        Page fault handling
-
 EXAMPLES:
-    $0 enable                           # Enable monitoring
-    $0 configure -r 2000 -b 8192       # Configure 2K samples/sec, 8K buffer
-    $0 stats 2                         # Show VM allocation statistics
-    $0 monitor -i 5                    # Monitor every 5 seconds
-    $0 check-regression -e 2 -t 30     # Check VM alloc regression >30%
-
+    $0 enable
+    $0 configure -r 2000 -b 8192
+    $0 stats 2
+    $0 monitor -i 5
+    $0 check-regression -e 2 -t 30
 EOF
 }
-
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
-
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
-
 log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
-
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
-
-# Test if performance monitoring is available
 test_performance_monitoring() {
     log_info "Testing performance monitoring availability..."
-    
-    # Try to run a simple test program
     if [ -f "./tests/test-performance-analysis" ]; then
         if ./tests/test-performance-analysis > /dev/null 2>&1; then
             log_success "Performance monitoring is available"
@@ -99,15 +76,12 @@ test_performance_monitoring() {
         return 1
     fi
 }
-
 enable_monitoring() {
     local rate="${1:-1000}"
     local buffer_size="${2:-4096}"
-    
     log_info "Enabling performance monitoring..."
     log_info "Sample rate: ${rate} samples/sec"
     log_info "Buffer size: ${buffer_size} samples"
-    
     if test_performance_monitoring; then
         log_success "Performance monitoring enabled"
     else
@@ -115,22 +89,17 @@ enable_monitoring() {
         return 1
     fi
 }
-
 disable_monitoring() {
     log_info "Disabling performance monitoring..."
-    
     if test_performance_monitoring; then
         log_success "Performance monitoring disabled"
     else
         log_warning "Performance monitoring may not have been active"
     fi
 }
-
 show_statistics() {
     local event_type="$1"
-    
     log_info "Retrieving performance statistics..."
-    
     if [ -n "$event_type" ]; then
         log_info "Event type: $event_type"
         case $event_type in
@@ -151,15 +120,10 @@ show_statistics() {
     else
         log_info "Showing all event statistics"
     fi
-    
-    # Placeholder for actual statistics retrieval
-    # In a real implementation, this would call the test program or use a dedicated utility
     log_success "Statistics retrieved (placeholder - implement with actual calls)"
 }
-
 set_baseline() {
     log_info "Setting performance baseline..."
-    
     if test_performance_monitoring; then
         log_success "Performance baseline set"
     else
@@ -167,15 +131,12 @@ set_baseline() {
         return 1
     fi
 }
-
 check_regression() {
-    local event_type="${1:-2}"  # Default to VM_ALLOC
-    local threshold="${2:-20}"  # Default to 20%
-    
+    local event_type="${1:-2}"
+    local threshold="${2:-20}"
     log_info "Checking for performance regressions..."
     log_info "Event type: $event_type"
     log_info "Threshold: ${threshold}%"
-    
     if test_performance_monitoring; then
         log_success "Regression check completed"
         log_info "No significant regressions detected (placeholder)"
@@ -184,10 +145,8 @@ check_regression() {
         return 1
     fi
 }
-
 reset_statistics() {
     log_info "Resetting performance statistics..."
-    
     if test_performance_monitoring; then
         log_success "Performance statistics reset"
     else
@@ -195,30 +154,22 @@ reset_statistics() {
         return 1
     fi
 }
-
 monitor_realtime() {
     local interval="${1:-1}"
-    
     log_info "Starting real-time performance monitoring..."
     log_info "Update interval: ${interval} seconds"
     log_info "Press Ctrl+C to stop"
-    
     local counter=0
     while true; do
         counter=$((counter + 1))
-        echo -e "\n${BLUE}=== Performance Monitor Update #${counter} ===${NC}"
+        echo -e "\n${BLUE}=== Performance Monitor Update
         echo "$(date): Monitoring system performance..."
-        
-        # Placeholder for real monitoring
         echo "CPU: OK, Memory: OK, IPC: OK, VM: OK"
-        
         sleep "$interval"
     done
 }
-
 run_tests() {
     log_info "Running performance analysis framework tests..."
-    
     if [ -f "./tests/test-performance-analysis" ]; then
         log_info "Executing test suite..."
         if ./tests/test-performance-analysis; then
@@ -233,16 +184,13 @@ run_tests() {
         return 1
     fi
 }
-
-# Parse command line arguments
 COMMAND=""
 RATE=1000
 BUFFER_SIZE=4096
 THRESHOLD=20
 EVENT_TYPE=""
 INTERVAL=1
-
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         enable|disable|configure|stats|baseline|check-regression|reset|monitor|test)
             COMMAND="$1"
@@ -282,8 +230,6 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-# Execute command
 case "$COMMAND" in
     enable)
         enable_monitoring "$RATE" "$BUFFER_SIZE"

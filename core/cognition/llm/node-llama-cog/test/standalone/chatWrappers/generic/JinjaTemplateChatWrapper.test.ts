@@ -5,7 +5,6 @@ import {defaultChatSystemPrompt} from "../../../../src/config.js";
 import {LlamaText} from "../../../../src/utils/LlamaText.js";
 import {fromChatHistoryToIntermediateOpenAiMessages, fromIntermediateToCompleteOpenAiMessages} from "../../../../src/utils/OpenAIFormat.js";
 import {removeUndefinedFields} from "../../../../src/utils/removeNullFields.js";
-
 const mistralJinjaTemplate = `
 {%- if messages[0]["role"] == "system" -%}
     {%- set system_message = messages[0]["content"] -%}
@@ -87,7 +86,6 @@ const mistralJinjaTemplate = `
     {%- endif -%}
 {%- endfor -%}
 `.slice(1, -1);
-
 const llama3_1ChatJinjaTemplate = `
 {{- bos_token }}
 {%- if custom_tools is defined %}
@@ -102,7 +100,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- if not tools is defined %}
     {%- set tools = none %}
 {%- endif %}
-
 {#- This block extracts the system message, so we can slot it into the right place. #}
 {%- if messages[0]['role'] == 'system' %}
     {%- set system_message = messages[0]['content']|trim %}
@@ -110,7 +107,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- else %}
     {%- set system_message = "" %}
 {%- endif %}
-
 {#- System message + builtin tools #}
 {{- "<|start_header_id|>system<|end_header_id|>\\n\\n" }}
 {%- if builtin_tools is defined or tools is not none %}
@@ -132,7 +128,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- endif %}
 {{- system_message }}
 {{- eot_token }}
-
 {#- Custom tools are passed in a user message with some extra guidance #}
 {%- if tools_in_user_message and not tools is none %}
     {#- Extract the first user message so we can plug it in here #}
@@ -153,7 +148,6 @@ const llama3_1ChatJinjaTemplate = `
     {%- endfor %}
     {{- first_user_message + eot_token}}
 {%- endif %}
-
 {%- for message in messages %}
     {%- if not (message.role == 'ipython' or message.role == 'tool' or 'tool_calls' in message) %}
         {{- '<|start_header_id|>' + message['role'] + '<|end_header_id|>\\n\\n'+ message['content'] | trim + eot_token }}
@@ -199,7 +193,6 @@ const llama3_1ChatJinjaTemplate = `
     {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}
 {%- endif %}
 `.slice(1, -1);
-
 describe("JinjaTemplateChatWrapper", () => {
     const template1 =
         "{{ bos_token }}" +
@@ -233,7 +226,6 @@ describe("JinjaTemplateChatWrapper", () => {
         "" + "" + "{{ ' '  + message['content'] + ' ' + eos_token }}" +
         "" + "{% endif %}" +
         "{% endfor %}";
-
     const conversationHistory: ChatHistoryItem[] = [{
         type: "system",
         text: defaultChatSystemPrompt
@@ -294,7 +286,6 @@ describe("JinjaTemplateChatWrapper", () => {
     }];
     const exampleFunctions = {
         func1: {
-
         },
         func2: {
             params: {
@@ -392,7 +383,6 @@ describe("JinjaTemplateChatWrapper", () => {
             }
         }
     } as const;
-
     const conversationHistory4: ChatHistoryItem[] = [{
         type: "system",
         text: LlamaText(defaultChatSystemPrompt).toJSON()
@@ -434,8 +424,6 @@ describe("JinjaTemplateChatWrapper", () => {
             }
         }
     };
-
-    // last model message is a function call
     const conversationHistory5: ChatHistoryItem[] = [{
         type: "system",
         text: LlamaText(defaultChatSystemPrompt).toJSON()
@@ -477,7 +465,6 @@ describe("JinjaTemplateChatWrapper", () => {
             }
         }
     };
-
     const sanity1ChatHistory: ChatHistoryItem[] = [{
         type: "system",
         text: "systemMessage"
@@ -487,7 +474,6 @@ describe("JinjaTemplateChatWrapper", () => {
     }, {
         type: "model",
         response: [
-            // "modelMessage1",
             {
                 type: "functionCall",
                 name: "func1name",
@@ -525,13 +511,11 @@ describe("JinjaTemplateChatWrapper", () => {
             }
         }
     };
-
     test("with system prompt support", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template2
         });
         const {contextText, stopGenerationTriggers} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
@@ -540,7 +524,6 @@ describe("JinjaTemplateChatWrapper", () => {
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
@@ -560,9 +543,7 @@ describe("JinjaTemplateChatWrapper", () => {
             ]),
           ]
         `);
-
         const {contextText: contextText2} = chatWrapper.generateContextState({chatHistory: conversationHistory2});
-
         expect(contextText2).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
@@ -571,7 +552,6 @@ describe("JinjaTemplateChatWrapper", () => {
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
@@ -587,7 +567,6 @@ describe("JinjaTemplateChatWrapper", () => {
             "I'm good, how are you?",
           ])
         `);
-
         const {contextText: contextText3} = chatWrapper.generateContextState({chatHistory: conversationHistory});
         const {contextText: contextText3WithOpenModelResponse} = chatWrapper.generateContextState({
             chatHistory: [
@@ -598,7 +577,6 @@ describe("JinjaTemplateChatWrapper", () => {
                 }
             ]
         });
-
         expect(contextText3).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
@@ -607,7 +585,6 @@ describe("JinjaTemplateChatWrapper", () => {
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
@@ -616,7 +593,6 @@ describe("JinjaTemplateChatWrapper", () => {
             "Hello!",
           ])
         `);
-
         expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
@@ -625,20 +601,16 @@ describe("JinjaTemplateChatWrapper", () => {
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "Hi there!",
             new SpecialTokensText(" [/INST] "),
             "Hello!
-
           ",
           ])
         `);
-
         const {contextText: contextText4} = chatWrapper.generateContextState({chatHistory: conversationHistory3});
-
         expect(contextText4).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
@@ -655,87 +627,70 @@ describe("JinjaTemplateChatWrapper", () => {
           ])
         `);
     });
-
     test("without system prompt support", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template1
         });
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "### System message
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           ----
-
           Hi there!",
             new SpecialTokensText(" [/INST]"),
             "Hello!",
           ])
         `);
     });
-
     test("without system prompt support with no exception from the template", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template3
         });
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "### System message
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           ----
-
           Hi there!",
             new SpecialTokensText(" [/INST] "),
             "Hello!",
           ])
         `);
     });
-
     test("without system prompt support with no exception from the template 2", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template2,
             systemRoleName: "something1"
         });
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "### System message
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           ----
-
           Hi there!",
             new SpecialTokensText(" [/INST] "),
             "Hello!",
           ])
         `);
     });
-
     test("without joining adjacent messages of the same type", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template2,
             joinAdjacentMessagesOfTheSameType: false
         });
         const {contextText} = chatWrapper.generateContextState({chatHistory: [conversationHistory[0]!, ...conversationHistory]});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
@@ -744,14 +699,12 @@ describe("JinjaTemplateChatWrapper", () => {
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           <<SYS>>
           "),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
@@ -761,7 +714,6 @@ describe("JinjaTemplateChatWrapper", () => {
           ])
         `);
     });
-
     test("functions", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template2
@@ -770,64 +722,41 @@ describe("JinjaTemplateChatWrapper", () => {
             chatHistory: conversationHistory,
             availableFunctions: exampleFunctions
         });
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<<SYS>>
           "),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           The assistant calls the provided functions as needed to retrieve information instead of relying on existing knowledge.
           To fulfill a request, the assistant calls relevant functions in advance when needed before responding to the request, and does not tell the user prior to calling a function.
           Provided functions:
           \`\`\`typescript
           function func1();
-
           function func2(params: {message: string, feeling: "good" | "bad", words: number});
-
-          // Some description here
           function func3(params: string[]);
-
-          // Some description here
           function func4(params: [string, boolean, number, null, {message: string}, string[], "1" | -6, "1" | -6, ...("1" | -6)[]]);
-
-          // Some description here
           function func5(params: [string, boolean, number]);
-
-          // Some description here
           function func6(params: [string, string, ...string[]]);
-
-          // Some description here
           function func7(params: [string, string]);
-
           function func8(params: {
-              // The main message
               message: string,
-              
-              // The feeling
               feeling: "good" | "bad",
-              
-              // The number of words.
-              // For example, 6
               words: number
           });
           \`\`\`
-
           Calling any of the provided functions can be done like this:
           ||call: getSomeInfo",
             new SpecialTokensText("("),
             "{"someKey": "someValue"}",
             new SpecialTokensText(")"),
             "
-
           Note that the || prefix is mandatory.
           The assistant does not inform the user about using functions and does not explain anything before calling a function.
           After calling a function, the raw result appears afterwards and is not part of the conversation.
           To make information be part of the conversation, the assistant paraphrases and repeats the information without the function syntax.",
             new SpecialTokensText("
           <</SYS>>
-
           "),
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
@@ -837,7 +766,6 @@ describe("JinjaTemplateChatWrapper", () => {
           ])
         `);
     });
-
     test("functions template", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template3,
@@ -850,59 +778,35 @@ describe("JinjaTemplateChatWrapper", () => {
             chatHistory: conversationHistoryWithFunctionCalls,
             availableFunctions: exampleFunctions
         });
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "### System message
-
           The assistant calls the provided functions as needed to retrieve information instead of relying on existing knowledge.
           To fulfill a request, the assistant calls relevant functions in advance when needed before responding to the request, and does not tell the user prior to calling a function.
           Provided functions:
           \`\`\`typescript
           function func1();
-
           function func2(params: {message: string, feeling: "good" | "bad", words: number});
-
-          // Some description here
           function func3(params: string[]);
-
-          // Some description here
           function func4(params: [string, boolean, number, null, {message: string}, string[], "1" | -6, "1" | -6, ...("1" | -6)[]]);
-
-          // Some description here
           function func5(params: [string, boolean, number]);
-
-          // Some description here
           function func6(params: [string, string, ...string[]]);
-
-          // Some description here
           function func7(params: [string, string]);
-
           function func8(params: {
-              // The main message
               message: string,
-              
-              // The feeling
               feeling: "good" | "bad",
-              
-              // The number of words.
-              // For example, 6
               words: number
           });
           \`\`\`
-
           Calling any of the provided functions can be done like this:
           [[call: getSomeInfo({"someKey": "someValue"})]]
-
           Note that the || prefix is mandatory.
           The assistant does not inform the user about using functions and does not explain anything before calling a function.
           After calling a function, the raw result appears afterwards and is not part of the conversation.
           To make information be part of the conversation, the assistant paraphrases and repeats the information without the function syntax.
-
           ----
-
           Hi there!",
             new SpecialTokensText(" [/INST] "),
             "Hello![[call: func2({"message": "Hello", "feeling": "good", "words": 1})]] [[result: {"yes": true, "message": "ok"}]]",
@@ -915,7 +819,6 @@ describe("JinjaTemplateChatWrapper", () => {
           ])
         `);
     });
-
     test("functions template 2", () => {
         const chatWrapper = new JinjaTemplateChatWrapper({
             template: template3,
@@ -928,60 +831,35 @@ describe("JinjaTemplateChatWrapper", () => {
             chatHistory: conversationHistoryWithFunctionCalls,
             availableFunctions: exampleFunctions
         });
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             new SpecialTokensText("[INST] "),
             "### System message
-
           The assistant calls the provided functions as needed to retrieve information instead of relying on existing knowledge.
           To fulfill a request, the assistant calls relevant functions in advance when needed before responding to the request, and does not tell the user prior to calling a function.
           Provided functions:
           \`\`\`typescript
           function func1();
-
           function func2(params: {message: string, feeling: "good" | "bad", words: number});
-
-          // Some description here
           function func3(params: string[]);
-
-          // Some description here
           function func4(params: [string, boolean, number, null, {message: string}, string[], "1" | -6, "1" | -6, ...("1" | -6)[]]);
-
-          // Some description here
           function func5(params: [string, boolean, number]);
-
-          // Some description here
           function func6(params: [string, string, ...string[]]);
-
-          // Some description here
           function func7(params: [string, string]);
-
           function func8(params: {
-              // The main message
               message: string,
-              
-              // The feeling
               feeling: "good" | "bad",
-              
-              // The number of words.
-              // For example, 6
               words: number
           });
           \`\`\`
-
           Calling any of the provided functions can be done like this:
-
           Call function: getSomeInfo with params {"someKey": "someValue"}.
-
           Note that the || prefix is mandatory.
           The assistant does not inform the user about using functions and does not explain anything before calling a function.
           After calling a function, the raw result appears afterwards and is not part of the conversation.
           To make information be part of the conversation, the assistant paraphrases and repeats the information without the function syntax.
-
           ----
-
           Hi there!",
             new SpecialTokensText(" [/INST] "),
             "Hello!
@@ -997,13 +875,11 @@ describe("JinjaTemplateChatWrapper", () => {
           ])
         `);
     });
-
     describe("native function calling", () => {
         test("sanity - template renders", () => {
             const chatWrapper = new JinjaTemplateChatWrapper({
                 template: mistralJinjaTemplate
             });
-
             const {messages: intermediateMessages, tools} = fromChatHistoryToIntermediateOpenAiMessages({
                 chatHistory: sanity1ChatHistory,
                 chatWrapperSettings: chatWrapper.settings,
@@ -1015,7 +891,6 @@ describe("JinjaTemplateChatWrapper", () => {
                 squashModelTextResponses: false
             });
             const messages = fromIntermediateToCompleteOpenAiMessages(intermediateMessages);
-
             const jinjaTemplate = new Template(mistralJinjaTemplate);
             const res = jinjaTemplate.render({
                 messages,
@@ -1026,12 +901,10 @@ describe("JinjaTemplateChatWrapper", () => {
             });
             expect(res).toMatchInlineSnapshot("\"|BOS|[AVAILABLE_TOOLS][{\"type\": \"function\", \"function\": {\"name\": \"func1name\", \"description\": \"func1description\", \"parameters\": {\"type\": \"number\"}}}, {\"type\": \"function\", \"function\": {\"name\": \"func2name\", \"description\": \"func2description\", \"parameters\": {\"type\": \"number\"}}}][/AVAILABLE_TOOLS][INST]userMessage1[/INST][TOOL_CALLS][{\"name\": \"func1name\", \"arguments\": \"func1params\", \"id\": \"fc_2_0000\"}, {\"name\": \"func2name\", \"arguments\": \"func2params\", \"id\": \"fc_2_0001\"}]|EOS|[TOOL_RESULTS]{\"content\": \"func1result\", \"call_id\": \"fc_2_0000\"}[/TOOL_RESULTS][TOOL_RESULTS]{\"content\": \"func2result\", \"call_id\": \"fc_2_0001\"}[/TOOL_RESULTS]modelMessage2|EOS|modelMessage3|EOS|modelMessage4|EOS|\"");
         });
-
         test("mistral template", () => {
             const chatWrapper = new JinjaTemplateChatWrapper({
                 template: mistralJinjaTemplate
             });
-
             expect(chatWrapper.settings.functions).toMatchInlineSnapshot(`
               {
                 "call": {
@@ -1076,12 +949,10 @@ describe("JinjaTemplateChatWrapper", () => {
                 },
               }
             `);
-
             const {contextText} = chatWrapper.generateContextState({
                 chatHistory: conversationHistoryWithFunctionCalls,
                 availableFunctions: exampleFunctions
             });
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
@@ -1105,12 +976,10 @@ describe("JinjaTemplateChatWrapper", () => {
               ])
             `);
         });
-
         test("mistral template 2", () => {
             const chatWrapper = new JinjaTemplateChatWrapper({
                 template: mistralJinjaTemplate
             });
-
             expect(chatWrapper.settings.functions).toMatchInlineSnapshot(`
               {
                 "call": {
@@ -1155,23 +1024,18 @@ describe("JinjaTemplateChatWrapper", () => {
                 },
               }
             `);
-
             const {contextText} = chatWrapper.generateContextState({
                 chatHistory: conversationHistory4,
                 availableFunctions: functions4
             });
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("[INST]"),
                 "### System message
-
               You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
               ----
-
               Hi there!",
                 new SpecialTokensText("[/INST]"),
                 "Hello!",
@@ -1187,12 +1051,10 @@ describe("JinjaTemplateChatWrapper", () => {
               ])
             `);
         });
-
         test("mistral template - last model message is a function call", () => {
             const chatWrapper = new JinjaTemplateChatWrapper({
                 template: mistralJinjaTemplate
             });
-
             expect(chatWrapper.settings.functions).toMatchInlineSnapshot(`
               {
                 "call": {
@@ -1237,23 +1099,18 @@ describe("JinjaTemplateChatWrapper", () => {
                 },
               }
             `);
-
             const {contextText} = chatWrapper.generateContextState({
                 chatHistory: conversationHistory5,
                 availableFunctions: functions5
             });
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("[INST]"),
                 "### System message
-
               You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
               ----
-
               Hi there!",
                 new SpecialTokensText("[/INST]"),
                 "Hello!",
@@ -1268,12 +1125,10 @@ describe("JinjaTemplateChatWrapper", () => {
               ])
             `);
         });
-
         test("llama 3.1 template", () => {
             const chatWrapper = new JinjaTemplateChatWrapper({
                 template: llama3_1ChatJinjaTemplate
             });
-
             expect(chatWrapper.settings.functions).toMatchInlineSnapshot(`
               {
                 "call": {
@@ -1292,48 +1147,38 @@ describe("JinjaTemplateChatWrapper", () => {
                     new SpecialTokensText("}"),
                     new SpecialToken("EOT"),
                     new SpecialTokensText("<|start_header_id|>ipython<|end_header_id|>
-
               "),
                   ]),
                   "suffix": LlamaText([
                     new SpecialToken("EOT"),
                     new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>
-
               "),
                   ]),
                 },
               }
             `);
-
             const {contextText} = chatWrapper.generateContextState({
                 chatHistory: conversationHistoryWithFunctionCalls,
                 availableFunctions: exampleFunctions
             });
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|start_header_id|>system<|end_header_id|>
-
               Environment: ipython
               Cutting Knowledge Date: December 2023
               Today Date: 26 Jul 2024
-
               "),
                 new SpecialToken("EOT"),
                 new SpecialTokensText("<|start_header_id|>user<|end_header_id|>
-
               Given the following functions, please respond with a JSON for a function call with its proper arguments that best answers the given prompt.
-
               Respond in the format {"name": function name, "parameters": dictionary of argument name and its value}.Do not use variables.
-
               {
                   "type": "function",
                   "function": {
                       "name": "func1"
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1357,7 +1202,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1371,7 +1215,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1417,7 +1260,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1440,7 +1282,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1455,7 +1296,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1471,7 +1311,6 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               {
                   "type": "function",
                   "function": {
@@ -1498,12 +1337,10 @@ describe("JinjaTemplateChatWrapper", () => {
                       }
                   }
               }
-
               "),
                 "Hi there!",
                 new SpecialToken("EOT"),
                 new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "Hello!",
                 new SpecialTokensText("{"name": ""),
@@ -1513,16 +1350,13 @@ describe("JinjaTemplateChatWrapper", () => {
                 new SpecialTokensText("}"),
                 new SpecialToken("EOT"),
                 new SpecialTokensText("<|start_header_id|>ipython<|end_header_id|>
-
               "),
                 "{"yes": true, "message": "ok"}",
                 new SpecialToken("EOT"),
                 new SpecialTokensText("<|start_header_id|>assistant<|end_header_id|>
-
               "),
                 new SpecialToken("EOT"),
                 new SpecialTokensText("<|start_header_id|>user<|end_header_id|>
-
               "),
                 "How are you?",
                 new SpecialToken("EOT"),
@@ -1530,7 +1364,6 @@ describe("JinjaTemplateChatWrapper", () => {
             `);
         });
     });
-
     test("Fails when messages are not present in the render output", () => {
         try {
             new JinjaTemplateChatWrapper({
@@ -1542,7 +1375,6 @@ describe("JinjaTemplateChatWrapper", () => {
             expect(String(err)).toMatchInlineSnapshot('"Error: The provided Jinja template failed the sanity test: Error: Some input messages are not present in the generated Jinja template output. Inspect the Jinja template to find out what went wrong"');
         }
     });
-
     test("Fails when messages are not present in the render output 2", () => {
         try {
             new JinjaTemplateChatWrapper({

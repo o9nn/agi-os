@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 main() {
     scriptfile="$1"
     is_tool=false
@@ -15,7 +14,6 @@ main() {
     jq "$expr" | \
     build_declarations
 }
-
 build_declarations() {
     jq --arg is_tool "$is_tool" -r '
     def filter_declaration:
@@ -24,21 +22,18 @@ build_declarations() {
         else
             select(.name | startswith("_") | not) 
         end) | select(.description != "");
-
     def parse_description(flag_option):
         if flag_option.describe == "" then
             {}
         else
             { "description": flag_option.describe }
         end;
-
     def parse_enum(flag_option):
         if flag_option.choice.type == "Values" then
             { "enum": flag_option.choice.data }
         else
             {}
         end;
-
     def parse_property(flag_option):
         [
             { condition: (flag_option.flag == true), result: { type: "boolean" } },
@@ -50,15 +45,12 @@ build_declarations() {
         | (. + parse_description(flag_option))
         | (. + parse_enum(flag_option))
         ;
-
-
     def parse_parameter(flag_options):
         {
             type: "object",
             properties: (reduce flag_options[] as $item ({}; . + { ($item.id | sub("-"; "_"; "g")): parse_property($item) })),
             required: [flag_options[] | select(.required == true) | .id | sub("-"; "_"; "g")],
         };
-
     def parse_declaration:
         {
             name: (.name | sub("-"; "_"; "g")),
@@ -69,5 +61,4 @@ build_declarations() {
         .[] | parse_declaration | filter_declaration
     ]'
 }
-
 main "$@"

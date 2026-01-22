@@ -1,5 +1,4 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
-
 contextBridge.exposeInMainWorld('htmlview', {
   getInfo: () => ipcRenderer.invoke('html_email:get_info'),
   setContentBounds: bounds =>
@@ -10,7 +9,6 @@ contextBridge.exposeInMainWorld('htmlview', {
     ipcRenderer.invoke('html-view:more-menu', { x, y })
   },
 })
-
 async function updateTheme() {
   window.document.getElementById('theme-vars').innerText =
     await ipcRenderer.invoke('get-theme')

@@ -1,17 +1,14 @@
 import type { ComponentPropsOptions } from '@vue/runtime-core'
-
 import type {
   InputProps,
   LooseRequiredRenderComponentInputProps,
   RenderComponentInputComponent,
   ResolveRenderComponentInputProps,
 } from '../types'
-
 import { toMarkdown } from '@velin-dev/utils/to-md'
 import { toValue } from '@vue/reactivity'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp } from 'vue'
-
 export function onlySetup<
   RawProps = any,
   ComponentProps = ComponentPropsOptions<RawProps>,
@@ -25,7 +22,6 @@ export function onlySetup<
     { attrs: {}, slots: {}, emit: () => { }, expose: () => { } },
   )
 }
-
 export function onlyRender<
   RawProps = any,
   ComponentProps = ComponentPropsOptions<RawProps>,
@@ -36,7 +32,6 @@ export function onlyRender<
 ) {
   return createSSRApp(promptComponent, toValue(props) as Record<string, unknown>)
 }
-
 export function renderComponent<
   RawProps = any,
   ComponentProps = ComponentPropsOptions<RawProps>,

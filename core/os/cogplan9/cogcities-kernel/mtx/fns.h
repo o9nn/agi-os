@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 ulong	cankaddr(ulong);
 int	cistrcmp(char*, char*);
 int	cistrncmp(char*, char*, int);
@@ -37,7 +36,7 @@ int	i8259enable(Vctl*);
 int	i8259vecno(int);
 int	i8259disable(int);
 void	icflush(void*, ulong);
-#define	idlehands()			/* nothing to do in the runproc */
+#define	idlehands()
 int	inb(int);
 void	insb(int, void*, int);
 ushort	ins(int);
@@ -104,7 +103,6 @@ void	tlbflush(ulong);
 void	tlbflushall(void);
 #define	userureg(ur) (((ur)->status & MSR_PR) != 0)
 void	watchreset(void);
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	((ulong)(a)&~KZERO)

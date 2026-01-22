@@ -1,5 +1,4 @@
 package server
-
 import (
 	"bytes"
 	"encoding/binary"
@@ -8,14 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func TestConvertFromSafetensors(t *testing.T) {
 	t.Setenv("OLLAMA_MODELS", t.TempDir())
-
-	// Helper function to create a new layer and return its digest
 	makeTemp := func(content string) string {
 		l, err := NewLayer(strings.NewReader(content), "application/octet-stream")
 		if err != nil {
@@ -23,13 +18,10 @@ func TestConvertFromSafetensors(t *testing.T) {
 		}
 		return l.Digest
 	}
-
-	// Create a safetensors compatible file with empty JSON content
 	var buf bytes.Buffer
 	headerSize := int64(len("{}"))
 	binary.Write(&buf, binary.LittleEndian, headerSize)
 	buf.WriteString("{}")
-
 	model := makeTemp(buf.String())
 	config := makeTemp(`{
 		"architectures": ["LlamaForCausalLM"], 
@@ -51,13 +43,11 @@ func TestConvertFromSafetensors(t *testing.T) {
 			}
 		]
 	}`)
-
 	tests := []struct {
 		name     string
 		filePath string
 		wantErr  error
 	}{
-		// Invalid
 		{
 			name:     "InvalidRelativePathShallow",
 			filePath: filepath.Join("..", "file.safetensors"),
@@ -76,7 +66,7 @@ func TestConvertFromSafetensors(t *testing.T) {
 		{
 			name:     "AbsolutePathOutsideRoot",
 			filePath: filepath.Join(os.TempDir(), "model.safetensors"),
-			wantErr:  errFilePath, // Should fail since it's outside tmpDir
+			wantErr:  errFilePath, 
 		},
 		{
 			name:     "ValidRelativePath",
@@ -84,18 +74,14 @@ func TestConvertFromSafetensors(t *testing.T) {
 			wantErr:  nil,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Create the minimum required file map for convertFromSafetensors
 			files := map[string]string{
 				tt.filePath:      model,
 				"config.json":    config,
 				"tokenizer.json": tokenizer,
 			}
-
 			_, err := convertFromSafetensors(files, nil, false, func(resp api.ProgressResponse) {})
-
 			if (tt.wantErr == nil && err != nil) ||
 				(tt.wantErr != nil && err == nil) ||
 				(tt.wantErr != nil && !errors.Is(err, tt.wantErr)) {

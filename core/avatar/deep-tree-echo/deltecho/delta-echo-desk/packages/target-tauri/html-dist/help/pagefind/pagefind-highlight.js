@@ -26,18 +26,12 @@ let __copyProps = (to, from, except, desc) => {
 let __toESM = (mod, isNodeMode, target) => (
   (target = mod != null ? __create(__getProtoOf(mod)) : {}),
   __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
     isNodeMode || !mod || !mod.__esModule
       ? __defProp(target, 'default', { value: mod, enumerable: true })
       : target,
     mod
   )
 )
-
-// node_modules/mark.js/dist/mark.js
 let require_mark = __commonJS({
   'node_modules/mark.js/dist/mark.js'(exports, module) {
     ;(function (global, factory) {
@@ -1322,8 +1316,6 @@ let require_mark = __commonJS({
     })
   },
 })
-
-// lib/highlight.ts
 let import_mark = __toESM(require_mark(), 1)
 let PagefindHighlight = class {
   constructor(
@@ -1359,7 +1351,6 @@ let PagefindHighlight = class {
     const urlParams = new URLSearchParams(window.location.search)
     return urlParams.getAll(paramName)
   }
-  // Inline styles might be too hard to override
   addHighlightStyles(className) {
     if (!className) return
     const styleElement = document.createElement('style')
@@ -1390,13 +1381,3 @@ let PagefindHighlight = class {
 }
 window.PagefindHighlight = PagefindHighlight
 export { PagefindHighlight as default }
-/*! Bundled license information:
-
-mark.js/dist/mark.js:
-  (*!***************************************************
-  * mark.js v8.11.1
-  * https://markjs.io/
-  * Copyright (c) 2014–2018, Julian Kühnel
-  * Released under the MIT license https://git.io/vwTVl
-  *****************************************************)
-*/

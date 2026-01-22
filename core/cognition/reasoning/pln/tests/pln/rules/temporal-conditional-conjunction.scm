@@ -1,4 +1,3 @@
-; Temporal conditional conjunction 
 (BackPredictiveImplicationScopeLink (stv 1 0.0255786)
   (VariableSet
   ) 
@@ -75,7 +74,6 @@
     (NumberNode "1") 
   ) 
 )
-
 (define target
   (Quote (BackPredictiveImplicationScopeLink
     (Unquote (Variable "$v"))

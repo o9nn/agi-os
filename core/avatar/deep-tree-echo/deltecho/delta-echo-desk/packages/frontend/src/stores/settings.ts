@@ -5,7 +5,6 @@ import { onReady } from '../onready'
 import { runtime } from '@deltachat-desktop/runtime-interface'
 import { Store, useStore } from './store'
 import { debouncedUpdateBadgeCounter } from '../system-integration/badge-counter'
-
 export interface SettingsStoreState {
   accountId: number
   selfContact: Type.Contact
@@ -33,7 +32,6 @@ export interface SettingsStoreState {
   desktopSettings: DesktopSettingsType
   rc: RC_Config
 }
-
 const settingsKeys = [
   'sentbox_watch',
   'mvbox_move',
@@ -53,18 +51,13 @@ const settingsKeys = [
   'is_chatmail',
   'webxdc_realtime_enabled',
 ] as const
-
 export interface DesktopSettingsType {
-  // ... existing properties ...
-
-  // Deep Tree Echo Bot settings
   botEnabled?: boolean
   botLearningEnabled?: boolean
   botPersonality?: string
   botApiKey?: string
   botApiEndpoint?: string
 }
-
 class SettingsStore extends Store<SettingsStoreState | null> {
   reducer = {
     setState: (newState: SettingsStoreState | null) => {
@@ -141,7 +134,6 @@ class SettingsStore extends Store<SettingsStoreState | null> {
         C.DC_CONTACT_ID_SELF
       )
       const desktopSettings = await runtime.getDesktopSettings()
-
       const rc = runtime.getRC_Config()
       this.reducer.setState({
         settings,
@@ -164,8 +156,6 @@ class SettingsStore extends Store<SettingsStoreState | null> {
           this.state.accountId,
           key
         )
-        // console.info('loadCoreKey', key, newValue)
-
         this.setState(state => {
           if (state === null || state.accountId !== accountId) {
             return
@@ -217,7 +207,6 @@ class SettingsStore extends Store<SettingsStoreState | null> {
     },
   }
 }
-
 onReady(() => {
   const updateSelfAvatar = async (accountId: number) => {
     if (accountId === window.__selectedAccountId) {
@@ -228,8 +217,6 @@ onReady(() => {
       SettingsStoreInstance.reducer.setSelfContact(selfContact)
     }
   }
-  // SelfavatarChanged is marked as deprecated in jsonrpc api, but ConfigSynced does not have selfavatar yet
-  // will probably change with https://github.com/deltachat/deltachat-core-rust/pull/5158
   BackendRemote.on('SelfavatarChanged', updateSelfAvatar)
   BackendRemote.on('ConfigSynced', (accountId, { key }) => {
     if (key === 'selfavatar') {
@@ -238,8 +225,6 @@ onReady(() => {
     SettingsStoreInstance.effect.loadCoreKey(accountId, key as any)
   })
 })
-
 const SettingsStoreInstance = new SettingsStore(null, 'SettingsStore')
 export const useSettingsStore = () => useStore(SettingsStoreInstance)
-
 export default SettingsStoreInstance

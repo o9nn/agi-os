@@ -1,12 +1,6 @@
-// import { char, user } from '@moeru-ai/character-card-helpers'
-// import { action, chat, chats, message } from '@moeru-ai/character-card-helpers/alichat.js'
-
 import { chat } from '@moeru-ai/ccc'
-
 const { action, char, message, user } = chat
-
 const name = 'Murasame' as const
-
 export const chat_1_1 = [
   char([
     action`Hup.`,
@@ -187,7 +181,6 @@ export const chat_1_1 = [
     'Alas. I cannot think straight after having been groped so shamelessly.',
   ])),
 ]
-
 export const chat_1_2 = [
   user('Where am I again...?'),
   char(message`I see you've finally awoken, Master. Good morning.`),
@@ -218,7 +211,6 @@ export const chat_1_2 = [
     'It is easier for me to move as I did when I was still alive.',
   ])),
 ]
-
 export const chat_1_3 = [
   user('...'),
   char([
@@ -258,7 +250,6 @@ export const chat_1_3 = [
   ]),
   char(message`Oh... That's good.`),
 ]
-
 export const chat_2_5 = [
   user('Anyway, what do I have to do to earn your forgiveness?'),
   char([

@@ -1,37 +1,27 @@
 typedef struct Bbuf	Bbuf;
 typedef struct Bcache	Bcache;
-
 enum
 {
-	Nbcache=	32,		/* number of blocks kept in pool */
+Nbcache=	32,
 };
-
-/*
- *  block cache descriptor
- */
 struct Bbuf
 {
-	Lru;				/* must be first in struct */
-	ulong	bno;
-	int	inuse;
-	Bbuf	*next;			/* next in dirty list */
-	int	dirty;
-	char	*data;
+Lru;
+ulong	bno;
+int	inuse;
+Bbuf	*next;
+int	dirty;
+char	*data;
 };
-
-/*
- *  the buffer cache
- */
 struct Bcache
 {
-	Lru;
-	int	bsize;			/* block size in bytes */
-	int	f;			/* fd to disk */
-	Bbuf	*dfirst;		/* dirty list */
-	Bbuf	*dlast;
-	Bbuf	bb[Nbcache];
+Lru;
+int	bsize;
+int	f;
+Bbuf	*dfirst;
+Bbuf	*dlast;
+Bbuf	bb[Nbcache];
 };
-
 int	bcinit(Bcache*, int, int);
 Bbuf*	bcalloc(Bcache*, ulong);
 Bbuf*	bcread(Bcache*, ulong);

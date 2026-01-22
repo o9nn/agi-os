@@ -2,40 +2,29 @@
 #pragma src "/sys/src/libmemlayer"
 #pragma lib "libmemlayer.a"
 #endif
-
 typedef struct Memscreen Memscreen;
 typedef void (*Refreshfn)(Memimage*, Rectangle, void*);
-
 struct Memscreen
 {
-	Memimage	*frontmost;	/* frontmost layer on screen */
-	Memimage	*rearmost;	/* rearmost layer on screen */
-	Memimage	*image;		/* upon which all layers are drawn */
-	Memimage	*fill;			/* if non-zero, picture to use when repainting */
+Memimage	*frontmost;
+Memimage	*rearmost;
+Memimage	*image;
+Memimage	*fill;
 };
-
 struct Memlayer
 {
-	Rectangle		screenr;	/* true position of layer on screen */
-	Point			delta;	/* add delta to go from image coords to screen */
-	Memscreen	*screen;	/* screen this layer belongs to */
-	Memimage	*front;	/* window in front of this one */
-	Memimage	*rear;	/* window behind this one*/
-	int		clear;	/* layer is fully visible */
-	Memimage	*save;	/* save area for obscured parts */
-	Refreshfn	refreshfn;		/* function to call to refresh obscured parts if save==nil */
-	void		*refreshptr;	/* argument to refreshfn */
+Rectangle		screenr;
+Point			delta;
+Memscreen	*screen;
+Memimage	*front;
+Memimage	*rear;
+int		clear;
+Memimage	*save;
+Refreshfn	refreshfn;
+void		*refreshptr;
 };
-
-/*
- * These functions accept local coordinates
- */
 int			memload(Memimage*, Rectangle, uchar*, int, int);
 int			memunload(Memimage*, Rectangle, uchar*, int);
-
-/*
- * All these functions accept screen coordinates, not local ones.
- */
 void			_memlayerop(void (*fn)(Memimage*, Rectangle, Rectangle, void*, int), Memimage*, Rectangle, Rectangle, void*);
 Memimage*	memlalloc(Memscreen*, Rectangle, Refreshfn, void*, ulong);
 void			memldelete(Memimage*);

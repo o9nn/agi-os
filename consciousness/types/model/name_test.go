@@ -1,17 +1,14 @@
 package model
-
 import (
 	"path/filepath"
 	"reflect"
 	"runtime"
 	"testing"
 )
-
 const (
 	part80  = "88888888888888888888888888888888888888888888888888888888888888888888888888888888"
 	part350 = "33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
 )
-
 func TestParseNameParts(t *testing.T) {
 	cases := []struct {
 		in              string
@@ -30,7 +27,7 @@ func TestParseNameParts(t *testing.T) {
 			wantFilepath: filepath.Join("registry.ollama.ai", "library", "dolphin-mistral", "7b-v2.6-dpo-laser-q6_K"),
 		},
 		{
-			in: "scheme://host:port/namespace/model:tag",
+			in: "scheme:
 			want: Name{
 				Host:      "host:port",
 				Namespace: "namespace",
@@ -123,14 +120,12 @@ func TestParseNameParts(t *testing.T) {
 			wantFilepath: filepath.Join(part350, part80, part80, part80),
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.in, func(t *testing.T) {
 			got := ParseNameBare(tt.in)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("parseName(%q) = %v; want %v", tt.in, got, tt.want)
 			}
-
 			got = ParseName(tt.in)
 			if tt.wantFilepath != "" && got.Filepath() != tt.wantFilepath {
 				t.Errorf("parseName(%q).Filepath() = %q; want %q", tt.in, got.Filepath(), tt.wantFilepath)
@@ -138,57 +133,38 @@ func TestParseNameParts(t *testing.T) {
 		})
 	}
 }
-
-var testCases = map[string]bool{ // name -> valid
+var testCases = map[string]bool{ 
 	"": false,
-
 	"_why/_the/_lucky:_stiff": true,
-
-	// minimal
 	"h/n/m:t": true,
-
 	"host/namespace/model:tag": true,
 	"host/namespace/model":     false,
 	"namespace/model":          false,
 	"model":                    false,
-
-	// long (but valid)
 	part80 + "/" + part80 + "/" + part80 + ":" + part80:  true,
 	part350 + "/" + part80 + "/" + part80 + ":" + part80: true,
-
-	"h/nn/mm:t": true, // bare minimum part sizes
-
-	// unqualified
+	"h/nn/mm:t": true, 
 	"m":     false,
 	"n/m:":  false,
 	"h/n/m": false,
 	"@t":    false,
 	"m@d":   false,
-
-	// invalids
 	"^":      false,
 	"mm:":    false,
 	"/nn/mm": false,
-	"//":     false,
-	"//mm":   false,
-	"hh//":   false,
-	"//mm:@": false,
+	"
+	"
+	"hh
+	"
 	"00@":    false,
 	"@":      false,
-
-	// not starting with alphanum
 	"-hh/nn/mm:tt": false,
 	"hh/-nn/mm:tt": false,
 	"hh/nn/-mm:tt": false,
 	"hh/nn/mm:-tt": false,
-
-	// hosts
 	"host:https/namespace/model:tag": true,
-
-	// colon in non-host part before tag
 	"host/name:space/model:tag": false,
 }
-
 func TestNameparseNameDefault(t *testing.T) {
 	const name = "xx"
 	n := ParseName(name)
@@ -198,7 +174,6 @@ func TestNameparseNameDefault(t *testing.T) {
 		t.Errorf("parseName(%q).String() = %q; want %q", name, got, want)
 	}
 }
-
 func TestNameIsValid(t *testing.T) {
 	var numStringTests int
 	for s, want := range testCases {
@@ -207,8 +182,6 @@ func TestNameIsValid(t *testing.T) {
 		if got != want {
 			t.Errorf("parseName(%q).IsValid() = %v; want %v", s, got, want)
 		}
-
-		// Test roundtrip with String
 		if got {
 			got := ParseNameBare(s).String()
 			if got != s {
@@ -217,12 +190,10 @@ func TestNameIsValid(t *testing.T) {
 			numStringTests++
 		}
 	}
-
 	if numStringTests == 0 {
 		t.Errorf("no tests for Name.String")
 	}
 }
-
 func TestNameIsValidPart(t *testing.T) {
 	cases := []struct {
 		kind partKind
@@ -249,7 +220,6 @@ func TestNameIsValidPart(t *testing.T) {
 		})
 	}
 }
-
 func TestFilepathAllocs(t *testing.T) {
 	n := ParseNameBare("HOST/NAMESPACE/MODEL:TAG")
 	allocs := testing.AllocsPerRun(1000, func() {
@@ -263,7 +233,6 @@ func TestFilepathAllocs(t *testing.T) {
 		t.Errorf("allocs = %v; allowed %v", allocs, allowedAllocs)
 	}
 }
-
 func TestParseNameFromFilepath(t *testing.T) {
 	cases := map[string]Name{
 		filepath.Join("host", "namespace", "model", "tag"):      {Host: "host", Namespace: "namespace", Model: "model", Tag: "tag"},
@@ -276,18 +245,15 @@ func TestParseNameFromFilepath(t *testing.T) {
 		filepath.Join(".", ".", ".", "."):                       {},
 		filepath.Join("/", "path", "to", "random", "file"):      {},
 	}
-
 	for in, want := range cases {
 		t.Run(in, func(t *testing.T) {
 			got := ParseNameFromFilepath(in)
-
 			if !reflect.DeepEqual(got, want) {
 				t.Errorf("parseNameFromFilepath(%q) = %v; want %v", in, got, want)
 			}
 		})
 	}
 }
-
 func TestDisplayShortest(t *testing.T) {
 	cases := map[string]string{
 		"registry.ollama.ai/library/model:latest": "model:latest",
@@ -296,7 +262,6 @@ func TestDisplayShortest(t *testing.T) {
 		"host/namespace/model:tag":                "host/namespace/model:tag",
 		"host/library/model:tag":                  "host/library/model:tag",
 	}
-
 	for in, want := range cases {
 		t.Run(in, func(t *testing.T) {
 			got := ParseNameBare(in).DisplayShortest()
@@ -306,7 +271,6 @@ func TestDisplayShortest(t *testing.T) {
 		})
 	}
 }
-
 func FuzzName(f *testing.F) {
 	for s := range testCases {
 		f.Add(s)
@@ -329,7 +293,6 @@ func FuzzName(f *testing.F) {
 		}
 	})
 }
-
 func TestIsValidNamespace(t *testing.T) {
 	cases := []struct {
 		username string

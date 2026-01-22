@@ -1,10 +1,5 @@
-// webxdc could be seen as system integration,
-// because it opens new "independent" windows
-// and heavily uses the events
-
 import { BackendRemote, Type } from '../backend-com'
 import { runtime } from '@deltachat-desktop/runtime-interface'
-
 export function initWebxdc() {
   BackendRemote.on('WebxdcStatusUpdate', (accountId, { msgId }) => {
     runtime.notifyWebxdcStatusUpdate(accountId, msgId)
@@ -19,12 +14,6 @@ export function initWebxdc() {
     runtime.notifyWebxdcInstanceDeleted(accountId, msgId)
   })
 }
-
-/**
- * open a webxdc window or focus to an existing one
- * parameter "message" might be of viewType Webxdc or
- * systemMessageType WebxdcInfoMessage
- */
 export async function internalOpenWebxdc(
   accountId: number,
   message: Type.Message
@@ -33,12 +22,10 @@ export async function internalOpenWebxdc(
   let messageId = message.id
   if (message.systemMessageType === 'WebxdcInfoMessage' && message.parentId) {
     href = message.webxdcHref ?? ''
-    // if we have a webxdc info message, the webxdcInfo is attached to the parent message
     messageId = message.parentId
     message = await BackendRemote.rpc.getMessage(accountId, messageId)
   }
   if (!message.webxdcInfo) {
-    // we can open only messages with webxdc info
     throw new Error('no webxdc info for message ' + message)
   }
   const chatName = (
@@ -48,7 +35,6 @@ export async function internalOpenWebxdc(
     await BackendRemote.rpc.getAccountInfo(accountId)
   const displayname =
     account.kind === 'Configured' ? account.displayName || account.addr : null
-
   runtime.openWebxdc(messageId, {
     accountId,
     displayname,
@@ -57,7 +43,6 @@ export async function internalOpenWebxdc(
     href,
   })
 }
-
 export async function openMapWebxdc(accountId: number, chatId?: number) {
   runtime.openMapsWebxdc(accountId, chatId)
 }

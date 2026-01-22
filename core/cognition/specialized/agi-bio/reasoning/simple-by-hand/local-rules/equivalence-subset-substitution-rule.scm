@@ -1,22 +1,3 @@
-; =============================================================================
-; GeneralSimilaritySubstitutionRule
-; (could combine with equivalence by using an or link in the premise
-;
-; AndLink
-;   Equivalance
-;       A
-;       B
-;   LinkType
-;       B
-;       C
-; |-
-; LinkType
-;   A
-;   C
-;
-; (looks a similar pattern as inference or abduction depending on which var in subset is used)
-
-; i think this pattern will work for notlinks as well
 (define pln-rule-equivalence-subset-substitution
     (BindLink
         (VariableList
@@ -25,9 +6,6 @@
             (VariableNode "$C")
         )
         (AndLink
-            ; how to deal with the other direction here? use ORLink?
-            ; but then how do you deal with that in the formula? check for confidence of 0?
-            ; or could use 2 rules with SubsetLink A C in the second one, but that seems clunky
             (EquivalenceLink
                 (VariableNode "$A")
                 (VariableNode "$B")
@@ -56,7 +34,6 @@
         )
     )
 )
-
 (define (pln-formula-equivalence-subset-substitution AB BC AC)
     (display "formula-equiv-subs-subst-rule\n")
     (display-atom "AB" AB)
@@ -66,10 +43,8 @@
         (pln-formula-equivalence-subset-substitution-side-effect-free AB BC)
     )
 )
-
 (define (pln-formula-equivalence-subset-substitution-side-effect-free AB BC)
     (display "pln-formula-equivalance-subset-substitution-side-effect-free\n")
-    ; todo: how to best handle confidence
     (let
         ((sAB (cog-stv-strength AB))
          (cAB (cog-stv-confidence AB))
@@ -80,6 +55,4 @@
         (stv (* sAB sBC) (* cAB cBC))
     )
 )
-
-; Name the rule
 (cog-name-rule "pln-rule-equivalance-subset-substitution")

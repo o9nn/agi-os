@@ -1,41 +1,13 @@
 import type { WebFontMeta } from '@unocss/preset-web-fonts'
 import type { Preset, PresetOrFactoryAwaitable } from 'unocss'
-
 import { setDefaultAutoSelectFamilyAttemptTimeout } from 'node:net'
-
 import { createExternalPackageIconLoader } from '@iconify/utils/lib/loader/external-pkg'
 import { presetChromatic } from '@proj-airi/unocss-preset-chromatic'
 import { colorToString } from '@unocss/preset-mini/utils'
 import { defineConfig, mergeConfigs, presetAttributify, presetIcons, presetTypography, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
 import { parseColor } from 'unocss/preset-mini'
-
-// On Netlify, building will result in when fetching metadata and fonts from @unocss/preset-web-fonts plugin:
-//
-// [cause]: AggregateError [ETIMEDOUT]:
-//    at internalConnectMultiple (node:net:1134:18)
-//  code: 'ETIMEDOUT',
-//  [errors]: [
-//    Error: connect ETIMEDOUT 146.75.77.229:443 ...
-//    Error: connect ENETUNREACH 2a04:4e42:83::485:443 - Local (:::0) ...
-//  ]
-//
-// This is same for either Google Fonts or Fontsource as provider. But GitHub Actions and local development works fine.
-// My assumption is that the default timeout for auto-selecting family is too short (250ms)[^1] for the implementation
-// of the Happy Eyeballs algorithm in Node.js, which is used by the `net` module to connect to the server, workflows
-// illustrates like this:
-//
-// lookupAndConnect > autoSelectFamilyAttemptTimeout > lookupAndConnectMultiple > internalConnectMultiple > defaultTriggerAsyncIdScope
-//
-// Such mechanism will be used when the `net` module attempts to connect to a server using both IPv4 and IPv6 addresses,
-// which is the case for Netlify builder.
-//
-// In order to fix this issue, we can increase the timeout to 1000ms (1 second) so that the algorithm has more time to
-// attempt to connect to the server before timing out.
-//
-// [^1]: https://github.com/nodejs/node/pull/44731/files#diff-d76469e9e7f555294a7a5488c5c8fc4ef8ce5aea448cc26a1322d1ab693e09caR921
 setDefaultAutoSelectFamilyAttemptTimeout(1000)
-
 export function presetStoryMockHover(): PresetOrFactoryAwaitable {
   return {
     name: 'story-mock-hover',
@@ -44,7 +16,6 @@ export function presetStoryMockHover(): PresetOrFactoryAwaitable {
         if (!matcher.includes('hover')) {
           return matcher
         }
-
         return {
           matcher,
           selector: (s) => {
@@ -55,7 +26,6 @@ export function presetStoryMockHover(): PresetOrFactoryAwaitable {
     ],
   }
 }
-
 export function safelistAllPrimaryBackgrounds(): string[] {
   return [undefined, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((shade) => {
     const prefix = shade ? `bg-primary-${shade}` : `bg-primary`
@@ -65,7 +35,6 @@ export function safelistAllPrimaryBackgrounds(): string[] {
     ]
   }).flat()
 }
-
 export function presetWebFontsFonts(provider: 'fontsource' | 'none'): Record<string, string | WebFontMeta | (string | WebFontMeta)[]> {
   return {
     'sans': {
@@ -124,7 +93,6 @@ export function presetWebFontsFonts(provider: 'fontsource' | 'none'): Record<str
     },
   }
 }
-
 export function sharedUnoConfig() {
   return defineConfig({
     presets: [
@@ -156,28 +124,16 @@ export function sharedUnoConfig() {
       ...'prose prose-sm m-auto text-left'.split(' '),
       ...safelistAllPrimaryBackgrounds(),
     ],
-    // hyoban/unocss-preset-shadcn: Use shadcn ui with UnoCSS
-    // https://github.com/hyoban/unocss-preset-shadcn
-    //
-    // Thanks to
-    // https://github.com/unovue/shadcn-vue/issues/34#issuecomment-2467318118
-    // https://github.com/hyoban-template/shadcn-vue-unocss-starter
-    //
-    // By default, `.ts` and `.js` files are NOT extracted.
-    // If you want to extract them, use the following configuration.
-    // It's necessary to add the following configuration if you use shadcn-vue or shadcn-svelte.
     content: {
       pipeline: {
         include: [
-          // the default
           /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
-          // include js/ts files
-          '(components|src)/**/*.{js,ts,vue}', // THIS CAN INCLUDE node_modules
-          '**/stage-ui/**/*.{vue,js,ts}', // THIS TOO
-          '**/ui/**/*.{vue,js,ts}', // THIS TOO
+          '(components|src)*.{js,ts,vue}', 
+          '**/stage-ui*.{vue,js,ts}', 
+          '**/ui*.{vue,js,ts}', 
         ],
         exclude: [
-          /\/node_modules\//, // DO NOT SCAN THE BLACK HOLE
+          /\/node_modules\
         ],
       },
     },
@@ -185,7 +141,6 @@ export function sharedUnoConfig() {
       [/^mask-\[(.*)\]$/, ([, suffix]) => ({ '-webkit-mask-image': suffix.replace(/_/g, ' ') })],
       [/^bg-dotted-\[(.*)\]$/, ([, color], { theme }) => {
         const parsedColor = parseColor(color, theme)
-        // Util usage: https://github.com/unocss/unocss/blob/f57ef6ae50006a92f444738e50f3601c0d1121f2/packages-presets/preset-mini/src/_utils/utilities.ts#L186
         return {
           'background-image': `radial-gradient(circle at 1px 1px, ${colorToString(parsedColor?.cssColor ?? parsedColor?.color ?? color, 'var(--un-background-opacity)')} 1px, transparent 0)`,
           '--un-background-opacity': parsedColor?.cssColor?.alpha ?? parsedColor?.alpha ?? 1,
@@ -201,10 +156,6 @@ export function sharedUnoConfig() {
         'cuteen': `"Sniglet", "Kiwi Maru", "Comfortaa", "xiaolai", "DM Sans Variant", "DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";`,
         'cutejp': `"Sniglet", "Kiwi Maru", "Comfortaa", "xiaolai", "DM Sans Variant", "DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";`,
       },
-      /**
-       * https://github.com/unocss/unocss/blob/1031312057a3bea1082b7d938eb2ad640f57613a/packages-presets/preset-wind4/src/theme/animate.ts
-       * https://unocss.dev/presets/wind4#transformdirectives
-       */
       animation: {
         keyframes: {
           overlayShow: '{from{opacity:0;}to{opacity:1;}}',
@@ -246,7 +197,6 @@ export function sharedUnoConfig() {
     },
   })
 }
-
 export function histoireUnoConfig() {
   return defineConfig({
     presets: [
@@ -254,7 +204,6 @@ export function histoireUnoConfig() {
     ],
   })
 }
-
 export default mergeConfigs([
   sharedUnoConfig(),
   histoireUnoConfig(),

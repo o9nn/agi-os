@@ -1,11 +1,9 @@
-// Japanese
 export const LANG_JP_NAME = 'jp';
-
 export const LANG_JP_TRANS = {
     'Visualize': '視覚化する',
     'Fetch': '取って参る',
     'Language': '言語',
-    'Filter': '漉す', // 'フィルタ'
+    'Filter': '漉す', 
     'Dataset-not-found': 'No Data Set is Found',
     'Search': 'Search',
     'Filter-by': 'Filter by',

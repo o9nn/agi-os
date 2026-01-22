@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 set -e
-
-# @describe Search Wikipedia for a query.
-# Uses it to get detailed information about a public figure, interpretation of a complex scientific concept or in-depth connectivity of a significant historical event,.
-
-# @option --query! The query to search for.
-
-# @env LLM_OUTPUT=/dev/stdout The output path
-
 main() {
     encoded_query="$(jq -nr --arg q "$argc_query" '$q|@uri')"
     base_url="https://en.wikipedia.org/w/api.php"
@@ -24,5 +16,4 @@ main() {
     url="$base_url?action=query&prop=extracts&explaintext=&titles=$title&exintro=&format=json"
     curl -fsSL "$url" | jq -r '.query.pages["'"$pageid"'"].extract' >> "$LLM_OUTPUT"
 }
-
 eval "$(argc --argc-eval "$0" "$@")"

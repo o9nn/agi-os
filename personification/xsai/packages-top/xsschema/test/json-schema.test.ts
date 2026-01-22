@@ -1,8 +1,6 @@
 import * as v from 'valibot'
 import { describe, expect, it } from 'vitest'
-
 import { strictJsonSchema, toJsonSchema } from '../src'
-
 describe('strictJsonSchema', () => {
   it('basic', async () => {
     const schema = v.pipe(
@@ -12,10 +10,8 @@ describe('strictJsonSchema', () => {
       }),
       v.description('My neat object schema'),
     )
-
     expect(strictJsonSchema(await toJsonSchema(schema))).toMatchSnapshot()
   })
-
   it('nested', async () => {
     const schema = v.object({
       foo: v.object({
@@ -25,7 +21,6 @@ describe('strictJsonSchema', () => {
         }),
       }),
     })
-
     expect(strictJsonSchema(await toJsonSchema(schema))).toMatchSnapshot()
   })
 })

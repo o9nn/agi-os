@@ -1,17 +1,13 @@
 package convert
-
 import (
 	"cmp"
 	"fmt"
 	"math"
 	"strings"
-
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type llamaModel struct {
 	ModelParameters
 	NLayers               uint32  `json:"n_layers"`
@@ -34,7 +30,6 @@ type llamaModel struct {
 		LowFrequencyFactor            float32 `json:"low_freq_factor"`
 		HighFrequencyFactor           float32 `json:"high_freq_factor"`
 		OriginalMaxPositionEmbeddings uint32  `json:"original_max_position_embeddings"`
-
 		factors ropeFactor
 	} `json:"rope_scaling"`
 	RMSNormEPS       float32 `json:"rms_norm_eps"`
@@ -42,44 +37,33 @@ type llamaModel struct {
 	LayerNormEpsilon float32 `json:"layer_norm_epsilon"`
 	NormEpsilon      float32 `json:"norm_epsilon"`
 	HeadDim          uint32  `json:"head_dim"`
-
 	skipRepack bool
 }
-
 var _ ModelConverter = (*llamaModel)(nil)
-
 func (p *llamaModel) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "llama"
 	kv["llama.vocab_size"] = p.VocabSize
-
 	kv["llama.block_count"] = cmp.Or(p.NLayers, p.NumHiddenLayers, p.NLayer)
-
 	if contextLength := cmp.Or(p.MaxPositionEmbeddings, p.NCtx); contextLength > 0 {
 		kv["llama.context_length"] = contextLength
 	}
-
 	if embeddingLength := cmp.Or(p.HiddenSize, p.NEmbd); embeddingLength > 0 {
 		kv["llama.embedding_length"] = cmp.Or(p.HiddenSize, p.NEmbd)
 	}
-
 	if feedForwardLength := cmp.Or(p.IntermediateSize, p.NInner); feedForwardLength > 0 {
 		kv["llama.feed_forward_length"] = cmp.Or(p.IntermediateSize, p.NInner)
 	}
-
 	if headCount := cmp.Or(p.NumAttentionHeads, p.NHead); headCount > 0 {
 		kv["llama.attention.head_count"] = cmp.Or(p.NumAttentionHeads, p.NHead)
 		kv["llama.rope.dimension_count"] = p.HiddenSize / headCount
 	}
-
 	if p.HeadDim > 0 {
 		kv["llama.attention.head_dim"] = p.HeadDim
 	}
-
 	if p.RopeTheta > 0 {
 		kv["llama.rope.freq_base"] = p.RopeTheta
 	}
-
 	if p.RopeScaling.Type == "linear" {
 		kv["llama.rope.scaling.type"] = p.RopeScaling.Type
 		kv["llama.rope.scaling.factor"] = p.RopeScaling.Factor
@@ -89,11 +73,9 @@ func (p *llamaModel) KV(t *Tokenizer) ggml.KV {
 			factor := cmp.Or(p.RopeScaling.Factor, 8.0)
 			factorLow := cmp.Or(p.RopeScaling.LowFrequencyFactor, 1.0)
 			factorHigh := cmp.Or(p.RopeScaling.HighFrequencyFactor, 4.0)
-
 			original := cmp.Or(p.RopeScaling.OriginalMaxPositionEmbeddings, 8192)
 			lambdaLow := float32(original) / factorLow
 			lambdaHigh := float32(original) / factorHigh
-
 			lambda := 2 * math.Pi * math.Pow(float64(p.RopeTheta), float64(i)/float64(dim))
 			if lambda < float64(lambdaHigh) {
 				p.RopeScaling.factors = append(p.RopeScaling.factors, 1.0)
@@ -105,30 +87,23 @@ func (p *llamaModel) KV(t *Tokenizer) ggml.KV {
 			}
 		}
 	}
-
 	if p.NumKeyValueHeads > 0 {
 		kv["llama.attention.head_count_kv"] = p.NumKeyValueHeads
 	}
-
 	if p.RMSNormEPS > 0 {
 		kv["llama.attention.layer_norm_rms_epsilon"] = p.RMSNormEPS
 	}
-
 	if layerNormEpsilon := cmp.Or(p.LayerNormEPS, p.LayerNormEpsilon, p.NormEpsilon); layerNormEpsilon > 0 {
 		kv["llama.attention.layer_norm_epsilon"] = layerNormEpsilon
 	}
-
 	if p.HeadDim > 0 {
 		kv["llama.attention.key_length"] = p.HeadDim
 		kv["llama.attention.value_length"] = p.HeadDim
 	}
-
 	return kv
 }
-
 func (p *llamaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
-
 	if p.RopeScaling.factors != nil {
 		out = append(out, &ggml.Tensor{
 			Name:     "rope_freqs.weight",
@@ -137,7 +112,6 @@ func (p *llamaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: p.RopeScaling.factors,
 		})
 	}
-
 	for _, t := range ts {
 		if strings.HasSuffix(t.Name(), "attn_q.weight") || strings.HasSuffix(t.Name(), "attn_k.weight") ||
 			strings.HasSuffix(t.Name(), "attn_q_proj.weight") || strings.HasSuffix(t.Name(), "attn_k_proj.weight") {
@@ -145,7 +119,6 @@ func (p *llamaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 				t.SetRepacker(p.repack)
 			}
 		}
-
 		out = append(out, &ggml.Tensor{
 			Name:     t.Name(),
 			Kind:     t.Kind(),
@@ -153,10 +126,8 @@ func (p *llamaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *llamaModel) Replacements() []string {
 	return []string{
 		"lm_head", "output",
@@ -174,13 +145,11 @@ func (p *llamaModel) Replacements() []string {
 		"post_attention_layernorm", "ffn_norm",
 	}
 }
-
 func (p *llamaModel) repack(name string, data []float32, shape []uint64) ([]float32, error) {
 	var dims []int
 	for _, dim := range shape {
 		dims = append(dims, int(dim))
 	}
-
 	var heads uint32
 	if strings.HasSuffix(name, "attn_q.weight") || strings.HasSuffix(name, "attn_q_proj.weight") {
 		heads = p.NumAttentionHeads
@@ -189,33 +158,26 @@ func (p *llamaModel) repack(name string, data []float32, shape []uint64) ([]floa
 	} else {
 		return nil, fmt.Errorf("unknown tensor for repack: %s", name)
 	}
-
 	n := tensor.New(tensor.WithShape(dims...), tensor.WithBacking(data))
 	if err := n.Reshape(append([]int{int(heads), 2, dims[0] / int(heads) / 2}, dims[1:]...)...); err != nil {
 		return nil, err
 	}
-
 	if err := n.T(0, 2, 1, 3); err != nil {
 		return nil, err
 	}
-
 	if err := n.Reshape(dims...); err != nil {
 		return nil, err
 	}
-
 	if err := n.Transpose(); err != nil {
 		return nil, err
 	}
-
 	ts, err := native.SelectF32(n, 1)
 	if err != nil {
 		return nil, err
 	}
-
 	var f32s []float32
 	for _, t := range ts {
 		f32s = append(f32s, t...)
 	}
-
 	return f32s, nil
 }

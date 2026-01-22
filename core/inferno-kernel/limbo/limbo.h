@@ -2,21 +2,14 @@
 #include "bio.h"
 #include "isa.h"
 #include "mathi.h"
-
-/* internal dis ops */
 #define IEXC	MAXDIS
 #define IEXC0	(MAXDIS+1)
 #define INOOP	(MAXDIS+2)
-
-/* temporary */
 #define	LDT	1
-
 #ifndef Extern
 #define Extern extern
 #endif
-
 #define YYMAXDEPTH	200
-
 typedef	struct Addr	Addr;
 typedef	struct Case	Case;
 typedef	struct Decl	Decl;
@@ -38,582 +31,501 @@ typedef	struct Teq	Teq;
 typedef	struct Tpair	Tpair;
 typedef	struct Type	Type;
 typedef	struct Typelist	Typelist;
-
 typedef	double		Real;
 typedef	vlong		Long;
-
 enum
 {
-	STemp		= NREG * IBY2WD,
-	RTemp		= STemp+IBY2WD,
-	DTemp		= RTemp+IBY2WD,
-	MaxTemp		= DTemp+IBY2WD,
-	MaxReg		= 1<<16,
-	MaxAlign	= IBY2LG,
-	StrSize		= 256,
-	NumSize		= 32,		/* max length of printed  */
-	MaxIncPath	= 32,		/* max directories in include path */
-	MaxScope	= 64,		/* max nested {} */
-	MaxInclude	= 32,		/* max nested include "" */
-	ScopeBuiltin	= 0,
-	ScopeNils	= 1,
-	ScopeGlobal	= 2
+STemp		= NREG * IBY2WD,
+RTemp		= STemp+IBY2WD,
+DTemp		= RTemp+IBY2WD,
+MaxTemp		= DTemp+IBY2WD,
+MaxReg		= 1<<16,
+MaxAlign	= IBY2LG,
+StrSize		= 256,
+NumSize		= 32,
+MaxIncPath	= 32,
+MaxScope	= 64,
+MaxInclude	= 32,
+ScopeBuiltin	= 0,
+ScopeNils	= 1,
+ScopeGlobal	= 2
 };
-
-/*
- * return tuple from expression type checking
- */
 struct Ok
 {
-	int	ok;
-	int	allok;
+int	ok;
+int	allok;
 };
-
-/*
- * return tuple from type sizing
- */
 struct Szal
 {
-	int	size;
-	int	align;
+int	size;
+int	align;
 };
-
-/*
- * return tuple for file/line numbering
- */
 struct Fline
 {
-	File	*file;
-	int	line;
+File	*file;
+int	line;
 };
-
 struct File
 {
-	char	*name;
-	int	abs;			/* absolute line of start of the part of file */
-	int	off;			/* offset to line in the file */
-	int	in;			/* absolute line where included */
-	char	*act;			/* name of real file with #line fake file */
-	int	actoff;			/* offset from fake line to real line */
-	int	sbl;			/* symbol file number */
+char	*name;
+int	abs;
+int	off;
+int	in;
+char	*act;
+int	actoff;
+int	sbl;
 };
-
 struct Line
 {
-	int	line;
-	int	pos;			/* character within the line */
+int	line;
+int	pos;
 };
-
 struct Src
 {
-	Line	start;
-	Line	stop;
+Line	start;
+Line	stop;
 };
-
 enum
 {
-	Aimm,				/* immediate */
-	Amp,				/* global */
-	Ampind,				/* global indirect */
-	Afp,				/* activation frame */
-	Afpind,				/* frame indirect */
-	Apc,				/* branch */
-	Adesc,				/* type descriptor immediate */
-	Aoff,				/* offset in module description table */
-	Anoff,			/* above encoded as -ve */
-	Aerr,				/* error */
-	Anone,				/* no operand */
-	Aldt,				/* linkage descriptor table immediate */
-	Aend
+Aimm,
+Amp,
+Ampind,
+Afp,
+Afpind,
+Apc,
+Adesc,
+Aoff,
+Anoff,
+Aerr,
+Anone,
+Aldt,
+Aend
 };
-
 struct Addr
 {
-	long	reg;
-	long	offset;
-	Decl	*decl;
+long	reg;
+long	offset;
+Decl	*decl;
 };
-
 struct Inst
 {
-	Src	src;
-	ushort	op;
-	long	pc;
-	uchar	reach;			/* could a control path reach this instruction? */
-	uchar	sm;			/* operand addressing modes */
-	uchar	mm;
-	uchar	dm;
-	Addr	s;			/* operands */
-	Addr	m;
-	Addr	d;
-	Inst	*branch;		/* branch destination */
-	Inst	*next;
-	int	block;			/* blocks nested inside */
+Src	src;
+ushort	op;
+long	pc;
+uchar	reach;
+uchar	sm;
+uchar	mm;
+uchar	dm;
+Addr	s;
+Addr	m;
+Addr	d;
+Inst	*branch;
+Inst	*next;
+int	block;
 };
-
 struct Case
 {
-	int	nlab;
-	int	nsnd;
-	long	offset;			/* offset in mp */
-	Label	*labs;
-	Node	*wild;			/* if nothing matches */
-	Inst	*iwild;
+int	nlab;
+int	nsnd;
+long	offset;
+Label	*labs;
+Node	*wild;
+Inst	*iwild;
 };
-
 struct Label
 {
-	Node	*node;
-	char	isptr;			/* true if the labelled alt channel is a pointer */
-	Node	*start;			/* value in range [start, stop) => code */
-	Node	*stop;
-	Inst	*inst;
+Node	*node;
+char	isptr;
+Node	*start;
+Node	*stop;
+Inst	*inst;
 };
-
 enum
 {
-	Dtype,
-	Dfn,
-	Dglobal,
-	Darg,
-	Dlocal,
-	Dconst,
-	Dfield,
-	Dtag,				/* pick tags */
-	Dimport,			/* imported identifier */
-	Dunbound,			/* unbound identified */
-	Dundef,
-	Dwundef,			/* undefined, but don't whine */
-
-	Dend
+Dtype,
+Dfn,
+Dglobal,
+Darg,
+Dlocal,
+Dconst,
+Dfield,
+Dtag,
+Dimport,
+Dunbound,
+Dundef,
+Dwundef,
+Dend
 };
-
 struct Decl
 {
-	Src	src;			/* where declaration */
-	Sym	*sym;
-	uchar	store;			/* storage class */
-	uchar	nid;		/* block grouping for locals */
-	schar	caninline;	/* inline function */
-	uchar	das;		/* declared with := */
-	Decl	*dot;			/* parent adt or module */
-	Type	*ty;
-	int	refs;			/* number of references */
-	long	offset;
-	int	tag;			/* union tag */
-
-	uchar	scope;			/* in which it was declared */
-	uchar	handler;		/* fn has exception handler in body */
-	Decl	*next;			/* list in same scope, field or argument list, etc. */
-	Decl	*old;			/* declaration of the symbol in enclosing scope */
-
-	Node	*eimport;		/* expr from which imported */
-	Decl	*importid;		/* identifier imported */
-	Decl	*timport;		/* stack of identifiers importing a type */
-
-	Node	*init;			/* data initialization */
-	int	tref;			/* 1 => is a tmp; >=2 => tmp in use */
-	char	cycle;			/* can create a cycle */
-	char	cyc;			/* so labelled in source */
-	char	cycerr;			/* delivered an error message for cycle? */
-	char	implicit;		/* implicit first argument in an adt? */
-
-	Decl	*iface;			/* used external declarations in a module */
-
-	Decl	*locals;		/* locals for a function */
-	Decl *link;			/* pointer to parent function or function argument or local share or parent type dec */
-	Inst	*pc;			/* start of function */
-	/* Inst	*endpc; */			/* limit of function - unused */
-
-	Desc	*desc;			/* heap descriptor */
+Src	src;
+Sym	*sym;
+uchar	store;
+uchar	nid;
+schar	caninline;
+uchar	das;
+Decl	*dot;
+Type	*ty;
+int	refs;
+long	offset;
+int	tag;
+uchar	scope;
+uchar	handler;
+Decl	*next;
+Decl	*old;
+Node	*eimport;
+Decl	*importid;
+Decl	*timport;
+Node	*init;
+int	tref;
+char	cycle;
+char	cyc;
+char	cycerr;
+char	implicit;
+Decl	*iface;
+Decl	*locals;
+Decl *link;
+Inst	*pc;
+Desc	*desc;
 };
-
 struct Desc
 {
-	int	id;			/* dis type identifier */
-	uchar	used;			/* actually used in output? */
-	uchar	*map;			/* byte map of pointers */
-	long	size;			/* length of the object */
-	long	nmap;			/* length of good bytes in map */
-	Desc	*next;
+int	id;
+uchar	used;
+uchar	*map;
+long	size;
+long	nmap;
+Desc	*next;
 };
-
 struct Dlist
 {
-	Decl *d;
-	Dlist *next;
+Decl *d;
+Dlist *next;
 };
-
 struct Except
 {
-	Inst *p1;		/* first pc covered */
-	Inst *p2;		/* last pc not covered */
-	Case *c;		/* exception case instructions */
-	Decl *d;		/* exception definition if any */
-	Node *zn;		/* list of nodes to zero in handler */
-	Desc *desc;	/* descriptor map for above */
-	int ne;		/* number of exceptions (ie not strings) in case */
-	Except *next;
+Inst *p1;
+Inst *p2;
+Case *c;
+Decl *d;
+Node *zn;
+Desc *desc;
+int ne;
+Except *next;
 };
-
 struct Sym
 {
-	ushort	token;
-	char	*name;
-	int	len;
-	int	hash;
-	Sym	*next;
-	Decl	*decl;
-	Decl	*unbound;		/* place holder for unbound symbols */
+ushort	token;
+char	*name;
+int	len;
+int	hash;
+Sym	*next;
+Decl	*decl;
+Decl	*unbound;
 };
-
-/*
- * ops for nodes
- */
 enum
 {
-	Oadd = 1,
-	Oaddas,
-	Oadr,
-	Oadtdecl,
-	Oalt,
-	Oand,
-	Oandand,
-	Oandas,
-	Oarray,
-	Oas,
-	Obreak,
-	Ocall,
-	Ocase,
-	Ocast,
-	Ochan,
-	Ocomma,
-	Ocomp,
-	Ocondecl,
-	Ocons,
-	Oconst,
-	Ocont,
-	Odas,
-	Odec,
-	Odiv,
-	Odivas,
-	Odo,
-	Odot,
-	Oelem,
-	Oeq,
-	Oexcept,
-	Oexdecl,
-	Oexit,
-	Oexp,
-	Oexpas,
-	Oexstmt,
-	Ofielddecl,
-	Ofnptr,
-	Ofor,
-	Ofunc,
-	Ogeq,
-	Ogt,
-	Ohd,
-	Oif,
-	Oimport,
-	Oinc,
-	Oind,
-	Oindex,
-	Oinds,
-	Oindx,
-	Oinv,
-	Ojmp,
-	Olabel,
-	Olen,
-	Oleq,
-	Oload,
-	Olsh,
-	Olshas,
-	Olt,
-	Omdot,
-	Omod,
-	Omodas,
-	Omoddecl,
-	Omul,
-	Omulas,
-	Oname,
-	Oneg,
-	Oneq,
-	Onot,
-	Onothing,
-	Oor,
-	Ooras,
-	Ooror,
-	Opick,
-	Opickdecl,
-	Opredec,
-	Opreinc,
-	Oraise,
-	Orange,
-	Orcv,
-	Oref,
-	Oret,
-	Orsh,
-	Orshas,
-	Oscope,
-	Oself,
-	Oseq,
-	Oslice,
-	Osnd,
-	Ospawn,
-	Osub,
-	Osubas,
-	Otagof,
-	Otl,
-	Otuple,
-	Otype,
-	Otypedecl,
-	Oused,
-	Ovardecl,
-	Ovardecli,
-	Owild,
-	Oxor,
-	Oxoras,
-
-	Oend
+Oadd = 1,
+Oaddas,
+Oadr,
+Oadtdecl,
+Oalt,
+Oand,
+Oandand,
+Oandas,
+Oarray,
+Oas,
+Obreak,
+Ocall,
+Ocase,
+Ocast,
+Ochan,
+Ocomma,
+Ocomp,
+Ocondecl,
+Ocons,
+Oconst,
+Ocont,
+Odas,
+Odec,
+Odiv,
+Odivas,
+Odo,
+Odot,
+Oelem,
+Oeq,
+Oexcept,
+Oexdecl,
+Oexit,
+Oexp,
+Oexpas,
+Oexstmt,
+Ofielddecl,
+Ofnptr,
+Ofor,
+Ofunc,
+Ogeq,
+Ogt,
+Ohd,
+Oif,
+Oimport,
+Oinc,
+Oind,
+Oindex,
+Oinds,
+Oindx,
+Oinv,
+Ojmp,
+Olabel,
+Olen,
+Oleq,
+Oload,
+Olsh,
+Olshas,
+Olt,
+Omdot,
+Omod,
+Omodas,
+Omoddecl,
+Omul,
+Omulas,
+Oname,
+Oneg,
+Oneq,
+Onot,
+Onothing,
+Oor,
+Ooras,
+Ooror,
+Opick,
+Opickdecl,
+Opredec,
+Opreinc,
+Oraise,
+Orange,
+Orcv,
+Oref,
+Oret,
+Orsh,
+Orshas,
+Oscope,
+Oself,
+Oseq,
+Oslice,
+Osnd,
+Ospawn,
+Osub,
+Osubas,
+Otagof,
+Otl,
+Otuple,
+Otype,
+Otypedecl,
+Oused,
+Ovardecl,
+Ovardecli,
+Owild,
+Oxor,
+Oxoras,
+Oend
 };
-
-/*
- * moves
- */
 enum
 {
-	Mas,
-	Mcons,
-	Mhd,
-	Mtl,
-
-	Mend
+Mas,
+Mcons,
+Mhd,
+Mtl,
+Mend
 };
-
-/*
- * addressability
- */
 enum
 {
-	Rreg,				/* v(fp) */
-	Rmreg,				/* v(mp) */
-	Roff,				/* $v */
-	Rnoff,			/* $v encoded as -ve */
-	Rdesc,				/* $v */
-	Rdescp,				/* $v */
-	Rconst,				/* $v */
-	Ralways,			/* preceeding are always addressable */
-	Radr,				/* v(v(fp)) */
-	Rmadr,				/* v(v(mp)) */
-	Rcant,				/* following are not quite addressable */
-	Rpc,				/* branch address */
-	Rmpc,				/* cross module branch address */
-	Rareg,				/* $v(fp) */
-	Ramreg,				/* $v(mp) */
-	Raadr,				/* $v(v(fp)) */
-	Ramadr,				/* $v(v(mp)) */
-	Rldt,				/* $v */
-
-	Rend
+Rreg,
+Rmreg,
+Roff,
+Rnoff,
+Rdesc,
+Rdescp,
+Rconst,
+Ralways,
+Radr,
+Rmadr,
+Rcant,
+Rpc,
+Rmpc,
+Rareg,
+Ramreg,
+Raadr,
+Ramadr,
+Rldt,
+Rend
 };
-
 #define PARENS	1
 #define TEMP		2
-#define FNPTRA	4	/* argument */
-#define FNPTR2	8	/* 2nd parameter */
-#define FNPTRN	16	/* use -ve offset */
+#define FNPTRA	4
+#define FNPTR2	8
+#define FNPTRN	16
 #define FNPTR		(FNPTRA|FNPTR2|FNPTRN)
-
 struct Node
 {
-	Src	src;
-	uchar	op;
-	uchar	addable;
-	uchar	flags;
-	uchar	temps;
-	Node	*left;
-	Node	*right;
-	Type	*ty;
-	Decl	*decl;
-	Long	val;			/* for Oconst */
-	Real	rval;			/* for Oconst */
+Src	src;
+uchar	op;
+uchar	addable;
+uchar	flags;
+uchar	temps;
+Node	*left;
+Node	*right;
+Type	*ty;
+Decl	*decl;
+Long	val;
+Real	rval;
 };
-
 enum
 {
-	/*
-	 * types visible to limbo
-	 */
-	Tnone	= 0,
-	Tadt,
-	Tadtpick,			/* pick case of an adt */
-	Tarray,
-	Tbig,				/* 64 bit int */
-	Tbyte,				/* 8 bit unsigned int */
-	Tchan,
-	Treal,
-	Tfn,
-	Tint,				/* 32 bit int */
-	Tlist,
-	Tmodule,
-	Tref,
-	Tstring,
-	Ttuple,
-	Texception,
-	Tfix,
-	Tpoly,
-
-	/*
-	 * internal use types
-	 */
-	Tainit,				/* array initializers */
-	Talt,				/* alt channels */
-	Tany,				/* type of nil */
-	Tarrow,				/* unresolved ty->id types */
-	Tcase,				/* case labels */
-	Tcasel,				/* case big labels */
-	Tcasec,				/* case string labels */
-	Tdot,				/* unresolved ty.id types */
-	Terror,
-	Tgoto,				/* goto labels */
-	Tid,				/* id with unknown type */
-	Tiface,				/* module interface */
-	Texcept,			/* exception handler tables */
-	Tinst,			/* instantiated adt */
-
-	Tend
+Tnone	= 0,
+Tadt,
+Tadtpick,
+Tarray,
+Tbig,
+Tbyte,
+Tchan,
+Treal,
+Tfn,
+Tint,
+Tlist,
+Tmodule,
+Tref,
+Tstring,
+Ttuple,
+Texception,
+Tfix,
+Tpoly,
+Tainit,
+Talt,
+Tany,
+Tarrow,
+Tcase,
+Tcasel,
+Tcasec,
+Tdot,
+Terror,
+Tgoto,
+Tid,
+Tiface,
+Texcept,
+Tinst,
+Tend
 };
-
 enum
 {
-	OKbind		= 1 << 0,	/* type decls are bound */
-	OKverify	= 1 << 1,	/* type looks ok */
-	OKsized		= 1 << 2,	/* started figuring size */
-	OKref		= 1 << 3,	/* recorded use of type */
-	OKclass		= 1 << 4,	/* equivalence class found */
-	OKcyc		= 1 << 5,	/* checked for cycles */
-	OKcycsize	= 1 << 6,	/* checked for cycles and size */
-	OKmodref	= 1 << 7,	/* started checking for a module handle */
-
-	OKmask		= 0xff,
-
-	/*
-	 * recursive marks
-	 */
-	TReq		= 1 << 0,
-	TRcom		= 1 << 1,
-	TRcyc		= 1 << 2,
-	TRvis		= 1 << 3,
+OKbind		= 1 << 0,
+OKverify	= 1 << 1,
+OKsized		= 1 << 2,
+OKref		= 1 << 3,
+OKclass		= 1 << 4,
+OKcyc		= 1 << 5,
+OKcycsize	= 1 << 6,
+OKmodref	= 1 << 7,
+OKmask		= 0xff,
+TReq		= 1 << 0,
+TRcom		= 1 << 1,
+TRcyc		= 1 << 2,
+TRvis		= 1 << 3,
 };
-
-/* type flags */
-#define	FULLARGS	1	/* all hidden args added */
-#define	INST	2		/* instantiated adt */
-#define	CYCLIC	4	/* cyclic type */
-#define	POLY	8	/* polymorphic types inside */
-#define	NOPOLY	16	/* no polymorphic types inside */
-
+#define	FULLARGS	1
+#define	INST	2
+#define	CYCLIC	4
+#define	POLY	8
+#define	NOPOLY	16
 struct Type
 {
-	Src	src;
-	uchar	kind;
-	uchar	varargs;		/* if a function, ends with vargs? */
-	uchar	ok;			/* set when type is verified */
-	uchar	linkall;		/* put all iface fns in external linkage? */
-	uchar	rec;			/* in the middle of recursive type */
-	uchar	cons;		/* exception constant */
-	uchar	align;		/* alignment in bytes */
-	uchar	flags;
-	int	sbl;			/* slot in .sbl adt table */
-	long	sig;			/* signature for dynamic type check */
-	long	size;			/* storage required, in bytes */
-	Decl	*decl;
-	Type	*tof;
-	Decl	*ids;
-	Decl	*tags;			/* tagged fields in an adt */
-	Decl *polys;			/* polymorphic fields in fn or adt */
-	Case	*cse;			/* case or goto labels */
-	Type	*teq;			/* temporary equiv class for equiv checking */
-	Type	*tcom;			/* temporary equiv class for compat checking */
-	Teq	*eq;			/* real equiv class */
-	Node *val;		/* for Tfix, Tfn, Tadt only */
-	union {
-		Node *eraises;		/* for Tfn only */
-		Typelist *tlist;		/* for Tinst only */
-		Tpair *tmap;		/* for Tadt only */
-	} u;
+Src	src;
+uchar	kind;
+uchar	varargs;
+uchar	ok;
+uchar	linkall;
+uchar	rec;
+uchar	cons;
+uchar	align;
+uchar	flags;
+int	sbl;
+long	sig;
+long	size;
+Decl	*decl;
+Type	*tof;
+Decl	*ids;
+Decl	*tags;
+Decl *polys;
+Case	*cse;
+Type	*teq;
+Type	*tcom;
+Teq	*eq;
+Node *val;
+union {
+Node *eraises;
+Typelist *tlist;
+Tpair *tmap;
+} u;
 };
-
-/*
- * type equivalence classes
- */
 struct Teq
 {
-	int	id;		/* for signing */
-	Type	*ty;		/* an instance of the class */
-	Teq	*eq;		/* used to link eq sets */
+int	id;
+Type	*ty;
+Teq	*eq;
 };
-
 struct Tattr
 {
-	char	isptr;
-	char	refable;
-	char	conable;
-	char	big;
-	char	vis;			/* type visible to users */
+char	isptr;
+char	refable;
+char	conable;
+char	big;
+char	vis;
 };
-
 enum {
-	Sother,
-	Sloop,
-	Sscope
+Sother,
+Sloop,
+Sscope
 };
-
 struct Tpair
 {
-	Type *t1;
-	Type *t2;
-	Tpair *nxt;
+Type *t1;
+Type *t2;
+Tpair *nxt;
 };
-
 struct Typelist
 {
-	Type *t;
-	Typelist *nxt;
+Type *t;
+Typelist *nxt;
 };
-	
 Extern	Decl	**adts;
-Extern	Sym	*anontupsym;		/* name assigned to all anonymouse tuples */
+Extern	Sym	*anontupsym;
 Extern	int	arrayz;
-Extern	int	asmsym;			/* generate symbols in assembly language? */
+Extern	int	asmsym;
 Extern	Biobuf	*bins[MaxInclude];
 Extern	int	blocks;
-Extern	Biobuf	*bout;			/* output file */
-Extern	Biobuf	*bsym;			/* symbol output file; nil => no sym out */
-Extern	double	canonnan;		/* standard nan */
-Extern	uchar	casttab[Tend][Tend];	/* instruction to cast from [1] to [2] */
+Extern	Biobuf	*bout;
+Extern	Biobuf	*bsym;
+Extern	double	canonnan;
+Extern	uchar	casttab[Tend][Tend];
 Extern	long	constval;
 Extern	Decl	*curfn;
 Extern	char	debug[256];
-Extern	Desc	*descriptors;		/* list of all possible descriptors */
-Extern	int	dontcompile;		/* dis header flag */
+Extern	Desc	*descriptors;
+Extern	int	dontcompile;
 Extern	int	dowarn;
-Extern	char	*emitcode;		/* emit stub routines for system module functions */
-Extern	int	emitdyn;		/* emit stub routines as above but for dynamic modules */
-Extern	int	emitstub;		/* emit type and call frames for system modules */
-Extern	char	*emittab;		/* emit table of runtime functions for this module */
+Extern	char	*emitcode;
+Extern	int	emitdyn;
+Extern	int	emitstub;
+Extern	char	*emittab;
 Extern	int	errors;
 Extern	char	escmap[256];
 Extern	Inst	*firstinst;
-Extern	long	fixss;			/* set extent from command line */
+Extern	long	fixss;
 Extern	Decl	*fndecls;
 Extern	Decl	**fns;
-Extern	int	gendis;			/* generate dis or asm? */
-Extern	Decl	*impdecl;			/* id of implementation module or union if many */
-Extern	Dlist	*impdecls;		/* id(s) of implementation module(s) */
-/* Extern	Sym	*impmod;	*/	/* name of implementation module */
-Extern	Decl	*impmods;		/* name of implementation module(s) */
+Extern	int	gendis;
+Extern	Decl	*impdecl;
+Extern	Dlist	*impdecls;
+Extern	Decl	*impmods;
 Extern	Decl	*iota;
 Extern	uchar	isbyteinst[256];
 Extern	int	isfatal;
@@ -622,14 +534,14 @@ Extern	uchar	isused[Oend];
 Extern	Inst	*lastinst;
 Extern	int	lenadts;
 Extern	int	maxerr;
-Extern	int	maxlabdep;		/* maximum nesting of breakable/continuable statements */
-Extern	long	maxstack;		/* max size of a stack frame called */
-Extern	int	mustcompile;		/* dis header flag */
+Extern	int	maxlabdep;
+Extern	long	maxstack;
+Extern	int	mustcompile;
 Extern	int	oldcycles;
 Extern	int	nadts;
-Extern	int	newfnptr;		/* ISELF and -ve indices */
+Extern	int	newfnptr;
 Extern	int	nfns;
-Extern	Decl	*nildecl;		/* declaration for limbo's nil */
+Extern	Decl	*nildecl;
 Extern	int	nlabel;
 Extern	int	dontinline;
 Extern	Line	noline;
@@ -641,9 +553,9 @@ Extern	int	optims;
 Extern	char	*outfile;
 Extern	Type	*precasttab[Tend][Tend];
 Extern	int	scope;
-Extern	Decl	*selfdecl;		/* declaration for limbo's self */
+Extern	Decl	*selfdecl;
 Extern	uchar	sideeffect[Oend];
-Extern	char	*signdump;		/* dump sig for this fn */
+Extern	char	*signdump;
 Extern	int	superwarn;
 Extern	char	*symfile;
 Extern	Type	*tany;
@@ -662,7 +574,6 @@ Extern	Type	*rtexception;
 Extern	char	unescmap[256];
 Extern	Src	unifysrc;
 Extern	Node	znode;
-
 extern	int	*blockstack;
 extern	int	blockdep;
 extern	int	nblocks;
@@ -680,9 +591,7 @@ extern	int	setsideeffect[];
 extern	char	*storename[Dend];
 extern	int	storespace[Dend];
 extern	Tattr	tattr[Tend];
-
 #include "fns.h"
-
 #pragma varargck	type	"D"	Decl*
 #pragma varargck	type	"I"	Inst*
 #pragma varargck	type	"K"	Decl*

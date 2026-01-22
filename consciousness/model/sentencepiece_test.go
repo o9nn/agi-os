@@ -1,32 +1,24 @@
 package model
-
 import (
 	"log/slog"
 	"os"
 	"path/filepath"
 	"slices"
 	"testing"
-
 	"google.golang.org/protobuf/proto"
-
 	"github.com/EchoCog/echollama/convert/sentencepiece"
 )
-
 func loadSentencePieceVocab(t *testing.T) SentencePieceModel {
 	t.Helper()
-
 	bts, err := os.ReadFile(filepath.Join("testdata", "gemma2", "tokenizer.model"))
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	var spm sentencepiece.ModelProto
 	if err := proto.Unmarshal(bts, &spm); err != nil {
 		t.Fatal(err)
 	}
-
 	var v Vocabulary
-
 	for _, piece := range spm.GetPieces() {
 		v.Values = append(v.Values, piece.GetPiece())
 		v.Scores = append(v.Scores, piece.GetScore())
@@ -38,25 +30,17 @@ func loadSentencePieceVocab(t *testing.T) SentencePieceModel {
 			v.Types = append(v.Types, int32(t))
 		default:
 			tt := int32(sentencepiece.ModelProto_SentencePiece_NORMAL)
-			// todo parse the special tokens file
-			//   - this will roundtrip correctly but the <start_of_turn> and
-			//     <end_of_turn> tokens aren't processed
 			v.Types = append(v.Types, tt)
 		}
 	}
-
 	return NewSentencePieceModel(&v)
 }
-
 func TestSentencePieceEncode(t *testing.T) {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	slog.SetDefault(logger)
-
 	tokenizer := loadSentencePieceVocab(t)
-
 	t.Run("basic roundtrip", func(t *testing.T) {
 		t.Parallel()
-
 		cases := []string{
 			"hello",
 			"hello ",
@@ -77,13 +61,11 @@ func TestSentencePieceEncode(t *testing.T) {
 				"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
 				"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
 		}
-
 		for _, want := range cases {
 			ids, err := tokenizer.Encode(want, true)
 			if err != nil {
 				t.Fatal(err)
 			}
-
 			if got, err := tokenizer.Decode(ids); err != nil {
 				t.Fatal(err)
 			} else if got != want {
@@ -91,18 +73,15 @@ func TestSentencePieceEncode(t *testing.T) {
 			}
 		}
 	})
-
 	t.Run("special tokens", func(t *testing.T) {
 		type candidate struct {
 			token string
 			ids   []int32
 		}
-
 		cases := []candidate{
 			{"<bos>", []int32{2}},
 			{"<eos>", []int32{1}},
 		}
-
 		for _, want := range cases {
 			ids, err := tokenizer.Encode(want.token, true)
 			if err != nil {
@@ -114,7 +93,6 @@ func TestSentencePieceEncode(t *testing.T) {
 		}
 	})
 }
-
 func TestSentencePieceModelDecodeByteTokens(t *testing.T) {
 	vocab := &Vocabulary{
 		Values: []string{
@@ -133,9 +111,7 @@ func TestSentencePieceModelDecodeByteTokens(t *testing.T) {
 		},
 		Scores: []float32{0, 0, 0, 0, 0},
 	}
-
 	spm := NewSentencePieceModel(vocab)
-
 	tests := []struct {
 		name     string
 		ids      []int32
@@ -157,7 +133,6 @@ func TestSentencePieceModelDecodeByteTokens(t *testing.T) {
 			expected: "ã",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := spm.Decode(tt.ids)

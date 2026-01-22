@@ -4,7 +4,6 @@ import {
   ReactionsBarProvider,
   ReactionsBarContext,
 } from './ReactionsBarContext'
-
 export default ReactionsBar
 export {
   ReactionsBarContext,

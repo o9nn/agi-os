@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 set -e
-
-# Read the first argument into a variable
 arg1="$1"
-
-# Shift the arguments to remove the first one
 shift
-
 if [[ "$arg1" == '--convert' || "$arg1" == '-c' ]]; then
     exec python3 ./convert_hf_to_gguf.py "$@"
 elif [[ "$arg1" == '--quantize' || "$arg1" == '-q' ]]; then

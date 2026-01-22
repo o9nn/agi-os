@@ -1,42 +1,6 @@
-/* $Source: /u/mark/src/pax/RCS/func.h,v $
- *
- * $Revision: 1.3 $
- *
- * func.h - function type and argument declarations
- *
- * DESCRIPTION
- *
- *	This file contains function delcarations in both ANSI style
- *	(function prototypes) and traditional style. 
- *
- * AUTHOR
- *
- *     Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
- *
- * Sponsored by The USENIX Association for public distribution. 
- *
- * Copyright (c) 1989 Mark H. Colburn.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice and this paragraph are
- * duplicated in all such forms and that any documentation,
- * advertising materials, and other materials related to such
- * distribution and use acknowledge that the software was developed
- * by Mark H. Colburn and sponsored by The USENIX Association. 
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- */
-
 #ifndef _PAX_FUNC_H
 #define _PAX_FUNC_H
-
-/* Function Prototypes */
-
 #ifdef __STDC__
-
 extern Link    	       *linkfrom(char *, Stat *);
 extern Link    	       *linkto(char *, Stat *);
 extern char    	       *mem_get(uint);
@@ -87,9 +51,7 @@ extern char            *finduname(int);
 extern char            *findgname(int);
 extern int		findgid(char *gname);
 extern char    	       *malloc();
-
-#else /* !__STDC__ */
-
+#else
 extern Link    	       *linkfrom();
 extern Link    	       *linkto();
 extern char    	       *mem_get();
@@ -150,6 +112,5 @@ extern Link            *islink();
 extern char            *finduname();
 extern char            *findgname();
 extern int		findgid();
-
-#endif /* __STDC__ */
-#endif /* _PAX_FUNC_H */
+#endif
+#endif

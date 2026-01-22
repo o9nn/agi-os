@@ -1,19 +1,15 @@
 package main
-
 import (
 	"context"
 	"fmt"
 	"log"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func main() {
 	client, err := api.ClientFromEnvironment()
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	messages := []api.Message{
 		api.Message{
 			Role:    "system",
@@ -32,18 +28,15 @@ func main() {
 			Content: "which of these is the most dangerous?",
 		},
 	}
-
 	ctx := context.Background()
 	req := &api.ChatRequest{
 		Model:    "llama3.2",
 		Messages: messages,
 	}
-
 	respFunc := func(resp api.ChatResponse) error {
 		fmt.Print(resp.Message.Content)
 		return nil
 	}
-
 	err = client.Chat(ctx, req, respFunc)
 	if err != nil {
 		log.Fatal(err)

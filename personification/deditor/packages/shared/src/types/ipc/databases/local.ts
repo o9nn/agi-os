@@ -3,13 +3,11 @@ import type {
   postgresInformationSchemaTables,
   sqliteSqliteSchema,
 } from '@deditor-app/shared-schemas'
-
 export interface SQLiteMethods {
   connect: (params: { dsn: string }) => {
     databaseSessionId: string
     dialect: 'sqlite'
   }
-
   query: <T>(params: {
     databaseSessionId: string
     statement: string
@@ -18,14 +16,12 @@ export interface SQLiteMethods {
     databaseSessionId: string
     results: T[]
   }
-
   listTables: (params: {
     databaseSessionId: string
   }) => {
     databaseSessionId: string
     results: typeof sqliteSqliteSchema.$inferSelect[]
   }
-
   listColumns: (params: {
     databaseSessionId: string
     tableName: string
@@ -45,7 +41,6 @@ export interface SQLiteMethods {
       type: 'view' | 'table'
     }[]
   }
-
   listIndexes: (params: {
     databaseSessionId: string
     tableName: string
@@ -62,7 +57,6 @@ export interface SQLiteMethods {
       columns: string[]
     }[]
   }
-
   listColumnsWithTypes: (params: {
     databaseSessionId: string
     tableName: string
@@ -76,13 +70,11 @@ export interface SQLiteMethods {
     }[]
   }
 }
-
 export interface PGLiteMethods {
   connect: (params: { dsn: string }) => {
     databaseSessionId: string
     dialect: 'pglite'
   }
-
   query: <T>(params: {
     databaseSessionId: string
     statement: string
@@ -91,14 +83,12 @@ export interface PGLiteMethods {
     databaseSessionId: string
     results: T[]
   }
-
   listTables: (params: {
     databaseSessionId: string
   }) => {
     databaseSessionId: string
     results: typeof postgresInformationSchemaTables.$inferSelect[]
   }
-
   listColumns: (params: {
     databaseSessionId: string
     tableName: string
@@ -109,7 +99,6 @@ export interface PGLiteMethods {
     schema: string
     results: typeof postgresInformationSchemaColumns.$inferSelect[]
   }
-
   listIndexes: (params: {
     databaseSessionId: string
     tableName: string
@@ -128,7 +117,6 @@ export interface PGLiteMethods {
       columns: string[]
     }[]
   }
-
   listColumnsWithTypes: (params: {
     databaseSessionId: string
     tableName: string
@@ -143,7 +131,6 @@ export interface PGLiteMethods {
       typeMod: number
     }[]
   }
-
   listUserDefinedTypes: (params: {
     databaseSessionId: string
   }) => {

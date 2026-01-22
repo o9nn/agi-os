@@ -8,12 +8,9 @@ import {
   INTERNAL_TMP_DIR_NAME,
 } from './application-constants.js'
 import { readdirSync } from 'fs'
-
 const log = getLogger('main/cleanup_temp_dir')
-
 export async function cleanupDraftTempDir() {
   try {
-    // ensure dir exists
     const path = getDraftTempDir()
     await mkdir(path, { recursive: true })
     if (path.indexOf(app.getPath('temp')) === -1 || path.indexOf('..') !== -1) {
@@ -23,7 +20,6 @@ export async function cleanupDraftTempDir() {
       )
       throw new Error('Path is outside of the temp folder')
     }
-
     const files = await readdir(path)
     if (files.length !== 0) {
       log.debug(
@@ -34,20 +30,13 @@ export async function cleanupDraftTempDir() {
         log.debug('delete', join(path, file))
         promises.push(rm(join(path, file)))
       }
-
       await Promise.all(promises)
     }
-
-    // delete dir at the end
     await rmdir(path)
   } catch (error) {
     log.error('Cleanup of old temp files failed: ', error)
   }
 }
-
-/**
- * clean tmp directory in all accounts
- */
 export async function cleanupInternalTempDirs() {
   try {
     let deletedTmpDirs = 0

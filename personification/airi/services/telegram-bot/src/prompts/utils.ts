@@ -1,21 +1,16 @@
 import type { TextContentPart } from '@xsai/shared-chat'
-
 export function vif(condition: boolean, a: string, b = '') {
   return condition ? a : b
 }
-
 export function vChoice(...args: [boolean | (() => boolean), string][]) {
   let exp
-
   for (let i = 0; i < args.length; i++) {
     if (typeof (exp = args[i][0]) === 'function' ? exp() : exp) {
       return args[i][1]
     }
   }
-
   return ''
 }
-
 export function span(...args: string[]) {
   return args
     .map(arg => arg.trim())
@@ -23,10 +18,8 @@ export function span(...args: string[]) {
     .map(arg => arg.replaceAll(/\r\s+/g, ' '))
     .join(' ')
 }
-
 export function div(...args: (string | TextContentPart | TextContentPart[] | null | undefined)[]) {
   const results: string[] = []
-
   for (const arg of args) {
     if (arg == null) {
       continue
@@ -41,11 +34,8 @@ export function div(...args: (string | TextContentPart | TextContentPart[] | nul
       results.push(arg.text)
     }
   }
-
   return results.join('\n\n')
 }
-
-// ul + li
 export function ul(...args: string[]) {
   return args.map((arg) => {
     return `- ${arg}`

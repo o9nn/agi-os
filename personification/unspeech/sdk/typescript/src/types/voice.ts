@@ -1,5 +1,4 @@
 import type { CommonRequestOptions } from '@xsai/shared'
-
 export interface Voice {
   compatible_models: string[]
   description: string
@@ -17,7 +16,6 @@ export interface Voice {
   preview_audio_url?: string
   tags: string[]
 }
-
 export interface VoiceFormat {
   bitrate: number
   extension: string
@@ -26,16 +24,13 @@ export interface VoiceFormat {
   name: string
   sample_rate: number
 }
-
 export interface VoiceLanguage {
   code: string
   title: string
 }
-
 export interface VoiceProvider {
   voice: () => Omit<CommonRequestOptions, 'model'> & { query?: string }
 }
-
 export interface VoiceProviderWithExtraOptions<T = undefined> {
   voice: (options?: T) => Omit<CommonRequestOptions, 'model'> & Partial<T> & { query?: string }
 }

@@ -1,14 +1,11 @@
 package convert
-
 import "github.com/EchoCog/echollama/fs/ggml"
-
 type gemma2Model struct {
 	gemmaModel
 	SlidingWindow         uint32  `json:"sliding_window"`
 	AttentionLogitSoftcap float32 `json:"attn_logit_softcapping"`
 	FinalLogitSoftcap     float32 `json:"final_logit_softcapping"`
 }
-
 func (p *gemma2Model) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "gemma2"
@@ -30,7 +27,6 @@ func (p *gemma2Model) KV(t *Tokenizer) ggml.KV {
 	kv["tokenizer.ggml.suffix_token_id"] = uint32(69)
 	return kv
 }
-
 func (p *gemma2Model) Replacements() []string {
 	return []string{
 		"model.embed_tokens", "token_embd",

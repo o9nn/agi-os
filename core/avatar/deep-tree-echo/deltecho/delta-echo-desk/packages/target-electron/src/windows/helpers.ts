@@ -1,9 +1,4 @@
 import { BrowserWindow, screen } from 'electron'
-
-/** set min window dimensions, or turns them off on screens smaller than the min dimensions
- *
- * @returns function to remove the listeners again
- */
 export function initMinWinDimensionHandling(
   main_window: BrowserWindow,
   minWidth: number,
@@ -12,8 +7,6 @@ export function initMinWinDimensionHandling(
   const update_min_size = () => {
     const { workAreaSize } = screen.getPrimaryDisplay()
     if (
-      // A multiplier to make space for the taskbar and the window header.
-      // Remember that the taskbar could also be placed vertically.
       workAreaSize.width * 0.75 < minWidth ||
       workAreaSize.height * 0.75 < minHeight
     ) {

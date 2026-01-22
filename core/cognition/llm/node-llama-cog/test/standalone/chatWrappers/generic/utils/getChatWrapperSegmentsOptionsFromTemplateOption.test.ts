@@ -2,15 +2,12 @@ import {describe, expect, test} from "vitest";
 import {
     templateSegmentOptionsToChatWrapperSettings
 } from "../../../../../src/chatWrappers/generic/utils/templateSegmentOptionsToChatWrapperSettings.js";
-
-
 describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
     test("no options", () => {
         expect(templateSegmentOptionsToChatWrapperSettings()).to.eql({});
         expect(templateSegmentOptionsToChatWrapperSettings(undefined)).to.eql({});
         expect(templateSegmentOptionsToChatWrapperSettings({})).to.eql({});
     });
-
     test("no thought content", () => {
         try {
             templateSegmentOptionsToChatWrapperSettings({
@@ -21,7 +18,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             expect(err).toMatchInlineSnapshot('[Error: Template must contain "{{content}}" at the beginning]');
         }
     });
-
     test("no thought prefix", () => {
         try {
             templateSegmentOptionsToChatWrapperSettings({
@@ -32,7 +28,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             expect(err).toMatchInlineSnapshot('[Error: Thought template must have text before "{{content}}"]');
         }
     });
-
     test("valid thought prefix", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}"
@@ -42,7 +37,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             }
         });
     });
-
     test("valid thought suffix", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}suffix"
@@ -53,7 +47,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             }
         });
     });
-
     test("reopenThoughtAfterFunctionCalls", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}suffix",
@@ -66,7 +59,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             }
         });
     });
-
     test("closeAllSegmentsTemplate", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}suffix",
@@ -81,7 +73,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             }
         });
     });
-
     test("empty closeAllSegmentsTemplate", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}suffix",
@@ -95,7 +86,6 @@ describe("getChatWrapperSegmentsOptionsFromTemplateOption", () => {
             }
         });
     });
-
     test("reiterateStackAfterFunctionCalls", () => {
         expect(templateSegmentOptionsToChatWrapperSettings({
             thoughtTemplate: "prefix{{content}}suffix",

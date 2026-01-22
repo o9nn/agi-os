@@ -1,9 +1,4 @@
-// Copyright (c) 2025 Apple Inc. Licensed under MIT License.
-
-// Modifications Copyright (c) 2025 Project AIRI Team
-
 import Module from './runtime.js'
-
 async function initialize() {
   const module = await Module()
   const ret = {
@@ -21,15 +16,12 @@ async function initialize() {
   }
   return ret
 }
-
 const initializePromise = initialize()
-
 function set_options(ctx, ptr, setters, options) {
   const buffer_length = 64
   const buffer = ctx.memory_allocate(buffer_length * 2)
   const str_buffer_1 = buffer
   const str_buffer_2 = buffer + buffer_length
-
   function set_str_buffer(buf, value) {
     const encoded = new TextEncoder().encode(value)
     if (encoded.length + 1 > buffer_length) {
@@ -40,7 +32,6 @@ function set_options(ctx, ptr, setters, options) {
     array.set(encoded)
     array[array.length - 1] = 0
   }
-
   for (const name in options) {
     set_str_buffer(str_buffer_1, name)
     const value = options[name]
@@ -61,31 +52,22 @@ function set_options(ctx, ptr, setters, options) {
       throw new TypeError(`invalid parameter ${name}`)
     }
   }
-
   ctx.memory_free(str_buffer_1)
 }
-
 export async function createUMAP(count, input_dim, output_dim, data, options = {}) {
   const ctx = await initializePromise
-
   const ptr_input = ctx.memory_allocate(count * input_dim * 4)
   const ptr_output = ctx.memory_allocate(count * output_dim * 4)
-
   const ptr_options = ctx.umap_options_create()
   set_options(ctx, ptr_options, { number: ctx.umap_options_number, string: ctx.umap_options_string }, options)
-
   ctx.f32_array(ptr_input, count * input_dim).set(data, 0)
-
   let ptr_umap = ctx.umap_context_create_f32(count, input_dim, output_dim, ptr_input, ptr_output, ptr_options)
-
   ctx.umap_options_destroy(ptr_options)
-
   function assertValid() {
     if (ptr_umap == null) {
       throw new Error('use after destroy')
     }
   }
-
   return {
     get epoch() {
       assertValid()
@@ -123,23 +105,17 @@ export async function createUMAP(count, input_dim, output_dim, data, options = {
     },
   }
 }
-
 export async function createKNN(count, input_dim, data, options) {
   const ctx = await initializePromise
   const ptr_options = ctx.knn_options_create()
   set_options(ctx, ptr_options, { number: ctx.knn_options_number, string: ctx.knn_options_string }, options)
-
   const ptr_input = ctx.memory_allocate(count * input_dim * 4)
   ctx.f32_array(ptr_input, count * input_dim).set(data, 0)
-
   let ptr_knn = ctx.knn_context_create_f32(count, input_dim, ptr_input, ptr_options)
-
   ctx.knn_options_destroy(ptr_options)
-
   let buffer_capacity = 10
   let ptr_buffer = ctx.memory_allocate(10 * 4)
   const ptr_q = ctx.memory_allocate(input_dim * 4)
-
   function get_buffers(k) {
     const required_capacity = k * 2
     if (buffer_capacity < required_capacity) {
@@ -149,7 +125,6 @@ export async function createKNN(count, input_dim, data, options) {
     }
     return [ptr_buffer, ptr_buffer + k * 4]
   }
-
   return {
     query_by_index(index, k) {
       const [ptr_i, ptr_d] = get_buffers(k)
@@ -180,7 +155,6 @@ export async function createKNN(count, input_dim, data, options) {
     },
   }
 }
-
 export async function memorySize() {
   const ctx = await initializePromise
   return ctx.memory_size()

@@ -1,10 +1,6 @@
 #!/usr/bin/env node
-// @ts-nocheck
-
 import { readdir, readFile, writeFile } from 'fs/promises'
 import { existsSync} from 'fs'
-
-// keys as used in _locales
 const translations = {
     "search": "Search",
     "search_no_result_for_x": "No results for \"%s\"",
@@ -12,7 +8,6 @@ const translations = {
     "menu_help": "Help",
     "app_name": "Delta Chat",
 }
-
 async function main() {
     const files = await readdir('static/help/')
     const fallback = JSON.parse(await readFile(`_locales/_untranslated_en.json`, 'utf-8'))
@@ -26,7 +21,6 @@ async function main() {
                     helpLabel[key] = json[key]?.message || fallback[key].message
                 }
             }
-            // keys used by pagefind
             helpLabel['placeholder'] = helpLabel['search']
             delete helpLabel['search']
             helpLabel['one_result'] = helpLabel['search_result_for_x'].replace('%s', '[SEARCH_TERM]')
@@ -39,5 +33,4 @@ async function main() {
     }
     await writeFile(`static/help/pagefind/locales.json`, JSON.stringify(allHelpLabel, null, 2))
 }
-
 main()

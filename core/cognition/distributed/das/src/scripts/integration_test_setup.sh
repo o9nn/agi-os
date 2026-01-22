@@ -1,13 +1,10 @@
 #!/bin/bash
-
 WATCH_DIR="./bin"
 START_FILE="$WATCH_DIR/start"
 END_FILE="$WATCH_DIR/end"
 KILL_FILE="$WATCH_DIR/kill"
 RUNNING_FILE="$WATCH_DIR/running"
-
 echo "Waiting commands in $WATCH_DIR..."
-
 ENV_VALUES="DAS_REDIS_HOSTNAME=localhost
 DAS_REDIS_PORT=6379
 DAS_USE_REDIS_CLUSTER=false,
@@ -24,10 +21,7 @@ LINK_CREATION_AGENT_NODE_ID=\"localhost:1800\"
 LINK_CREATION_START_END_PORT=\"1900:2000\"
 EVOLUTION_PORT=2100
 EVOLUTION_START_END_PORT=\"2200:2300\""
-
 while true; do
-
-
     if [ -f "$END_FILE" -o -f "$KILL_FILE" ]; then
         echo "Running end at $(date)"
         if [ -f "$END_FILE" ]; then
@@ -48,7 +42,6 @@ while true; do
             exit 0
         fi
     fi
-
     if [ -f "$START_FILE" ]; then
         rm -f "$START_FILE"
         echo "Running start at $(date)"
@@ -63,6 +56,5 @@ while true; do
         echo "Agents started."
         touch "$RUNNING_FILE"
     fi
-
     sleep 1
 done

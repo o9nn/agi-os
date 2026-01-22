@@ -1,14 +1,5 @@
 #!/bin/bash
-#
-# batch-move-files.sh -- move parsed files from one directory to another.
-# Moves a fixed number of files per run.
-#
-# Copyright (c) 2011 Linas Vepstas
-
-# IFS=$(echo -en "\n\b")
-
 FILES=parsed/*/*
-
 mkdir enwiki-20101011
 cd enwiki-20101011
 mkdir parsed
@@ -41,22 +32,15 @@ mkdir Y
 mkdir Z
 mkdir num
 mkdir misc
-
 cd ../..
-
-
 cnt=0;
 for fpath in $FILES
 do
-	f=${fpath##*/}
-	
-	# echo  "$fpath"
+	f=${fpath
 	mv "${fpath}" "enwiki-20101011/${fpath}"
 	let cnt=cnt+1
-
 	if [ $cnt -gt 40000 ];
 	then
 		break
 	fi
-	# echo $cnt
 done

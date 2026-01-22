@@ -1,6 +1,3 @@
-/* Wrapper around the ugly dir includes/ifdefs */
-/* $Id$ */
-
 #if defined(HAVE_DIRENT_H)
 # include <dirent.h>
 # define NLENGTH(dirent)	(strlen(dirent->d_name))
@@ -9,17 +6,16 @@
 # define NLENGTH(dirent)	(dirent->d_namlen)
 # ifdef HAVE_SYS_NDIR_H
 #  include <sys/ndir.h>
-# endif /* HAVE_SYS_NDIR_H */
+# endif
 # ifdef HAVE_SYS_DIR_H
 #  include <sys/dir.h>
-# endif /* HAVE_SYSDIR_H */
+# endif
 # ifdef HAVE_NDIR_H
 #  include <ndir.h>
-# endif /* HAVE_NDIR_H */
-#endif /* HAVE_DIRENT_H */
-
+# endif
+#endif
 #ifdef OPENDIR_DOES_NONDIR
 extern DIR *ksh_opendir ARGS((const char *d));
-#else /* OPENDIR_DOES_NONDIR */
+#else
 # define ksh_opendir(d)	opendir(d)
-#endif /* OPENDIR_DOES_NONDIR */
+#endif

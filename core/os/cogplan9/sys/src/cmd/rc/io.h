@@ -1,13 +1,11 @@
 #define	EOF	(-1)
 #define	NBUF	512
-
 struct io{
-	int	fd;
-	uchar	*bufp, *ebuf, *strp;
-	uchar	buf[NBUF];
+int	fd;
+uchar	*bufp, *ebuf, *strp;
+uchar	buf[NBUF];
 };
 io *err;
-
 io *openfd(int), *openstr(void), *opencore(char *, int);
 int emptybuf(io*);
 void pchr(io*, int);

@@ -1,5 +1,4 @@
 (define (dummy x) x)
-
 (define bl
    (BindLink
       (VariableList
@@ -33,5 +32,4 @@
       )
    )
 )
-
 (Evaluation (Predicate "P") (Concept "A"))

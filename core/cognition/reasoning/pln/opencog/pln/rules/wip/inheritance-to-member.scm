@@ -1,16 +1,3 @@
-; =============================================================================
-; InheritanceToMemberRule
-;
-; InheritanceLink
-;   B 
-;   C
-; |-
-; MemberLink
-;   B 
-;   C
-;
-; -----------------------------------------------------------------------------
-
 (define inheritance-to-member-rule
 	(BindLink
 		(VariableList
@@ -28,34 +15,16 @@
 				(InheritanceLink
 					(VariableNode "$B")
 					(VariableNode "$C"))))))
-
-; -----------------------------------------------------------------------------
-; Inheritance To Member Formula
-; -----------------------------------------------------------------------------
-
-; -----------------------------------------------------------------------------
-; Side-effect: TruthValue of the new link stays the same
-; -----------------------------------------------------------------------------
-
 (define (inheritance-to-member-formula MBC IBC)
 	(cog-set-tv!
 		MBC
 		(inheritance-to-member-side-effect-free-formula
 			MBC
 			IBC)))
-
-; -----------------------------------------------------------------------------
-; This version has no side effects and simply returns a TruthValue
-; -----------------------------------------------------------------------------
-
 (define (inheritance-to-member-side-effect-free-formula MBC IBC)
 	(stv
 		(cog-mean IBC)
 		(* (cog-confidence IBC) 0.9)))
-
-; =============================================================================
-
-; Name the rule
 (define inheritance-to-member-rule-name
   (DefinedSchemaNode "inheritance-to-member-rule"))
 (DefineLink

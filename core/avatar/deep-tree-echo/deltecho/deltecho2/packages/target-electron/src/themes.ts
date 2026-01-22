@@ -2,25 +2,19 @@ import { existsSync, watchFile } from 'fs'
 import { readFile, readdir } from 'fs/promises'
 import { join, basename } from 'path'
 import { app as rawApp, ipcMain, nativeTheme } from 'electron'
-
 import { getCustomThemesPath, htmlDistDir } from './application-constants.js'
 import { ExtendedAppMainProcess } from './types.js'
 import * as mainWindow from './windows/main.js'
 import { getLogger } from '../../shared/logger.js'
 import { DesktopSettings } from './desktop_settings.js'
-
 import { Theme } from '@deltachat-desktop/shared/shared-types.js'
 import {
   HIDDEN_THEME_PREFIX,
   parseThemeMetaData,
 } from '@deltachat-desktop/shared/themes'
-
 const app = rawApp as ExtendedAppMainProcess
-
 const log = getLogger('main/themes')
-
 const dc_theme_dir = join(htmlDistDir(), 'themes')
-
 async function readThemeDir(path: string, prefix: string): Promise<Theme[]> {
   const files = await readdir(path)
   return Promise.all(
@@ -49,23 +43,18 @@ async function readThemeDir(path: string, prefix: string): Promise<Theme[]> {
       })
   )
 }
-
 export async function getAvailableThemes(): Promise<Theme[]> {
-  // look at the common places for themes
   return [
     ...(await readThemeDir(dc_theme_dir, 'dc')),
     ...(await readThemeDir(getCustomThemesPath(), 'custom')),
   ]
 }
-
 export async function loadTheme(
   theme_address: string
 ): Promise<{ theme: Theme; data: string }> {
-  // load theme file
   const effective_path = resolveThemeAddress(theme_address)
   log.debug('load theme file', theme_address, effective_path)
   const themedata = await readFile(effective_path, 'utf-8')
-
   log.debug('render theme data')
   const theme_meta = parseThemeMetaData(themedata)
   log.debug('render theme data for theme:', theme_meta)
@@ -79,7 +68,6 @@ export async function loadTheme(
     data: themedata,
   }
 }
-
 function systemDefault() {
   if (nativeTheme.shouldUseDarkColors) {
     return ['dc', 'dark']
@@ -87,7 +75,6 @@ function systemDefault() {
     return ['dc', 'light']
   }
 }
-
 export function resolveThemeAddress(address: string): string {
   const addressParts =
     address != 'system' ? address.split(':') : systemDefault()
@@ -105,14 +92,12 @@ export function resolveThemeAddress(address: string): string {
     realPath,
     addressParts[1].replace(/\/|\\|\.\./g, '') + '.css'
   )
-
   if (existsSync(result)) {
     return result
   } else {
     throw 'theme ' + address + ' not found at: ' + result
   }
 }
-
 export function acceptThemeCLI() {
   if (app.rc['theme']) {
     log.info(`trying to load theme from '${app.rc['theme']}'`)
@@ -124,7 +109,6 @@ export function acceptThemeCLI() {
         `THEME "${app.rc['theme']}" NOT FOUND,
 this is fatal because the user specified it via cli argument.
 If you did not specify this, ask the person which installed deltachat for you to remove the cli argument again.
-
 If they are not available find the shortcut/.desktop file yourself and edit it to not contain the "--theme" argument.
 Using --theme is for developers and theme creators ONLY and should not be used by normal users
 If you have question or need help, feel free to ask in our forum https://support.delta.chat.`
@@ -148,7 +132,6 @@ If you have question or need help, feel free to ask in our forum https://support
     mainWindow.send('theme-update')
   })
 }
-
 ipcMain.handle('themes.getActiveTheme', async () => {
   try {
     log.debug('theme', DesktopSettings.state.activeTheme)
@@ -158,5 +141,4 @@ ipcMain.handle('themes.getActiveTheme', async () => {
     return null
   }
 })
-
 ipcMain.handle('themes.getAvailableThemes', getAvailableThemes)

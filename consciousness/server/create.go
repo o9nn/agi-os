@@ -1,5 +1,4 @@
 package server
-
 import (
 	"bytes"
 	"cmp"
@@ -16,9 +15,7 @@ import (
 	"slices"
 	"strings"
 	"sync/atomic"
-
 	"github.com/gin-gonic/gin"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/convert"
 	"github.com/EchoCog/echollama/envconfig"
@@ -28,7 +25,6 @@ import (
 	"github.com/EchoCog/echollama/types/errtypes"
 	"github.com/EchoCog/echollama/types/model"
 )
-
 var (
 	errNoFilesProvided         = errors.New("no files provided to convert")
 	errOnlyOneAdapterSupported = errors.New("only one adapter is currently supported")
@@ -37,7 +33,6 @@ var (
 	errNeitherFromOrFiles      = errors.New("neither 'from' or 'files' was specified")
 	errFilePath                = errors.New("file path must be relative")
 )
-
 func (s *Server) CreateHandler(c *gin.Context) {
 	var r api.CreateRequest
 	if err := c.ShouldBindJSON(&r); errors.Is(err, io.EOF) {
@@ -47,35 +42,29 @@ func (s *Server) CreateHandler(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	for v := range r.Files {
 		if !fs.ValidPath(v) {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": errFilePath.Error()})
 			return
 		}
 	}
-
 	name := model.ParseName(cmp.Or(r.Model, r.Name))
 	if !name.IsValid() {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": errtypes.InvalidModelNameErrMsg})
 		return
 	}
-
 	name, err := getExistingName(name)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	ch := make(chan any)
 	go func() {
 		defer close(ch)
 		fn := func(resp api.ProgressResponse) {
 			ch <- resp
 		}
-
 		oldManifest, _ := ParseNamedManifest(name)
-
 		var baseLayers []*layerGGML
 		if r.From != "" {
 			slog.Debug("create model from model name")
@@ -84,10 +73,8 @@ func (s *Server) CreateHandler(c *gin.Context) {
 				ch <- gin.H{"error": errtypes.InvalidModelNameErrMsg, "status": http.StatusBadRequest}
 				return
 			}
-
 			ctx, cancel := context.WithCancel(c.Request.Context())
 			defer cancel()
-
 			baseLayers, err = parseFromModel(ctx, fromName, fn)
 			if err != nil {
 				ch <- gin.H{"error": err.Error()}
@@ -108,7 +95,6 @@ func (s *Server) CreateHandler(c *gin.Context) {
 			ch <- gin.H{"error": errNeitherFromOrFiles.Error(), "status": http.StatusBadRequest}
 			return
 		}
-
 		var adapterLayers []*layerGGML
 		if r.Adapters != nil {
 			adapterLayers, err = convertModelFromFiles(r.Adapters, baseLayers, true, fn)
@@ -123,11 +109,9 @@ func (s *Server) CreateHandler(c *gin.Context) {
 				return
 			}
 		}
-
 		if len(adapterLayers) > 0 {
 			baseLayers = append(baseLayers, adapterLayers...)
 		}
-
 		if err := createModel(r, name, baseLayers, fn); err != nil {
 			if errors.Is(err, errBadTemplate) {
 				ch <- gin.H{"error": err.Error(), "status": http.StatusBadRequest}
@@ -136,24 +120,19 @@ func (s *Server) CreateHandler(c *gin.Context) {
 			ch <- gin.H{"error": err.Error()}
 			return
 		}
-
 		if !envconfig.NoPrune() && oldManifest != nil {
 			if err := oldManifest.RemoveLayers(); err != nil {
 				ch <- gin.H{"error": err.Error()}
 			}
 		}
-
 		ch <- api.ProgressResponse{Status: "success"}
 	}()
-
 	if r.Stream != nil && !*r.Stream {
 		waitForStream(c, ch)
 		return
 	}
-
 	streamResponse(c, ch)
 }
-
 func convertModelFromFiles(files map[string]string, baseLayers []*layerGGML, isAdapter bool, fn func(resp api.ProgressResponse)) ([]*layerGGML, error) {
 	switch detectModelTypeFromFiles(files) {
 	case "safetensors":
@@ -169,7 +148,6 @@ func convertModelFromFiles(files map[string]string, baseLayers []*layerGGML, isA
 		} else if len(files) > 1 && isAdapter {
 			return nil, errOnlyOneAdapterSupported
 		}
-
 		var digest string
 		var allLayers []*layerGGML
 		for _, v := range files {
@@ -185,7 +163,6 @@ func convertModelFromFiles(files map[string]string, baseLayers []*layerGGML, isA
 		return nil, errUnknownType
 	}
 }
-
 func detectModelTypeFromFiles(files map[string]string) string {
 	for fn := range files {
 		if strings.HasSuffix(fn, ".safetensors") {
@@ -193,55 +170,43 @@ func detectModelTypeFromFiles(files map[string]string) string {
 		} else if strings.HasSuffix(fn, ".gguf") {
 			return "gguf"
 		} else {
-			// try to see if we can find a gguf file even without the file extension
 			blobPath, err := GetBlobsPath(files[fn])
 			if err != nil {
 				slog.Error("error getting blobs path", "file", fn)
 				return ""
 			}
-
 			f, err := os.Open(blobPath)
 			if err != nil {
 				slog.Error("error reading file", "error", err)
 				return ""
 			}
 			defer f.Close()
-
 			buf := make([]byte, 4)
 			_, err = f.Read(buf)
 			if err != nil {
 				slog.Error("error reading file", "error", err)
 				return ""
 			}
-
 			ct := ggml.DetectContentType(buf)
 			if ct == "gguf" {
 				return "gguf"
 			}
 		}
 	}
-
 	return ""
 }
-
 func convertFromSafetensors(files map[string]string, baseLayers []*layerGGML, isAdapter bool, fn func(resp api.ProgressResponse)) ([]*layerGGML, error) {
 	tmpDir, err := os.MkdirTemp(envconfig.Models(), "ollama-safetensors")
 	if err != nil {
 		return nil, err
 	}
 	defer os.RemoveAll(tmpDir)
-	// Set up a root to validate paths
-	// Note: os.OpenRoot doesn't exist in standard library, using DirFS for path validation
 	root := os.DirFS(tmpDir)
-	_ = root // Use root for path validation if needed
-
+	_ = root 
 	for fp, digest := range files {
 		if !fs.ValidPath(fp) {
 			return nil, fmt.Errorf("%w: %s", errFilePath, fp)
 		}
-		// Note: DirFS doesn't support Stat, relying on ValidPath for validation
-		// Additional validation could be added here if needed
-
 		blobPath, err := GetBlobsPath(digest)
 		if err != nil {
 			return nil, err
@@ -250,13 +215,11 @@ func convertFromSafetensors(files map[string]string, baseLayers []*layerGGML, is
 			return nil, err
 		}
 	}
-
 	t, err := os.CreateTemp(tmpDir, "fp16")
 	if err != nil {
 		return nil, err
 	}
 	defer t.Close()
-
 	var mediaType string
 	if !isAdapter {
 		fn(api.ProgressResponse{Status: "converting model"})
@@ -275,34 +238,28 @@ func convertFromSafetensors(files map[string]string, baseLayers []*layerGGML, is
 			return nil, err
 		}
 	}
-
 	if _, err := t.Seek(0, io.SeekStart); err != nil {
 		return nil, err
 	}
-
 	layer, err := NewLayer(t, mediaType)
 	if err != nil {
 		return nil, err
 	}
-
 	bin, err := layer.Open()
 	if err != nil {
 		return nil, err
 	}
 	defer bin.Close()
-
 	f, err := ggml.Decode(bin, -1)
 	if err != nil {
 		return nil, err
 	}
 	layers := []*layerGGML{{layer, f}}
-
 	if !isAdapter {
 		return detectChatTemplate(layers)
 	}
 	return layers, nil
 }
-
 func kvFromLayers(baseLayers []*layerGGML) (ggml.KV, error) {
 	for _, l := range baseLayers {
 		if l.GGML != nil {
@@ -311,7 +268,6 @@ func kvFromLayers(baseLayers []*layerGGML) (ggml.KV, error) {
 	}
 	return ggml.KV{}, fmt.Errorf("no base model was found")
 }
-
 func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, fn func(resp api.ProgressResponse)) (err error) {
 	config := ConfigV2{
 		OS:           "linux",
@@ -320,7 +276,6 @@ func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, 
 			Type: "layers",
 		},
 	}
-
 	var layers []Layer
 	for _, layer := range baseLayers {
 		if layer.GGML != nil {
@@ -330,7 +285,6 @@ func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, 
 				if err != nil {
 					return err
 				}
-
 				ft := layer.GGML.KV().FileType()
 				if !slices.Contains([]string{"F16", "F32"}, ft.String()) {
 					return errors.New("quantization is only supported for F16 and F32 models")
@@ -349,21 +303,18 @@ func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, 
 		}
 		layers = append(layers, layer.Layer)
 	}
-
 	if r.Template != "" {
 		layers, err = setTemplate(layers, r.Template)
 		if err != nil {
 			return err
 		}
 	}
-
 	if r.System != "" {
 		layers, err = setSystem(layers, r.System)
 		if err != nil {
 			return err
 		}
 	}
-
 	if r.License != nil {
 		switch l := r.License.(type) {
 		case string:
@@ -375,7 +326,7 @@ func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, 
 			}
 		case any:
 			var licenses []string
-			b, _ := json.Marshal(l) // re-marshal to JSON
+			b, _ := json.Marshal(l) 
 			if err := json.Unmarshal(b, &licenses); err != nil {
 				return err
 			}
@@ -389,36 +340,29 @@ func createModel(r api.CreateRequest, name model.Name, baseLayers []*layerGGML, 
 			return fmt.Errorf("unknown license type: %T", l)
 		}
 	}
-
 	layers, err = setParameters(layers, r.Parameters)
 	if err != nil {
 		return err
 	}
-
 	layers, err = setMessages(layers, r.Messages)
 	if err != nil {
 		return err
 	}
-
 	configLayer, err := createConfigLayer(layers, config)
 	if err != nil {
 		return err
 	}
-
 	for _, layer := range layers {
 		if layer.status != "" {
 			fn(api.ProgressResponse{Status: layer.status})
 		}
 	}
-
 	fn(api.ProgressResponse{Status: "writing manifest"})
 	if err := WriteManifest(name, *configLayer, layers); err != nil {
 		return err
 	}
-
 	return nil
 }
-
 func quantizeLayer(layer *layerGGML, quantizeType string, fn func(resp api.ProgressResponse)) (*layerGGML, error) {
 	ft := layer.GGML.KV().FileType()
 	var doneBytes atomic.Uint64
@@ -432,7 +376,6 @@ func quantizeLayer(layer *layerGGML, quantizeType string, fn func(resp api.Progr
 	if err != nil {
 		return nil, err
 	}
-
 	blob, err := GetBlobsPath(layer.Digest)
 	if err != nil {
 		return nil, err
@@ -442,14 +385,12 @@ func quantizeLayer(layer *layerGGML, quantizeType string, fn func(resp api.Progr
 		return nil, err
 	}
 	defer fp.Close()
-
 	temp, err := os.CreateTemp(filepath.Dir(blob), quantizeType)
 	if err != nil {
 		return nil, err
 	}
 	defer temp.Close()
 	defer os.Remove(temp.Name())
-
 	if err := quantize(fp, temp, layer.GGML, ftype, fnWrap); err != nil {
 		return nil, err
 	}
@@ -462,7 +403,6 @@ func quantizeLayer(layer *layerGGML, quantizeType string, fn func(resp api.Progr
 	if _, err := temp.Seek(0, io.SeekStart); err != nil {
 		return nil, err
 	}
-
 	f, err := ggml.Decode(temp, 1024)
 	if err != nil {
 		slog.Error(fmt.Sprintf("error decoding ggml: %s\n", err))
@@ -470,72 +410,57 @@ func quantizeLayer(layer *layerGGML, quantizeType string, fn func(resp api.Progr
 	}
 	return &layerGGML{newLayer, f}, nil
 }
-
 func ggufLayers(digest string, fn func(resp api.ProgressResponse)) ([]*layerGGML, error) {
 	var layers []*layerGGML
-
 	fn(api.ProgressResponse{Status: "parsing GGUF"})
 	blobPath, err := GetBlobsPath(digest)
 	if err != nil {
 		return nil, err
 	}
-
 	blob, err := os.Open(blobPath)
 	if err != nil {
 		return nil, err
 	}
 	defer blob.Close()
-
 	sr := io.NewSectionReader(blob, 0, 512)
 	contentType, err := detectContentType(sr)
 	if err != nil {
 		return nil, err
 	}
-
 	if contentType != "gguf" {
 		slog.Error(fmt.Sprintf("unsupported content type: %s", contentType))
 		return nil, errOnlyGGUFSupported
 	}
-
 	f, err := ggml.Decode(blob, -1)
 	if err != nil {
 		return nil, err
 	}
-
 	mediatype := "application/vnd.ollama.image.model"
 	if f.KV().Kind() == "adapter" {
 		mediatype = "application/vnd.ollama.image.adapter"
 	} else if (f.KV().Uint("block_count") == 0 && f.KV().Uint("vision.block_count") > 0) || f.KV().Kind() == "projector" {
-		// if a model has vision.block_count but not block_count, it is a standalone vision model
 		mediatype = "application/vnd.ollama.image.projector"
 	}
-
 	layer, err := NewLayerFromLayer(digest, mediatype, blob.Name())
 	if err != nil {
 		slog.Debug("could not create new layer from layer", "error", err)
 		return nil, err
 	}
-
 	layers = append(layers, &layerGGML{layer, f})
-
 	return detectChatTemplate(layers)
 }
-
 func removeLayer(layers []Layer, mediatype string) []Layer {
 	return slices.DeleteFunc(layers, func(layer Layer) bool {
 		if layer.MediaType != mediatype {
 			return false
 		}
-
 		if err := layer.Remove(); err != nil {
 			slog.Warn("couldn't remove blob", "digest", layer.Digest, "error", err)
 			return true
 		}
-
 		return true
 	})
 }
-
 func setTemplate(layers []Layer, t string) ([]Layer, error) {
 	layers = removeLayer(layers, "application/vnd.ollama.image.template")
 	if _, err := template.Parse(t); err != nil {
@@ -544,17 +469,14 @@ func setTemplate(layers []Layer, t string) ([]Layer, error) {
 	if _, err := template.Parse(t); err != nil {
 		return nil, fmt.Errorf("%w: %s", errBadTemplate, err)
 	}
-
 	blob := strings.NewReader(t)
 	layer, err := NewLayer(blob, "application/vnd.ollama.image.template")
 	if err != nil {
 		return nil, err
 	}
-
 	layers = append(layers, layer)
 	return layers, nil
 }
-
 func setSystem(layers []Layer, s string) ([]Layer, error) {
 	layers = removeLayer(layers, "application/vnd.ollama.image.system")
 	if s != "" {
@@ -567,7 +489,6 @@ func setSystem(layers []Layer, s string) ([]Layer, error) {
 	}
 	return layers, nil
 }
-
 func setLicense(layers []Layer, l string) ([]Layer, error) {
 	blob := strings.NewReader(l)
 	layer, err := NewLayer(blob, "application/vnd.ollama.image.license")
@@ -577,7 +498,6 @@ func setLicense(layers []Layer, l string) ([]Layer, error) {
 	layers = append(layers, layer)
 	return layers, nil
 }
-
 func setParameters(layers []Layer, p map[string]any) ([]Layer, error) {
 	if p == nil {
 		p = make(map[string]any)
@@ -586,23 +506,19 @@ func setParameters(layers []Layer, p map[string]any) ([]Layer, error) {
 		if layer.MediaType != "application/vnd.ollama.image.params" {
 			continue
 		}
-
 		digestPath, err := GetBlobsPath(layer.Digest)
 		if err != nil {
 			return nil, err
 		}
-
 		fn, err := os.Open(digestPath)
 		if err != nil {
 			return nil, err
 		}
 		defer fn.Close()
-
 		var existing map[string]any
 		if err := json.NewDecoder(fn).Decode(&existing); err != nil {
 			return nil, err
 		}
-
 		for k, v := range existing {
 			if _, exists := p[k]; exists {
 				continue
@@ -610,13 +526,10 @@ func setParameters(layers []Layer, p map[string]any) ([]Layer, error) {
 			p[k] = v
 		}
 	}
-
 	if len(p) == 0 {
 		return layers, nil
 	}
-
 	layers = removeLayer(layers, "application/vnd.ollama.image.params")
-
 	var b bytes.Buffer
 	if err := json.NewEncoder(&b).Encode(p); err != nil {
 		return nil, err
@@ -628,14 +541,10 @@ func setParameters(layers []Layer, p map[string]any) ([]Layer, error) {
 	layers = append(layers, layer)
 	return layers, nil
 }
-
 func setMessages(layers []Layer, m []api.Message) ([]Layer, error) {
-	// this leaves the old messages intact if no new messages were specified
-	// which may not be the correct behaviour
 	if len(m) == 0 {
 		return layers, nil
 	}
-
 	fmt.Printf("removing old messages\n")
 	layers = removeLayer(layers, "application/vnd.ollama.image.messages")
 	var b bytes.Buffer
@@ -649,14 +558,12 @@ func setMessages(layers []Layer, m []api.Message) ([]Layer, error) {
 	layers = append(layers, layer)
 	return layers, nil
 }
-
 func createConfigLayer(layers []Layer, config ConfigV2) (*Layer, error) {
 	digests := make([]string, len(layers))
 	for i, layer := range layers {
 		digests[i] = layer.Digest
 	}
 	config.RootFS.DiffIDs = digests
-
 	var b bytes.Buffer
 	if err := json.NewEncoder(&b).Encode(config); err != nil {
 		return nil, err
@@ -667,13 +574,10 @@ func createConfigLayer(layers []Layer, config ConfigV2) (*Layer, error) {
 	}
 	return &layer, nil
 }
-
 func createLink(src, dst string) error {
-	// make any subdirs for dst
 	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
 		return err
 	}
-
 	_ = os.Remove(dst)
 	if err := os.Symlink(src, dst); err != nil {
 		if err := copyFile(src, dst); err != nil {
@@ -682,20 +586,17 @@ func createLink(src, dst string) error {
 	}
 	return nil
 }
-
 func copyFile(src, dst string) error {
 	srcFile, err := os.Open(src)
 	if err != nil {
 		return err
 	}
 	defer srcFile.Close()
-
 	dstFile, err := os.Create(dst)
 	if err != nil {
 		return err
 	}
 	defer dstFile.Close()
-
 	_, err = io.Copy(dstFile, srcFile)
 	return err
 }

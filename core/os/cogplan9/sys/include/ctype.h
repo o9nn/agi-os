@@ -1,6 +1,5 @@
 #pragma	src	"/sys/src/libc/port"
 #pragma	lib	"libc.a"
-
 #define	_U	01
 #define	_L	02
 #define	_N	04
@@ -9,9 +8,7 @@
 #define	_C	040
 #define	_B	0100
 #define	_X	0200
-
 extern unsigned char	_ctype[];
-
 #define	isalpha(c)	(_ctype[(unsigned char)(c)]&(_U|_L))
 #define	isupper(c)	(_ctype[(unsigned char)(c)]&_U)
 #define	islower(c)	(_ctype[(unsigned char)(c)]&_L)

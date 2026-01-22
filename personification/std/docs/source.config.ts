@@ -7,9 +7,6 @@ import {
 } from 'fumadocs-mdx/config'
 import { transformerTwoslash } from 'fumadocs-twoslash'
 import { createFileSystemTypesCache } from 'fumadocs-twoslash/cache-fs'
-
-// You can customize Zod schemas for frontmatter and `meta.json` here
-// see https://fumadocs.vercel.app/docs/mdx/collections#define-docs
 export const docs = defineDocs({
   docs: {
     schema: frontmatterSchema,
@@ -18,7 +15,6 @@ export const docs = defineDocs({
     schema: metaSchema,
   },
 })
-
 export default defineConfig({
   mdxOptions: {
     rehypeCodeOptions: {

@@ -1,30 +1,24 @@
 package llm
-
 import (
 	"bytes"
 	"fmt"
 	"os"
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/discover"
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 func TestEstimateGPULayers(t *testing.T) {
 	t.Setenv("OLLAMA_DEBUG", "1")
-	t.Setenv("OLLAMA_KV_CACHE_TYPE", "") // Ensure default f16
+	t.Setenv("OLLAMA_KV_CACHE_TYPE", "") 
 	t.Setenv("OLLAMA_CONTEXT_LENGTH", "2048")
-
 	modelName := "dummy"
 	f, err := os.CreateTemp(t.TempDir(), modelName)
 	require.NoError(t, err)
 	defer f.Close()
 	inputLayerCount := 5
-
 	tensors := []*ggml.Tensor{
 		{Name: "blk.0.attn.weight", Kind: uint32(0), Offset: uint64(0), Shape: []uint64{1, 1, 1, 1}, WriterTo: bytes.NewReader(make([]byte, 32))},
 		{Name: "blk.1.attn.weight", Kind: uint32(0), Offset: uint64(0), Shape: []uint64{1, 1, 1, 1}, WriterTo: bytes.NewReader(make([]byte, 32))},
@@ -46,13 +40,10 @@ func TestEstimateGPULayers(t *testing.T) {
 		"tokenizer.ggml.token_type":     []int32{0},
 	}, tensors)
 	require.NoError(t, err)
-
 	ggml, err := LoadModel(f.Name(), 0)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Simple CPU scenario
 	gpus := []discover.GpuInfo{
 		{
 			Library: "cpu",
@@ -65,15 +56,11 @@ func TestEstimateGPULayers(t *testing.T) {
 		assert.Equal(t, 0, estimate.Layers)
 		assert.Equal(t, uint64(0), estimate.Graph)
 	})
-
-	// derived from the dummy ggml file above
 	graphPartialOffload := uint64(202377216)
 	graphFullOffload := uint64(171968512)
 	layerSize := uint64(33554436)
 	projectorSize := uint64(0)
 	memoryLayerOutput := uint64(4)
-
-	// Dual CUDA scenario with asymmetry
 	gpuMinimumMemory := uint64(2048)
 	gpus = []discover.GpuInfo{
 		{
@@ -85,7 +72,6 @@ func TestEstimateGPULayers(t *testing.T) {
 			MinimumMemory: gpuMinimumMemory,
 		},
 	}
-	// Nested array: GPU0 layer space, GPU1 layer space, expected gpu0, expected gpu1
 	for i, s := range []struct {
 		layer0, layer1   uint64
 		expect0, expect1 uint64

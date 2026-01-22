@@ -1,16 +1,12 @@
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { cwd } from 'node:process'
-
 import { importDirectory } from '@iconify/tools'
 import { defineConfig } from 'tsdown'
-
 import packageJSON from './package.json' with { type: 'json' }
-
 function json(any: any) {
   return JSON.stringify(any, null, 2)
 }
-
 export default defineConfig({
   entry: ['./src/index.ts'],
   external: [
@@ -27,7 +23,6 @@ export default defineConfig({
     'build:done': async () => {
       const iconSetData = await importDirectory(join(cwd(), 'src', 'icons'), { prefix: 'drizzle-orm-icons', ignoreImportErrors: 'warn' })
       const iconJSONData = iconSetData.export()
-
       await writeFile(join('dist', 'metadata.json'), json({ categories: iconSetData.categories }), { encoding: 'utf8' })
       await writeFile(join('dist', 'icons.json'), json(iconJSONData), { encoding: 'utf8' })
       await writeFile(join('dist', 'chars.json'), json({}), { encoding: 'utf8' })

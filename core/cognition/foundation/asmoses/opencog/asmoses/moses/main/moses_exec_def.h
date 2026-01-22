@@ -1,39 +1,8 @@
-/** moses_exec_def.h --- 
- *
- * Copyright (C) 2010 Novamente LLC
- *
- * Author: Nil Geisweiller
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License v3 as
- * published by the Free Software Foundation and including the exceptions
- * at http://opencog.org/wiki/Licenses
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with this program; if not, write to:
- * Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
 #ifndef _OPENCOG_MOSES_EXEC_DEF_H
 #define _OPENCOG_MOSES_EXEC_DEF_H
-
 #include <string>
-
 namespace opencog { namespace moses {
-
 using namespace std;
-
-// program option names and abbreviations (one letter). If the
-// abbreviation is empty there is none. For their meanings see
-// options_description in moses-exec.cc.
-//
-// Available abbreviations are: O
 static const pair<string, string> rand_seed_opt("random-seed", "r");
 static const pair<string, string> problem_opt("problem", "H");
 static const string nsamples_opt("nsamples");
@@ -75,26 +44,13 @@ static const pair<string, string> max_candidates_per_deme_opt("max-candidates-pe
 static const pair<string, string> complexity_temperature_opt("complexity-temperature", "v");
 static const pair<string, string> complexity_ratio_opt("complexity-ratio", "z");
 static const pair<string, string> discretize_threshold_opt("discretize-threshold", "R");
-
-// options specific to a particular fitness function
 static const pair<string, string> alpha_opt("alpha", "Q");
-
-// options specific to a particular optimization algorithm
 static const pair<string, string> hc_single_step_opt("hc-single-step", "L");
 static const pair<string, string> hc_widen_search_opt("hc-widen-search", "T");
 static const pair<string, string> hc_crossover_opt("hc-crossover", "Z");
-
-// option for storing Atomese program in AtomSpace.
 static const pair<string, string> atomspace_store_opt("atomspace-store","I");
-
-// option for running codes related to Atomspace
 static const pair<string, string> atomspace_port_opt("atomspace-port", "O");
-
-// Returns a string interpretable by Boost.Program_options
-// "name,abbreviation"
 string opt_desc_str(const pair<string, string>& opt);
-
-} // ~namespace moses
-} // ~namespace opencog
-
-#endif // _OPENCOG_MOSES_OPTIONS_NAMES_H
+}
+}
+#endif

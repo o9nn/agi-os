@@ -1,21 +1,6 @@
-/*
- * Automatically generated C config: don't edit
- */
 #define AUTOCONF_INCLUDED
-
-/*
- * Code maturity level options
- */
 #define CONFIG_EXPERIMENTAL 1
-
-/*
- * Loadable module support
- */
 #undef  CONFIG_MODULES
-
-/*
- * General setup
- */
 #undef  CONFIG_MATH_EMULATION
 #define CONFIG_NET 1
 #undef  CONFIG_MAX_16M
@@ -26,29 +11,19 @@
 #define CONFIG_BINFMT_ELF 1
 #undef  CONFIG_BINFMT_JAVA
 #define CONFIG_KERNEL_ELF 1
-
 #if 0
 #undef  CONFIG_M386
 #define CONFIG_M486 1
 #undef  CONFIG_M586
 #undef  CONFIG_M686
 #endif
-
 #if NCPUS > 1
 #define CONFIG_SMP 1
 #endif
-
-/*
- * Floppy, IDE, and other block devices
- */
 #if 0
 #define CONFIG_BLK_DEV_FD 1
 #define CONFIG_BLK_DEV_IDE 1
 #endif
-
-/*
- * Please see Documentation/ide.txt for help/info on IDE drives
- */
 #undef  CONFIG_BLK_DEV_HD_IDE
 #define CONFIG_BLK_DEV_IDECD 1
 #undef  CONFIG_BLK_DEV_IDETAPE
@@ -60,19 +35,11 @@
 #define CONFIG_BLK_DEV_RZ1000 1
 #define CONFIG_BLK_DEV_TRITON 1
 #undef  CONFIG_IDE_CHIPSETS
-
-/*
- * Additional Block Devices
- */
 #undef  CONFIG_BLK_DEV_LOOP
 #undef  CONFIG_BLK_DEV_MD
 #undef  CONFIG_BLK_DEV_RAM
 #undef  CONFIG_BLK_DEV_XD
 #undef  CONFIG_BLK_DEV_HD
-
-/*
- * Networking options
- */
 #if 0
 #undef  CONFIG_FIREWALL
 #undef  CONFIG_NET_ALIAS
@@ -85,50 +52,26 @@
 #undef  CONFIG_IP_ROUTER
 #undef  CONFIG_NET_IPIP
 #endif
-
-/*
- * (it is safe to leave these untouched)
- */
 #undef  CONFIG_INET_PCTCP
 #undef  CONFIG_INET_RARP
 #undef  CONFIG_NO_PATH_MTU_DISCOVERY
 #undef  CONFIG_IP_NOSR
 #undef  CONFIG_SKB_LARGE
-
-/*
- *
- */
 #undef  CONFIG_IPX
 #undef  CONFIG_ATALK
 #undef  CONFIG_AX25
 #undef  CONFIG_BRIDGE
 #undef  CONFIG_NETLINK
-
-/*
- * SCSI support
- */
 #if 0
 #define CONFIG_SCSI 1
 #endif
-
-/*
- * SCSI support type (disk, tape, CD-ROM)
- */
 #define CONFIG_BLK_DEV_SD 1
 #undef  CONFIG_CHR_DEV_ST
 #define CONFIG_BLK_DEV_SR 1
 #undef  CONFIG_CHR_DEV_SG
-
-/*
- * Some SCSI devices (e.g. CD jukebox) support multiple LUNs
- */
 #if 0
 #undef  CONFIG_SCSI_MULTI_LUN
 #undef  CONFIG_SCSI_CONSTANTS
-
-/*
- * SCSI low-level drivers
- */
 #undef  CONFIG_SCSI_7000FASST
 #undef  CONFIG_SCSI_AHA152X
 #undef  CONFIG_SCSI_AHA1542
@@ -159,10 +102,6 @@
 #undef  CONFIG_SCSI_ULTRASTOR
 #undef  CONFIG_SCSI_GDTH
 #endif
-
-/*
- * Network device support
- */
 #define CONFIG_NETDEVICES 1
 #undef  CONFIG_DUMMY
 #undef  CONFIG_EQUALIZER
@@ -171,7 +110,6 @@
 #undef  CONFIG_PPP
 #undef  CONFIG_SLIP
 #undef  CONFIG_NET_RADIO
-
 #if 0
 #define CONFIG_NET_ETHERNET 1
 #define CONFIG_NET_VENDOR_3COM 1
@@ -206,20 +144,8 @@
 #undef  CONFIG_FDDI
 #undef  CONFIG_ARCNET
 #endif
-
-/*
- * ISDN subsystem
- */
 #undef  CONFIG_ISDN
-
-/*
- * CD-ROM drivers (not for SCSI or IDE/ATAPI drives)
- */
 #undef  CONFIG_CD_NO_IDESCSI
-
-/*
- * Filesystems
- */
 #undef  CONFIG_QUOTA
 #define CONFIG_MINIX_FS 1
 #undef  CONFIG_EXT_FS
@@ -240,17 +166,9 @@
 #define CONFIG_AFFS_FS 1
 #undef  CONFIG_AMIGA_PARTITION
 #define CONFIG_UFS_FS 1
-
-/* We want Linux's partitioning code to do only the DOS partition table,
-   since the Mach glue code does BSD disklabels for us.  */
 #undef	CONFIG_BSD_DISKLABEL
 #undef	CONFIG_SMD_DISKLABEL
-
 #define CONFIG_GPT_DISKLABEL 1
-
-/*
- * Character devices
- */
 #if 0
 #define CONFIG_SERIAL 1
 #undef  CONFIG_DIGI
@@ -272,13 +190,5 @@
 #undef  CONFIG_WATCHDOG
 #undef  CONFIG_RTC
 #endif
-
-/*
- * Sound
- */
 #undef  CONFIG_SOUND
-
-/*
- * Kernel hacking
- */
 #undef  CONFIG_PROFILE

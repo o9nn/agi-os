@@ -1,38 +1,21 @@
-/*!
- * # Semantic UI 2.2.10 - State
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.state = function(parameters) {
   var
     $allModules     = $(this),
-
     moduleSelector  = $allModules.selector || '',
-
     hasTouch        = ('ontouchstart' in document.documentElement),
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
-
     returnedValue
   ;
   $allModules
@@ -41,35 +24,25 @@ $.fn.state = function(parameters) {
         settings          = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.state.settings, parameters)
           : $.extend({}, $.fn.state.settings),
-
         error           = settings.error,
         metadata        = settings.metadata,
         className       = settings.className,
         namespace       = settings.namespace,
         states          = settings.states,
         text            = settings.text,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = namespace + '-module',
-
         $module         = $(this),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
-
         module
       ;
       module = {
-
         initialize: function() {
           module.verbose('Initializing module');
-
-          // allow module to guess desired state based on element
           if(settings.automatic) {
             module.add.defaults();
           }
-
-          // bind events with delegated events
           if(settings.context && moduleSelector !== '') {
             $(settings.context)
               .on(moduleSelector, 'mouseenter' + eventNamespace, module.change.text)
@@ -86,7 +59,6 @@ $.fn.state = function(parameters) {
           }
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of module', module);
           instance = module;
@@ -94,7 +66,6 @@ $.fn.state = function(parameters) {
             .data(moduleNamespace, module)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying previous module', instance);
           $module
@@ -102,12 +73,10 @@ $.fn.state = function(parameters) {
             .removeData(moduleNamespace)
           ;
         },
-
         refresh: function() {
           module.verbose('Refreshing selector cache');
           $module = $(element);
         },
-
         add: {
           defaults: function() {
             var
@@ -123,9 +92,7 @@ $.fn.state = function(parameters) {
             });
           }
         },
-
         is: {
-
           active: function() {
             return $module.hasClass(className.active);
           },
@@ -141,7 +108,6 @@ $.fn.state = function(parameters) {
             }
             return $module.hasClass( className[state] );
           },
-
           enabled: function() {
             return !( $module.is(settings.filter.active) );
           },
@@ -151,8 +117,6 @@ $.fn.state = function(parameters) {
           textEnabled: function() {
             return !( $module.is(settings.filter.text) );
           },
-
-          // definitions for automatic type detection
           button: function() {
             return $module.is('.button:not(a, .submit)');
           },
@@ -163,7 +127,6 @@ $.fn.state = function(parameters) {
             return $module.is('.ui.progress');
           }
         },
-
         allow: function(state) {
           module.debug('Now allowing state', state);
           states[state] = true;
@@ -172,31 +135,25 @@ $.fn.state = function(parameters) {
           module.debug('No longer allowing', state);
           states[state] = false;
         },
-
         allows: function(state) {
           return states[state] || false;
         },
-
         enable: function() {
           $module.removeClass(className.disabled);
         },
-
         disable: function() {
           $module.addClass(className.disabled);
         },
-
         setState: function(state) {
           if(module.allows(state)) {
             $module.addClass( className[state] );
           }
         },
-
         removeState: function(state) {
           if(module.allows(state)) {
             $module.removeClass( className[state] );
           }
         },
-
         toggle: {
           state: function() {
             var
@@ -222,7 +179,6 @@ $.fn.state = function(parameters) {
             }
           }
         },
-
         listenTo: function(apiRequest) {
           module.debug('API request detected, waiting for state signal', apiRequest);
           if(apiRequest) {
@@ -246,13 +202,9 @@ $.fn.state = function(parameters) {
             ;
           }
         },
-
-        // checks whether active/inactive state can be given
         change: {
-
           state: function() {
             module.debug('Determining state change direction');
-            // inactive to active change
             if( module.is.inactive() ) {
               module.activate();
             }
@@ -264,7 +216,6 @@ $.fn.state = function(parameters) {
             }
             settings.onChange.call(element);
           },
-
           text: function() {
             if( module.is.textEnabled() ) {
               if(module.is.disabled() ) {
@@ -293,9 +244,7 @@ $.fn.state = function(parameters) {
               }
             }
           }
-
         },
-
         activate: function() {
           if( settings.activateTest.call(element) ) {
             module.debug('Setting state to active');
@@ -306,7 +255,6 @@ $.fn.state = function(parameters) {
             settings.onActivate.call(element);
           }
         },
-
         deactivate: function() {
           if( settings.deactivateTest.call(element) ) {
             module.debug('Setting state to inactive');
@@ -317,7 +265,6 @@ $.fn.state = function(parameters) {
             settings.onDeactivate.call(element);
           }
         },
-
         sync: function() {
           module.verbose('Syncing other buttons to current state');
           if( module.is.active() ) {
@@ -332,7 +279,6 @@ $.fn.state = function(parameters) {
             ;
           }
         },
-
         get: {
           text: function() {
             return (settings.selector.text)
@@ -344,7 +290,6 @@ $.fn.state = function(parameters) {
             return text[state] || false;
           }
         },
-
         flash: {
           text: function(text, duration, callback) {
             var
@@ -361,9 +306,7 @@ $.fn.state = function(parameters) {
             }, duration);
           }
         },
-
         reset: {
-          // on mouseout sets text to previous value
           text: function() {
             var
               activeText   = text.active   || $module.data(metadata.storedText),
@@ -381,7 +324,6 @@ $.fn.state = function(parameters) {
             }
           }
         },
-
         update: {
           text: function(text) {
             var
@@ -408,7 +350,6 @@ $.fn.state = function(parameters) {
             }
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -571,7 +512,6 @@ $.fn.state = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -586,69 +526,38 @@ $.fn.state = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.fn.state.settings = {
-
-  // module info
   name           : 'State',
-
-  // debug output
   debug          : false,
-
-  // verbose debug output
   verbose        : false,
-
-  // namespace for events
   namespace      : 'state',
-
-  // debug data includes performance
   performance    : true,
-
-  // callback occurs on state change
   onActivate     : function() {},
   onDeactivate   : function() {},
   onChange       : function() {},
-
-  // state test functions
   activateTest   : function() { return true; },
   deactivateTest : function() { return true; },
-
-  // whether to automatically map default states
   automatic      : true,
-
-  // activate / deactivate changes all elements instantiated at same time
   sync           : false,
-
-  // default flash text duration, used for temporarily changing text of an element
   flashDuration  : 1000,
-
-  // selector filter
   filter     : {
     text   : '.loading, .disabled',
     active : '.disabled'
   },
-
   context    : false,
-
-  // error
   error: {
     beforeSend : 'The before send function has cancelled state change',
     method     : 'The method you called is not defined.'
   },
-
-  // metadata
   metadata: {
     promise    : 'promise',
     storedText : 'stored-text'
   },
-
-  // change class on state
   className: {
     active   : 'active',
     disabled : 'disabled',
@@ -657,12 +566,9 @@ $.fn.state.settings = {
     success  : 'success',
     warning  : 'warning'
   },
-
   selector: {
-    // selector for text node
     text: false
   },
-
   defaults : {
     input: {
       disabled : true,
@@ -681,7 +587,6 @@ $.fn.state.settings = {
       error    : true
     }
   },
-
   states     : {
     active   : true,
     disabled : true,
@@ -690,7 +595,6 @@ $.fn.state.settings = {
     success  : true,
     warning  : true
   },
-
   text     : {
     disabled   : false,
     flash      : false,
@@ -700,9 +604,5 @@ $.fn.state.settings = {
     activate   : false,
     deactivate : false
   }
-
 };
-
-
-
 })( jQuery, window, document );

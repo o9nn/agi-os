@@ -1,11 +1,8 @@
 #!/usr/bin/env node
-
 import yargs from "yargs";
 import {hideBin} from "yargs/helpers";
 import {setIsRunningFromCLI} from "../state.js";
 import {CreateCliCommand} from "./commands/InitCommand.js";
-
-/** @internal */
 export function _startCreateCli({
     cliBinName,
     packageVersion,
@@ -17,11 +14,8 @@ export function _startCreateCli({
 }) {
     if (_enable !== Symbol.for("internal"))
         return;
-
     setIsRunningFromCLI(true);
-
     const yarg = yargs(hideBin(process.argv));
-
     yarg
         .scriptName(cliBinName)
         .usage("Usage: $0 [options]")

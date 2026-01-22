@@ -1,5 +1,4 @@
 import process, { env } from 'node:process'
-
 import { Format, LogLevel, setGlobalFormat, setGlobalLogLevel, useLogg } from '@guiiai/logg'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
@@ -7,13 +6,10 @@ import { resourceFromAttributes } from '@opentelemetry/resources'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions'
-
 import { startTelegramBot } from './bots/telegram'
 import { initDb } from './db'
-
 setGlobalFormat(Format.Pretty)
 setGlobalLogLevel(LogLevel.Debug)
-
 async function main() {
   const sdk = new NodeSDK({
     resource: resourceFromAttributes({
@@ -30,13 +26,10 @@ async function main() {
       exportIntervalMillis: 5000,
     }),
   })
-
   sdk.start()
-
   await initDb()
   await startTelegramBot()
 }
-
 process.on('unhandledRejection', (err) => {
   const log = useLogg('UnhandledRejection').useGlobalConfig()
   log
@@ -44,5 +37,4 @@ process.on('unhandledRejection', (err) => {
     .withField('cause', (err as any).cause)
     .error('Unhandled rejection')
 })
-
 main().catch(console.error)

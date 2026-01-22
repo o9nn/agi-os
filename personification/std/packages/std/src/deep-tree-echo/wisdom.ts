@@ -1,5 +1,4 @@
 import type { WaysOfKnowing } from './types'
-
 export function createWaysOfKnowing(
   overrides?: Partial<WaysOfKnowing>,
 ): WaysOfKnowing {
@@ -9,15 +8,12 @@ export function createWaysOfKnowing(
     perspectival: 0.25,
     participatory: 0.25,
   }
-
   const combined = { ...base, ...overrides }
-
   const total
     = combined.propositional
     + combined.procedural
     + combined.perspectival
     + combined.participatory
-
   return {
     propositional: combined.propositional / total,
     procedural: combined.procedural / total,
@@ -25,7 +21,6 @@ export function createWaysOfKnowing(
     participatory: combined.participatory / total,
   }
 }
-
 export function balanceWaysOfKnowing(
   current: WaysOfKnowing,
   rate = 0.1,
@@ -37,10 +32,8 @@ export function balanceWaysOfKnowing(
     perspectival: current.perspectival + (target - current.perspectival) * rate,
     participatory: current.participatory + (target - current.participatory) * rate,
   }
-
   return createWaysOfKnowing(balanced)
 }
-
 export function emphasizeWay(
   current: WaysOfKnowing,
   way: keyof WaysOfKnowing,
@@ -48,21 +41,16 @@ export function emphasizeWay(
 ): WaysOfKnowing {
   const adjusted = { ...current }
   const increase = Math.min(amount, 1 - adjusted[way])
-
   adjusted[way] += increase
-
   const others = (Object.keys(adjusted) as Array<keyof WaysOfKnowing>).filter(
     k => k !== way,
   )
   const decreaseEach = increase / others.length
-
   for (const other of others) {
     adjusted[other] = Math.max(0, adjusted[other] - decreaseEach)
   }
-
   return createWaysOfKnowing(adjusted)
 }
-
 export function calculateWisdomScore(
   knowing: WaysOfKnowing,
 ): number {
@@ -72,18 +60,14 @@ export function calculateWisdomScore(
     knowing.perspectival,
     knowing.participatory,
   ]
-
   const mean = 0.25
   const variance
     = values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / values.length
   const balanceScore = 1 - Math.min(1, variance * 10)
-
   const minValue = Math.min(...values)
   const depthScore = minValue / 0.25
-
   return (balanceScore * 0.6 + depthScore * 0.4)
 }
-
 export function getDominantWay(
   knowing: WaysOfKnowing,
 ): keyof WaysOfKnowing {
@@ -94,7 +78,6 @@ export function getDominantWay(
     val > knowing[max] ? key : max, entries[0][0],
   )
 }
-
 export function isBalanced(
   knowing: WaysOfKnowing,
   threshold = 0.1,
@@ -106,10 +89,8 @@ export function isBalanced(
     knowing.perspectival,
     knowing.participatory,
   ]
-
   return values.every(v => Math.abs(v - target) <= threshold)
 }
-
 export function integrateLearning(
   current: WaysOfKnowing,
   learning: Partial<WaysOfKnowing>,
@@ -128,6 +109,5 @@ export function integrateLearning(
       current.participatory
       + (learning.participatory ?? 0 - current.participatory) * rate,
   }
-
   return createWaysOfKnowing(integrated)
 }

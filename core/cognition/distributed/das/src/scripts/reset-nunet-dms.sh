@@ -1,5 +1,4 @@
 #!/bin/bash
-
 if [ -d "$HOME/.nunet" ]; then
   echo "$HOME/.nunet exists. Do you want to delete the configurations? (y/n)"
   read -r response
@@ -10,7 +9,6 @@ if [ -d "$HOME/.nunet" ]; then
     echo "Configurations not deleted."
   fi
 fi
-
 if command -v nunet &> /dev/null; then
   echo "'nunet' binary is installed. Do you want to uninstall it? (y/n)"
   read -r response

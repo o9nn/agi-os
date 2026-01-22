@@ -3,16 +3,11 @@ import re
 import os
 from os.path import dirname, abspath
 from os.path import join as joinpath
-
-# the following const are generated from deltachat.h
-# this works well when you in a git-checkout
-# run "python deltachat/const.py" to regenerate events
-# begin const generated
-DC_GCL_ARCHIVED_ONLY = 0x01
-DC_GCL_NO_SPECIALS = 0x02
-DC_GCL_ADD_ALLDONE_HINT = 0x04
-DC_GCL_VERIFIED_ONLY = 0x01
-DC_GCL_ADD_SELF = 0x02
+DC_GCL_ARCHIVED_ONLY = 1
+DC_GCL_NO_SPECIALS = 2
+DC_GCL_ADD_ALLDONE_HINT = 4
+DC_GCL_VERIFIED_ONLY = 1
+DC_GCL_ADD_SELF = 2
 DC_CHAT_ID_DEADDROP = 1
 DC_CHAT_ID_TRASH = 3
 DC_CHAT_ID_MSGS_IN_CREATION = 4
@@ -73,41 +68,34 @@ DC_EVENT_HTTP_GET = 2100
 DC_EVENT_HTTP_POST = 2110
 DC_EVENT_FILE_COPIED = 2055
 DC_EVENT_IS_OFFLINE = 2081
-# end const generated
-
-
 def read_event_defines(f):
-    rex = re.compile(r'#define\s+((?:DC_EVENT_|DC_MSG|DC_STATE_|DC_CONTACT_ID_|DC_GCL|DC_CHAT)\S+)\s+([x\d]+).*')
+    rex = re.compile('#define\\s+((?:DC_EVENT_|DC_MSG|DC_STATE_|DC_CONTACT_ID_|DC_GCL|DC_CHAT)\\S+)\\s+([x\\d]+).*')
     for line in f:
         m = rex.match(line)
         if m:
             yield m.groups()
-
-
-if __name__ == "__main__":
-    here = abspath(__file__).rstrip("oc")
+if __name__ == '__main__':
+    here = abspath(__file__).rstrip('oc')
     here_dir = dirname(here)
     if len(sys.argv) >= 2:
         deltah = sys.argv[1]
     else:
-        deltah = joinpath(dirname(dirname(dirname(here_dir))), "src", "deltachat.h")
+        deltah = joinpath(dirname(dirname(dirname(here_dir))), 'src', 'deltachat.h')
     assert os.path.exists(deltah)
-
     lines = []
     skip_to_end = False
     for orig_line in open(here):
         if skip_to_end:
-            if not orig_line.startswith("# end const"):
+            if not orig_line.startswith('# end const'):
                 continue
             skip_to_end = False
         lines.append(orig_line)
-        if orig_line.startswith("# begin const"):
+        if orig_line.startswith('# begin const'):
             with open(deltah) as f:
                 for name, item in read_event_defines(f):
-                    lines.append("{} = {}\n".format(name, item))
+                    lines.append('{} = {}\n'.format(name, item))
             skip_to_end = True
-
-    tmpname = here + ".tmp"
-    with open(tmpname, "w") as f:
-        f.write("".join(lines))
+    tmpname = here + '.tmp'
+    with open(tmpname, 'w') as f:
+        f.write(''.join(lines))
     os.rename(tmpname, here)

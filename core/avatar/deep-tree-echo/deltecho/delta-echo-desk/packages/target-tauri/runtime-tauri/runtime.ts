@@ -1,14 +1,10 @@
-// This needs to be injected / imported before the frontend script
-
 import { Channel, invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
-
 import type { attachLogger } from '@tauri-apps/plugin-log'
 import { getStore } from '@tauri-apps/plugin-store'
 import type { Store } from '@tauri-apps/plugin-store'
 import { openPath, openUrl } from '@tauri-apps/plugin-opener'
 import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager'
-
 import type {
   AutostartState,
   DcNotification,
@@ -20,14 +16,12 @@ import type {
   Theme,
 } from '@deltachat-desktop/shared/shared-types.js'
 import '@deltachat-desktop/shared/global.d.ts'
-
 import type {
   MediaAccessStatus,
   MediaType,
   Runtime,
   RuntimeAppPath,
 } from '@deltachat-desktop/runtime-interface'
-
 import { BaseDeltaChat, yerpc } from '@deltachat/jsonrpc-client'
 import type { LocaleData } from '@deltachat-desktop/shared/localize.js'
 import type {
@@ -35,9 +29,7 @@ import type {
   LogLevelString,
 } from '@deltachat-desktop/shared/logger.js'
 import type { setLogHandler as setLogHandlerFunction } from '@deltachat-desktop/shared/logger.js'
-
 let logJsonrpcConnection = false
-
 type MainWindowEvents =
   | {
       event: 'sendToChat'
@@ -79,18 +71,14 @@ type MainWindowEvents =
       event: 'deepLinkOpened'
       data: string
     }
-
 const events = new Channel<MainWindowEvents>()
 const jsonrpc = new Channel<yerpc.Message>()
 invoke('set_main_window_channels', { jsonrpc, events })
-
 class TauriTransport extends yerpc.BaseTransport {
   constructor(private callCounterFunction: (label: string) => void) {
     super()
-
     jsonrpc.onmessage = (message: yerpc.Message) => {
       if (logJsonrpcConnection) {
-        /* ignore-console-log */
         console.debug('%c▼ %c[JSONRPC]', 'color: red', 'color:grey', message)
       }
       this._onmessage(message)
@@ -99,7 +87,6 @@ class TauriTransport extends yerpc.BaseTransport {
   _send(message: yerpc.Message): void {
     invoke('deltachat_jsonrpc_request', { message })
     if (logJsonrpcConnection) {
-      /* ignore-console-log */
       console.debug('%c▲ %c[JSONRPC]', 'color: green', 'color:grey', message)
       if ((message as any)['method']) {
         this.callCounterFunction((message as any).method)
@@ -108,16 +95,12 @@ class TauriTransport extends yerpc.BaseTransport {
     }
   }
 }
-
 export class TauriDeltaChat extends BaseDeltaChat<TauriTransport> {
   constructor(callCounterFunction: (label: string) => void) {
     super(new TauriTransport(callCounterFunction), true)
   }
 }
-
-// Probably not super reliable, but we don't need it to be.
 const isWindowsOS = navigator.userAgent.includes('Win')
-
 class TauriRuntime implements Runtime {
   constructor() {
     this.getActiveTheme = this.getActiveTheme.bind(this)
@@ -153,33 +136,29 @@ class TauriRuntime implements Runtime {
     })
   }
   async getDesktopSettings(): Promise<DesktopSettingsType> {
-    // static not saved - not needed anymore besides cleaning up values in electron version
     const deprecated = {
       credentials: undefined,
       lastAccount: undefined,
       lastChats: {},
     } satisfies Partial<DesktopSettingsType>
-    // static not saved - not needed in tauri version
     const static_backend = {
       ...deprecated,
-      bounds: {}, // managed by tauri_plugin_window_state plugin
-      HTMLEmailWindowBounds: undefined, // managed by tauri_plugin_window_state plugin
+      bounds: {}, 
+      HTMLEmailWindowBounds: undefined, 
     } satisfies Partial<DesktopSettingsType>
-
     const frontendAndTauri = {
-      zoomFactor: 1, // ? not sure yet
+      zoomFactor: 1, 
       minimizeToTray: true,
       lastSaveDialogLocation: undefined,
-      enableWebxdcDevTools: false, // likely impossible in mac appstore version, either hide setting there or use sth like eruda js to fill the gap?
+      enableWebxdcDevTools: false, 
       HTMLEmailAskForRemoteLoadingConfirmation: true,
       HTMLEmailAlwaysLoadRemoteContent: false,
       contentProtectionEnabled: false,
       activeTheme: 'system',
-      locale: null, // if this is null, the system chooses the system language that electron reports
+      locale: null, 
       notifications: true,
       syncAllAccounts: true,
       autostart: true,
-      // Deep Tree Echo Bot settings - part of our revolutionary AI companion platform
       deepTreeEchoBotEnabled: false,
       deepTreeEchoBotMemoryEnabled: false,
       deepTreeEchoBotPersonality: '',
@@ -193,7 +172,6 @@ class TauriRuntime implements Runtime {
       deepTreeEchoBotReflections: '',
       deepTreeEchoBotCognitiveKeys: '',
     } satisfies Partial<DesktopSettingsType>
-
     const frontendOnly = {
       showNotificationContent: true,
       enterKeySends: false,
@@ -208,7 +186,6 @@ class TauriRuntime implements Runtime {
       isMentionsEnabled: false,
       useSystemUIFont: false,
     } satisfies Partial<DesktopSettingsType>
-
     const savedEntries = (await this.store.entries()).reduce(
       (acc, [key, value]) => {
         ;(acc as any)[key] = value
@@ -216,7 +193,6 @@ class TauriRuntime implements Runtime {
       },
       {} as Partial<DesktopSettingsType>
     )
-
     return {
       ...static_backend,
       ...frontendAndTauri,
@@ -228,13 +204,11 @@ class TauriRuntime implements Runtime {
     key: keyof DesktopSettingsType,
     value: string | number | boolean | undefined
   ): Promise<void> {
-    // 1. set values in key value store
     if (typeof value === 'undefined') {
       await this.store.delete(key)
     } else {
       await this.store.set(key, value)
     }
-    // 2. if supported in tauri settings, then also notifiy tauri (like tray_icon, but not experimental ui options)
     await invoke('change_desktop_settings_apply_side_effects', { key })
   }
   private log!: ReturnType<typeof getLoggerFunction>
@@ -243,7 +217,6 @@ class TauriRuntime implements Runtime {
     setLogHandler: typeof setLogHandlerFunction,
     getLogger: typeof getLoggerFunction
   ): Promise<void> {
-    // fetch vars
     const config = await invoke<{
       log_debug: boolean
       log_to_console: boolean
@@ -258,15 +231,11 @@ class TauriRuntime implements Runtime {
       'log-to-console': config.log_to_console,
       devmode: config.dev_mode,
       minimized: config.forced_tray_icon,
-
       theme: config.theme || undefined,
       'theme-watch': config.theme_watch,
       'translation-watch': false,
-
-      // does not exist in delta tauri
       'allow-unsafe-core-replacement': false,
       'machine-readable-stacktrace': true,
-      // these are not relevant for frontend (--version, --help and their shorthand forms)
       version: false,
       v: false,
       help: false,
@@ -276,14 +245,11 @@ class TauriRuntime implements Runtime {
     if (rc_config['log-debug']) {
       logJsonrpcConnection = true
     }
-    // - runtime info
     const runtime_info: RuntimeInfo = await invoke('get_runtime_info')
     this.runtime_info = runtime_info
-
     type TauriLogVariants = Parameters<
       Parameters<typeof attachLogger>[0]
     >[0]['level']
-
     const variants: Record<LogLevelString, TauriLogVariants> = {
       DEBUG: 2,
       INFO: 3,
@@ -291,18 +257,14 @@ class TauriRuntime implements Runtime {
       ERROR: 5,
       CRITICAL: 5,
     }
-
     setLogHandler((channel, level, _stack_trace, ...args) => {
       const message = args
         .map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg))
         .join(', ')
-
-      // this code was partially taken from @tauri-apps/plugin-log then modified for our usecase
       const traces = new Error().stack
         ?.split('\n')
         .map(line => line.split('@'))
-        .slice(3) // removes non interesting stackframes
-
+        .slice(3) 
       const filtered = traces?.filter(([name, location]) => {
         return name.length > 0 && location !== '[native code]'
       })
@@ -310,18 +272,10 @@ class TauriRuntime implements Runtime {
       if (location === 'Error') {
         location = 'webview::unknown'
       }
-
-      // Format location similar to the rust location
-      // the channel is normally a "file" / "module"
-      // the method name is relevant
-      // and the location in file is bundled,
-      // so the shown file location is not very helpful most of the time,
-      // still for errors the stack trace is appended
       const onlyFnName = location?.split('@')[0]
-      location = `:JS::${channel.replace(/\//g, '::')}${
+      location = `:JS::${channel.replace(/\
         onlyFnName ? `::${onlyFnName}` : ''
       }`
-
       const tauriLogLevel = variants[level]
       invoke('plugin:log|log', {
         level: tauriLogLevel,
@@ -335,7 +289,6 @@ class TauriRuntime implements Runtime {
             : undefined,
       })
     }, rc_config)
-
     this.log = getLogger('runtime/tauri')
     const store = await getStore('config.json')
     if (!store) {
@@ -343,7 +296,6 @@ class TauriRuntime implements Runtime {
     }
     this.store = store
     this.currentLogFileLocation = await invoke('get_current_logfile')
-
     events.onmessage = event => {
       if (event.event === 'sendToChat') {
         const { options, account } = event.data
@@ -358,7 +310,6 @@ class TauriRuntime implements Runtime {
           account || undefined
         )
       } else if (event.event === 'localeReloaded') {
-        // event.data is only null in case of reloading via --watch-translations
         this.onChooseLanguage?.(event.data || window.localeData.locale)
       } else if (event.event === 'showAboutDialog') {
         this.onShowDialog?.('about')
@@ -387,8 +338,6 @@ class TauriRuntime implements Runtime {
       })
   }
   reloadWebContent(): void {
-    // for now use the browser method as long as it is sufficient
-    // this method is used for reload button on crash screen
     location.reload()
   }
   openLogFile(): void {
@@ -435,7 +384,6 @@ class TauriRuntime implements Runtime {
       filters: options.filters,
       properties: options.properties,
       defaultPath: options.defaultPath,
-      // buttonLabel: options.buttonLabel, // not supported by tauri
     })
   }
   async downloadFile(pathToSource: string, filename: string): Promise<void> {
@@ -443,13 +391,7 @@ class TauriRuntime implements Runtime {
   }
   transformBlobURL(blob_path: string): string {
     const matches = blob_path.match(/.*(:?\\|\/)(.+?)\1dc.db-blobs\1(.*)/)
-    // this.log.info({ transformBlobURL: blob_path, matches })
-
     if (matches) {
-      // Currently encoding is unnecessary, because file names are
-      // hex strings + file extension,
-      // but let's do it for consistency with `transformStickerURL`,
-      // and some future-proofing.
       const filename = encodeURIComponent(matches[3])
       return `${this.runtime_info?.tauriSpecific?.scheme.blobs}${matches[2]}/${filename}`
     }
@@ -464,11 +406,7 @@ class TauriRuntime implements Runtime {
     const matches = sticker_path.match(
       /.*(:?\\|\/)(.+?)\1stickers\1(.+?)\1(.+)/
     )
-    // this.log.info({ transformStickerURL: sticker_path, matches })
-
     if (matches) {
-      // Keep in mind that the sticker pack folder and sticker name
-      // can include arbitrary characters.
       const packName = encodeURIComponent(matches[3])
       const filename = encodeURIComponent(matches[4])
       return `${this.runtime_info?.tauriSpecific?.scheme.stickers}${matches[2]}/${packName}/${filename}`
@@ -495,8 +433,6 @@ class TauriRuntime implements Runtime {
     return invoke('copy_image_to_clipboard', { path })
   }
   getAppPath(name: RuntimeAppPath): Promise<string> {
-    // defined in packages/target-tauri/src-tauri/src/app_path.rs
-    // look there if some path is not implemented
     return invoke('get_app_path', { name })
   }
   openMapsWebxdc(_accountId: number, _chatId?: number): void {
@@ -547,7 +483,6 @@ class TauriRuntime implements Runtime {
     invoke('on_webxdc_message_deleted', { accountId, instanceId })
   }
   restartApp(): void {
-    // will not be implemented in tauri for now, as this method is currently unused
     this.log.error('Method not implemented: restartApp')
   }
   async getLocaleData(locale?: string): Promise<LocaleData> {
@@ -560,17 +495,12 @@ class TauriRuntime implements Runtime {
   }
   setBadgeCounter(value: number): void {
     const window = getCurrentWindow()
-
-    // According to the docs, `setBadgeCount` is unsupported on Windows,
-    // and we should use `setOverlayIcon` instead.
     window.setBadgeCount(value === 0 ? undefined : value)
     if (isWindowsOS) {
-      // Yes, this won't show the count.
       window.setOverlayIcon?.(
         value === 0 ? undefined : 'images/tray/unread-badge.png'
       )
     }
-
     invoke('update_tray_icon_badge', { counter: value })
   }
   showNotification({
@@ -598,7 +528,6 @@ class TauriRuntime implements Runtime {
   clearNotifications(accountId: number, chatId: number): void {
     invoke('clear_notifications', { accountId, chatId })
   }
-
   notificationCallback?: (data: {
     accountId: number
     chatId: number
@@ -624,19 +553,15 @@ class TauriRuntime implements Runtime {
       sourcePath,
     })
   }
-
   removeTempFile(path: string): Promise<void> {
     return invoke('remove_temp_file', { path })
   }
   getWebxdcDiskUsage(
     _accountId: number
   ): Promise<{ total_size: number; data_size: number }> {
-    // will not be implemented in tauri for now, as this method is currently unused
     throw new Error('Method not implemented: runtime.getWebxdcDiskUsage')
   }
   clearWebxdcDOMStorage(_accountId: number): Promise<void> {
-    // will not be implemented in tauri for now, as this method is currently unused
-    // Also isn't this function essentially a duplicate of `this.deleteWebxdcAccountData`?
     throw new Error('Method not implemented.46')
   }
   getAvailableThemes(): Promise<Theme[]> {
@@ -673,8 +598,6 @@ class TauriRuntime implements Runtime {
   isDroppedFileFromOutside(_file: File): boolean {
     throw new Error('Method not implemented.51')
   }
-  // only works on macOS and iOS
-  // exp.runtime.debug_get_datastore_ids()
   async debug_get_datastore_ids() {
     return await invoke('debug_get_datastore_ids')
   }
@@ -703,5 +626,4 @@ class TauriRuntime implements Runtime {
     throw new Error('Method not implemented.')
   }
 }
-
 ;(window as any).r = new TauriRuntime()

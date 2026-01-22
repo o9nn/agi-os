@@ -1,12 +1,3 @@
-;; =============================================================================
-;; Simple Crisp Deduction Rule
-;;
-;; Inheritance A B
-;; Inheritance B C
-;; |-
-;; Inheritance A C
-;; -----------------------------------------------------------------------------
-
 (define bc-deduction-rule
   (let* ((A (Variable "$A"))
          (B (Variable "$B"))
@@ -30,24 +21,14 @@
        vardecl
        pattern
        rewrite)))
-
-; -----------------------------------------------------------------------------
-; Deduction Formula
-; -----------------------------------------------------------------------------
-
 (define (true-enough-bool a)
   (let ((s (cog-mean a)) (c (cog-confidence a)))
     (and (> s 0.5) (> c 0.5))))
-
 (define (true-enough a)
   (bool->tv (true-enough-bool a)))
-
 (define (bc-deduction AC AB BC)
-  ;; We keep this precondition here again just in case
   (if (and (true-enough-bool AB) (true-enough-bool BC))
       (cog-set-tv! AC (stv 1 1))))
-
-; Associate a name to the rule
 (define bc-deduction-rule-name (DefinedSchema "bc-deduction-rule"))
 (DefineLink
   bc-deduction-rule-name

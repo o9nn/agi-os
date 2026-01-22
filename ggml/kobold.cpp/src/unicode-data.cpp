@@ -1,13 +1,9 @@
-// generated with scripts/gen-unicode-data.py
-
 #include "unicode-data.h"
-
 #include <cstdint>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-
-const std::initializer_list<std::pair<uint32_t, uint16_t>> unicode_ranges_flags = {  // start, flags // last=next_start-1
+const std::initializer_list<std::pair<uint32_t, uint16_t>> unicode_ranges_flags = {
 {0x000000, 0x0080},
 {0x000020, 0x0008},
 {0x000021, 0x0020},
@@ -2282,7 +2278,6 @@ const std::initializer_list<std::pair<uint32_t, uint16_t>> unicode_ranges_flags 
 {0x10FFFE, 0x0001},
 {0x110000, 0x0000},
 };
-
 const std::unordered_set<uint32_t> unicode_set_whitespace = {
 0x000009,
 0x00000A,
@@ -2310,8 +2305,6 @@ const std::unordered_set<uint32_t> unicode_set_whitespace = {
 0x00205F,
 0x003000,
 };
-
-// list is always in ascending order, to enable binary search
 const std::initializer_list<std::pair<uint32_t, uint32_t>> unicode_map_lowercase = {
 {0x000041, 0x000061},
 {0x000042, 0x000062},
@@ -3747,8 +3740,6 @@ const std::initializer_list<std::pair<uint32_t, uint32_t>> unicode_map_lowercase
 {0x01E920, 0x01E942},
 {0x01E921, 0x01E943},
 };
-
-// list is always in ascending order, to enable binary search
 const std::initializer_list<std::pair<uint32_t, uint32_t>> unicode_map_uppercase = {
 {0x000061, 0x000041},
 {0x000062, 0x000042},
@@ -5201,8 +5192,7 @@ const std::initializer_list<std::pair<uint32_t, uint32_t>> unicode_map_uppercase
 {0x01E942, 0x01E920},
 {0x01E943, 0x01E921},
 };
-
-const std::initializer_list<range_nfd> unicode_ranges_nfd = {  // start, last, nfd
+const std::initializer_list<range_nfd> unicode_ranges_nfd = {
 {0x000000, 0x000000, 0x000000},
 {0x0000C0, 0x0000C5, 0x000041},
 {0x0000C7, 0x0000C7, 0x000043},

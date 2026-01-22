@@ -1,34 +1,5 @@
-/*
- * Here, we define everything that is specific for the blast board from Crawford Hill
- */
-
-
-/* Clock speed of the blast board */
 #define	CLKIN	72000000
-
-/*
- * Blast memory layout:
- *	CS0: FE000000 -> FFFFFFFF (Flash)
- *	CS1: FC000000 -> FCFFFFFF (DSP hpi)
- *	CS2: 00000000 -> 03FFFFFF (60x sdram)
- *	CS3: 04000000 -> 04FFFFFF (FPGA)
- *	CS4: 05000000 -> 06FFFFFF (local bus sdram)
- *	CS5: 07000000 -> 070FFFFF (eeprom - not populated)
- *	CS6: E0000000 -> E0FFFFFF (FPGA)
- *
- * Main Board memory lay out:
- *	CS0: FE000000 -> FEFFFFFF (16 M FLASH)
- *	CS1: FC000000 -> FCFFFFFF (16 M DSP1)
- *	CS2: 00000000 -> 03FFFFFF (64 M SDRAM)
- *	CS3: 04000000 -> 04FFFFFF (16M DSP2)
- *	CS4: 05000000 -> 06FFFFFF (32 M Local SDRAM)
- *	CS5: 07000000 -> 070FFFFF (eeprom - not populated)
- *	CS6: E0000000 -> E0FFFFFF (16 M FPGA)
- *
- *	CS2, CS3, CS4, (and CS5) are covered by DBAT 0,  CS0 and CS1 by DBAT 3, CS6 by DBAT 2
- */
 #define	IMMR		0xf0000000
-
 #define	FLASHMEM	0xfe000000
 #define	FLASHSIZE	0x01000000
 #define	DSP1BASE		0xfc000000
@@ -38,30 +9,18 @@
 #define	DSP2BASE		0x04000000
 #define	DSP2SIZE		0x01000000
 #define	MEM2BASE	0x05000000
-/* #define	MEM2SIZE	0x02000000 */
 #define	MEM2SIZE	0
 #define	FPGABASE		0xe0000000
 #define	FPGASIZE		0x01000000
-
 #define	PLAN9INI		0x00460000
-
 #define	TLBENTRIES	32
-/*
- *  PTE bits for fault.c.  These belong to the second PTE word.  Validity is
- *  implied for putmmu(), and we always set PTE0_V.  PTEVALID is used
- *  here to set cache policy bits on a global basis.
- */
 #define	PTEVALID		PTE1_M
 #define	PTEWRITE		(PTE1_RW|PTE1_C)
 #define	PTERONLY	PTE1_RO
 #define	PTEUNCACHED	PTE1_I
-
-/* SMC Uart configuration */
-#define	SMC1PORT	3	/* Port D */
+#define	SMC1PORT	3
 #define	SMTXD1		BIT(9)
 #define	SMRXD1		BIT(8)
-
-/* Ethernet FCC configuration */
 #define	A1txer	 	0x00000004
 #define	A1rxdv	 	0x00000010
 #define	A1txen		 0x00000008
@@ -86,7 +45,6 @@
 #define	B3crs		 0x00080000
 #define	B3txdat		 0x0f000000
 #define	B3rxdat		 0x00f00000
-
 #define	A1psor0		 (A1rxdat | A1txdat)
 #define	A1psor1		 (A1col | A1crs | A1txer | A1txen | A1rxdv | A1rxer)
 #define	A1dir0		 (A1rxdat | A1crs | A1col | A1rxer | A1rxdv)

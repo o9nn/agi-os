@@ -1,8 +1,6 @@
 import { runtime } from '@deltachat-desktop/runtime-interface'
 import { getLogger } from '@deltachat-desktop/shared/logger'
-
 const log = getLogger('runtime/debug-tools')
-
 const countCalls: { [key: string]: number } = {}
 export function countCall(label: string) {
   if (countCalls[label]) {
@@ -14,14 +12,6 @@ export function countCall(label: string) {
 export function printCallCounterResult() {
   console.table(countCalls)
 }
-
-/** Visualize drag/no-drag regions for debuging.
- * This is important because on MacOS there is no window title bar,
- * so the navbar and other elements need to take that role to make the window dragable.
- * But whats draggable is not clickable, so buttons need to be excluded.
- *
- * See https://github.com/deltachat/deltachat-desktop/issues/4018 to get an idea why this is important to get right.
- */
 export class DragRegionOverlay {
   debugDragAreaUpdateInterval: ReturnType<typeof setInterval> | null = null
   toggle() {
@@ -30,7 +20,6 @@ export class DragRegionOverlay {
         'DragRegionOverlay currently is based on a css attribute (`-webkit-app-region`), so might only work in the electron version'
       )
     }
-
     let element: HTMLCanvasElement | undefined = document.getElementById(
       'drag-area-visualisation'
     ) as HTMLCanvasElement
@@ -40,7 +29,6 @@ export class DragRegionOverlay {
           'failed to init DragRegionOverlay: window.visualViewport is undefined, this is unexpected.'
         )
       }
-
       element = document.createElement('canvas')
       element.height = window.visualViewport.height
       element.width = window.visualViewport.width
@@ -48,7 +36,6 @@ export class DragRegionOverlay {
       element.popover = 'manual'
       document.body.append(element)
     }
-
     if (this.debugDragAreaUpdateInterval) {
       element.hidePopover()
       clearInterval(this.debugDragAreaUpdateInterval)
@@ -70,13 +57,10 @@ export class DragRegionOverlay {
         }
         element.height = window.visualViewport.height
         element.width = window.visualViewport.width
-        // hack to make it show on top of dialogs
         element.hidePopover()
         element.showPopover()
-
         const { height, width } = element.getBoundingClientRect()
         drawing.clearRect(0, 0, width, height)
-
         function drawElement(rect: DOMRect | undefined, color: string) {
           if (!rect || !drawing) {
             return
@@ -84,14 +68,9 @@ export class DragRegionOverlay {
           drawing.fillStyle = color
           drawing.fillRect(rect.x, rect.y, rect.width, rect.height)
         }
-
         function traverseDOMRecursively(element: HTMLElement) {
-          // element.computedStyleMap
           const styles = window.getComputedStyle(element)
-
-          //@ts-ignore
           const role = styles.webkitAppRegion
-
           if (role !== 'none') {
             const boundingRect = element.getClientRects()[0]
             if (role === 'no-drag') {
@@ -100,14 +79,12 @@ export class DragRegionOverlay {
               drawElement(boundingRect, 'red')
             }
           }
-
           for (const child of element.children) {
             if (child instanceof HTMLElement) {
               traverseDOMRecursively(child)
             }
           }
         }
-
         traverseDOMRecursively(document.documentElement)
       }, 50)
     }

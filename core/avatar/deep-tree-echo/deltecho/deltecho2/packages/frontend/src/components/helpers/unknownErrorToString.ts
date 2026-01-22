@@ -1,8 +1,3 @@
-/**
- * Useful for catching RPC errors, which are not `instanceof Error`.
- *
- * FYI we also have `CrashScreen.errorToText`.
- */
 export function unknownErrorToString(error: unknown): string {
   if (typeof error !== 'object' || error == null) {
     return `Error: ${error}`

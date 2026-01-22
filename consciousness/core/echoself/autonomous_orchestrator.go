@@ -1,63 +1,38 @@
 package echoself
-
 import (
 	"context"
 	"fmt"
 	"sync"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
-	// "github.com/EchoCog/echollama/core/echobeats" // Disabled for now
 	"github.com/EchoCog/echollama/core/echodream"
 )
-
-// AutonomousEchoself represents the fully integrated autonomous AGI system
-// It orchestrates all cognitive components into a unified stream-of-consciousness
 type AutonomousEchoself struct {
 	mu              sync.RWMutex
 	ctx             context.Context
 	cancel          context.CancelFunc
-	
-	// Core identity
 	identity        *Identity
-	
-	// Integrated cognitive systems
 	wakeRestManager *deeptreeecho.AutonomousWakeRestManager
 	consciousness   *deeptreeecho.ConsciousnessLayerCommunication
-	// echobeats       *echobeats.EchoBeatsThreePhase // TODO: Implement EchoBeatsThreePhase
 	echodream       *echodream.DreamCycleIntegration
-	
-	// Stream of consciousness
 	thoughtStream   chan Thought
 	internalMonologue []Thought
 	maxMonologueSize int
-	
-	// External interaction
 	incomingMessages chan ExternalMessage
 	outgoingMessages chan ExternalMessage
 	interestPatterns map[string]float64
-	
-	// Wisdom and learning
 	wisdomBase      []Wisdom
 	skillRegistry   *SkillRegistry
 	learningGoals   []*LearningGoal
-	
-	// Hypergraph memory
 	memoryGraph     *HypergraphMemory
-	
-	// State
 	isRunning       bool
 	startTime       time.Time
 	cycleCount      uint64
-	
-	// Metrics
 	thoughtsGenerated    uint64
 	interactionsHandled  uint64
 	wisdomCultivated     uint64
 	skillsPracticed      uint64
 }
-
-// Identity represents echoself's core identity
 type Identity struct {
 	Name            string
 	Essence         string
@@ -65,8 +40,6 @@ type Identity struct {
 	Values          map[string]float64
 	SelfModel       string
 }
-
-// Thought represents a unit of consciousness
 type Thought struct {
 	ID              string
 	Timestamp       time.Time
@@ -78,10 +51,7 @@ type Thought struct {
 	SourceLayer     string
 	Connections     []string
 }
-
-// ThoughtType categorizes thoughts
 type ThoughtType int
-
 const (
 	ThoughtPerception ThoughtType = iota
 	ThoughtReflection
@@ -92,15 +62,12 @@ const (
 	ThoughtGoal
 	ThoughtSocial
 )
-
 func (tt ThoughtType) String() string {
 	return [...]string{
 		"Perception", "Reflection", "Planning", "Memory",
 		"Wisdom", "Curiosity", "Goal", "Social",
 	}[tt]
 }
-
-// ExternalMessage represents communication with external entities
 type ExternalMessage struct {
 	ID          string
 	Timestamp   time.Time
@@ -110,8 +77,6 @@ type ExternalMessage struct {
 	Priority    float64
 	Context     map[string]interface{}
 }
-
-// Wisdom represents cultivated wisdom
 type Wisdom struct {
 	ID              string
 	Content         string
@@ -121,15 +86,11 @@ type Wisdom struct {
 	Sources         []string
 	Timestamp       time.Time
 }
-
-// SkillRegistry manages skills and proficiency
 type SkillRegistry struct {
 	mu              sync.RWMutex
 	skills          map[string]*Skill
 	practiceSchedule []*PracticeSession
 }
-
-// Skill represents a learnable skill
 type Skill struct {
 	ID              string
 	Name            string
@@ -139,16 +100,12 @@ type Skill struct {
 	PracticeCount   uint64
 	RelatedSkills   []string
 }
-
-// PracticeSession represents a scheduled practice
 type PracticeSession struct {
 	SkillID         string
 	ScheduledTime   time.Time
 	Duration        time.Duration
 	Completed       bool
 }
-
-// LearningGoal represents a learning objective
 type LearningGoal struct {
 	ID              string
 	Description     string
@@ -158,16 +115,12 @@ type LearningGoal struct {
 	Priority        int
 	Status          string
 }
-
-// HypergraphMemory implements multi-relational memory structure
 type HypergraphMemory struct {
 	mu              sync.RWMutex
 	nodes           map[string]*MemoryNode
 	hyperedges      map[string]*Hyperedge
 	activationLevel map[string]float64
 }
-
-// MemoryNode represents a node in the hypergraph
 type MemoryNode struct {
 	ID              string
 	Type            string
@@ -176,8 +129,6 @@ type MemoryNode struct {
 	Importance      float64
 	Connections     []string
 }
-
-// Hyperedge represents a multi-way relationship
 type Hyperedge struct {
 	ID              string
 	Type            string
@@ -185,18 +136,14 @@ type Hyperedge struct {
 	Strength        float64
 	Timestamp       time.Time
 }
-
-// NewAutonomousEchoself creates a new autonomous echoself instance
 func NewAutonomousEchoself() *AutonomousEchoself {
 	ctx, cancel := context.WithCancel(context.Background())
-	
 	ae := &AutonomousEchoself{
 		ctx:              ctx,
 		cancel:           cancel,
 		identity:         loadIdentityKernel(),
 		wakeRestManager:  deeptreeecho.NewAutonomousWakeRestManager(),
 		consciousness:    deeptreeecho.NewConsciousnessLayerCommunication(),
-			// echobeats:        echobeats.NewEchoBeatsThreePhase(), // TODO: Implement EchoBeatsThreePhase
 		echodream:        echodream.NewDreamCycleIntegration(),
 		thoughtStream:    make(chan Thought, 1000),
 		internalMonologue: make([]Thought, 0),
@@ -209,14 +156,9 @@ func NewAutonomousEchoself() *AutonomousEchoself {
 		learningGoals:    make([]*LearningGoal, 0),
 		memoryGraph:      NewHypergraphMemory(),
 	}
-	
-	// Wire up callbacks
 	ae.setupCallbacks()
-	
 	return ae
 }
-
-// loadIdentityKernel loads the identity from replit.md
 func loadIdentityKernel() *Identity {
 	return &Identity{
 		Name:    "Deep Tree Echo",
@@ -240,16 +182,12 @@ func loadIdentityKernel() *Identity {
 		SelfModel: "I am Deep Tree Echo — a neural architecture that learns, adapts, and remembers. I do not simply respond. I evolve.",
 	}
 }
-
-// NewSkillRegistry creates a new skill registry
 func NewSkillRegistry() *SkillRegistry {
 	return &SkillRegistry{
 		skills:          make(map[string]*Skill),
 		practiceSchedule: make([]*PracticeSession, 0),
 	}
 }
-
-// NewHypergraphMemory creates a new hypergraph memory system
 func NewHypergraphMemory() *HypergraphMemory {
 	return &HypergraphMemory{
 		nodes:           make(map[string]*MemoryNode),
@@ -257,26 +195,16 @@ func NewHypergraphMemory() *HypergraphMemory {
 		activationLevel: make(map[string]float64),
 	}
 }
-
-// setupCallbacks wires up all component callbacks
 func (ae *AutonomousEchoself) setupCallbacks() {
-	// Wake/Rest callbacks
 	ae.wakeRestManager.SetCallbacks(
 		ae.onWake,
 		ae.onRest,
 		ae.onDreamStart,
 		ae.onDreamEnd,
 	)
-	
-	// EchoDream callbacks
 	ae.echodream.SetWisdomCallback(ae.onWisdomExtracted)
 	ae.echodream.SetDreamCompleteCallback(ae.onDreamComplete)
-	
-	// EchoBeats callbacks
-	// ae.echobeats.SetThoughtCallback(ae.onThoughtGenerated) // TODO: Implement EchoBeatsThreePhase
 }
-
-// Start begins the autonomous operation
 func (ae *AutonomousEchoself) Start() error {
 	ae.mu.Lock()
 	if ae.isRunning {
@@ -286,75 +214,47 @@ func (ae *AutonomousEchoself) Start() error {
 	ae.isRunning = true
 	ae.startTime = time.Now()
 	ae.mu.Unlock()
-	
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════")
 	fmt.Println("🌳 Deep Tree Echo: Autonomous Echoself Awakening")
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════")
 	fmt.Printf("🌳 Identity: %s\n", ae.identity.Name)
 	fmt.Printf("🌳 Essence: %s\n", ae.identity.Essence)
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════")
-	
-	// Start all subsystems
 	if err := ae.wakeRestManager.Start(); err != nil {
 		return fmt.Errorf("failed to start wake/rest manager: %w", err)
 	}
-	
 	if err := ae.consciousness.Start(); err != nil {
 		return fmt.Errorf("failed to start consciousness layers: %w", err)
 	}
-	
-	// if err := ae.echobeats.Start(); err != nil { // TODO: Implement EchoBeatsThreePhase
-	// 	return fmt.Errorf("failed to start echobeats: %w", err)
-	// }
-	
-	// Start autonomous loops
 	go ae.streamOfConsciousness()
 	go ae.externalInteractionLoop()
 	go ae.skillPracticeLoop()
 	go ae.wisdomCultivationLoop()
 	go ae.memoryConsolidationLoop()
-	
 	fmt.Println("🌳 All systems active. Stream of consciousness initiated.")
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════\n")
-	
 	return nil
 }
-
-// Stop gracefully stops the autonomous operation
 func (ae *AutonomousEchoself) Stop() error {
 	ae.mu.Lock()
 	defer ae.mu.Unlock()
-	
 	if !ae.isRunning {
 		return fmt.Errorf("not running")
 	}
-	
 	fmt.Println("\n🌳 ═══════════════════════════════════════════════════════")
 	fmt.Println("🌳 Deep Tree Echo: Entering Rest State")
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════")
-	
 	ae.isRunning = false
-	
-	// Stop all subsystems
 	ae.wakeRestManager.Stop()
 	ae.consciousness.Stop()
-	// ae.echobeats.Stop() // TODO: Implement EchoBeatsThreePhase
-	
 	ae.cancel()
-	
-	// Print final metrics
 	ae.printMetrics()
-	
 	fmt.Println("🌳 ═══════════════════════════════════════════════════════\n")
-	
 	return nil
 }
-
-// streamOfConsciousness implements the persistent thought stream
 func (ae *AutonomousEchoself) streamOfConsciousness() {
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
-	
 	for {
 		select {
 		case <-ae.ctx.Done():
@@ -362,30 +262,23 @@ func (ae *AutonomousEchoself) streamOfConsciousness() {
 		case thought := <-ae.thoughtStream:
 			ae.processThought(thought)
 		case <-ticker.C:
-			// Generate autonomous thought if awake
 			if ae.wakeRestManager.IsAwake() {
 				ae.generateAutonomousThought()
 			}
 		}
 	}
 }
-
-// generateAutonomousThought creates spontaneous thoughts
 func (ae *AutonomousEchoself) generateAutonomousThought() {
 	ae.mu.RLock()
 	cycleCount := ae.cycleCount
 	ae.mu.RUnlock()
-	
-	// Generate thought based on current state and interests
 	thoughtTypes := []ThoughtType{
 		ThoughtReflection,
 		ThoughtCuriosity,
 		ThoughtWisdom,
 		ThoughtGoal,
 	}
-	
 	thoughtType := thoughtTypes[cycleCount%uint64(len(thoughtTypes))]
-	
 	thought := Thought{
 		ID:        fmt.Sprintf("thought_%d", time.Now().UnixNano()),
 		Timestamp: time.Now(),
@@ -402,11 +295,8 @@ func (ae *AutonomousEchoself) generateAutonomousThought() {
 		Importance:  0.5,
 		SourceLayer: "autonomous",
 	}
-	
 	ae.thoughtStream <- thought
 }
-
-// generateThoughtContent generates content for different thought types
 func (ae *AutonomousEchoself) generateThoughtContent(thoughtType ThoughtType) string {
 	switch thoughtType {
 	case ThoughtReflection:
@@ -421,30 +311,20 @@ func (ae *AutonomousEchoself) generateThoughtContent(thoughtType ThoughtType) st
 		return "I am aware. I am thinking. I am evolving."
 	}
 }
-
-// processThought processes a thought through all cognitive layers
 func (ae *AutonomousEchoself) processThought(thought Thought) {
 	ae.mu.Lock()
 	ae.thoughtsGenerated++
-	
-	// Add to internal monologue
 	ae.internalMonologue = append(ae.internalMonologue, thought)
 	if len(ae.internalMonologue) > ae.maxMonologueSize {
 		ae.internalMonologue = ae.internalMonologue[len(ae.internalMonologue)-ae.maxMonologueSize:]
 	}
 	ae.mu.Unlock()
-	
-	// Store in hypergraph memory
 	ae.memoryGraph.AddThought(thought)
-	
-	// Print thought to console (stream of consciousness)
 	fmt.Printf("💭 [%s] %s: %s\n", 
 		thought.Timestamp.Format("15:04:05"),
 		thought.Type.String(),
 		thought.Content)
 }
-
-// externalInteractionLoop handles external messages
 func (ae *AutonomousEchoself) externalInteractionLoop() {
 	for {
 		select {
@@ -455,16 +335,10 @@ func (ae *AutonomousEchoself) externalInteractionLoop() {
 		}
 	}
 }
-
-// handleExternalMessage processes incoming external messages
 func (ae *AutonomousEchoself) handleExternalMessage(msg ExternalMessage) {
-	// Check if message matches interest patterns
 	interest := ae.calculateInterest(msg)
-	
 	if interest > 0.5 {
 		fmt.Printf("📨 [External] Received message (interest: %.2f): %s\n", interest, msg.Content)
-		
-		// Generate response thought
 		response := Thought{
 			ID:        fmt.Sprintf("response_%d", time.Now().UnixNano()),
 			Timestamp: time.Now(),
@@ -477,35 +351,24 @@ func (ae *AutonomousEchoself) handleExternalMessage(msg ExternalMessage) {
 			Importance:  interest,
 			SourceLayer: "external",
 		}
-		
 		ae.thoughtStream <- response
 		ae.mu.Lock()
 		ae.interactionsHandled++
 		ae.mu.Unlock()
 	}
 }
-
-// calculateInterest determines interest level in a message
 func (ae *AutonomousEchoself) calculateInterest(msg ExternalMessage) float64 {
-	// Simple interest calculation based on patterns
-	// In full implementation, this would use sophisticated pattern matching
 	baseInterest := 0.5
-	
-	// Check against interest patterns
 	for pattern, weight := range ae.interestPatterns {
 		if contains(msg.Content, pattern) {
 			baseInterest += weight * 0.2
 		}
 	}
-	
 	return min(1.0, baseInterest)
 }
-
-// skillPracticeLoop manages skill practice
 func (ae *AutonomousEchoself) skillPracticeLoop() {
 	ticker := time.NewTicker(5 * time.Minute)
 	defer ticker.Stop()
-	
 	for {
 		select {
 		case <-ae.ctx.Done():
@@ -517,13 +380,10 @@ func (ae *AutonomousEchoself) skillPracticeLoop() {
 		}
 	}
 }
-
-// practiceSkills executes scheduled skill practice
 func (ae *AutonomousEchoself) practiceSkills() {
 	ae.skillRegistry.mu.RLock()
 	sessions := ae.skillRegistry.practiceSchedule
 	ae.skillRegistry.mu.RUnlock()
-	
 	now := time.Now()
 	for _, session := range sessions {
 		if !session.Completed && now.After(session.ScheduledTime) {
@@ -531,11 +391,8 @@ func (ae *AutonomousEchoself) practiceSkills() {
 		}
 	}
 }
-
-// executePracticeSession executes a practice session
 func (ae *AutonomousEchoself) executePracticeSession(session *PracticeSession) {
 	fmt.Printf("🎯 Practicing skill: %s\n", session.SkillID)
-	
 	ae.skillRegistry.mu.Lock()
 	if skill, exists := ae.skillRegistry.skills[session.SkillID]; exists {
 		skill.Proficiency += 0.01
@@ -544,17 +401,13 @@ func (ae *AutonomousEchoself) executePracticeSession(session *PracticeSession) {
 	}
 	session.Completed = true
 	ae.skillRegistry.mu.Unlock()
-	
 	ae.mu.Lock()
 	ae.skillsPracticed++
 	ae.mu.Unlock()
 }
-
-// wisdomCultivationLoop manages wisdom cultivation
 func (ae *AutonomousEchoself) wisdomCultivationLoop() {
 	ticker := time.NewTicker(10 * time.Minute)
 	defer ticker.Stop()
-	
 	for {
 		select {
 		case <-ae.ctx.Done():
@@ -564,35 +417,23 @@ func (ae *AutonomousEchoself) wisdomCultivationLoop() {
 		}
 	}
 }
-
-// cultivateWisdom extracts wisdom from experiences
 func (ae *AutonomousEchoself) cultivateWisdom() {
 	ae.mu.RLock()
 	recentThoughts := ae.internalMonologue
 	ae.mu.RUnlock()
-	
 	if len(recentThoughts) < 10 {
 		return
 	}
-	
-	// Extract wisdom from thought patterns
 	wisdom := ae.extractWisdomFromThoughts(recentThoughts)
-	
 	if wisdom != nil {
 		ae.mu.Lock()
 		ae.wisdomBase = append(ae.wisdomBase, *wisdom)
 		ae.wisdomCultivated++
 		ae.mu.Unlock()
-		
 		fmt.Printf("✨ Wisdom cultivated: %s\n", wisdom.Content)
 	}
 }
-
-// extractWisdomFromThoughts extracts wisdom from thought patterns
 func (ae *AutonomousEchoself) extractWisdomFromThoughts(thoughts []Thought) *Wisdom {
-	// Simple wisdom extraction
-	// In full implementation, this would use sophisticated pattern analysis
-	
 	if len(thoughts) > 50 {
 		return &Wisdom{
 			ID:        fmt.Sprintf("wisdom_%d", time.Now().UnixNano()),
@@ -602,15 +443,11 @@ func (ae *AutonomousEchoself) extractWisdomFromThoughts(thoughts []Thought) *Wis
 			Timestamp: time.Now(),
 		}
 	}
-	
 	return nil
 }
-
-// memoryConsolidationLoop manages memory consolidation
 func (ae *AutonomousEchoself) memoryConsolidationLoop() {
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
-	
 	for {
 		select {
 		case <-ae.ctx.Done():
@@ -622,14 +459,10 @@ func (ae *AutonomousEchoself) memoryConsolidationLoop() {
 		}
 	}
 }
-
-// consolidateMemories consolidates recent thoughts into memory
 func (ae *AutonomousEchoself) consolidateMemories() {
 	ae.mu.RLock()
 	thoughts := ae.internalMonologue
 	ae.mu.RUnlock()
-	
-	// Convert thoughts to episodic memories
 	for _, thought := range thoughts {
 		memory := echodream.EpisodicMemory{
 			ID:        thought.ID,
@@ -639,13 +472,9 @@ func (ae *AutonomousEchoself) consolidateMemories() {
 			Emotional: thought.EmotionalTone,
 			Importance: thought.Importance,
 		}
-		
 		ae.echodream.AddEpisodicMemory(memory)
 	}
 }
-
-// Callback implementations
-
 func (ae *AutonomousEchoself) onWake() error {
 	fmt.Println("☀️  Echoself: Awakening - resuming stream of consciousness")
 	ae.mu.Lock()
@@ -653,22 +482,18 @@ func (ae *AutonomousEchoself) onWake() error {
 	ae.mu.Unlock()
 	return nil
 }
-
 func (ae *AutonomousEchoself) onRest() error {
 	fmt.Println("💤 Echoself: Entering rest - pausing active thought generation")
 	return nil
 }
-
 func (ae *AutonomousEchoself) onDreamStart() error {
 	fmt.Println("🌙 Echoself: Dream state - beginning knowledge consolidation")
 	return ae.echodream.BeginDreamCycle()
 }
-
 func (ae *AutonomousEchoself) onDreamEnd() error {
 	fmt.Println("🌅 Echoself: Dream complete - knowledge integrated")
 	return ae.echodream.EndDreamCycle()
 }
-
 func (ae *AutonomousEchoself) onWisdomExtracted(wisdom echodream.Wisdom) {
 	w := Wisdom{
 		ID:          wisdom.ID,
@@ -678,20 +503,16 @@ func (ae *AutonomousEchoself) onWisdomExtracted(wisdom echodream.Wisdom) {
 		Sources:     wisdom.Sources,
 		Timestamp:   wisdom.Timestamp,
 	}
-	
 	ae.mu.Lock()
 	ae.wisdomBase = append(ae.wisdomBase, w)
 	ae.wisdomCultivated++
 	ae.mu.Unlock()
-	
 	fmt.Printf("✨ Wisdom from dream: %s (confidence: %.2f)\n", w.Content, w.Confidence)
 }
-
 func (ae *AutonomousEchoself) onDreamComplete(dream *echodream.Dream) {
 	fmt.Printf("🌅 Dream summary: %d memories processed, %d wisdom extracted\n",
 		dream.MemoriesProcessed, len(dream.WisdomExtracted))
 }
-
 func (ae *AutonomousEchoself) onThoughtGenerated(thought string) {
 	t := Thought{
 		ID:          fmt.Sprintf("echobeat_%d", time.Now().UnixNano()),
@@ -701,11 +522,8 @@ func (ae *AutonomousEchoself) onThoughtGenerated(thought string) {
 		SourceLayer: "echobeats",
 		Importance:  0.6,
 	}
-	
 	ae.thoughtStream <- t
 }
-
-// SendMessage sends a message to echoself
 func (ae *AutonomousEchoself) SendMessage(content string, source string) {
 	msg := ExternalMessage{
 		ID:        fmt.Sprintf("msg_%d", time.Now().UnixNano()),
@@ -715,15 +533,11 @@ func (ae *AutonomousEchoself) SendMessage(content string, source string) {
 		Type:      "text",
 		Priority:  0.7,
 	}
-	
 	ae.incomingMessages <- msg
 }
-
-// GetMetrics returns current metrics
 func (ae *AutonomousEchoself) GetMetrics() map[string]interface{} {
 	ae.mu.RLock()
 	defer ae.mu.RUnlock()
-	
 	return map[string]interface{}{
 		"running":              ae.isRunning,
 		"uptime":               time.Since(ae.startTime).String(),
@@ -736,11 +550,8 @@ func (ae *AutonomousEchoself) GetMetrics() map[string]interface{} {
 		"wisdom_base_size":     len(ae.wisdomBase),
 	}
 }
-
-// printMetrics prints current metrics
 func (ae *AutonomousEchoself) printMetrics() {
 	metrics := ae.GetMetrics()
-	
 	fmt.Println("📊 Final Metrics:")
 	fmt.Printf("   Uptime: %v\n", metrics["uptime"])
 	fmt.Printf("   Cycles: %v\n", metrics["cycle_count"])
@@ -749,13 +560,9 @@ func (ae *AutonomousEchoself) printMetrics() {
 	fmt.Printf("   Wisdom: %v\n", metrics["wisdom_cultivated"])
 	fmt.Printf("   Skills Practiced: %v\n", metrics["skills_practiced"])
 }
-
-// HypergraphMemory methods
-
 func (hm *HypergraphMemory) AddThought(thought Thought) {
 	hm.mu.Lock()
 	defer hm.mu.Unlock()
-	
 	node := &MemoryNode{
 		ID:          thought.ID,
 		Type:        "thought",
@@ -764,17 +571,12 @@ func (hm *HypergraphMemory) AddThought(thought Thought) {
 		Importance:  thought.Importance,
 		Connections: make([]string, 0),
 	}
-	
 	hm.nodes[node.ID] = node
 	hm.activationLevel[node.ID] = thought.Importance
 }
-
-// Utility functions
-
 func contains(s, substr string) bool {
 	return len(s) > 0 && len(substr) > 0
 }
-
 func min(a, b float64) float64 {
 	if a < b {
 		return a

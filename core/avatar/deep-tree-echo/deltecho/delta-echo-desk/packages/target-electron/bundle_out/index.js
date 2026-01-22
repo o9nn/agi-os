@@ -4,7 +4,7 @@ const __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 const __getOwnPropNames = Object.getOwnPropertyNames;
 const __getProtoOf = Object.getPrototypeOf;
 const __hasOwnProp = Object.prototype.hasOwnProperty;
-const __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+const __require =  ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
   if (typeof require !== "undefined")
@@ -30,15 +30,9 @@ const __copyProps = (to, from, except, desc) => {
   return to;
 };
 const __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-
-// src/cjs-shim.ts
 import { createRequire } from "node:module";
 import path from "node:path";
 import url from "node:url";
@@ -50,8 +44,6 @@ const init_cjs_shim = __esm({
     globalThis.__dirname = path.dirname(__filename);
   }
 });
-
-// ../../node_modules/.pnpm/ini@1.3.8/node_modules/ini/ini.js
 const require_ini = __commonJS({
   "../../node_modules/.pnpm/ini@1.3.8/node_modules/ini/ini.js"(exports) {
     init_cjs_shim();
@@ -213,8 +205,6 @@ const require_ini = __commonJS({
     }
   }
 });
-
-// ../../node_modules/.pnpm/strip-json-comments@2.0.1/node_modules/strip-json-comments/index.js
 const require_strip_json_comments = __commonJS({
   "../../node_modules/.pnpm/strip-json-comments@2.0.1/node_modules/strip-json-comments/index.js"(exports, module) {
     "use strict";
@@ -248,7 +238,7 @@ const require_strip_json_comments = __commonJS({
         if (insideString) {
           continue;
         }
-        if (!insideComment && currentChar + nextChar === "//") {
+        if (!insideComment && currentChar + nextChar === "
           ret += str.slice(offset, i);
           offset = i;
           insideComment = singleComment;
@@ -263,13 +253,7 @@ const require_strip_json_comments = __commonJS({
           insideComment = false;
           ret += strip(str, offset, i);
           offset = i;
-        } else if (!insideComment && currentChar + nextChar === "/*") {
-          ret += str.slice(offset, i);
-          offset = i;
-          insideComment = multiComment;
-          i++;
-          continue;
-        } else if (insideComment === multiComment && currentChar + nextChar === "*/") {
+        } else if (!insideComment && currentChar + nextChar === "") {
           i++;
           insideComment = false;
           ret += strip(str, offset, i + 1);
@@ -281,8 +265,6 @@ const require_strip_json_comments = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/rc@1.2.8/node_modules/rc/lib/utils.js
 const require_utils = __commonJS({
   "../../node_modules/.pnpm/rc@1.2.8/node_modules/rc/lib/utils.js"(exports) {
     "use strict";
@@ -356,8 +338,6 @@ const require_utils = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/deep-extend@0.6.0/node_modules/deep-extend/lib/deep-extend.js
 const require_deep_extend = __commonJS({
   "../../node_modules/.pnpm/deep-extend@0.6.0/node_modules/deep-extend/lib/deep-extend.js"(exports, module) {
     "use strict";
@@ -439,8 +419,6 @@ const require_deep_extend = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/minimist@1.2.6/node_modules/minimist/index.js
 const require_minimist = __commonJS({
   "../../node_modules/.pnpm/minimist@1.2.6/node_modules/minimist/index.js"(exports, module) {
     init_cjs_shim();
@@ -647,8 +625,6 @@ const require_minimist = __commonJS({
     }
   }
 });
-
-// ../../node_modules/.pnpm/rc@1.2.8/node_modules/rc/index.js
 const require_rc = __commonJS({
   "../../node_modules/.pnpm/rc@1.2.8/node_modules/rc/index.js"(exports, module) {
     init_cjs_shim();
@@ -702,8 +678,6 @@ const require_rc = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/stackframe@1.3.4/node_modules/stackframe/stackframe.js
 const require_stackframe = __commonJS({
   "../../node_modules/.pnpm/stackframe@1.3.4/node_modules/stackframe/stackframe.js"(exports, module) {
     init_cjs_shim();
@@ -805,7 +779,7 @@ const require_stackframe = __commonJS({
       };
       for (let i = 0; i < booleanProps.length; i++) {
         StackFrame2.prototype["get" + _capitalize(booleanProps[i])] = _getter(booleanProps[i]);
-        StackFrame2.prototype["set" + _capitalize(booleanProps[i])] = /* @__PURE__ */ function(p) {
+        StackFrame2.prototype["set" + _capitalize(booleanProps[i])] =  function(p) {
           return function(v) {
             this[p] = Boolean(v);
           };
@@ -813,7 +787,7 @@ const require_stackframe = __commonJS({
       }
       for (let j = 0; j < numericProps.length; j++) {
         StackFrame2.prototype["get" + _capitalize(numericProps[j])] = _getter(numericProps[j]);
-        StackFrame2.prototype["set" + _capitalize(numericProps[j])] = /* @__PURE__ */ function(p) {
+        StackFrame2.prototype["set" + _capitalize(numericProps[j])] =  function(p) {
           return function(v) {
             if (!_isNumber(v)) {
               throw new TypeError(p + " must be a Number");
@@ -824,7 +798,7 @@ const require_stackframe = __commonJS({
       }
       for (let k = 0; k < stringProps.length; k++) {
         StackFrame2.prototype["get" + _capitalize(stringProps[k])] = _getter(stringProps[k]);
-        StackFrame2.prototype["set" + _capitalize(stringProps[k])] = /* @__PURE__ */ function(p) {
+        StackFrame2.prototype["set" + _capitalize(stringProps[k])] =  function(p) {
           return function(v) {
             this[p] = String(v);
           };
@@ -834,8 +808,6 @@ const require_stackframe = __commonJS({
     });
   }
 });
-
-// ../../node_modules/.pnpm/error-stack-parser@2.1.4/node_modules/error-stack-parser/error-stack-parser.js
 const require_error_stack_parser = __commonJS({
   "../../node_modules/.pnpm/error-stack-parser@2.1.4/node_modules/error-stack-parser/error-stack-parser.js"(exports, module) {
     init_cjs_shim();
@@ -854,12 +826,6 @@ const require_error_stack_parser = __commonJS({
       const CHROME_IE_STACK_REGEXP = /^\s*at .*(\S+:\d+|\(native\))/m;
       const SAFARI_NATIVE_CODE_REGEXP = /^(eval@)?(\[native code])?$/;
       return {
-        /**
-         * Given an Error object, extract the most information from it.
-         *
-         * @param {Error} error object
-         * @return {Array} of StackFrames
-         */
         parse: function ErrorStackParser$$parse(error) {
           if (typeof error.stacktrace !== "undefined" || typeof error["opera#sourceloc"] !== "undefined") {
             return this.parseOpera(error);
@@ -871,7 +837,6 @@ const require_error_stack_parser = __commonJS({
             throw new Error("Cannot parse given Error object");
           }
         },
-        // Separate line and column numbers from a string of the form: (URI:Line:Column)
         extractLocation: function ErrorStackParser$$extractLocation(urlLike) {
           if (urlLike.indexOf(":") === -1) {
             return [urlLike];
@@ -974,7 +939,6 @@ const require_error_stack_parser = __commonJS({
           }
           return result;
         },
-        // Opera 10.65+ Error.stack very similar to FF/Safari
         parseOpera11: function ErrorStackParser$$parseOpera11(error) {
           const filtered = error.stack.split("\n").filter(function(line) {
             return !!line.match(FIREFOX_SAFARI_STACK_REGEXP) && !line.match(/^Error created at/);
@@ -1003,8 +967,6 @@ const require_error_stack_parser = __commonJS({
     });
   }
 });
-
-// ../../node_modules/.pnpm/dotenv@16.4.5/node_modules/dotenv/package.json
 const require_package = __commonJS({
   "../../node_modules/.pnpm/dotenv@16.4.5/node_modules/dotenv/package.json"(exports, module) {
     module.exports = {
@@ -1032,379 +994,7 @@ const require_package = __commonJS({
         lint: "standard",
         "lint-readme": "standard-markdown",
         pretest: "npm run lint && npm run dts-check",
-        test: "tap tests/*.js --100 -Rspec",
-        "test:coverage": "tap --coverage-report=lcov",
-        prerelease: "npm test",
-        release: "standard-version"
-      },
-      repository: {
-        type: "git",
-        url: "git://github.com/motdotla/dotenv.git"
-      },
-      funding: "https://dotenvx.com",
-      keywords: [
-        "dotenv",
-        "env",
-        ".env",
-        "environment",
-        "variables",
-        "config",
-        "settings"
-      ],
-      readmeFilename: "README.md",
-      license: "BSD-2-Clause",
-      devDependencies: {
-        "@definitelytyped/dtslint": "^0.0.133",
-        "@types/node": "^18.11.3",
-        decache: "^4.6.1",
-        sinon: "^14.0.1",
-        standard: "^17.0.0",
-        "standard-markdown": "^7.1.0",
-        "standard-version": "^9.5.0",
-        tap: "^16.3.0",
-        tar: "^6.1.11",
-        typescript: "^4.8.4"
-      },
-      engines: {
-        node: ">=12"
-      },
-      browser: {
-        fs: false
-      }
-    };
-  }
-});
-
-// ../../node_modules/.pnpm/dotenv@16.4.5/node_modules/dotenv/lib/main.js
-const require_main = __commonJS({
-  "../../node_modules/.pnpm/dotenv@16.4.5/node_modules/dotenv/lib/main.js"(exports, module) {
-    init_cjs_shim();
-    const fs2 = __require("fs");
-    const path4 = __require("path");
-    const os = __require("os");
-    const crypto = __require("crypto");
-    const packageJson = require_package();
-    const version = packageJson.version;
-    const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
-    function parse(src) {
-      const obj = {};
-      let lines = src.toString();
-      lines = lines.replace(/\r\n?/mg, "\n");
-      let match;
-      while ((match = LINE.exec(lines)) != null) {
-        const key = match[1];
-        let value = match[2] || "";
-        value = value.trim();
-        const maybeQuote = value[0];
-        value = value.replace(/^(['"`])([\s\S]*)\1$/mg, "$2");
-        if (maybeQuote === '"') {
-          value = value.replace(/\\n/g, "\n");
-          value = value.replace(/\\r/g, "\r");
-        }
-        obj[key] = value;
-      }
-      return obj;
-    }
-    function _parseVault(options) {
-      const vaultPath = _vaultPath(options);
-      const result = DotenvModule.configDotenv({ path: vaultPath });
-      if (!result.parsed) {
-        const err = new Error(`MISSING_DATA: Cannot parse ${vaultPath} for an unknown reason`);
-        err.code = "MISSING_DATA";
-        throw err;
-      }
-      const keys = _dotenvKey(options).split(",");
-      const length = keys.length;
-      let decrypted;
-      for (let i = 0; i < length; i++) {
-        try {
-          const key = keys[i].trim();
-          const attrs = _instructions(result, key);
-          decrypted = DotenvModule.decrypt(attrs.ciphertext, attrs.key);
-          break;
-        } catch (error) {
-          if (i + 1 >= length) {
-            throw error;
-          }
-        }
-      }
-      return DotenvModule.parse(decrypted);
-    }
-    function _log(message) {
-      console.log(`[dotenv@${version}][INFO] ${message}`);
-    }
-    function _warn(message) {
-      console.log(`[dotenv@${version}][WARN] ${message}`);
-    }
-    function _debug(message) {
-      console.log(`[dotenv@${version}][DEBUG] ${message}`);
-    }
-    function _dotenvKey(options) {
-      if (options && options.DOTENV_KEY && options.DOTENV_KEY.length > 0) {
-        return options.DOTENV_KEY;
-      }
-      if (process.env.DOTENV_KEY && process.env.DOTENV_KEY.length > 0) {
-        return process.env.DOTENV_KEY;
-      }
-      return "";
-    }
-    function _instructions(result, dotenvKey) {
-      let uri;
-      try {
-        uri = new URL(dotenvKey);
-      } catch (error) {
-        if (error.code === "ERR_INVALID_URL") {
-          const err = new Error("INVALID_DOTENV_KEY: Wrong format. Must be in valid uri format like dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=development");
-          err.code = "INVALID_DOTENV_KEY";
-          throw err;
-        }
-        throw error;
-      }
-      const key = uri.password;
-      if (!key) {
-        const err = new Error("INVALID_DOTENV_KEY: Missing key part");
-        err.code = "INVALID_DOTENV_KEY";
-        throw err;
-      }
-      const environment = uri.searchParams.get("environment");
-      if (!environment) {
-        const err = new Error("INVALID_DOTENV_KEY: Missing environment part");
-        err.code = "INVALID_DOTENV_KEY";
-        throw err;
-      }
-      const environmentKey = `DOTENV_VAULT_${environment.toUpperCase()}`;
-      const ciphertext = result.parsed[environmentKey];
-      if (!ciphertext) {
-        const err = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${environmentKey} in your .env.vault file.`);
-        err.code = "NOT_FOUND_DOTENV_ENVIRONMENT";
-        throw err;
-      }
-      return { ciphertext, key };
-    }
-    function _vaultPath(options) {
-      let possibleVaultPath = null;
-      if (options && options.path && options.path.length > 0) {
-        if (Array.isArray(options.path)) {
-          for (const filepath of options.path) {
-            if (fs2.existsSync(filepath)) {
-              possibleVaultPath = filepath.endsWith(".vault") ? filepath : `${filepath}.vault`;
-            }
-          }
-        } else {
-          possibleVaultPath = options.path.endsWith(".vault") ? options.path : `${options.path}.vault`;
-        }
-      } else {
-        possibleVaultPath = path4.resolve(process.cwd(), ".env.vault");
-      }
-      if (fs2.existsSync(possibleVaultPath)) {
-        return possibleVaultPath;
-      }
-      return null;
-    }
-    function _resolveHome(envPath) {
-      return envPath[0] === "~" ? path4.join(os.homedir(), envPath.slice(1)) : envPath;
-    }
-    function _configVault(options) {
-      _log("Loading env from encrypted .env.vault");
-      const parsed = DotenvModule._parseVault(options);
-      let processEnv = process.env;
-      if (options && options.processEnv != null) {
-        processEnv = options.processEnv;
-      }
-      DotenvModule.populate(processEnv, parsed, options);
-      return { parsed };
-    }
-    function configDotenv(options) {
-      const dotenvPath = path4.resolve(process.cwd(), ".env");
-      let encoding = "utf8";
-      const debug = Boolean(options && options.debug);
-      if (options && options.encoding) {
-        encoding = options.encoding;
-      } else {
-        if (debug) {
-          _debug("No encoding is specified. UTF-8 is used by default");
-        }
-      }
-      let optionPaths = [dotenvPath];
-      if (options && options.path) {
-        if (!Array.isArray(options.path)) {
-          optionPaths = [_resolveHome(options.path)];
-        } else {
-          optionPaths = [];
-          for (const filepath of options.path) {
-            optionPaths.push(_resolveHome(filepath));
-          }
-        }
-      }
-      let lastError;
-      const parsedAll = {};
-      for (const path5 of optionPaths) {
-        try {
-          const parsed = DotenvModule.parse(fs2.readFileSync(path5, { encoding }));
-          DotenvModule.populate(parsedAll, parsed, options);
-        } catch (e) {
-          if (debug) {
-            _debug(`Failed to load ${path5} ${e.message}`);
-          }
-          lastError = e;
-        }
-      }
-      let processEnv = process.env;
-      if (options && options.processEnv != null) {
-        processEnv = options.processEnv;
-      }
-      DotenvModule.populate(processEnv, parsedAll, options);
-      if (lastError) {
-        return { parsed: parsedAll, error: lastError };
-      } else {
-        return { parsed: parsedAll };
-      }
-    }
-    function config2(options) {
-      if (_dotenvKey(options).length === 0) {
-        return DotenvModule.configDotenv(options);
-      }
-      const vaultPath = _vaultPath(options);
-      if (!vaultPath) {
-        _warn(`You set DOTENV_KEY but you are missing a .env.vault file at ${vaultPath}. Did you forget to build it?`);
-        return DotenvModule.configDotenv(options);
-      }
-      return DotenvModule._configVault(options);
-    }
-    function decrypt(encrypted, keyStr) {
-      const key = Buffer.from(keyStr.slice(-64), "hex");
-      let ciphertext = Buffer.from(encrypted, "base64");
-      const nonce = ciphertext.subarray(0, 12);
-      const authTag = ciphertext.subarray(-16);
-      ciphertext = ciphertext.subarray(12, -16);
-      try {
-        const aesgcm = crypto.createDecipheriv("aes-256-gcm", key, nonce);
-        aesgcm.setAuthTag(authTag);
-        return `${aesgcm.update(ciphertext)}${aesgcm.final()}`;
-      } catch (error) {
-        const isRange = error instanceof RangeError;
-        const invalidKeyLength = error.message === "Invalid key length";
-        const decryptionFailed = error.message === "Unsupported state or unable to authenticate data";
-        if (isRange || invalidKeyLength) {
-          const err = new Error("INVALID_DOTENV_KEY: It must be 64 characters long (or more)");
-          err.code = "INVALID_DOTENV_KEY";
-          throw err;
-        } else if (decryptionFailed) {
-          const err = new Error("DECRYPTION_FAILED: Please check your DOTENV_KEY");
-          err.code = "DECRYPTION_FAILED";
-          throw err;
-        } else {
-          throw error;
-        }
-      }
-    }
-    function populate(processEnv, parsed, options = {}) {
-      const debug = Boolean(options && options.debug);
-      const override = Boolean(options && options.override);
-      if (typeof parsed !== "object") {
-        const err = new Error("OBJECT_REQUIRED: Please check the processEnv argument being passed to populate");
-        err.code = "OBJECT_REQUIRED";
-        throw err;
-      }
-      for (const key of Object.keys(parsed)) {
-        if (Object.prototype.hasOwnProperty.call(processEnv, key)) {
-          if (override === true) {
-            processEnv[key] = parsed[key];
-          }
-          if (debug) {
-            if (override === true) {
-              _debug(`"${key}" is already defined and WAS overwritten`);
-            } else {
-              _debug(`"${key}" is already defined and was NOT overwritten`);
-            }
-          }
-        } else {
-          processEnv[key] = parsed[key];
-        }
-      }
-    }
-    var DotenvModule = {
-      configDotenv,
-      _configVault,
-      _parseVault,
-      config: config2,
-      decrypt,
-      parse,
-      populate
-    };
-    module.exports.configDotenv = DotenvModule.configDotenv;
-    module.exports._configVault = DotenvModule._configVault;
-    module.exports._parseVault = DotenvModule._parseVault;
-    module.exports.config = DotenvModule.config;
-    module.exports.decrypt = DotenvModule.decrypt;
-    module.exports.parse = DotenvModule.parse;
-    module.exports.populate = DotenvModule.populate;
-    module.exports = DotenvModule;
-  }
-});
-
-// ../../node_modules/.pnpm/application-config-path@0.1.0/node_modules/application-config-path/index.js
-const require_application_config_path = __commonJS({
-  "../../node_modules/.pnpm/application-config-path@0.1.0/node_modules/application-config-path/index.js"(exports, module) {
-    init_cjs_shim();
-    const os = __require("os");
-    const path4 = __require("path");
-    function darwin(name) {
-      return path4.join(process.env["HOME"], "Library", "Application Support", name);
-    }
-    function linux(name) {
-      if (process.env["XDG_CONFIG_HOME"]) {
-        return path4.join(process.env["XDG_CONFIG_HOME"], name);
-      }
-      return path4.join(process.env["HOME"], ".config", name);
-    }
-    function win32(name) {
-      if (process.env["LOCALAPPDATA"]) {
-        return path4.join(process.env["LOCALAPPDATA"], name);
-      }
-      return path4.join(process.env["USERPROFILE"], "Local Settings", "Application Data", name);
-    }
-    function applicationConfigPath(name) {
-      if (typeof name !== "string") {
-        throw new TypeError("`name` must be string");
-      }
-      switch (os.platform()) {
-        case "darwin":
-          return darwin(name);
-        case "linux":
-          return linux(name);
-        case "win32":
-          return win32(name);
-      }
-      throw new Error("Platform not supported");
-    }
-    module.exports = applicationConfigPath;
-  }
-});
-
-// ../../node_modules/.pnpm/mkdirp@0.5.6/node_modules/mkdirp/index.js
-const require_mkdirp = __commonJS({
-  "../../node_modules/.pnpm/mkdirp@0.5.6/node_modules/mkdirp/index.js"(exports, module) {
-    init_cjs_shim();
-    const path4 = __require("path");
-    const fs2 = __require("fs");
-    const _0777 = parseInt("0777", 8);
-    module.exports = mkdirP.mkdirp = mkdirP.mkdirP = mkdirP;
-    function mkdirP(p, opts, f, made) {
-      if (typeof opts === "function") {
-        f = opts;
-        opts = {};
-      } else if (!opts || typeof opts !== "object") {
-        opts = { mode: opts };
-      }
-      let mode = opts.mode;
-      const xfs = opts.fs || fs2;
-      if (mode === void 0) {
-        mode = _0777;
-      }
-      if (!made)
-        made = null;
-      const cb = f || /* istanbul ignore next */
+        test: "tap tests
       function() {
       };
       p = path4.resolve(p);
@@ -1472,8 +1062,6 @@ const require_mkdirp = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/application-config@1.0.1/node_modules/application-config/index.js
 const require_application_config = __commonJS({
   "../../node_modules/.pnpm/application-config@1.0.1/node_modules/application-config/index.js"(exports, module) {
     init_cjs_shim();
@@ -1537,8 +1125,6 @@ const require_application_config = __commonJS({
     };
   }
 });
-
-// ../../node_modules/.pnpm/debounce@1.2.1/node_modules/debounce/index.js
 const require_debounce = __commonJS({
   "../../node_modules/.pnpm/debounce@1.2.1/node_modules/debounce/index.js"(exports, module) {
     init_cjs_shim();
@@ -1593,11 +1179,7 @@ const require_debounce = __commonJS({
     module.exports = debounce3;
   }
 });
-
-// src/index.ts
 init_cjs_shim();
-
-// src/rc.ts
 init_cjs_shim();
 const import_rc = __toESM(require_rc(), 1);
 const defaults = {
@@ -1628,14 +1210,8 @@ if (config.devmode) {
 }
 const rc_config = Object.freeze(config);
 const rc_default = rc_config;
-
-// src/electron-context-menu.ts
 init_cjs_shim();
-
-// src/load-translations.ts
 init_cjs_shim();
-
-// ../shared/logger.ts
 init_cjs_shim();
 const import_error_stack_parser = __toESM(require_error_stack_parser(), 1);
 const startTime = Date.now();
@@ -1647,7 +1223,7 @@ const grey = colorize(0, 37);
 const green = colorize(1, 37);
 const cyan = colorize(1, 36);
 const emojiFontCss = 'font-family: Roboto, "Apple Color Emoji", NotoEmoji, "Helvetica Neue", Arial, Helvetica, NotoMono, sans-serif !important;';
-var LogLevelString = /* @__PURE__ */ ((LogLevelString2) => {
+var LogLevelString =  ((LogLevelString2) => {
   LogLevelString2["DEBUG"] = "DEBUG";
   LogLevelString2["WARNING"] = "WARNING";
   LogLevelString2["INFO"] = "INFO";
@@ -1658,31 +1234,31 @@ var LogLevelString = /* @__PURE__ */ ((LogLevelString2) => {
 const LoggerVariants = [
   {
     log: console.debug,
-    level: "DEBUG" /* DEBUG */,
+    level: "DEBUG" ,
     emoji: "\u{1F578}\uFE0F",
     symbol: "[D]"
   },
   {
     log: console.info,
-    level: "INFO" /* INFO */,
+    level: "INFO" ,
     emoji: "\u2139\uFE0F",
     symbol: blue("[i]")
   },
   {
     log: console.warn,
-    level: "WARNING" /* WARNING */,
+    level: "WARNING" ,
     emoji: "\u26A0\uFE0F",
     symbol: yellow("[w]")
   },
   {
     log: console.error,
-    level: "ERROR" /* ERROR */,
+    level: "ERROR" ,
     emoji: "\u{1F6A8}",
     symbol: red("[E]")
   },
   {
     log: console.error,
-    level: "CRITICAL" /* CRITICAL */,
+    level: "CRITICAL" ,
     emoji: "\u{1F6A8}\u{1F6A8}",
     symbol: red("[C]")
   }
@@ -1697,13 +1273,10 @@ ${LoggerVariants.map((v) => `${v.emoji} ${v.level}`).join(
   );
   console.info(
     `# Tips and Tricks for using the search filter in the browser console:
-
 \u2022 Use space to separate search terms
 \u2022 Exclude search terms using -
 \u2022 If the search term contains spaces you should escape it with ""
-
 Examples:
-
 \u{1F578}\uFE0F          only show debug messages
 -\u{1F578}\uFE0F         don't show debug messages
 \u2139\uFE0F          only show info messages
@@ -1714,7 +1287,6 @@ Examples:
 -\u{1F4E1}         don't show any events
 [JSONRPC]   only show jsonrpc messages
 -[JSONRPC]  don't show jsonrpc messages
-
 Start deltachat with --devmode (or --log-debug and --log-to-console) argument to show full log output.
 If the log seems quiet, make sure the 'All levels' drop down has 'Verbose' checked.
   `
@@ -1771,7 +1343,6 @@ ${s.toString()}`).join();
 const Logger = class {
   constructor(channel) {
     this.channel = channel;
-    //@ts-ignore
     this.isMainProcess = typeof window === "undefined";
     if (channel === "core/event") {
       this.getStackTrace = () => "";
@@ -1799,7 +1370,6 @@ ${s.toString()}`).join();
   error(...args) {
     log(this, 3, this.getStackTrace(), args);
   }
-  /** use this when you know that the stacktrace is not relevant */
   errorWithoutStackTrace(...args) {
     log(this, 3, [], args);
   }
@@ -1822,8 +1392,6 @@ if (!("toJSON" in Error.prototype))
     configurable: true,
     writable: true
   });
-
-// ../shared/localize.ts
 init_cjs_shim();
 const log2 = getLogger("localize");
 function translate(locale, messages) {
@@ -1852,23 +1420,8 @@ function translate(locale, messages) {
       if (typeof opts.quantity === "string") {
         message = entry[opts.quantity];
       } else if (typeof opts.quantity === "number") {
-        message = entry[opts.quantity] || // TODO fix: simply using `pluralRules.select()` to index
-        // into the object is not quite right,
-        // because the string could be untranslated, and it'd fall back to
-        // English, with only 'one' and 'other' plural categories,
-        // in which case we must apply the English
-        // plural rules instead of the current locale's rules.
-        //
-        // Currently this is behaves incorrectly e.g. for untranslated
-        // Indonesian (id), which only has the 'other' plural category,
-        // so even when we have to use 'one' for English, we'd use 'other'.
-        //
-        // But currently we don't have a way to distinguish between translated
-        // and untranslated strings in this code.
-        // See https://github.com/deltachat/deltachat-desktop/blob/b342a1d47b505e68caaec71f79c381c3f304405a/src/main/load-translations.ts#L44-L64
-        entry[pluralRules.select(opts.quantity)] || // This also catches the case where we failed to construct
-        // `Intl.PluralRules` for the currentl locale, and fall back to
-        // English (see `try catch` above).
+        message = entry[opts.quantity] || 
+        entry[pluralRules.select(opts.quantity)] || 
         entry["other"];
       } else {
         message = void 0;
@@ -1912,11 +1465,7 @@ function translate(locale, messages) {
   }
   return getMessage;
 }
-
-// src/menu.ts
 init_cjs_shim();
-
-// ../shared/constants.ts
 init_cjs_shim();
 const appName = "Delta Chat";
 const homePageUrl = "https://delta.chat";
@@ -1925,7 +1474,7 @@ const gitHubIssuesUrl = gitHubUrl + "/issues";
 const gitHubLicenseUrl = gitHubUrl + "/blob/main/LICENSE";
 const donationUrl = "https://delta.chat/donate";
 const appWindowTitle = appName;
-var Timespans = /* @__PURE__ */ ((Timespans2) => {
+var Timespans =  ((Timespans2) => {
   Timespans2[Timespans2["ZERO_SECONDS"] = 0] = "ZERO_SECONDS";
   Timespans2[Timespans2["ONE_SECOND"] = 1] = "ONE_SECOND";
   Timespans2[Timespans2["ONE_MINUTE_IN_SECONDS"] = 60] = "ONE_MINUTE_IN_SECONDS";
@@ -1935,31 +1484,27 @@ var Timespans = /* @__PURE__ */ ((Timespans2) => {
   Timespans2[Timespans2["ONE_YEAR_IN_SECONDS"] = 31536e3] = "ONE_YEAR_IN_SECONDS";
   return Timespans2;
 })(Timespans || {});
-var AutodeleteDuration = /* @__PURE__ */ ((AutodeleteDuration2) => {
-  AutodeleteDuration2[AutodeleteDuration2["NEVER"] = 0 /* ZERO_SECONDS */] = "NEVER";
-  AutodeleteDuration2[AutodeleteDuration2["AT_ONCE"] = 1 /* ONE_SECOND */] = "AT_ONCE";
-  AutodeleteDuration2[AutodeleteDuration2["ONE_MINUTE"] = 60 /* ONE_MINUTE_IN_SECONDS */] = "ONE_MINUTE";
-  AutodeleteDuration2[AutodeleteDuration2["ONE_HOUR"] = 3600 /* ONE_HOUR_IN_SECONDS */] = "ONE_HOUR";
-  AutodeleteDuration2[AutodeleteDuration2["ONE_DAY"] = 86400 /* ONE_DAY_IN_SECONDS */] = "ONE_DAY";
-  AutodeleteDuration2[AutodeleteDuration2["ONE_WEEK"] = 604800 /* ONE_WEEK_IN_SECONDS */] = "ONE_WEEK";
+var AutodeleteDuration =  ((AutodeleteDuration2) => {
+  AutodeleteDuration2[AutodeleteDuration2["NEVER"] = 0 ] = "NEVER";
+  AutodeleteDuration2[AutodeleteDuration2["AT_ONCE"] = 1 ] = "AT_ONCE";
+  AutodeleteDuration2[AutodeleteDuration2["ONE_MINUTE"] = 60 ] = "ONE_MINUTE";
+  AutodeleteDuration2[AutodeleteDuration2["ONE_HOUR"] = 3600 ] = "ONE_HOUR";
+  AutodeleteDuration2[AutodeleteDuration2["ONE_DAY"] = 86400 ] = "ONE_DAY";
+  AutodeleteDuration2[AutodeleteDuration2["ONE_WEEK"] = 604800 ] = "ONE_WEEK";
   AutodeleteDuration2[AutodeleteDuration2["FIVE_WEEKS"] = 3024e3] = "FIVE_WEEKS";
-  AutodeleteDuration2[AutodeleteDuration2["ONE_YEAR"] = 31536e3 /* ONE_YEAR_IN_SECONDS */] = "ONE_YEAR";
+  AutodeleteDuration2[AutodeleteDuration2["ONE_YEAR"] = 31536e3 ] = "ONE_YEAR";
   return AutodeleteDuration2;
 })(AutodeleteDuration || {});
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "apng", "gif", "webp"];
 const VIDEO_CHAT_INSTANCE_SYSTEMLI = "https://meet.systemli.org/$ROOM";
 const VIDEO_CHAT_INSTANCE_AUTISTICI = "https://vc.autistici.org/$ROOM";
-var NOTIFICATION_TYPE = /* @__PURE__ */ ((NOTIFICATION_TYPE2) => {
+var NOTIFICATION_TYPE =  ((NOTIFICATION_TYPE2) => {
   NOTIFICATION_TYPE2[NOTIFICATION_TYPE2["MESSAGE"] = 0] = "MESSAGE";
   NOTIFICATION_TYPE2[NOTIFICATION_TYPE2["REACTION"] = 1] = "REACTION";
   NOTIFICATION_TYPE2[NOTIFICATION_TYPE2["WEBXDC_INFO"] = 2] = "WEBXDC_INFO";
   return NOTIFICATION_TYPE2;
 })(NOTIFICATION_TYPE || {});
-
-// src/application-constants.ts
 init_cjs_shim();
-
-// src/application-config.ts
 init_cjs_shim();
 const import_application_config = __toESM(require_application_config(), 1);
 if (process.env.NODE_ENV !== "production") {
@@ -1983,8 +1528,6 @@ if (process.env.DC_TEST_DIR) {
   );
 }
 const application_config_default = Object.freeze(appConfig);
-
-// src/application-constants.ts
 import { dirname, join as join2 } from "path";
 import { app, screen } from "electron";
 import { fileURLToPath } from "url";
@@ -2017,8 +1560,6 @@ function windowDefaults() {
       y
     },
     headerHeight,
-    // On 0.6x zoom Delta Chat and 200x window size it's still somewhat usable,
-    // not much is overflowing.
     minWidth: 225,
     minHeight: 125,
     main: targetFile,
@@ -2062,8 +1603,6 @@ const ALLOWED_ACCOUNT_FOLDERS = [
   "stickers"
 ];
 const INTERNAL_TMP_DIR_NAME = "tmp";
-
-// src/windows/main.ts
 const main_exports = {};
 __export(main_exports, {
   chooseLanguage: () => chooseLanguage,
@@ -2081,14 +1620,8 @@ __export(main_exports, {
   window: () => window2
 });
 init_cjs_shim();
-
-// src/tray.ts
 init_cjs_shim();
-
-// src/desktop_settings.ts
 init_cjs_shim();
-
-// ../shared/state.ts
 init_cjs_shim();
 function getDefaultState() {
   return {
@@ -2098,7 +1631,6 @@ function getDefaultState() {
     notifications: true,
     showNotificationContent: true,
     locale: null,
-    // if this is null, the system chooses the system language that electron reports
     credentials: void 0,
     lastAccount: void 0,
     enableAVCalls: false,
@@ -2124,8 +1656,6 @@ function getDefaultState() {
     autostart: true
   };
 }
-
-// src/desktop_settings.ts
 const import_debounce = __toESM(require_debounce(), 1);
 import { EventEmitter } from "events";
 import { promisify } from "util";
@@ -2162,7 +1692,6 @@ const PersistentState = class extends EventEmitter {
     this.inner_state = { ...this.inner_state, ...state };
     this.save();
   }
-  /** state.save() calls are rate-limited. Use `PersistentState.saveImmediate()` to skip limit. */
   save() {
     this.save = (0, import_debounce.default)(this.saveImmediate, SAVE_DEBOUNCE_INTERVAL);
     this.saveImmediate();
@@ -2182,8 +1711,6 @@ const PersistentState = class extends EventEmitter {
   }
 };
 const DesktopSettings = new PersistentState();
-
-// src/tray.ts
 import { app as rawApp, Menu, Tray, nativeImage } from "electron";
 import { globalShortcut } from "electron";
 import { join as join3, dirname as dirname2 } from "path";
@@ -2348,16 +1875,12 @@ function renderTrayIcon() {
 function refreshTrayContextMenu() {
   tray?.setContextMenu(getTrayMenu());
 }
-
-// src/windows/helpers.ts
 init_cjs_shim();
 import { screen as screen2 } from "electron";
 function initMinWinDimensionHandling(main_window, minWidth, minHeight) {
   const update_min_size = () => {
     const { workAreaSize } = screen2.getPrimaryDisplay();
     if (
-      // A multiplier to make space for the taskbar and the window header.
-      // Remember that the taskbar could also be placed vertically.
       workAreaSize.width * 0.75 < minWidth || workAreaSize.height * 0.75 < minHeight
     ) {
       main_window.setMinimumSize(0, 0);
@@ -2375,8 +1898,6 @@ function initMinWinDimensionHandling(main_window, minWidth, minHeight) {
     screen2.removeListener("display-removed", update_min_size);
   };
 }
-
-// src/content-protection.ts
 init_cjs_shim();
 import { BrowserWindow as BrowserWindow2 } from "electron";
 import { platform } from "os";
@@ -2398,8 +1919,6 @@ function updateContentProtectionOnAllActiveWindows(enabled) {
     updateContentProtection(win2, enabled);
   }
 }
-
-// src/windows/main.ts
 const import_debounce2 = __toESM(require_debounce(), 1);
 import electron, { session } from "electron";
 import { isAbsolute, join as join4, sep } from "path";
@@ -2419,9 +1938,7 @@ function init(options) {
   const isMac2 = platform2() === "darwin";
   const mainWindow = window2 = new electron.BrowserWindow({
     backgroundColor: "#282828",
-    // backgroundThrottling: false, // do not throttle animations/timers when page is background
     darkTheme: true,
-    // Forces dark theme (GTK+3)
     icon: appIcon(),
     show: false,
     title: appWindowTitle,
@@ -2433,7 +1950,6 @@ function init(options) {
       nodeIntegration: false,
       preload: defaults2.preload,
       spellcheck: false,
-      // until we can load a local dictionary, see https://github.com/electron/electron/issues/22995
       webSecurity: true,
       allowRunningInsecureContent: false,
       contextIsolation: false
@@ -2490,14 +2006,6 @@ function init(options) {
     "mediaKeySystem",
     "accessibility-events",
     "clipboard-sanitized-write"
-    // not used:
-    //  "display-capture", - not used
-    //  "geolocation", - not used
-    //  "midi" - not used
-    //  "midiSysex" - not used
-    // what is this about?
-    //  "openExternal"
-    //  "window-placement"
   ];
   const permission_handler = (permission) => {
     log6.info("preq", permission);
@@ -2519,880 +2027,7 @@ function init(options) {
     }
   );
   window2.webContents.session.webRequest.onBeforeRequest(
-    { urls: ["file://*"] },
-    (details, callback) => {
-      const pathname = fileURLToPath3(
-        decodeURIComponent(new URL(details.url).href)
-      );
-      if (!isAbsolute(pathname) || pathname.includes("..")) {
-        log6.errorWithoutStackTrace("tried to access relative path", pathname);
-        return callback({ cancel: true });
-      }
-      if (pathname.startsWith(getAccountsPath())) {
-        const relativePathInAccounts = pathname.replace(getAccountsPath(), "");
-        const relativePathInAccount = relativePathInAccounts.slice(
-          relativePathInAccounts.indexOf(sep, 1) + 1
-        );
-        if (ALLOWED_ACCOUNT_FOLDERS.find(
-          (allowedPath) => relativePathInAccount.startsWith(allowedPath)
-        )) {
-          return callback({ cancel: false });
-        }
-      }
-      if (ALLOWED_STATIC_FOLDERS.find(
-        (allowedPath) => pathname.startsWith(allowedPath)
-      )) {
-        return callback({ cancel: false });
-      }
-      if (window2?.filePathWhiteList.includes(pathname)) {
-        return callback({ cancel: false });
-      }
-      log6.errorWithoutStackTrace(
-        "tried to access path that is not whitelisted",
-        pathname
-      );
-      return callback({ cancel: true });
-    }
-  );
-}
-function hide() {
-  window2?.hide();
-}
-function send(channel, ...args) {
-  if (!window2) {
-    log6.warn("window not defined, can't send ipc to renderer");
-    return;
-  }
-  if (window2.isDestroyed()) {
-    log6.info("window is destroyed. not sending message", args);
-    return;
-  }
-  try {
-    window2.webContents.send(channel, ...args);
-  } catch (error) {
-    log6.error("can not send message to window, error:", error);
-  }
-}
-function setBounds(bounds, maximize) {
-  if (!window2) {
-    throw new Error("window does not exist, this should never happen");
-  }
-  if (maximize === true && !window2.isMaximized()) {
-    log6.debug("setBounds: maximizing");
-    window2.maximize();
-  } else if (maximize === false && window2.isMaximized()) {
-    log6.debug("setBounds: unmaximizing");
-    window2.unmaximize();
-  }
-  const willBeMaximized = typeof maximize === "boolean" ? maximize : window2.isMaximized();
-  if (!willBeMaximized) {
-    log6.debug(`setBounds: setting bounds to ${JSON.stringify(bounds)}`);
-    if (bounds.x === null && bounds.y === null) {
-      const scr = electron.screen.getDisplayMatching(window2.getBounds());
-      bounds.x = Math.round(
-        scr.bounds.x + scr.bounds.width / 2 - bounds.width / 2
-      );
-      bounds.y = Math.round(
-        scr.bounds.y + scr.bounds.height / 2 - bounds.height / 2
-      );
-      log6.debug(`setBounds: centered to ${JSON.stringify(bounds)}`);
-    }
-    if (bounds.contentBounds) {
-      window2.setContentBounds(bounds, true);
-    } else {
-      window2.setBounds(bounds, true);
-    }
-  } else {
-    log6.debug("setBounds: not setting bounds because of window maximization");
-  }
-}
-function setProgress(progress) {
-  window2?.setProgressBar(progress);
-}
-function setTitle(title) {
-  if (title) {
-    window2?.setTitle(`${appWindowTitle} - ${title}`);
-  } else {
-    window2?.setTitle(appWindowTitle);
-  }
-}
-function show() {
-  window2?.show();
-}
-function toggleAlwaysOnTop() {
-  if (!window2)
-    return;
-  const flag = !window2.isAlwaysOnTop();
-  log6.info(`toggleAlwaysOnTop ${flag}`);
-  window2.setAlwaysOnTop(flag);
-}
-function isAlwaysOnTop() {
-  return window2 ? window2.isAlwaysOnTop() : false;
-}
-function toggleDevTools() {
-  if (!window2)
-    return;
-  log6.info("toggleDevTools");
-  if (window2.webContents.isDevToolsOpened()) {
-    window2.webContents.closeDevTools();
-  } else {
-    window2.webContents.openDevTools({ mode: "detach" });
-  }
-}
-function chooseLanguage(locale) {
-  window2?.webContents.send("chooseLanguage", locale);
-}
-function setZoomFactor(factor) {
-  log6.info("setZoomFactor", factor);
-  window2?.webContents.setZoomFactor(factor);
-}
-
-// src/isAppx.ts
-init_cjs_shim();
-import { platform as platform3 } from "os";
-import { join as join5 } from "path";
-import { app as app3 } from "electron";
-import { readFile } from "fs/promises";
-import { existsSync } from "fs";
-let appx = false;
-async function isWindowsStorePackage() {
-  if (platform3() === "win32") {
-    const app_path = app3.getAppPath();
-    try {
-      const info = JSON.parse(
-        await readFile(
-          join5(app_path, "../../", "windows_build_info.json"),
-          "utf-8"
-        )
-      );
-      if (info.isAPPX) {
-        console.info("App is probably running as appx");
-        appx = info.isAPPX;
-      }
-    } catch (error) {
-      console.warn(
-        "Could not fetch windows build info, this is normal in dev mode"
-      );
-    }
-  }
-}
-function mapPackagePath(path4) {
-  const basePath = "AppData\\Local\\DeltaChat";
-  const packagePath = "AppData\\Local\\Packages\\merlinux.DeltaChat_v2ry5hvxhdhyy\\LocalCache\\Local\\DeltaChat";
-  if (appx && path4.indexOf(basePath) > -1) {
-    const transformedPath = path4.replace(basePath, packagePath);
-    if (existsSync(transformedPath)) {
-      return transformedPath;
-    }
-  }
-  return path4;
-}
-function getAppxPath(app_folder) {
-  return join5(
-    app_folder,
-    "../Packages/merlinux.DeltaChat_v2ry5hvxhdhyy/LocalCache/Local/DeltaChat"
-  );
-}
-
-// src/getLocaleDirectory.ts
-init_cjs_shim();
-import { existsSync as existsSync2 } from "fs";
-import { join as join6, dirname as dirname3 } from "path";
-import { fileURLToPath as fileURLToPath4 } from "url";
-const __dirname3 = dirname3(fileURLToPath4(import.meta.url));
-const alternativeDirectory = process.env["DELTACHAT_LOCALE_DIR"];
-let cachedResult = null;
-function getLocaleDirectoryPath() {
-  if (cachedResult) {
-    return cachedResult;
-  }
-  const places = [
-    alternativeDirectory,
-    join6(__dirname3, "../_locales"),
-    // packaged
-    join6(__dirname3, "../../../_locales")
-    // development
-  ];
-  if (alternativeDirectory && !isValidLocaleDirectory(alternativeDirectory)) {
-    throw new Error(
-      `Custom locale directory specified in \`DELTACHAT_LOCALE_DIR\` env var is not a valid locale directory.
-      Make sure it exists and contains atleast the following files:
-      - _languages.json        // index of what languages exist
-      - _untranslated_en.json  // for untranslated strings
-      - en.json                // for fallback
-      
-      Path to the invalid directory: ${alternativeDirectory}`
-    );
-  }
-  const directory = places.find(isValidLocaleDirectory);
-  if (!directory) {
-    throw new Error("Failed to find locale data");
-  }
-  cachedResult = directory;
-  return directory;
-}
-function isValidLocaleDirectory(path4) {
-  return path4 !== void 0 && existsSync2(path4) && existsSync2(join6(path4, "_languages.json")) && existsSync2(join6(path4, "_untranslated_en.json")) && existsSync2(join6(path4, "en.json"));
-}
-
-// src/menu.ts
-import { Menu as Menu2, shell } from "electron";
-import { readFileSync } from "fs";
-import { join as join7 } from "path";
-const log7 = getLogger("main/menu");
-const languages = (() => {
-  const languagesFile = join7(getLocaleDirectoryPath(), "_languages.json");
-  const rawLanguageList = JSON.parse(
-    readFileSync(languagesFile, "utf8")
-  );
-  return Object.keys(rawLanguageList).map((locale) => ({
-    locale,
-    name: rawLanguageList[locale]
-  })).filter(({ name }) => name.indexOf("*") === -1).sort(({ name: name1 }, { name: name2 }) => name1 > name2 ? 1 : -1);
-})();
-let logHandlerRef = null;
-function refresh() {
-  log7.info(`rebuilding menu with locale ${getCurrentLocaleDate().locale}`);
-  if (!logHandlerRef) {
-    log7.critical("logHandlerRef not defined, could not build menu");
-    return;
-  }
-  const template = getMenuTemplate(logHandlerRef);
-  const menu = Menu2.buildFromTemplate(template);
-  const item = getMenuItem(menu, tx("global_menu_view_floatontop_desktop"));
-  if (item)
-    item.checked = isAlwaysOnTop();
-  const isMac2 = process.platform === "darwin";
-  if (isMac2 === true) {
-    Menu2.setApplicationMenu(menu);
-    return;
-  }
-  window2?.setMenu(menu);
-}
-function init2(logHandler2) {
-  logHandlerRef = logHandler2;
-  refresh();
-}
-function getAvailableLanguages() {
-  const { locale: currentLocale } = getCurrentLocaleDate();
-  return languages.map(({ locale, name }) => {
-    return {
-      label: name,
-      type: "radio",
-      checked: locale === currentLocale,
-      click: () => {
-        DesktopSettings.update({ locale });
-        chooseLanguage(locale);
-      }
-    };
-  });
-}
-function getZoomFactors() {
-  const zoomFactors = [
-    { scale: 0.6, key: "extra_small" },
-    { scale: 0.8, key: "small" },
-    { scale: 1, key: "normal" },
-    { scale: 1.2, key: "large" },
-    { scale: 1.4, key: "extra_large" }
-  ];
-  const currentZoomFactor = DesktopSettings.state.zoomFactor;
-  if (zoomFactors.map(({ scale }) => scale).indexOf(currentZoomFactor) === -1)
-    zoomFactors.push({
-      scale: currentZoomFactor,
-      key: "custom"
-    });
-  return zoomFactors.map(({ key, scale }) => {
-    return {
-      label: !(scale === 1 && key === "custom") ? `${scale}x ${tx(key)}` : tx("custom"),
-      type: "radio",
-      checked: scale === DesktopSettings.state.zoomFactor && !(scale === 1 && key === "custom"),
-      click: () => {
-        if (key !== "custom") {
-          DesktopSettings.update({ zoomFactor: scale });
-          setZoomFactor(scale);
-        } else {
-        }
-      }
-    };
-  });
-}
-function getAppMenu(window3) {
-  const isMainWindow = window3 === window2;
-  const extraItemsForMainWindow = [
-    {
-      label: tx("global_menu_help_about_desktop"),
-      click: () => {
-        send("showAboutDialog");
-      }
-    },
-    { type: "separator" },
-    {
-      label: tx("menu_settings"),
-      click: () => {
-        send("showSettingsDialog");
-      },
-      accelerator: "Cmd+,"
-    },
-    { type: "separator" }
-  ];
-  return {
-    label: appWindowTitle,
-    submenu: [
-      ...isMainWindow ? extraItemsForMainWindow : [],
-      { role: "hide" },
-      { role: "hideOthers" },
-      { role: "unhide" },
-      { type: "separator" },
-      ...isMainWindow ? [
-        {
-          // because menubar stays when it's closed and apple wants that the user can reopen it via the menu bar
-          label: tx("show_window"),
-          click: () => {
-            show();
-          }
-        }
-      ] : [],
-      {
-        label: tx("global_menu_file_quit_desktop"),
-        role: "quit",
-        accelerator: "Cmd+q"
-      }
-    ]
-  };
-}
-function getFileMenu(window3, isMac2) {
-  const fileMenuNonMac = {
-    label: tx("global_menu_file_desktop"),
-    submenu: (() => {
-      if (window3 === window2) {
-        return [
-          {
-            label: tx("menu_settings"),
-            click: () => {
-              send("showSettingsDialog");
-            },
-            accelerator: "Ctrl+,"
-          },
-          {
-            label: tx("global_menu_file_quit_desktop"),
-            click: quitDeltaChat,
-            accelerator: "Ctrl+q"
-          }
-        ];
-      } else {
-        return [
-          {
-            label: tx("close_window"),
-            click: () => window3?.close(),
-            accelerator: "Ctrl+q"
-          }
-        ];
-      }
-    })()
-  };
-  const fileMenuMac = {
-    label: tx("global_menu_file_desktop"),
-    submenu: [
-      {
-        label: tx("close_window"),
-        click: () => {
-          window3?.close();
-          if (isMac2) {
-            refresh();
-          }
-        },
-        accelerator: "Cmd+w"
-      }
-    ]
-  };
-  return isMac2 ? fileMenuMac : fileMenuNonMac;
-}
-function getEditMenu() {
-  return {
-    label: tx("global_menu_edit_desktop"),
-    submenu: [
-      {
-        label: tx("global_menu_edit_undo_desktop"),
-        role: "undo"
-      },
-      {
-        label: tx("global_menu_edit_redo_desktop"),
-        role: "redo"
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: tx("global_menu_edit_cut_desktop"),
-        role: "cut"
-      },
-      {
-        label: tx("global_menu_edit_copy_desktop"),
-        role: "copy"
-      },
-      {
-        label: tx("global_menu_edit_paste_desktop"),
-        role: "paste"
-      },
-      {
-        label: tx("delete"),
-        role: "delete"
-      },
-      {
-        label: tx("menu_select_all"),
-        role: "selectAll"
-      }
-    ]
-  };
-}
-function getHelpMenu(isMac2) {
-  return {
-    label: tx("global_menu_help_desktop"),
-    role: "help",
-    submenu: [
-      {
-        label: tx("menu_help"),
-        click: () => {
-          send("showHelpDialog");
-        },
-        accelerator: "F1"
-      },
-      {
-        label: tx("keybindings"),
-        click: () => {
-          window2?.show();
-          window2?.focus();
-          send("showKeybindingsDialog");
-        },
-        accelerator: isMac2 ? "Cmd+/" : "Ctrl+/"
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: tx("delta_chat_homepage"),
-        click: () => {
-          shell.openExternal(homePageUrl);
-        }
-      },
-      {
-        label: tx("contribute"),
-        click: () => {
-          shell.openExternal("https://delta.chat/contribute");
-        }
-      },
-      {
-        label: tx("global_menu_help_report_desktop"),
-        click: () => {
-          shell.openExternal(gitHubIssuesUrl);
-        }
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: tx("global_menu_help_about_desktop"),
-        click: () => {
-          window2?.show();
-          window2?.focus();
-          send("showAboutDialog");
-        }
-      }
-    ]
-  };
-}
-function getMenuTemplate(logHandler2) {
-  const isMac2 = process.platform === "darwin";
-  return [
-    ...isMac2 ? [getAppMenu(window2)] : [],
-    getFileMenu(window2, isMac2),
-    getEditMenu(),
-    {
-      label: tx("global_menu_view_desktop"),
-      submenu: [
-        {
-          label: tx("global_menu_view_floatontop_desktop"),
-          type: "checkbox",
-          click: () => toggleAlwaysOnTop()
-        },
-        {
-          label: tx("zoom"),
-          submenu: getZoomFactors()
-        },
-        {
-          label: tx("pref_language"),
-          submenu: getAvailableLanguages()
-        },
-        {
-          type: "separator"
-        },
-        {
-          label: tx("global_menu_view_developer_desktop"),
-          submenu: [
-            {
-              label: tx("global_menu_view_developer_tools_desktop"),
-              accelerator: process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I",
-              click: () => toggleDevTools()
-            },
-            {
-              label: tx("menu.view.developer.open.log.folder"),
-              click: () => {
-                shell.openPath(mapPackagePath(getLogsPath()));
-              }
-            },
-            {
-              label: tx("menu.view.developer.open.current.log.file"),
-              click: () => {
-                shell.openPath(mapPackagePath(logHandler2.logFilePath()));
-              }
-            }
-          ]
-        }
-      ]
-    },
-    getHelpMenu(isMac2)
-  ];
-}
-function getMenuItem(menu, label) {
-  for (let i = 0; i < menu.items.length; i++) {
-    const menuItem = menu.items[i].submenu?.items.find(function(item) {
-      return item.label === label;
-    });
-    if (menuItem)
-      return menuItem;
-  }
-}
-
-// src/load-translations.ts
-import path2 from "path";
-import fs from "fs";
-import { ipcMain } from "electron";
-const log8 = getLogger("load-translations");
-let currentlocaleData = null;
-function getCurrentLocaleDate() {
-  if (currentlocaleData === null) {
-    log8.error("tried to get locale data before init");
-    throw new Error("no locale data is loaded yet");
-  }
-  return currentlocaleData;
-}
-let translateFunction = null;
-var tx = function(key, substitutions, raw_opts) {
-  if (translateFunction === null) {
-    log8.error("tried to use translation function before init");
-    return key;
-  }
-  return translateFunction(key, substitutions, raw_opts);
-};
-function setLanguage(locale) {
-  const localeData = loadTranslations(locale);
-  currentlocaleData = localeData;
-  translateFunction = translate(
-    localeData.locale,
-    localeData.messages
-  );
-}
-function loadTranslations(locale) {
-  const messagesEnglish = getLocaleMessages(retrieveLocaleFile("en"));
-  let messages;
-  let localeFile = retrieveLocaleFile(locale);
-  let localeMessages = getLocaleMessages(localeFile);
-  if (!localeMessages && locale.indexOf("-") !== -1) {
-    locale = locale.split("-")[0];
-    localeFile = retrieveLocaleFile(locale);
-    localeMessages = getLocaleMessages(localeFile);
-  } else if (!localeMessages) {
-    log8.error(`Could not load messages for ${locale}`, locale);
-    locale = "en";
-    messages = messagesEnglish;
-  }
-  if (localeMessages) {
-    messages = Object.assign({}, messagesEnglish, localeMessages);
-  }
-  const experimentalFile = retrieveLocaleFile("_untranslated_en");
-  const experimentalMessages = getLocaleMessages(experimentalFile);
-  if (experimentalMessages) {
-    messages = Object.assign(messages, experimentalMessages);
-  } else {
-    log8.debug(`No experimental language file (${experimentalFile}) found`);
-  }
-  log8.debug(messages["no_chat_selected_suggestion_desktop"]);
-  return { messages, locale };
-}
-function retrieveLocaleFile(locale) {
-  const onDiskLocale = locale.replace("-", "_");
-  return path2.join(getLocaleDirectoryPath(), onDiskLocale + ".json");
-}
-function getLocaleMessages(file) {
-  if (!fs.existsSync(file))
-    return false;
-  try {
-    return JSON.parse(fs.readFileSync(file, "utf-8"));
-  } catch (err) {
-    log8.error(`JSON parse error in language file '${file}'`, err);
-    throw err;
-  }
-}
-ipcMain.handle("getLocaleData", (_ev, locale) => {
-  if (locale) {
-    loadTranslations(locale);
-  }
-  return getCurrentLocaleDate();
-});
-ipcMain.handle("setLocale", (_ev, locale) => {
-  setLanguage(locale);
-  refresh();
-});
-
-// src/electron-context-menu.ts
-import electron2 from "electron";
-const webContents = (win2) => win2.webContents;
-const removeUnusedMenuItems = (menuTemplate) => {
-  let notDeletedPreviousElement;
-  return menuTemplate.filter((menuItem) => {
-    if (!menuItem) {
-      return false;
-    } else if (typeof menuItem === "object" && menuItem.visible === false) {
-      return false;
-    }
-    return true;
-  }).filter((item, index, array) => {
-    const menuItem = item;
-    const items = array;
-    const toDelete = menuItem.type === "separator" && (!notDeletedPreviousElement || index === array.length - 1 || items[index + 1].type === "separator");
-    notDeletedPreviousElement = toDelete ? notDeletedPreviousElement : menuItem;
-    return !toDelete;
-  });
-};
-const create = (win2) => {
-  const enableSpellChecking = false;
-  const handleContextMenu = (_event, props) => {
-    const { editFlags } = props;
-    const hasText = props.selectionText.trim().length > 0;
-    const can = (type) => editFlags[`can${type}`] && hasText;
-    const defaultActions = {
-      separator: () => ({ type: "separator" }),
-      learnSpelling: () => ({
-        id: "learnSpelling",
-        label: tx("menu_learn_spelling"),
-        visible: Boolean(props.isEditable && hasText && props.misspelledWord),
-        click() {
-          const target = webContents(win2);
-          target.session.addWordToSpellCheckerDictionary(props.misspelledWord);
-        }
-      }),
-      cut: () => ({
-        id: "cut",
-        label: tx("global_menu_edit_cut_desktop"),
-        enabled: can("Cut"),
-        visible: props.isEditable,
-        click(_menuItem) {
-          const target = webContents(win2);
-          if (target) {
-            target.cut();
-          } else {
-            electron2.clipboard.writeText(props.selectionText);
-          }
-        }
-      }),
-      copy: () => ({
-        id: "copy",
-        label: tx("global_menu_edit_copy_desktop"),
-        enabled: can("Copy"),
-        visible: props.isEditable || hasText,
-        click() {
-          const target = webContents(win2);
-          if (target) {
-            target.copy();
-          } else {
-            electron2.clipboard.writeText(props.selectionText);
-          }
-        }
-      }),
-      paste: () => ({
-        id: "paste",
-        label: tx("global_menu_edit_paste_desktop"),
-        enabled: editFlags.canPaste,
-        visible: props.isEditable,
-        click() {
-          const target = webContents(win2);
-          target.paste();
-        }
-      }),
-      copyLink: () => ({
-        id: "copyLink",
-        label: tx("menu_copy_link_to_clipboard"),
-        visible: props.linkURL.length !== 0 && props.mediaType === "none",
-        click() {
-          electron2.clipboard.write({
-            bookmark: props.linkText,
-            text: props.linkURL
-          });
-        }
-      }),
-      copyImage: () => ({
-        id: "copyImage",
-        label: tx("menu_copy_image_to_clipboard"),
-        visible: props.mediaType === "image",
-        click() {
-          webContents(win2).copyImageAt(props.x, props.y);
-        }
-      })
-    };
-    function word(suggestion) {
-      return {
-        id: "dictionarySuggestions",
-        label: suggestion,
-        visible: Boolean(props.isEditable && hasText && props.misspelledWord),
-        click(menuItem) {
-          if (menuItem.label) {
-            const target = webContents(win2);
-            target.insertText(menuItem.label);
-          }
-        }
-      };
-    }
-    let dictionarySuggestions = [];
-    if (enableSpellChecking) {
-      if (hasText && props.misspelledWord && props.dictionarySuggestions.length > 0) {
-        dictionarySuggestions = props.dictionarySuggestions.map(
-          (suggestion) => word(suggestion)
-        );
-      } else {
-        dictionarySuggestions.push({
-          id: "dictionarySuggestions",
-          label: tx("no_spellcheck_suggestions_found"),
-          visible: Boolean(hasText && props.misspelledWord),
-          enabled: false
-        });
-      }
-    }
-    let menuTemplate = [
-      dictionarySuggestions.length > 0 && defaultActions.separator(),
-      ...dictionarySuggestions,
-      defaultActions.separator(),
-      enableSpellChecking && defaultActions.learnSpelling(),
-      defaultActions.separator(),
-      defaultActions.cut(),
-      defaultActions.copy(),
-      defaultActions.paste(),
-      defaultActions.separator(),
-      defaultActions.copyImage(),
-      defaultActions.separator(),
-      defaultActions.copyLink(),
-      defaultActions.separator()
-    ];
-    menuTemplate = removeUnusedMenuItems(menuTemplate);
-    if (menuTemplate.length > 0) {
-      const menu = electron2.Menu.buildFromTemplate(menuTemplate);
-      menu.popup({ window: win2 });
-    }
-  };
-  webContents(win2).on("context-menu", handleContextMenu);
-  return () => {
-    if (win2.isDestroyed()) {
-      return;
-    }
-    webContents(win2).removeListener("context-menu", handleContextMenu);
-  };
-};
-const ContextMenu = () => {
-  let isDisposed = false;
-  const disposables = [];
-  const init4 = (win2) => {
-    if (isDisposed) {
-      return;
-    }
-    const disposeMenu = create(win2);
-    disposables.push(disposeMenu);
-    const removeDisposable = () => {
-      const index = disposables.indexOf(disposeMenu);
-      if (index !== -1) {
-        disposables.splice(index, 1);
-      }
-    };
-    if (typeof win2.once !== "undefined") {
-      win2.once("closed", removeDisposable);
-    }
-    disposables.push(() => {
-      win2.off("closed", removeDisposable);
-    });
-  };
-  const dispose = () => {
-    for (const dispose2 of disposables) {
-      dispose2();
-    }
-    disposables.length = 0;
-    isDisposed = true;
-  };
-  for (const win2 of electron2.BrowserWindow.getAllWindows()) {
-    init4(win2);
-  }
-  const app13 = electron2.app;
-  const onWindowCreated = (_event, win2) => {
-    init4(win2);
-  };
-  app13.on("browser-window-created", onWindowCreated);
-  disposables.push(() => {
-    app13.removeListener("browser-window-created", onWindowCreated);
-  });
-  return dispose;
-};
-const electron_context_menu_default = ContextMenu;
-
-// src/help_menu.ts
-init_cjs_shim();
-function getHelpMenu2() {
-  console.info(`Options:
-
-Flag
---                              indicates the end of DeltaChat options
--h, --help                      Print DeltaChat command line options (currently set).
---minimized                     Start deltachat in minimized mode with trayicon (trayicon will be activated
-                                for this session regardless whether it's disabled)
--v, --version                   Prints DeltaChat version.
-
-Development Options
---translation-watch             enable auto-reload for _locales/_untranslated_en.json
---dev-mode                      opens electron devtools and activates --log-debug & --log-to-console
-
-Theme
---theme <theme-id>              set a specific theme (see THEMES.md)
---theme-watch                   enable auto-reload for the active theme
-
-Logging
---log-debug                     Log debug messages
---log-to-console                Output the log to stdout / Chrome dev console
---machine-readable-stack        Enable JSON stack trace
---no-color                      Disable colors in the output of main process
-
-For more info on logging see LOGGING.md.)`);
-}
-
-// src/resume_from_sleep.ts
-init_cjs_shim();
-import { powerMonitor } from "electron";
-function onResumeFromSleep() {
-  window2?.webContents.send("onResumeFromSleep");
-}
-function initialisePowerMonitor() {
-  powerMonitor.on("resume", onResumeFromSleep);
-  powerMonitor.on("unlock-screen", onResumeFromSleep);
-  powerMonitor.on("user-did-become-active", onResumeFromSleep);
-}
-
-// src/log-handler.ts
-init_cjs_shim();
-import { createWriteStream } from "fs";
-import { join as join8 } from "path";
-import { stdout, stderr } from "process";
-stdout.on("error", () => {
-});
-stderr.on("error", () => {
-});
-function logName() {
-  const dir = getLogsPath();
-  const d = /* @__PURE__ */ new Date();
+    { urls: ["file:/ new Date();
   function pad(number) {
     return number < 10 ? "0" + number : number;
   }
@@ -3412,15 +2047,8 @@ function createLogHandler() {
   const stream = createWriteStream(fileName, { flags: "w" });
   console.log(`Logfile: ${fileName}`);
   return {
-    /**
-     * Internal log handler. Do not call directly!
-     * @param channel The part/module where the message was logged from, e.g. 'main/deltachat'
-     * @param level DEBUG, INFO, WARNING, ERROR or CRITICAL
-     * @param stacktrace Stack trace if WARNING, ERROR or CRITICAL
-     * @param ...args Variadic parameters. Stringified before logged to file
-     */
     log: (channel, level, stacktrace, ...args) => {
-      const timestamp = (/* @__PURE__ */ new Date()).toISOString();
+      const timestamp = ( new Date()).toISOString();
       let line = [timestamp, fillString(channel, 22), level];
       line = line.concat(
         [stacktrace, ...args].map((value) => JSON.stringify(value))
@@ -3469,11 +2097,7 @@ function fillString(string, n) {
   }
   return string;
 }
-
-// src/ipc.ts
 init_cjs_shim();
-
-// src/windows/help.ts
 init_cjs_shim();
 import { BrowserWindow as BrowserWindow6, Menu as Menu3, shell as shell2 } from "electron";
 import { join as join9 } from "path";
@@ -3521,12 +2145,10 @@ async function openHelpWindow(locale, anchor) {
   const help_window = win = new BrowserWindow6({
     backgroundColor: "#282828",
     darkTheme: true,
-    // Forces dark theme (GTK+3)
     icon: appIcon(),
     show: false,
     title: appWindowTitle + " - " + tx("menu_help"),
     useContentSize: true,
-    // Specify web page size without OS chrome
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
@@ -3635,11 +2257,7 @@ async function openHelpWindow(locale, anchor) {
     }
   });
 }
-
-// src/windows/html_email.ts
 init_cjs_shim();
-
-// ../shared/util.ts
 init_cjs_shim();
 function truncateText(text, max_len) {
   if (text.length > max_len) {
@@ -3674,8 +2292,6 @@ function throttle(fn, wait) {
   };
   return ret;
 }
-
-// src/open_url.ts
 init_cjs_shim();
 import { app as rawApp2, ipcMain as ipcMain2 } from "electron";
 import { readFile as readFile2 } from "fs/promises";
@@ -3794,11 +2410,7 @@ app4.on("second-instance", (_event, argv) => {
     showDeltaChat();
   }
 });
-
-// src/themes.ts
 init_cjs_shim();
-
-// ../shared/themes.ts
 init_cjs_shim();
 function parseThemeMetaData(rawTheme) {
   const meta_data_block = /.theme-meta ?{([^]*)}/gm.exec(rawTheme)?.[1].trim() || "";
@@ -3819,8 +2431,6 @@ function parseThemeMetaData(rawTheme) {
   return meta;
 }
 const HIDDEN_THEME_PREFIX = "dev_";
-
-// src/themes.ts
 import { existsSync as existsSync3, watchFile } from "fs";
 import { readFile as readFile3, readdir as readdir2 } from "fs/promises";
 import { join as join10, basename as basename2 } from "path";
@@ -3917,7 +2527,6 @@ function acceptThemeCLI() {
         `THEME "${app5.rc["theme"]}" NOT FOUND,
 this is fatal because the user specified it via cli argument.
 If you did not specify this, ask the person which installed deltachat for you to remove the cli argument again.
-
 If they are not available find the shortcut/.desktop file yourself and edit it to not contain the "--theme" argument.
 Using --theme is for developers and theme creators ONLY and should not be used by normal users
 If you have question or need help, feel free to ask in our forum https://support.delta.chat.`
@@ -3951,8 +2560,6 @@ ipcMain3.handle("themes.getActiveTheme", async () => {
   }
 });
 ipcMain3.handle("themes.getAvailableThemes", getAvailableThemes);
-
-// src/windows/html_email.ts
 import electron3, {
   dialog,
   Menu as Menu4,
@@ -3981,9 +2588,7 @@ function openHtmlEmailWindow(account_id, message_id, isContactRequest, subject, 
   };
   const window3 = open_windows[window_id] = new electron3.BrowserWindow({
     backgroundColor: "#282828",
-    // backgroundThrottling: false, // do not throttle animations/timers when page is background
     darkTheme: true,
-    // Forces dark theme (GTK+3)
     icon: appIcon(),
     show: false,
     title: `${truncateText(subject, 42)} \u2013 ${truncateText(from, 40)}`,
@@ -4196,14 +2801,6 @@ function openHtmlEmailWindow(account_id, message_id, isContactRequest, subject, 
         },
         { label: tx("yes"), action: () => {
         } }
-        // isContactRequest || {
-        //   label: tx('pref_html_always_load_remote_content'),
-        //   action: () => {
-        //     DesktopSettings.update({
-        //       HTMLEmailAlwaysLoadRemoteContent: true,
-        //     })
-        //   },
-        // },
       ].filter((item) => typeof item === "object");
       const result = await dialog.showMessageBox(window3, {
         message: tx("load_remote_content_ask"),
@@ -4432,11 +3029,7 @@ var createContextMenu = (win2, webContents2) => {
     webContents2.removeListener("context-menu", handleContextMenu);
   };
 };
-
-// src/deltachat/controller.ts
 init_cjs_shim();
-
-// src/deltachat/webxdc.ts
 init_cjs_shim();
 import {
   app as app6,
@@ -4465,9 +3058,7 @@ const open_apps = {};
 const accounts_sessions = [];
 const CSP = "default-src 'self';  style-src 'self' 'unsafe-inline' blob: ;  font-src 'self' data: blob: ;  script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: ;  connect-src 'self' data: blob: ;  img-src 'self' data: blob: ;  media-src 'self' data: blob: ;  webrtc 'block'";
 const ALLOWED_PERMISSIONS = [
-  // Games might lock the pointer
   "pointerLock",
-  // Games might do that too
   "fullscreen"
 ];
 const WRAPPER_PATH = "webxdc-wrapper.45870014933640136498.html";
@@ -4696,8 +3287,6 @@ const DCWebxdc = class {
           }
           const choice = dialog2.showMessageBoxSync(webxdcWindow, {
             type: "question",
-            // Chromium shows "Close" and "Cancel",
-            // Gecko (Firefox) shows "Leave page" and "Stay on page".
             buttons: [tx("close_window"), tx("cancel")],
             title: tx("webxdc_beforeunload_dialog_title"),
             message: tx("webxdc_beforeunload_dialog_message"),
@@ -4714,7 +3303,7 @@ const DCWebxdc = class {
       webxdcWindow.on("page-title-updated", (ev) => {
         ev.preventDefault();
       });
-      const loggedPermissionRequests = /* @__PURE__ */ new Set();
+      const loggedPermissionRequests =  new Set();
       const permission_handler = (permission) => {
         const isAllowed = ALLOWED_PERMISSIONS.includes(permission);
         if (!loggedPermissionRequests.has(permission)) {
@@ -4981,8 +3570,6 @@ const DCWebxdc = class {
                 webxdcInfo: messageWithMap.webxdcInfo,
                 href: ""
               },
-              // special behaviour for the map dc integration,
-              // (in this case bigger landscape window)
               DEFAULT_SIZE_MAP
             );
           }
@@ -4990,7 +3577,6 @@ const DCWebxdc = class {
       }
     );
   }
-  // end of DeltaChatController constructor
   get rpc() {
     return this.controller.jsonrpcRemote.rpc;
   }
@@ -5220,15 +3806,9 @@ ipcMain4.handle("delete_webxdc_account_data", async (_ev, accountId) => {
     throw new Error("session has no storagePath set");
   }
 });
-
-// src/deltachat/stdio_server.ts
 init_cjs_shim();
-
-// src/get-build-info.ts
 init_cjs_shim();
 const BuildInfo = JSON.parse('{"VERSION":"1.58.2","BUILD_TIMESTAMP":1748600552939,"GIT_REF":"v1.48.0-670-g896ac3964"}');
-
-// src/deltachat/stdio_server.ts
 import { spawn } from "child_process";
 import { app as app7, dialog as dialog3 } from "electron/main";
 import { arch, platform as platform8 } from "os";
@@ -5246,7 +3826,6 @@ const StdioServer = class {
       env: {
         DC_ACCOUNTS_PATH: this.accounts_path,
         RUST_LOG: process.env.RUST_LOG,
-        // remove color from errors, see https://github.com/deltachat/deltachat-desktop/issues/4832
         NO_COLOR: "1"
       }
     });
@@ -5256,9 +3835,7 @@ const StdioServer = class {
           "Fatal Error: Core Library Missing",
           `The DeltaChat Module is missing! This could be due to your antivirus program. Please check the quarantine to restore it and notify the developers about this issue.
 You can reach us on delta@merlinux.eu or on github.com/deltachat/deltachat-desktop/issues.
-
 The missing module should be located at "${this.cmd_path}".
-
 The Log file is located in this folder: ${getLogsPath()}
 --------------------
 Error: ${err.message}
@@ -5268,11 +3845,8 @@ Error: ${err.message}
         dialog3.showErrorBox(
           "Fatal Error",
           `Error with core has been detected, please contact developers: You can reach us on delta@merlinux.eu or on github.com/deltachat/deltachat-desktop/issues .
-
           ${err.name}: ${err.message}
-
           The Log file is located in this folder: ${getLogsPath()}
-
           `
         );
       }
@@ -5323,8 +3897,6 @@ ${errorLog}`
     this.serverProcess?.stdin.write(message + "\n");
   }
 };
-
-// src/deltachat/migration.ts
 init_cjs_shim();
 import { startDeltaChat } from "@deltachat/stdio-rpc-server";
 import { existsSync as existsSync5, lstatSync } from "fs";
@@ -5458,8 +4030,6 @@ async function migrateAccountsIfNeeded(cwd, log20, treatFailedMigrationAsError =
     throw err;
   }
 }
-
-// src/deltachat/controller.ts
 import { app as rawApp4, ipcMain as ipcMain5 } from "electron";
 import { EventEmitter as EventEmitter2 } from "events";
 import { yerpc, BaseDeltaChat } from "@deltachat/jsonrpc-client";
@@ -5486,9 +4056,6 @@ const DeltaChatController = class extends EventEmitter2 {
     super();
     this.cwd = cwd;
   }
-  /**
-   * Created and owned by ipc on the backend
-   */
   _inner_account_manager = null;
   get account_manager() {
     if (!this._inner_account_manager) {
@@ -5496,7 +4063,6 @@ const DeltaChatController = class extends EventEmitter2 {
     }
     return this._inner_account_manager;
   }
-  /** for runtime info */
   rpcServerPath;
   _jsonrpcRemote = null;
   get jsonrpcRemote() {
@@ -5516,7 +4082,6 @@ const DeltaChatController = class extends EventEmitter2 {
     }
     log15.debug("Initiating DeltaChatNode");
     let serverPath = await getRPCServerPath({
-      // desktop should only use prebuilds normally
       disableEnvPath: !rc_default["allow-unsafe-core-replacement"]
     });
     if (serverPath.includes("app.asar")) {
@@ -5591,8 +4156,6 @@ const DeltaChatController = class extends EventEmitter2 {
   }
   webxdc = new DCWebxdc(this);
 };
-
-// src/ipc.ts
 import { copyFile, writeFile as writeFile2, mkdir as mkdir2, rm as rm2 } from "fs/promises";
 import {
   app as rawApp5,
@@ -5645,9 +4208,7 @@ async function init3(cwd, logHandler2) {
       `The DeltaChat Module couldn't be loaded.
   Please check if all dependencies for deltachat-core are installed!
   The Log file is located in this folder: ${getLogsPath()}
-
   ${dcController.rpcServerPath}
-
   ${error instanceof Error ? error.message : inspect(error, { depth: null })}`
     );
     rawApp5.exit(1);
@@ -5928,8 +4489,6 @@ async function removeTempFile(path4) {
   }
   await rm2(path4);
 }
-
-// src/notifications.ts
 init_cjs_shim();
 import { platform as platform10 } from "os";
 import { app as app10, Notification, nativeImage as nativeImage4, ipcMain as ipcMain7 } from "electron";
@@ -5957,13 +4516,6 @@ function createNotification(data) {
   }
   const notificationOptions = {
     title: data.title,
-    // https://www.electronjs.org/docs/latest/tutorial/notifications#linux
-    // says
-    // > Notifications are sent using libnotify, which can show notifications
-    // > on any desktop environment that follows
-    // > [Desktop Notifications Specification](https://web.archive.org/web/20240428012536/https://specifications.freedesktop.org/notification-spec/notification-spec-latest.html)
-    // Which says that the body supports limited markup
-    // So let's escape it.
     body: platform10() === "linux" ? filterNotificationText(data.body) : data.body,
     icon,
     timeoutType: "default"
@@ -6040,8 +4592,6 @@ function clearAll() {
 function filterNotificationText(text) {
   return (text || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
-
-// src/cleanup_temp_dir.ts
 init_cjs_shim();
 import { app as app11 } from "electron";
 import { mkdir as mkdir3, readdir as readdir5, rm as rm3, rmdir as rmdir3 } from "fs/promises";
@@ -6103,8 +4653,6 @@ async function cleanupInternalTempDirs() {
     log18.error("Cleanup of internal temp dirs failed: ", error);
   }
 }
-
-// src/index.ts
 console.time("init");
 import { mkdirSync, watchFile as watchFile2 } from "fs";
 import { app as rawApp6, dialog as dialog5, ipcMain as ipcMain8, protocol as protocol2 } from "electron";
@@ -6124,32 +4672,11 @@ protocol2.registerSchemesAsPrivileged([
   {
     scheme: "webxdc",
     privileges: {
-      // This gives apps access to APIs such as
-      // - Web Cryptography
-      // - Web Share
-      // , also see https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts/features_restricted_to_secure_contexts
-      //
-      // To give a brief explanation of what "secure context" is:
-      // Generally all websites served thorugh `https` (and not through `http`)
-      // are in a "secure context".
-      //
-      // For reference:
-      // - https://support.delta.chat/t/allow-access-to-camera-geolocation-other-web-apis/2446?u=wofwca
-      //
-      // Note that APIs requiring explicit user permission (such as camera)
-      // still don't work, see
-      // https://github.com/deltachat/deltachat-desktop/blob/455a4d01501ed82f9d8e0a36064ffbc3981722ee/src/main/deltachat/webxdc.ts#L457-L473
-      //
-      // In terms of `isSecureContext`, webxdc apps are similar to files,
-      // extensions, and FirefoxOS apps, i.e. ["Packaged Applications"]
-      // (https://w3c.github.io/webappsec-secure-contexts/#packaged-applications),
-      // so `secure: true` is applicable.
       secure: true,
       allowServiceWorkers: true,
       standard: true,
       supportFetchAPI: true,
       stream: true
-      // needed for audio playback
     }
   }
 ]);
@@ -6196,7 +4723,6 @@ Promise.all([
     "Fatal Error during init",
     `[Version: ${BuildInfo.VERSION} | ${platform11()} | ${arch2()}]]
 ${error}
-
 Also make sure you are not trying to run multiple instances of deltachat.`
   );
   process.exit(1);
@@ -6361,34 +4887,3 @@ ipcMain8.handle("restart_app", async (_ev) => {
 export {
   quit
 };
-/*! Bundled license information:
-
-deep-extend/lib/deep-extend.js:
-  (*!
-   * @description Recursive object extending
-   * @author Viacheslav Lotsmanov <lotsmanov89@gmail.com>
-   * @license MIT
-   *
-   * The MIT License (MIT)
-   *
-   * Copyright (c) 2013-2018 Viacheslav Lotsmanov
-   *
-   * Permission is hereby granted, free of charge, to any person obtaining a copy of
-   * this software and associated documentation files (the "Software"), to deal in
-   * the Software without restriction, including without limitation the rights to
-   * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-   * the Software, and to permit persons to whom the Software is furnished to do so,
-   * subject to the following conditions:
-   *
-   * The above copyright notice and this permission notice shall be included in all
-   * copies or substantial portions of the Software.
-   *
-   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-   * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-   * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-   * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-   * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-   *)
-*/
-//# sourceMappingURL=index.js.map

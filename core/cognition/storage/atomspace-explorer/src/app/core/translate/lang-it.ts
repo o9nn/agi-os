@@ -1,6 +1,4 @@
-// Italian
 export const LANG_IT_NAME = 'it';
-
 export const LANG_IT_TRANS = {
     'Visualize': 'Visualizzare',
     'Fetch': 'Richiamare',

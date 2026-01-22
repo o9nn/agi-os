@@ -11,7 +11,6 @@
   (VariableNode "$g-body-2653368")
 )
 )
-
 (define ill-quoted
   (QuoteLink
     (LambdaLink
@@ -27,7 +26,6 @@
     )
   )
 )
-
 (define well-quoted
   (QuoteLink
     (LambdaLink
@@ -43,7 +41,6 @@
     )
   )
 )
-
 (define quoted-lambda
   (QuoteLink
     (LambdaLink
@@ -51,7 +48,6 @@
       (VariableNode "$vardecl"))
     (UnquoteLink
       (VariableNode "$body")))))
-
 (define quoted-clauses
 (LocalQuoteLink
   (AndLink
@@ -96,7 +92,6 @@
   )
 )
 )
-
 (define consumed-quoted-clauses
 (LocalQuoteLink
   (AndLink
@@ -129,7 +124,6 @@
   )
 )
 )
-
 (define quoted-grounded-predicate-argument
   (EvaluationLink
     (GroundedPredicateNode "scm: absolutely-true")
@@ -152,7 +146,6 @@
     )
   )
 )
-
 (define consumed-quoted-grounded-predicate-argument
   (EvaluationLink
     (GroundedPredicateNode "scm: absolutely-true")
@@ -169,7 +162,6 @@
     )
   )
 )
-
 (define quoted-not-X
   (LocalQuoteLink
     (NotLink

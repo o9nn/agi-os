@@ -1,5 +1,4 @@
 #!/bin/sh
-
 hdiutil attach clt.dmg -mountpoint /Volumes/setup-installer
 sudo installer -pkg "/Volumes/setup-installer/Command Line Tools.pkg" -target /
 hdiutil detach /Volumes/setup-installer

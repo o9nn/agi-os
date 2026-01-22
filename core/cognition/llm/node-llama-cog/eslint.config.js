@@ -1,5 +1,3 @@
-// @ts-check
-
 import path from "path";
 import {fileURLToPath} from "url";
 import importPlugin from "eslint-plugin-import";
@@ -8,11 +6,8 @@ import n from "eslint-plugin-n";
 import tseslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin";
 import {includeIgnoreFile} from "@eslint/compat";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const gitignorePath = path.join(__dirname, ".gitignore");
-
-
 export default tseslint.config({
     ignores: [
         "dist/",
@@ -23,12 +18,7 @@ export default tseslint.config({
         "templates/",
         ".vitepress/.cache/",
         "packages/create-node-llama-cpp/dist/",
-        "packages/@node-llama-cpp/*/dist/",
-        ".releaserc.ts",
-        ...includeIgnoreFile(gitignorePath).ignores
-    ]
-}, {
-    files: ["**/**.{,c,m}{js,ts}"],
+        "packages/@node-llama-cpp**.{,c,m}{js,ts}"],
     extends: [
         stylistic.configs["recommended-flat"],
         jsdoc.configs["flat/recommended"],
@@ -42,7 +32,6 @@ export default tseslint.config({
             Atomics: "readonly",
             SharedArrayBuffer: "readonly"
         },
-
         ecmaVersion: 2023,
         sourceType: "module"
     },
@@ -53,7 +42,6 @@ export default tseslint.config({
         },
         jsdoc: {
             exemptDestructuredRootsFromChecks: true,
-
             tagNamePreference: {
                 hidden: "hidden",
                 experimental: "experimental"
@@ -68,7 +56,6 @@ export default tseslint.config({
                 parameters: "first"
             },
             ignoredNodes: [
-                // fix for indent warnings on function object return types when the function has no parameters
                 'FunctionExpression[params.length=0][returnType.type="TSTypeAnnotation"]'
             ]
         }],
@@ -152,62 +139,7 @@ export default tseslint.config({
         "@stylistic/generator-star-spacing": ["off"]
     }
 }, {
-    files: ["**/**.{,c,m}ts"],
-    extends: [
-        jsdoc.configs["flat/recommended-typescript"],
-        ...tseslint.configs.recommended
-    ],
-    settings: {
-        "import/resolver": {
-            typescript: true,
-            node: true
-        }
-    },
-    rules: {
-        "no-constant-condition": ["warn"],
-        "import/named": ["off"],
-        "@typescript-eslint/explicit-module-boundary-types": ["off"],
-        "@typescript-eslint/ban-ts-comment": ["off"],
-        "@typescript-eslint/no-explicit-any": ["off"],
-        "@typescript-eslint/no-inferrable-types": ["off"],
-        "@typescript-eslint/no-unused-vars": ["warn", {
-            args: "none",
-            ignoreRestSiblings: true,
-            varsIgnorePattern: "^set",
-            caughtErrors: "none"
-        }],
-        "@typescript-eslint/no-empty-object-type": ["off"],
-        "@typescript-eslint/member-ordering": ["warn", {
-            default: ["field", "constructor", "method", "signature"],
-            typeLiterals: []
-        }],
-        "@typescript-eslint/parameter-properties": ["warn", {
-            allow: []
-        }],
-        "@typescript-eslint/explicit-member-accessibility": ["warn"],
-        "@stylistic/member-delimiter-style": ["warn", {
-            multiline: {
-                delimiter: "comma",
-                requireLast: false
-            },
-            singleline: {
-                delimiter: "comma",
-                requireLast: false
-            },
-            multilineDetection: "brackets"
-        }],
-
-        "jsdoc/require-param": ["off"],
-        "jsdoc/check-param-names": ["warn", {
-            checkDestructured: false
-        }],
-        "jsdoc/require-returns": ["off"],
-        "jsdoc/require-jsdoc": ["off"],
-        "jsdoc/require-yields": ["off"],
-        "jsdoc/require-param-description": ["off"]
-    }
-}, {
-    files: ["test/**/**.ts"],
+    files: ["****.ts"],
     rules: {
         "@stylistic/max-len": ["off"]
     }

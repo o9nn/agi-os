@@ -1,8 +1,4 @@
 package server
-
-// this test file is to test integration of harmony parser into routes.go (as
-// opposed to harmonyparser_test.go, which tests the parser in isolation)
-
 import (
 	"bytes"
 	"context"
@@ -11,14 +7,12 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/discover"
 	"github.com/EchoCog/echollama/fs/ggml"
 	"github.com/EchoCog/echollama/llm"
 )
-
 func getTestTools() []api.Tool {
 	return []api.Tool{
 		{
@@ -69,10 +63,8 @@ func getTestTools() []api.Tool {
 		},
 	}
 }
-
 func createHarmonyTestModel(t *testing.T) (string, string) {
 	t.Helper()
-
 	return createBinFile(t, ggml.KV{
 		"general.architecture":          "gptoss",
 		"llama.block_count":             uint32(1),
@@ -97,18 +89,14 @@ func createHarmonyTestModel(t *testing.T) (string, string) {
 		{Name: "output.weight", Shape: []uint64{1}, WriterTo: bytes.NewReader(make([]byte, 4))},
 	})
 }
-
-// TestChatHarmonyParserStreamingRealtime verifies that chunks are emitted as soon as they're available
 func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-
 	type step struct {
 		input         llm.CompletionResponse
 		wantContent   string
 		wantThinking  string
 		wantToolCalls []api.ToolCall
 	}
-
 	testCases := []struct {
 		name  string
 		steps []step
@@ -140,15 +128,13 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 				},
 				{
 					input: llm.CompletionResponse{Content: "<|end|>", Done: false},
-					// No output expected - just closes the analysis message and resets state to normal
 				},
 				{
 					input:       llm.CompletionResponse{Content: "<|start|>assistant<|message|>Answer", Done: false},
-					wantContent: "Answer", // After message end, state is reset to normal
+					wantContent: "Answer", 
 				},
 				{
 					input: llm.CompletionResponse{Content: "<|end|>", Done: true, DoneReason: llm.DoneReasonStop},
-					// No output expected - just closes the assistant message
 				},
 			},
 		},
@@ -157,11 +143,9 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 			steps: []step{
 				{
 					input: llm.CompletionResponse{Content: "<|chan", Done: false},
-					// No output - partial tag
 				},
 				{
 					input: llm.CompletionResponse{Content: "nel|>analysis<|mess", Done: false},
-					// No output - still building tags
 				},
 				{
 					input:        llm.CompletionResponse{Content: "age|>Deep ", Done: false},
@@ -173,7 +157,7 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 				},
 				{
 					input:       llm.CompletionResponse{Content: "<|start|>assistant<|message|>Done<|end|>", Done: true, DoneReason: llm.DoneReasonStop},
-					wantContent: "Done", // After message end, state is reset to normal
+					wantContent: "Done", 
 				},
 			},
 		},
@@ -211,11 +195,9 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 			steps: []step{
 				{
 					input: llm.CompletionResponse{Content: "<|channel|>commentary to=functions.calculate<|message|>{\"expr", Done: false},
-					// No output yet - incomplete JSON
 				},
 				{
 					input: llm.CompletionResponse{Content: "ession\":\"2+", Done: false},
-					// Still no output - incomplete JSON
 				},
 				{
 					input: llm.CompletionResponse{Content: "2\"}", Done: true},
@@ -233,39 +215,32 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 			},
 		},
 	}
-
 	anyOnlies := false
 	for _, tc := range testCases {
 		if tc.only {
 			anyOnlies = true
 		}
 	}
-
 	for _, tc := range testCases {
 		if anyOnlies && !tc.only {
 			continue
 		}
-
 		t.Run(tc.name, func(t *testing.T) {
 			var chunks []api.ChatResponse
 			chunkIdx := 0
-
 			mockResponses := make([]llm.CompletionResponse, len(tc.steps))
 			for i, step := range tc.steps {
 				mockResponses[i] = step.input
 			}
-
 			mock := mockRunner{
 				CompletionFn: func(ctx context.Context, r llm.CompletionRequest, fn func(llm.CompletionResponse)) error {
 					for _, resp := range mockResponses {
 						fn(resp)
-						// Give the handler time to process each response
 						time.Sleep(30 * time.Millisecond)
 					}
 					return nil
 				},
 			}
-
 			s := Server{
 				sched: &Scheduler{
 					pendingReqCh:  make(chan *LlmRequest, 1),
@@ -284,12 +259,8 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 					},
 				},
 			}
-
 			go s.sched.Run(t.Context())
-
-			// Create a simple test model
 			_, digest := createHarmonyTestModel(t)
-
 			streamFalse := false
 			w := createRequest(t, s.CreateHandler, api.CreateRequest{
 				Model:    "harmony-test-streaming",
@@ -297,12 +268,9 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 				Template: `<|start|><|end|>{{ with .Tools }}{{ end }}{{ .Prompt }}`,
 				Stream:   &streamFalse,
 			})
-
 			if w.Code != 200 {
 				t.Fatalf("failed to create model: %d", w.Code)
 			}
-
-			// Test chat endpoint with streaming
 			streamTrue := true
 			w = createRequest(t, s.ChatHandler, api.ChatRequest{
 				Model:    "harmony-test-streaming",
@@ -310,12 +278,9 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 				Stream:   &streamTrue,
 				Tools:    getTestTools(),
 			})
-
 			if w.Code != 200 {
 				t.Fatalf("chat request failed: %d - %s", w.Code, w.Body.String())
 			}
-
-			// Parse all chunks
 			decoder := json.NewDecoder(w.Body)
 			for decoder.More() {
 				var chunk api.ChatResponse
@@ -326,35 +291,26 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 					chunks = append(chunks, chunk)
 				}
 			}
-
-			// Log received chunks for debugging
 			if t.Failed() || len(chunks) == 0 {
 				t.Logf("Received %d chunks:", len(chunks))
 				for i, chunk := range chunks {
 					t.Logf("  Chunk %d: content=%q thinking=%q", i, chunk.Message.Content, chunk.Message.Thinking)
 				}
 			}
-
-			// Verify chunks match expected steps
 			for i, step := range tc.steps {
-				// Skip steps that don't expect any output
 				if step.wantContent == "" && step.wantThinking == "" && len(step.wantToolCalls) == 0 {
 					continue
 				}
-
 				if chunkIdx >= len(chunks) {
 					t.Errorf("step %d: expected chunk not received (wanted content=%q thinking=%q)",
 						i, step.wantContent, step.wantThinking)
 					continue
 				}
-
 				chunk := chunks[chunkIdx]
 				if chunk.Message.Content != step.wantContent || chunk.Message.Thinking != step.wantThinking {
 					t.Errorf("step %d: chunk mismatch: got (content=%q, thinking=%q), want (content=%q, thinking=%q)",
 						i, chunk.Message.Content, chunk.Message.Thinking, step.wantContent, step.wantThinking)
 				}
-
-				// Check tool calls if expected
 				if len(step.wantToolCalls) > 0 {
 					if len(chunk.Message.ToolCalls) != len(step.wantToolCalls) {
 						t.Errorf("step %d: tool calls count mismatch: got %d, want %d",
@@ -369,7 +325,6 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 								t.Errorf("step %d, tool call %d: name mismatch: got %q, want %q",
 									i, j, gotCall.Function.Name, wantCall.Function.Name)
 							}
-							// Compare arguments as JSON strings for simplicity
 							gotArgs, _ := json.Marshal(gotCall.Function.Arguments)
 							wantArgs, _ := json.Marshal(wantCall.Function.Arguments)
 							if string(gotArgs) != string(wantArgs) {
@@ -381,8 +336,6 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 				}
 				chunkIdx++
 			}
-
-			// Check if we have extra chunks
 			if chunkIdx < len(chunks) {
 				t.Errorf("received %d extra chunks", len(chunks)-chunkIdx)
 				for i := chunkIdx; i < len(chunks); i++ {
@@ -393,17 +346,13 @@ func TestChatHarmonyParserStreamingRealtime(t *testing.T) {
 		})
 	}
 }
-
-// TestChatHarmonyParserStreamingSimple is a simpler test that just verifies basic streaming
 func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-
 	mockResponses := []llm.CompletionResponse{
 		{Content: "<|message|>First ", Done: false},
 		{Content: "chunk ", Done: false},
 		{Content: "here<|end|>", Done: true, DoneReason: llm.DoneReasonStop},
 	}
-
 	mock := mockRunner{
 		CompletionFn: func(ctx context.Context, r llm.CompletionRequest, fn func(llm.CompletionResponse)) error {
 			t.Logf("Mock received prompt: %q", r.Prompt)
@@ -415,7 +364,6 @@ func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 			return nil
 		},
 	}
-
 	s := Server{
 		sched: &Scheduler{
 			pendingReqCh:  make(chan *LlmRequest, 1),
@@ -434,10 +382,7 @@ func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 			},
 		},
 	}
-
 	go s.sched.Run(t.Context())
-
-	// Create model
 	_, digest := createHarmonyTestModel(t)
 	streamFalse := false
 	w := createRequest(t, s.CreateHandler, api.CreateRequest{
@@ -446,12 +391,9 @@ func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 		Template: `<|start|><|end|>{{ .Tools }}{{ .Prompt }}`,
 		Stream:   &streamFalse,
 	})
-
 	if w.Code != 200 {
 		t.Fatalf("failed to create model: %d", w.Code)
 	}
-
-	// Test streaming
 	streamTrue := true
 	w = createRequest(t, s.ChatHandler, api.ChatRequest{
 		Model:    "gpt-oss",
@@ -459,12 +401,9 @@ func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 		Stream:   &streamTrue,
 		Tools:    getTestTools(),
 	})
-
 	if w.Code != 200 {
 		t.Fatalf("chat request failed: %d - %s", w.Code, w.Body.String())
 	}
-
-	// Parse chunks
 	var chunks []api.ChatResponse
 	decoder := json.NewDecoder(w.Body)
 	for decoder.More() {
@@ -476,45 +415,34 @@ func TestChatHarmonyParserStreamingSimple(t *testing.T) {
 		t.Logf("Received chunk %d: content=%q thinking=%q done=%v",
 			len(chunks), chunk.Message.Content, chunk.Message.Thinking, chunk.Done)
 	}
-
-	// Verify we got chunks
 	if len(chunks) == 0 {
 		t.Fatal("expected streaming chunks, got none")
 	}
-
-	// Verify content
 	var content strings.Builder
 	for _, chunk := range chunks {
 		content.WriteString(chunk.Message.Content)
 	}
-
 	expectedContent := "First chunk here"
 	if content.String() != expectedContent {
 		t.Errorf("content mismatch: got %q, want %q", content.String(), expectedContent)
 	}
-
-	// Verify we got multiple chunks (streaming)
 	contentChunks := 0
 	for _, chunk := range chunks {
 		if chunk.Message.Content != "" {
 			contentChunks++
 		}
 	}
-
 	if contentChunks < 2 {
 		t.Errorf("expected at least 2 content chunks for streaming, got %d", contentChunks)
 	}
 }
-
 func TestChatHarmonyParserStreaming(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-
 	type expectedChunk struct {
-		afterResponse int    // Which mock response this chunk should appear after
-		content       string // Expected content in this chunk
-		thinking      string // Expected thinking in this chunk
+		afterResponse int    
+		content       string 
+		thinking      string 
 	}
-
 	testCases := []struct {
 		name           string
 		mockResponses  []llm.CompletionResponse
@@ -579,15 +507,11 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 			wantThinking: "Thinking deeply...",
 		},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			// Channel to synchronize mock responses with chunk verification
 			responsesSent := make(chan int, len(tc.mockResponses))
-
 			mock := mockRunner{
 				CompletionFn: func(ctx context.Context, r llm.CompletionRequest, fn func(llm.CompletionResponse)) error {
-					// Send mock responses one at a time, notifying when each is sent
 					for i, resp := range tc.mockResponses {
 						fn(resp)
 						responsesSent <- i + 1
@@ -596,7 +520,6 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 					return nil
 				},
 			}
-
 			s := Server{
 				sched: &Scheduler{
 					pendingReqCh:  make(chan *LlmRequest, 1),
@@ -615,13 +538,8 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 					},
 				},
 			}
-
 			go s.sched.Run(t.Context())
-
-			// Create a minimal model
 			_, digest := createHarmonyTestModel(t)
-
-			// Create model with passthrough template
 			stream := false
 			w := createRequest(t, s.CreateHandler, api.CreateRequest{
 				Model:    "harmony-test",
@@ -629,12 +547,9 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 				Template: `<|start|><|end|>{{ with .Tools }}{{ end }}{{ .Prompt }}`,
 				Stream:   &stream,
 			})
-
 			if w.Code != http.StatusOK {
 				t.Fatalf("failed to create model: %d", w.Code)
 			}
-
-			// Test chat endpoint with streaming
 			streamTrue := true
 			w = createRequest(t, s.ChatHandler, api.ChatRequest{
 				Model:    "harmony-test",
@@ -642,15 +557,11 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 				Stream:   &streamTrue,
 				Tools:    getTestTools(),
 			})
-
 			if w.Code != http.StatusOK {
 				t.Fatalf("chat request failed: %d - %s", w.Code, w.Body.String())
 			}
-
-			// Parse streaming response
 			var chunks []api.ChatResponse
 			var content, thinking strings.Builder
-
 			decoder := json.NewDecoder(w.Body)
 			for decoder.More() {
 				var chunk api.ChatResponse
@@ -658,31 +569,21 @@ func TestChatHarmonyParserStreaming(t *testing.T) {
 					t.Fatalf("failed to decode chunk: %v", err)
 				}
 				chunks = append(chunks, chunk)
-
-				// Accumulate content and thinking from each chunk
 				content.WriteString(chunk.Message.Content)
 				thinking.WriteString(chunk.Message.Thinking)
-
-				// Debug output
 				t.Logf("Chunk %d: content=%q thinking=%q done=%v", len(chunks), chunk.Message.Content, chunk.Message.Thinking, chunk.Done)
 			}
-
-			// Verify we got streaming chunks
 			if len(chunks) == 0 {
 				t.Fatal("expected streaming chunks, got none")
 			}
-
 			gotContent := content.String()
 			gotThinking := thinking.String()
-
 			if gotContent != tc.wantContent {
 				t.Errorf("content mismatch: got %q, want %q", gotContent, tc.wantContent)
 			}
 			if gotThinking != tc.wantThinking {
 				t.Errorf("thinking mismatch: got %q, want %q", gotThinking, tc.wantThinking)
 			}
-
-			// Verify last chunk has done=true
 			lastChunk := chunks[len(chunks)-1]
 			if !lastChunk.Done {
 				t.Error("expected last chunk to have done=true")

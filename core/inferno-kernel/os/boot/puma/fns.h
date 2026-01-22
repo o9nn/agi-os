@@ -58,29 +58,20 @@ void	uartspecial(int, int, Queue**, Queue**, void(*)(Queue*,int));
 void	uartputs(char*, int);
 void	uartwait(void);
 long	unsqueezef(Block*, ulong*);
-
 #define	GSHORT(p)	(((p)[1]<<8)|(p)[0])
 #define	GLONG(p)	((GSHORT(p+2)<<16)|GSHORT(p))
 #define	GLSHORT(p)	(((p)[0]<<8)|(p)[1])
 #define	GLLONG(p)	((GLSHORT(p)<<16)|GLSHORT(p+2))
-
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	((ulong)(a)&~KZERO)
-
-
 void	mapinit(RMap*, Map*, int);
 void	mapfree(RMap*, ulong, int);
 ulong	mapalloc(RMap*, ulong, int, int);
-
-/* IBM bit field order */
 #define	IBFEXT(v,a,b) (((ulong)(v)>>(32-(b)-1)) & ~(~0L<<(((b)-(a)+1))))
 #define	IBIT(b)	((ulong)1<<(31-(b)))
-
 #define	SIBIT(n)	((ushort)1<<(15-(n)))
-
 void*	malloc(ulong);
 void	free(void*);
-
 extern Block*	iallocb(int);
 extern void	freeb(Block*);
 extern Queue*	qopen(int, int, void (*)(void*), void*);
@@ -90,22 +81,18 @@ extern long	qlen(Queue*);
 #define	qpass	qbwrite
 extern void	qbputc(Queue*, int);
 extern int	qbgetc(Queue*);
-
 int	sio_inb(int);
 void	sio_outb(int, int);
 void	led(int);
-
 extern void _virqcall(void);
 extern void _vfiqcall(void);
 extern void _vundcall(void);
 extern void _vsvccall(void);
 extern void _vpabcall(void);
 extern void _vdabcall(void);
-
 void flushIcache(void);
 void writeBackDC(void);
 void flushDcache(void);
 void flushIcache(void);
 void drainWBuffer(void);
-
 void pumainit(void);

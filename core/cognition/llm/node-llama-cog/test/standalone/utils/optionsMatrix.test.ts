@@ -1,7 +1,5 @@
 import {describe, expect, test} from "vitest";
 import {optionsMatrix, tryMatrix} from "../../../src/utils/optionsMatrix.js";
-
-
 describe("utils", () => {
     describe("optionsMatrix", () => {
         test("2 parameters", () => {
@@ -59,7 +57,6 @@ describe("utils", () => {
             ]);
         });
     });
-
     describe("tryMatrix", () => {
         test("2 parameter", () => {
             const options: {a: number, b: number}[] = [];
@@ -70,10 +67,8 @@ describe("utils", () => {
                 options.push({a, b});
                 if (a === 2 && b === 4)
                     return `success ${a} ${b}`;
-
                 throw new Error("fail");
             });
-
             expect(result).to.eql("success 2 4");
             expect(options).to.eql([
                 {a: 1, b: 3},
@@ -82,7 +77,6 @@ describe("utils", () => {
                 {a: 2, b: 4}
             ]);
         });
-
         test("2 parameter - stop in the middle", () => {
             const options: {a: number, b: number}[] = [];
             const result = tryMatrix({
@@ -92,10 +86,8 @@ describe("utils", () => {
                 options.push({a, b});
                 if (a === 2 && b === 3)
                     return `success ${a} ${b}`;
-
                 throw new Error("fail");
             });
-
             expect(result).to.eql("success 2 3");
             expect(options).to.eql([
                 {a: 1, b: 3},
@@ -103,7 +95,6 @@ describe("utils", () => {
                 {a: 2, b: 3}
             ]);
         });
-
         test("no iterations", () => {
             const options: {a: number, b: number}[] = [];
             const result = tryMatrix({
@@ -113,24 +104,19 @@ describe("utils", () => {
                 options.push({a, b});
                 if (a === 1 && b === 3)
                     return `success ${a} ${b}`;
-
                 throw new Error("fail");
             });
-
             expect(result).to.eql("success 1 3");
             expect(options).to.eql([
                 {a: 1, b: 3}
             ]);
         });
-
         test("no options - success", () => {
             const result = tryMatrix({}, ({}) => {
                 return "success";
             });
-
             expect(result).to.eql("success");
         });
-
         test("no options - fail", () => {
             try {
                 tryMatrix({}, ({}) => {
@@ -141,7 +127,6 @@ describe("utils", () => {
                 expect(err).toMatchInlineSnapshot("[Error: fail]");
             }
         });
-
         test("throw on all options", () => {
             const options: {a: number, b: number}[] = [];
             try {
@@ -156,7 +141,6 @@ describe("utils", () => {
             } catch (err) {
                 expect(err).toMatchInlineSnapshot("[Error: fail 2 4]");
             }
-
             expect(options).to.eql([
                 {a: 1, b: 3},
                 {a: 1, b: 4},

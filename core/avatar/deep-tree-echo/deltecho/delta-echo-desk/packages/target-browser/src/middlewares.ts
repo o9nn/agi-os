@@ -1,5 +1,4 @@
 import express from 'express'
-
 export function CORSMiddleWare(
   _req: express.Request,
   res: express.Response,
@@ -12,7 +11,6 @@ export function CORSMiddleWare(
   )
   next()
 }
-
 export function authMiddleWare(
   req: express.Request,
   res: express.Response,

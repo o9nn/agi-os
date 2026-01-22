@@ -2,17 +2,13 @@ import {describe, expect, test} from "vitest";
 import {Token, ControlledEvaluateInputItem} from "../../../src/index.js";
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
 describe("llama 3.1", () => {
     describe("controlled evaluate", () => {
         test("get probabilities for 3 tokens", {timeout: 1000 * 60 * 60 * 2}, async (testContext) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
-            // the precise values are different for each GPU type, so we skip the test for GPUs other than metal
             if (llama.gpu !== "metal")
                 testContext.skip();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -20,13 +16,10 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const text = "The quick brown fox jumps over the lazy dog, but! the lazy dog is too lazy to care. " +
                 "The reason for this is that the lazy dog is too lazy to care about the quick brown fox.";
-
             const inputTokens: ControlledEvaluateInputItem[] = model.tokenize(text);
             expect(inputTokens.length).to.be.greaterThan(8);
-
             inputTokens[2] = [inputTokens[2] as Token, {
                 generateNext: {
                     token: true
@@ -43,7 +36,6 @@ describe("llama 3.1", () => {
                     probabilities: true
                 }
             }];
-
             inputTokens[5] = [inputTokens[5] as Token, {
                 generateNext: {
                     token: true,
@@ -63,27 +55,20 @@ describe("llama 3.1", () => {
                     confidence: true
                 }
             }];
-
             const res = await sequence.controlledEvaluate(inputTokens);
-
             const simplifiedRes = res.map((item) => {
                 if (item == null || item.next == null)
                     return item;
-
-                // only keep the top 10 probabilities to not clutter the snapshot
                 if (item.next?.probabilities != null)
                     item.next.probabilities = new Map(
                         [...item.next.probabilities.entries()]
                             .slice(0, 10)
                             .map(([token, probability]) => [token, parseFloat(probability.toFixed(7))])
                     );
-
                 if (item.next?.confidence != null)
                     item.next.confidence = parseFloat(item.next.confidence.toFixed(7));
-
                 return item;
             });
-
             expect(simplifiedRes).toMatchInlineSnapshot(`
               [
                 ,

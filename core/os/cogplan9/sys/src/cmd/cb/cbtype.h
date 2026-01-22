@@ -6,9 +6,7 @@
 #define _C	040
 #define	_X	0100
 #define _O	0200
-
-extern	unsigned char	_cbtype_[];	/* in /usr/src/libc/gen/ctype_.c */
-
+extern	unsigned char	_cbtype_[];
 #define isop(c)	((_cbtype_+1)[c]&_O)
 #define	isalpha(c)	((_cbtype_+1)[c]&(_U|_L))
 #define	isupper(c)	((_cbtype_+1)[c]&_U)

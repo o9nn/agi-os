@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import {ResolveModelDestination} from "../../utils/resolveModelDestination.js";
 import {getReadablePath} from "./getReadablePath.js";
-
 export function printModelDestination(modelDestination: ResolveModelDestination) {
     if (modelDestination.type === "url")
         console.info(`${chalk.yellow("URL:")} ${modelDestination.url}`);

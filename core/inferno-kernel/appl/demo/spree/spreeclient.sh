@@ -2,7 +2,6 @@
 load std
 autoload=std
 ndb/cs
-
 fn ck {
 	or {$*} {
 		echo spreeclient: exiting >[1=2]
@@ -10,9 +9,8 @@ fn ck {
 	}
 }
 user="{cat /dev/user}
-
 fn notice {
-	or {~ $#* 1} {
+	or {~ $
 		echo usage: notice arg >[1=2]
 		raise usage
 	}
@@ -28,12 +26,11 @@ fn notice {
 		chan c; {} ${recv c}
 	}
 }
-
 ck mount -A 'tcp!$registry!registry' /mnt/registry
 ck /dis/grid/remotelogon wm/wm {
 	k = /usr/$user/keyring/default
 	addrs=`{ndb/regquery resource spree auth.signer `{getpk -s $k}}
-	if{~ $#addrs 0} {
+	if{~ $
 		notice 'No spree servers found'
 	}
 	if {mount ${hd $addrs} /n/remote} {

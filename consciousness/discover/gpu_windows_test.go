@@ -1,7 +1,5 @@
 package discover
-
 import "testing"
-
 func TestProcessSystemLogicalProcessorInforationList(t *testing.T) {
 	type pkgs struct {
 		cores      int
@@ -54,7 +52,6 @@ func TestProcessSystemLogicalProcessorInforationList(t *testing.T) {
 			},
 		},
 	}
-
 	for k, v := range testCases {
 		t.Run(k, func(t *testing.T) {
 			resp := processSystemLogicalProcessorInforationList(v.input)

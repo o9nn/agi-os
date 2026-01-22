@@ -1,20 +1,3 @@
-; =============================================================================
-; ExtensionalSimilarityEvaluationRule
-;
-; AndLink
-;   MemberLink
-;       C
-;       A
-;   MemberLink
-;       C
-;       B
-; |-
-; ExtensionalSimilarityLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define extensional-similarity-evaluation-rule
     (BindLink
         (VariableList
@@ -40,11 +23,9 @@
                 (MemberLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (extensional-similarity-evaluation-formula AB CA CB)
     (cog-set-tv!
         AB (extensional-similarity-evaluation-side-effect-free-formula AB CA CB)))
-
 (define (extensional-similarity-evaluation-side-effect-free-formula AB CA CB)
     (let 
         ((sCA (cog-mean CA))
@@ -58,8 +39,6 @@
                 (and (>= sCA 0.5) (>= sCB 0.5))
                 (stv 1 1)
                 (stv 0 1)))))
-
-; Name the rule
 (define extensional-similarity-evaluation-rule-name
   (DefinedSchemaNode "extensional-similarity-evaluation-rule"))
 (DefineLink extensional-similarity-evaluation-rule-name

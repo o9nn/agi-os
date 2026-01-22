@@ -7,7 +7,6 @@ let bytes = new Uint8Array([
   0x01, 0x08, 0x00, 0x20, 0x00, 0x20, 0x01, 0x6a,
   0x0f, 0x0b
 ]);
-
 console.log(bytes);
 let mod = new WebAssembly.Module(bytes);
 let instance = new WebAssembly.Instance(mod, {});

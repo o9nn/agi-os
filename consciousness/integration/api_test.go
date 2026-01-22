@@ -1,7 +1,4 @@
-//go:build integration
-
 package integration
-
 import (
 	"bytes"
 	"context"
@@ -10,16 +7,13 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func TestAPIGenerate(t *testing.T) {
 	initialTimeout := 60 * time.Second
 	streamTimeout := 30 * time.Second
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	// Set up the test data
 	req := api.GenerateRequest{
 		Model:  smol,
 		Prompt: "why is the sky blue? be brief",
@@ -29,13 +23,11 @@ func TestAPIGenerate(t *testing.T) {
 		},
 	}
 	anyResp := []string{"rayleigh", "scattering"}
-
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
 	if err := PullIfMissing(ctx, client, req.Model); err != nil {
 		t.Fatalf("pull failed %s", err)
 	}
-
 	tests := []struct {
 		name   string
 		stream bool
@@ -49,20 +41,16 @@ func TestAPIGenerate(t *testing.T) {
 			stream: false,
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			stallTimer := time.NewTimer(initialTimeout)
 			var buf bytes.Buffer
 			fn := func(response api.GenerateResponse) error {
-				// Fields that must always be present
 				if response.Model == "" {
 					t.Errorf("response missing model: %#v", response)
 				}
 				if response.Done {
-					// Required fields for final updates:
 					if response.DoneReason == "" && *req.Stream {
-						// TODO - is the lack of done reason on non-stream a bug?
 						t.Errorf("final response missing done_reason: %#v", response)
 					}
 					if response.Metrics.TotalDuration == 0 {
@@ -83,29 +71,21 @@ func TestAPIGenerate(t *testing.T) {
 					if len(response.Context) == 0 {
 						t.Errorf("final response missing context: %#v", response)
 					}
-
-					// Note: caching can result in no prompt eval count, so this can't be verified reliably
-					// if response.Metrics.PromptEvalCount == 0 {
-					// 	t.Errorf("final response missing prompt_eval_count: %#v", response)
-					// }
-
-				} // else incremental response, nothing to check right now...
+				} 
 				buf.Write([]byte(response.Response))
 				if !stallTimer.Reset(streamTimeout) {
 					return fmt.Errorf("stall was detected while streaming response, aborting")
 				}
 				return nil
 			}
-
 			done := make(chan int)
 			var genErr error
 			go func() {
 				req.Stream = &test.stream
-				req.Options["seed"] = rand.Int() // bust cache for prompt eval results
+				req.Options["seed"] = rand.Int() 
 				genErr = client.Generate(ctx, &req, fn)
 				done <- 0
 			}()
-
 			select {
 			case <-stallTimer.C:
 				if buf.Len() == 0 {
@@ -117,7 +97,6 @@ func TestAPIGenerate(t *testing.T) {
 				if genErr != nil {
 					t.Fatalf("failed with %s request prompt %s ", req.Model, req.Prompt)
 				}
-				// Verify the response contains the expected data
 				response := buf.String()
 				atLeastOne := false
 				for _, resp := range anyResp {
@@ -134,8 +113,6 @@ func TestAPIGenerate(t *testing.T) {
 			}
 		})
 	}
-
-	// Validate PS while we're at it...
 	resp, err := client.ListRunning(ctx)
 	if err != nil {
 		t.Fatalf("list models API error: %s", err)
@@ -143,7 +120,6 @@ func TestAPIGenerate(t *testing.T) {
 	if resp == nil || len(resp.Models) == 0 {
 		t.Fatalf("list models API returned empty list while model should still be loaded")
 	}
-	// Find the model we just loaded and verify some attributes
 	found := false
 	for _, model := range resp.Models {
 		if strings.Contains(model.Name, req.Model) {
@@ -162,20 +138,17 @@ func TestAPIGenerate(t *testing.T) {
 			if model.ExpiresAt == nilTime {
 				t.Errorf("expires_at omitted: %#v", model)
 			}
-			// SizeVRAM could be zero.
 		}
 	}
 	if !found {
 		t.Errorf("unable to locate running model: %#v", resp)
 	}
 }
-
 func TestAPIChat(t *testing.T) {
 	initialTimeout := 60 * time.Second
 	streamTimeout := 30 * time.Second
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	// Set up the test data
 	req := api.ChatRequest{
 		Model: smol,
 		Messages: []api.Message{
@@ -190,13 +163,11 @@ func TestAPIChat(t *testing.T) {
 		},
 	}
 	anyResp := []string{"rayleigh", "scattering"}
-
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
 	if err := PullIfMissing(ctx, client, req.Model); err != nil {
 		t.Fatalf("pull failed %s", err)
 	}
-
 	tests := []struct {
 		name   string
 		stream bool
@@ -210,18 +181,15 @@ func TestAPIChat(t *testing.T) {
 			stream: false,
 		},
 	}
-
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			stallTimer := time.NewTimer(initialTimeout)
 			var buf bytes.Buffer
 			fn := func(response api.ChatResponse) error {
-				// Fields that must always be present
 				if response.Model == "" {
 					t.Errorf("response missing model: %#v", response)
 				}
 				if response.Done {
-					// Required fields for final updates:
 					var nilTime time.Time
 					if response.CreatedAt == nilTime {
 						t.Errorf("final response missing total_duration: %#v", response)
@@ -244,27 +212,24 @@ func TestAPIChat(t *testing.T) {
 					if response.Metrics.EvalDuration == 0 {
 						t.Errorf("final response missing eval_duration: %#v", response)
 					}
-
 					if response.Metrics.PromptEvalCount == 0 {
 						t.Errorf("final response missing prompt_eval_count: %#v", response)
 					}
-				} // else incremental response, nothing to check right now...
+				} 
 				buf.Write([]byte(response.Message.Content))
 				if !stallTimer.Reset(streamTimeout) {
 					return fmt.Errorf("stall was detected while streaming response, aborting")
 				}
 				return nil
 			}
-
 			done := make(chan int)
 			var genErr error
 			go func() {
 				req.Stream = &test.stream
-				req.Options["seed"] = rand.Int() // bust cache for prompt eval results
+				req.Options["seed"] = rand.Int() 
 				genErr = client.Chat(ctx, &req, fn)
 				done <- 0
 			}()
-
 			select {
 			case <-stallTimer.C:
 				if buf.Len() == 0 {
@@ -276,7 +241,6 @@ func TestAPIChat(t *testing.T) {
 				if genErr != nil {
 					t.Fatalf("failed with %s request prompt %v", req.Model, req.Messages)
 				}
-				// Verify the response contains the expected data
 				response := buf.String()
 				atLeastOne := false
 				for _, resp := range anyResp {
@@ -294,18 +258,14 @@ func TestAPIChat(t *testing.T) {
 		})
 	}
 }
-
 func TestAPIListModels(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
-	// Make sure we have at least one model so an empty list can be considered a failure
 	if err := PullIfMissing(ctx, client, smol); err != nil {
 		t.Fatalf("pull failed %s", err)
 	}
-
 	resp, err := client.List(ctx)
 	if err != nil {
 		t.Fatalf("unable to list models: %s", err)
@@ -329,7 +289,6 @@ func TestAPIListModels(t *testing.T) {
 	}
 	verifyModelDetails(t, model.Details)
 }
-
 func verifyModelDetails(t *testing.T, details api.ModelDetails) {
 	if details.Format == "" {
 		t.Errorf("first model details.format empty: %#v", details)
@@ -344,14 +303,12 @@ func verifyModelDetails(t *testing.T, details api.ModelDetails) {
 		t.Errorf("first model details.quantization_level empty: %#v", details)
 	}
 }
-
 func TestAPIShowModel(t *testing.T) {
 	modelName := "llama3.2"
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
 	if err := PullIfMissing(ctx, client, modelName); err != nil {
 		t.Fatalf("pull failed %s", err)
 	}
@@ -371,19 +328,15 @@ func TestAPIShowModel(t *testing.T) {
 	if resp.Template == "" {
 		t.Errorf("%s missing template: %#v", modelName, resp)
 	}
-	// llama3 omits system
 	verifyModelDetails(t, resp.Details)
-	// llama3 ommits messages
 	if len(resp.ModelInfo) == 0 {
 		t.Errorf("%s missing model_info: %#v", modelName, resp)
 	}
-	// llama3 omits projectors
 	var nilTime time.Time
 	if resp.ModifiedAt == nilTime {
 		t.Errorf("%s missing modified_at: %#v", modelName, resp)
 	}
 }
-
 func TestAPIEmbeddings(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
@@ -397,11 +350,9 @@ func TestAPIEmbeddings(t *testing.T) {
 			"seed":        123,
 		},
 	}
-
 	if err := PullIfMissing(ctx, client, req.Model); err != nil {
 		t.Fatalf("pull failed %s", err)
 	}
-
 	resp, err := client.Embeddings(ctx, &req)
 	if err != nil {
 		t.Fatalf("embeddings call failed %s", err)

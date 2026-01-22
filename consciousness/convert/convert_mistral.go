@@ -1,16 +1,12 @@
 package convert
-
 import (
 	"cmp"
 	"fmt"
 	"strings"
-
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type mistral3Model struct {
 	ModelParameters
 	ImageTokenIndex    uint32 `json:"image_token_index"`
@@ -45,13 +41,10 @@ type mistral3Model struct {
 	MultiModalProjectorBias bool   `json:"multimodal_projector_bias"`
 	ProjectorHiddenAct      string `json:"projector_hidden_act"`
 }
-
 func (p *mistral3Model) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "mistral3"
 	kv["mistral3.vocab_size"] = p.TextModel.VocabSize
-
-	// Text configuration
 	kv["mistral3.block_count"] = p.TextModel.NumHiddenLayers
 	kv["mistral3.context_length"] = p.TextModel.MaxPositionEmbeddings
 	kv["mistral3.embedding_length"] = p.TextModel.HiddenSize
@@ -63,8 +56,6 @@ func (p *mistral3Model) KV(t *Tokenizer) ggml.KV {
 	kv["mistral3.attention.value_length"] = p.TextModel.HeadDim
 	kv["mistral3.rope.dimension_count"] = p.TextModel.HiddenSize / p.TextModel.NumHiddenLayers
 	kv["mistral3.rope.freq_base"] = p.TextModel.RopeTheta
-
-	// Vision configuration
 	kv["mistral3.vision.block_count"] = p.VisionModel.NumHiddenLayers
 	kv["mistral3.vision.embedding_length"] = p.VisionModel.HiddenSize
 	kv["mistral3.vision.feed_forward_length"] = p.VisionModel.IntermediateSize
@@ -73,25 +64,17 @@ func (p *mistral3Model) KV(t *Tokenizer) ggml.KV {
 	kv["mistral3.vision.image_size"] = p.VisionModel.ImageSize
 	kv["mistral3.vision.patch_size"] = p.VisionModel.PatchSize
 	kv["mistral3.vision.num_channels"] = p.VisionModel.NumChannels
-	// kv["mistral3.vision.attention.layer_norm_epsilon"] = 1e-05 // Default value
 	kv["mistral3.vision.rope.freq_base"] = p.VisionModel.RopeTheta
-
-	// Multimodal configuration
 	kv["mistral3.image_token_index"] = p.ImageTokenIndex
 	kv["mistral3.spatial_merge_size"] = p.SpatialMergeSize
-
 	kv["mistral3.mm.projector_bias"] = p.MultiModalProjectorBias
-
 	if p.ProjectorHiddenAct != "" {
 		kv["mistral3.mm.projector_hidden_act"] = p.ProjectorHiddenAct
 	}
-
 	return kv
 }
-
 func (p *mistral3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
-
 	for _, t := range ts {
 		if !strings.HasPrefix(t.Name(), "v.") {
 			if strings.HasSuffix(t.Name(), ".attn_q.weight") ||
@@ -99,7 +82,6 @@ func (p *mistral3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 				t.SetRepacker(p.repack)
 			}
 		}
-
 		out = append(out, &ggml.Tensor{
 			Name:     t.Name(),
 			Kind:     t.Kind(),
@@ -107,10 +89,8 @@ func (p *mistral3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *mistral3Model) Replacements() []string {
 	return []string{
 		"language_model.model.norm", "output_norm",
@@ -143,13 +123,11 @@ func (p *mistral3Model) Replacements() []string {
 		"lm_head", "output",
 	}
 }
-
 func (p *mistral3Model) repack(name string, data []float32, shape []uint64) ([]float32, error) {
 	var dims []int
 	for _, dim := range shape {
 		dims = append(dims, int(dim))
 	}
-
 	var heads uint32
 	if strings.HasSuffix(name, ".attn_q.weight") {
 		heads = p.TextModel.NumAttentionHeads
@@ -158,33 +136,26 @@ func (p *mistral3Model) repack(name string, data []float32, shape []uint64) ([]f
 	} else {
 		return nil, fmt.Errorf("unknown tensor for repack: %s", name)
 	}
-
 	n := tensor.New(tensor.WithShape(dims...), tensor.WithBacking(data))
 	if err := n.Reshape(append([]int{int(heads), 2, dims[0] / int(heads) / 2}, dims[1:]...)...); err != nil {
 		return nil, err
 	}
-
 	if err := n.T(0, 2, 1, 3); err != nil {
 		return nil, err
 	}
-
 	if err := n.Reshape(dims...); err != nil {
 		return nil, err
 	}
-
 	if err := n.Transpose(); err != nil {
 		return nil, err
 	}
-
 	ts, err := native.SelectF32(n, 1)
 	if err != nil {
 		return nil, err
 	}
-
 	var f32s []float32
 	for _, t := range ts {
 		f32s = append(f32s, t...)
 	}
-
 	return f32s, nil
 }

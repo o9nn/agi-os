@@ -1,24 +1,10 @@
 #!/bin/bash
-#
-# Given a component and a log file, filter the log so that only the
-# messages from the component are output.
-
 set -u
-
-#############
-# Constants #
-#############
-
 readonly date_re='[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}'
 readonly time_re='[[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{3}'
 readonly timestamp_re="\[${date_re} ${time_re}\]"
 readonly anylevel_re="\[(ERROR|WARN|INFO|DEBUG|FINE)\]"
-
-#############
-# Functions #
-#############
-
-keep_printing=n                 # for printing multiline messages
+keep_printing=n
 grep_component_lines()
 {
     local line="$1"
@@ -31,7 +17,6 @@ grep_component_lines()
         echo "$line"
     fi
 }
-
 usage()
 {
     echo "Description: Filter log file."
@@ -42,24 +27,15 @@ usage()
     echo "If both -l and -c are used only messages of that level and component are kept."
     echo "If LOG_FILE is not provided then stdin is used."
 }
-
-########
-# Main #
-########
-
-# Parse command arguments
-
-if [[ $# == 0 || $# > 5 ]]; then
+if [[ $
     echo "Error: Wrong number of arguments"
     usage
     exit 1
 fi
-
 if [[ $1 == "-h" || $1 == "--help" || $1 == "-?" ]]; then
     usage
     exit 0
 fi
-
 LEVEL=""
 COMPONENT=""
 UNKNOWN_FLAGS=""
@@ -70,29 +46,22 @@ while getopts "l:c:" flag ; do
         *) UNKNOWN_FLAGS=true ;;
     esac
 done
-
 shift $((OPTIND-1))
-
 set +u
 LOGFILE="$1"
 set -u
-
-# Filter
-
 if [[ -n "$LEVEL" ]]; then
     readonly level_re="\[$LEVEL\]"
 else
     readonly level_re="$anylevel_re"
 fi
 readonly outline_re="$timestamp_re $anylevel_re .*"
-
 if [[ -n "$COMPONENT" ]]; then
     readonly component_re="\[$COMPONENT\]"
     readonly inline_re="$timestamp_re $level_re $component_re .*"
 else
     readonly inline_re="$timestamp_re $level_re .*"
 fi
-
 if [[ "$LOGFILE" > 0 ]]; then
     while read; do
         grep_component_lines "$REPLY"

@@ -3,28 +3,22 @@
 # include <ctype.h>
 # include <bio.h>
 # define PP 1
-
 # define CWIDTH 8
 # define CMASK 0377
 # define NCH 256
-
-
 # define TOKENSIZE 1000
 # define DEFSIZE 40
 # define DEFCHAR 1000
 # define STARTCHAR 100
 # define STARTSIZE 256
 # define CCLSIZE 1000
-
 # define TREESIZE 1000
 # define NSTATES 500
 # define MAXPOS 2500
 # define NTRANS 2000
 # define NOUTPUT 5000
-
 # define NACTIONS 100
 # define ALITTLEEXTRA 30
-
 # define RCCL NCH+90
 # define RNCCL NCH+91
 # define RSTR NCH+92
@@ -41,34 +35,29 @@
 # define CARAT NCH+103
 # define S1FINAL NCH+104
 # define S2FINAL NCH+105
-
 # define DEFSECTION 1
 # define RULESECTION 2
 # define ENDSECTION 5
 # define TRUE 1
 # define FALSE 0
-
 # define PC 1
 # define PS 1
-
 # ifdef DEBUG
 # define LINESIZE 110
 extern int yydebug;
-extern int debug;		/* 1 = on */
+extern int debug;
 extern int charc;
 # endif
-
 # ifdef DEBUG
 extern int	freturn(int);
 # else
 # define freturn(s) s
 # endif
-
 extern int sargc;
 extern char **sargv;
 extern uchar buf[520];
-extern int yyline;		/* line number of file */
-extern char *yyfile;		/* file name of file */
+extern int yyline;
+extern char *yyfile;
 extern int sect;
 extern int eof;
 extern int lgatflg;
@@ -76,15 +65,15 @@ extern int divflg;
 extern int funcflag;
 extern int pflag;
 extern int casecount;
-extern int chset;	/* 1 = char set modified */
+extern int chset;
 extern Biobuf *fin, fout, *fother;
 extern int foutopen;
 extern int errorf;
 extern int fptr;
 extern char *cname;
-extern int prev;	/* previous input character */
-extern int pres;	/* present input character */
-extern int peek;	/* next input character */
+extern int prev;
+extern int pres;
+extern int peek;
 extern int *name;
 extern int *left;
 extern int *right;
@@ -102,7 +91,7 @@ extern uchar *ccl;
 extern uchar *ccptr;
 extern uchar *dp, *sp;
 extern int dptr, sptr;
-extern uchar *bptr;		/* store input position */
+extern uchar *bptr;
 extern uchar *tmpstat;
 extern int count;
 extern int **foll;
@@ -112,8 +101,8 @@ extern int *gotof;
 extern int *nexts;
 extern uchar *nchar;
 extern int **state;
-extern int *sfall;		/* fallback state num */
-extern uchar *cpackflg;		/* true if state has been character packed */
+extern int *sfall;
+extern uchar *cpackflg;
 extern int *atable, aptr;
 extern int nptr;
 extern uchar symbol[NCH];
@@ -133,7 +122,6 @@ extern long rcount;
 extern int *verify, *advance, *stoff;
 extern int scon;
 extern uchar *psave;
-
 extern void	acompute(int);
 extern void	add(int **, int);
 extern void	allprint(int);

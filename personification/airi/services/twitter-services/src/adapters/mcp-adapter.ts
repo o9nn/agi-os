@@ -1,26 +1,17 @@
 import type { Context } from '../core/browser/context'
 import type { Tweet } from '../core/services/tweet'
 import type { TwitterServices } from '../types/services'
-
 import { Buffer } from 'node:buffer'
 import { createServer } from 'node:http'
-
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js'
 import { createApp, createRouter, defineEventHandler, toNodeListener } from 'h3'
 import { z } from 'zod'
-
 import { useTwitterTimelineServices } from '../core/services/timeline'
 import { useTwitterTweetServices } from '../core/services/tweet'
 import { useTwitterUserServices } from '../core/services/user'
 import { errorToMessage } from '../utils/error'
 import { logger } from '../utils/logger'
-
-/**
- * MCP Protocol Adapter
- * Adapts the Twitter service to MCP protocol using official MCP SDK
- * Implements HTTP server using H3.js
- */
 export class MCPAdapter {
   private mcpServer: McpServer
   private app: ReturnType<typeof createApp>
@@ -29,42 +20,25 @@ export class MCPAdapter {
   private activeTransports: SSEServerTransport[] = []
   private extraResourceInfo: string[] = []
   private ctx: Context
-
   private twitterServices: TwitterServices
-
   constructor(port: number = 8080, ctx: Context) {
     this.port = port
     this.ctx = ctx
-
     this.twitterServices = {
       timeline: useTwitterTimelineServices(this.ctx),
       tweet: useTwitterTweetServices(this.ctx),
       user: useTwitterUserServices(this.ctx),
     }
-
-    // Create MCP server
     this.mcpServer = new McpServer({
       name: 'Twitter Service',
       version: '1.0.0',
     })
-
-    // Create H3 app
     this.app = createApp()
-
-    // Configure resources and tools
     this.configureServer()
-
-    // Set up H3 routes
     this.setupRoutes()
   }
-
-  /**
-   * Configure MCP server resources and tools
-   */
   private configureServer(): void {
     logger.mcp.debug('Configuring MCP server resources and tools...')
-
-    // Add timeline resource with improved registration
     this.mcpServer.resource(
       'timeline',
       new ResourceTemplate('twitter://timeline/{count}', {
@@ -73,7 +47,7 @@ export class MCPAdapter {
           return {
             resources: [{
               name: 'timeline',
-              uri: 'twitter://timeline/10', // Default number of tweets
+              uri: 'twitter://timeline/10', 
               description: 'Tweet timeline',
             }],
           }
@@ -82,14 +56,11 @@ export class MCPAdapter {
       async (uri: URL, { count }: { count?: string }) => {
         try {
           logger.mcp.withField('uri', uri.toString()).withField('count', count || 'default').debug('Getting timeline')
-
           const tweets = await useTwitterTimelineServices(this.ctx).getTimeline({
             count: count ? Number.parseInt(count) : undefined,
           })
-
           logger.mcp.withField('tweetCount', tweets.length).debug('Successfully retrieved timeline tweets')
           logger.mcp.withFields({ tweets }).debug('Tweets')
-
           return {
             contents: tweets.map((tweet: Tweet) => ({
               uri: `twitter://tweet/${tweet.id}`,
@@ -103,15 +74,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add tweet details resource
     this.mcpServer.resource(
       'tweet',
       new ResourceTemplate('twitter://tweet/{id}', { list: undefined }),
       async (uri: URL, { id }) => {
         try {
           const tweet = await this.twitterServices.tweet.getTweetDetails(id as string)
-
           return {
             contents: [{
               uri: uri.href,
@@ -125,15 +93,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add user profile resource
     this.mcpServer.resource(
       'profile',
       new ResourceTemplate('twitter://user/{username}', { list: undefined }),
       async (uri, { username }) => {
         try {
           const profile = await this.twitterServices.user.getUserProfile(username as string)
-
           return {
             contents: [{
               uri: uri.href,
@@ -147,15 +112,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add login tool
     this.mcpServer.tool(
       'login',
       {},
       async () => {
         try {
           const success = await this.twitterServices.auth.login()
-
           return {
             content: [{
               type: 'text',
@@ -173,8 +135,6 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add post tweet tool
     this.mcpServer.tool(
       'post-tweet',
       {
@@ -188,7 +148,6 @@ export class MCPAdapter {
             inReplyTo: replyTo,
             media,
           })
-
           return {
             content: [{
               type: 'text',
@@ -204,15 +163,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add like tweet tool
     this.mcpServer.tool(
       'like-tweet',
       { tweetId: z.string() },
       async ({ tweetId }) => {
         try {
           const success = await this.twitterServices.tweet.likeTweet(tweetId)
-
           return {
             content: [{
               type: 'text',
@@ -228,15 +184,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add retweet tool
     this.mcpServer.tool(
       'retweet',
       { tweetId: z.string() },
       async ({ tweetId }) => {
         try {
           const success = await this.twitterServices.tweet.retweet(tweetId)
-
           return {
             content: [{
               type: 'text',
@@ -252,15 +205,12 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add save session tool
     this.mcpServer.tool(
       'save-session',
       {},
       async () => {
         try {
           const success = await this.twitterServices.auth.saveSession()
-
           return {
             content: [{
               type: 'text',
@@ -278,8 +228,6 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add search tool
     this.mcpServer.tool(
       'search',
       {
@@ -290,7 +238,6 @@ export class MCPAdapter {
       async ({ query, count, filter }) => {
         try {
           const results = await this.twitterServices.tweet.searchTweets(query, { count, filter })
-
           return {
             content: [{
               type: 'text',
@@ -307,8 +254,6 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add refresh timeline tool
     this.mcpServer.tool(
       'refresh-timeline',
       {
@@ -323,7 +268,6 @@ export class MCPAdapter {
             includeReplies,
             includeRetweets,
           })
-
           return {
             content: [{
               type: 'text',
@@ -340,8 +284,6 @@ export class MCPAdapter {
         }
       },
     )
-
-    // Add get my profile tool
     this.mcpServer.tool(
       'get-my-profile',
       {
@@ -350,14 +292,10 @@ export class MCPAdapter {
       async ({ username }) => {
         try {
           let profileUsername = username
-
-          // If no username provided, try to get from current URL
           if (!profileUsername) {
             const currentUrl = await this.twitterServices.auth.getCurrentUrl()
             profileUsername = this.extractUsernameFromUrl(currentUrl)
           }
-
-          // If we still don't have a username, return an error
           if (!profileUsername) {
             return {
               content: [{
@@ -367,9 +305,7 @@ export class MCPAdapter {
               isError: true,
             }
           }
-
           const profile = await this.twitterServices.user.getUserProfile(profileUsername)
-
           return {
             content: [{
               type: 'text',
@@ -394,12 +330,6 @@ export class MCPAdapter {
       },
     )
   }
-
-  /**
-   * Extract username from Twitter URL
-   * @param url Twitter URL
-   * @returns Username or undefined if not a profile URL
-   */
   private extractUsernameFromUrl(url: string): string | undefined {
     try {
       const parsedUrl = new URL(url)
@@ -416,72 +346,44 @@ export class MCPAdapter {
       return undefined
     }
   }
-
-  /**
-   * Set up H3 routes
-   */
   private setupRoutes(): void {
     const router = createRouter()
-
-    // Set up CORS
     router.use('*', defineEventHandler((event) => {
       event.node.res.setHeader('Access-Control-Allow-Origin', '*')
       event.node.res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
       event.node.res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-
       if (event.node.req.method === 'OPTIONS') {
         event.node.res.statusCode = 204
         event.node.res.end()
       }
     }))
-
-    // SSE endpoint
     router.get('/sse', defineEventHandler(async (event) => {
       const { req, res } = event.node
-
       res.setHeader('Content-Type', 'text/event-stream')
       res.setHeader('Cache-Control', 'no-cache')
       res.setHeader('Connection', 'keep-alive')
-
-      // Create SSE transport
       const transport = new SSEServerTransport('/messages', res)
       this.activeTransports.push(transport)
-
-      // Clean up when client disconnects
       req.on('close', () => {
         const index = this.activeTransports.indexOf(transport)
         if (index !== -1) {
           this.activeTransports.splice(index, 1)
         }
       })
-
-      // Connect to MCP server
       await this.mcpServer.connect(transport)
     }))
-
-    // Messages endpoint - receive client requests
     router.post('/messages', defineEventHandler(async (event) => {
       if (this.activeTransports.length === 0) {
         logger.mcp.warn('Received message request but no active SSE connections')
         event.node.res.statusCode = 503
         return { error: 'No active SSE connections' }
       }
-
       try {
-        // Parse request body
         const body = await readBody(event)
         logger.mcp.debug(`Received MCP request: ${JSON.stringify(body)}`)
-
-        // Simple handling - send to most recent transport
-        // Note: In production, should use session ID to route to correct transport
         const transport = this.activeTransports[this.activeTransports.length - 1]
-
-        // Manually handle POST message, as H3 is not Express-compatible
         const response = await transport.handleMessage(body)
-
-        // Log response for debugging
         logger.mcp.debug(`MCP response: ${JSON.stringify(response)}`)
-
         return response
       }
       catch (error) {
@@ -490,8 +392,6 @@ export class MCPAdapter {
         return { error: errorToMessage(error) }
       }
     }))
-
-    // Root path - provide service info
     router.get('/', defineEventHandler(() => {
       return {
         name: 'Twitter MCP Service',
@@ -502,14 +402,8 @@ export class MCPAdapter {
         },
       }
     }))
-
-    // Use router
     this.app.use(router)
   }
-
-  /**
-   * Start MCP server
-   */
   start(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.server !== null) {
@@ -517,18 +411,12 @@ export class MCPAdapter {
         resolve()
         return
       }
-
       try {
-        // Create Node.js HTTP server
         this.server = createServer(toNodeListener(this.app))
-
-        // Add error event handlers
         this.server.on('error', (error) => {
           logger.mcp.errorWithError('MCP server error:', error)
           reject(error)
         })
-
-        // Log available resources for debugging
         logger.mcp.debug('Registered MCP resources:')
         logger.mcp.debug('- twitter://timeline/{count}: Get tweet timeline')
         logger.mcp.debug('- twitter://tweet/{id}: Get single tweet details')
@@ -538,7 +426,6 @@ export class MCPAdapter {
             logger.mcp.debug(`- ${info}`)
           })
         }
-
         this.server.listen(this.port, () => {
           const serverAddress = `http://localhost:${this.port}`
           logger.mcp.log(`MCP server started at: ${serverAddress}`)
@@ -553,10 +440,6 @@ export class MCPAdapter {
       }
     })
   }
-
-  /**
-   * Stop MCP server
-   */
   stop(): Promise<void> {
     return new Promise((resolve) => {
       if (this.server === null) {
@@ -564,7 +447,6 @@ export class MCPAdapter {
         resolve()
         return
       }
-
       try {
         this.server.close(() => {
           this.server = null
@@ -580,8 +462,6 @@ export class MCPAdapter {
     })
   }
 }
-
-// h3 utility function: read body from event
 async function readBody(event: any): Promise<any> {
   const buffers = []
   for await (const chunk of event.node.req) {

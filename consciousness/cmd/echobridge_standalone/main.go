@@ -1,5 +1,4 @@
 package main
-
 import (
 	"context"
 	"fmt"
@@ -11,36 +10,29 @@ import (
 	"syscall"
 	"time"
 	"sync"
-
 	pb "github.com/EchoCog/echollama/core/echobridge"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
-
 const (
 	grpcPort = ":50051"
 	httpPort = ":50052"
 )
-
-// SimpleScheduler is a basic implementation of the Scheduler interface
 type SimpleScheduler struct {
 	mu     sync.Mutex
 	events []*pb.CognitiveEvent
 }
-
 func NewSimpleScheduler() *SimpleScheduler {
 	return &SimpleScheduler{
 		events: make([]*pb.CognitiveEvent, 0),
 	}
 }
-
 func (s *SimpleScheduler) ScheduleEvent(event *pb.CognitiveEvent) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.events = append(s.events, event)
 	return nil
 }
-
 func (s *SimpleScheduler) GetNextEvent() (*pb.CognitiveEvent, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -51,7 +43,6 @@ func (s *SimpleScheduler) GetNextEvent() (*pb.CognitiveEvent, error) {
 	s.events = s.events[1:]
 	return event, nil
 }
-
 func (s *SimpleScheduler) CancelEvent(eventID string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -63,8 +54,6 @@ func (s *SimpleScheduler) CancelEvent(eventID string) error {
 	}
 	return fmt.Errorf("event not found")
 }
-
-// EchoBridgeServerWrapper wraps the generated server
 type EchoBridgeServerWrapper struct {
 	pb.UnimplementedEchoBridgeServer
 	scheduler *SimpleScheduler
@@ -72,7 +61,6 @@ type EchoBridgeServerWrapper struct {
 	state     *pb.CognitiveState
 	goals     map[string]*pb.Goal
 }
-
 func NewEchoBridgeServerWrapper(scheduler *SimpleScheduler) *EchoBridgeServerWrapper {
 	now := time.Now().UnixMilli()
 	return &EchoBridgeServerWrapper{
@@ -90,7 +78,6 @@ func NewEchoBridgeServerWrapper(scheduler *SimpleScheduler) *EchoBridgeServerWra
 		goals: make(map[string]*pb.Goal),
 	}
 }
-
 func (s *EchoBridgeServerWrapper) ScheduleEvent(ctx context.Context, event *pb.CognitiveEvent) (*pb.EventResponse, error) {
 	err := s.scheduler.ScheduleEvent(event)
 	if err != nil {
@@ -105,13 +92,11 @@ func (s *EchoBridgeServerWrapper) ScheduleEvent(ctx context.Context, event *pb.C
 		EventId: event.Id,
 	}, nil
 }
-
 func (s *EchoBridgeServerWrapper) GetState(ctx context.Context, req *pb.StateRequest) (*pb.CognitiveState, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.state, nil
 }
-
 func (s *EchoBridgeServerWrapper) UpdateState(ctx context.Context, state *pb.CognitiveState) (*pb.StateResponse, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -121,7 +106,6 @@ func (s *EchoBridgeServerWrapper) UpdateState(ctx context.Context, state *pb.Cog
 		Message: "State updated successfully",
 	}, nil
 }
-
 func (s *EchoBridgeServerWrapper) RegisterGoal(ctx context.Context, goal *pb.Goal) (*pb.GoalResponse, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -132,25 +116,20 @@ func (s *EchoBridgeServerWrapper) RegisterGoal(ctx context.Context, goal *pb.Goa
 		GoalId:  goal.Id,
 	}, nil
 }
-
 func (s *EchoBridgeServerWrapper) GetActiveGoals(ctx context.Context, req *pb.GoalRequest) (*pb.GoalList, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
 	goals := make([]*pb.Goal, 0)
 	for _, goal := range s.goals {
 		if req.StatusFilter == pb.GoalStatus_GOAL_UNKNOWN || goal.Status == req.StatusFilter {
 			goals = append(goals, goal)
 		}
 	}
-	
 	return &pb.GoalList{Goals: goals}, nil
 }
-
 func (s *EchoBridgeServerWrapper) UpdateGoalProgress(ctx context.Context, progress *pb.GoalProgress) (*pb.GoalResponse, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
 	goal, exists := s.goals[progress.GoalId]
 	if !exists {
 		return &pb.GoalResponse{
@@ -158,7 +137,6 @@ func (s *EchoBridgeServerWrapper) UpdateGoalProgress(ctx context.Context, progre
 			Message: "Goal not found",
 		}, fmt.Errorf("goal not found")
 	}
-	
 	goal.Progress = progress.Progress
 	return &pb.GoalResponse{
 		Success: true,
@@ -166,11 +144,9 @@ func (s *EchoBridgeServerWrapper) UpdateGoalProgress(ctx context.Context, progre
 		GoalId:  progress.GoalId,
 	}, nil
 }
-
 func (s *EchoBridgeServerWrapper) GetMetrics() map[string]interface{} {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
 	return map[string]interface{}{
 		"energy":            s.state.Energy,
 		"fatigue":           s.state.Fatigue,
@@ -182,40 +158,27 @@ func (s *EchoBridgeServerWrapper) GetMetrics() map[string]interface{} {
 		"active_goals":      len(s.goals),
 	}
 }
-
 func main() {
 	log.Println("🌳 Starting EchoBridge gRPC Server...")
-	
-	// Create scheduler
 	scheduler := NewSimpleScheduler()
-	
-	// Create gRPC server
 	grpcServer := grpc.NewServer()
 	bridgeServer := NewEchoBridgeServerWrapper(scheduler)
 	pb.RegisterEchoBridgeServer(grpcServer, bridgeServer)
-	
-	// Enable reflection for debugging
 	reflection.Register(grpcServer)
-	
-	// Start gRPC server
 	lis, err := net.Listen("tcp", grpcPort)
 	if err != nil {
 		log.Fatalf("Failed to listen on %s: %v", grpcPort, err)
 	}
-	
 	go func() {
 		log.Printf("✅ gRPC server listening on %s", grpcPort)
 		if err := grpcServer.Serve(lis); err != nil {
 			log.Fatalf("Failed to serve gRPC: %v", err)
 		}
 	}()
-	
-	// Start HTTP status server
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "OK\n")
 	})
-	
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		metrics := bridgeServer.GetMetrics()
 		w.Header().Set("Content-Type", "application/json")
@@ -244,7 +207,6 @@ func main() {
 		}
 		fmt.Fprintf(w, "\n}\n")
 	})
-	
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
@@ -274,26 +236,19 @@ func main() {
 </body>
 </html>`, grpcPort, httpPort)
 	})
-	
 	go func() {
 		log.Printf("✅ HTTP status server listening on %s", httpPort)
 		if err := http.ListenAndServe(httpPort, nil); err != nil {
 			log.Fatalf("Failed to serve HTTP: %v", err)
 		}
 	}()
-	
-	// Graceful shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-	
 	<-sigChan
 	log.Println("🛑 Shutting down EchoBridge server...")
-	
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	
 	grpcServer.GracefulStop()
-	
 	<-ctx.Done()
 	log.Println("✅ EchoBridge server stopped")
 }

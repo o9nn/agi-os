@@ -3,7 +3,6 @@ import {normalizeGgufDownloadUrl} from "../gguf/utils/normalizeGgufDownloadUrl.j
 import {parseModelUri, ParsedModelUri, resolveParsedModelUri, getAuthorizationHeader} from "./parseModelUri.js";
 import {isUrl} from "./isUrl.js";
 import {ModelDownloadEndpoints} from "./modelDownloadEndpoints.js";
-
 export type ResolveModelDestination = {
     type: "url",
     url: string
@@ -16,12 +15,10 @@ export type ResolveModelDestination = {
     type: "file",
     path: string
 };
-
 export function resolveModelDestination(
     modelDestination: string, convertUrlToUri: boolean = false, endpoints?: ModelDownloadEndpoints
 ): ResolveModelDestination {
     const parsedUri = parseModelUri(modelDestination, convertUrlToUri, endpoints);
-
     if (parsedUri != null) {
         return {
             type: "uri",
@@ -37,7 +34,6 @@ export function resolveModelDestination(
             url: normalizeGgufDownloadUrl(modelDestination, endpoints)
         };
     }
-
     try {
         return {
             type: "file",
@@ -47,19 +43,16 @@ export function resolveModelDestination(
         throw new Error(`Invalid path: ${modelDestination}`);
     }
 }
-
 export async function resolveModelArgToFilePathOrUrl(
     modelDestination: string, optionHeaders?: Record<string, string>
 ): Promise<[resolvedModelDestination: ResolveModelDestination, filePathOrUrl: string]> {
     const resolvedModelDestination = resolveModelDestination(modelDestination);
-
     if (resolvedModelDestination.type == "file")
         return [resolvedModelDestination, resolvedModelDestination.path];
     else if (resolvedModelDestination.type === "url")
         return [resolvedModelDestination, resolvedModelDestination.url];
     else if (resolvedModelDestination.parsedUri.type === "resolved")
         return [resolvedModelDestination, resolvedModelDestination.parsedUri.resolvedUrl];
-
     const resolvedModelUri = await resolveParsedModelUri(resolvedModelDestination.parsedUri, {
         authorizationHeader: getAuthorizationHeader(optionHeaders)
     });

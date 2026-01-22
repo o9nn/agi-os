@@ -1,8 +1,6 @@
 import { defineTool } from '@xsmcp/server-shared'
 import { object } from 'valibot'
-
 import { MCP_TINY_IMAGE } from '../assets/mcp-tiny-image'
-
 export const getTinyImage = defineTool({
   description: 'Returns the MCP_TINY_IMAGE',
   execute: () => [

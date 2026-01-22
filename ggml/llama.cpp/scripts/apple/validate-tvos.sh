@@ -1,17 +1,7 @@
 #!/usr/bin/env bash
-# validate-tvos.sh - Validate tvOS Application with embedded llama.xcframework using SwiftUI
-
-# Authentication options (optional) (can be set via environment variables)
-# To use: export APPLE_ID=your.email@example.com
-#         export APPLE_PASSWORD=your-app-specific-password
-#         ./validate-tvos.sh
 APPLE_ID=${APPLE_ID:-""}
 APPLE_PASSWORD=${APPLE_PASSWORD:-""}
-
-# Ensure the script exits on error
 set -e
-
-# Function to print usage instructions
 print_usage() {
   echo "Usage: ./validate-tvos.sh [OPTIONS]"
   echo ""
@@ -29,9 +19,7 @@ print_usage() {
   echo "  - Authentication is optional. If not provided, alternative validation will be performed"
   echo "  - For APPLE_PASSWORD, use an app-specific password generated at https://appleid.apple.com/account/manage"
 }
-
-# Parse command line arguments
-while [[ $# -gt 0 ]]; do
+while [[ $
   case $1 in
     --help)
       print_usage
@@ -52,23 +40,14 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
-# Function to clean up in case of error
 cleanup() {
-  # Don't clean up temp files on error to help with debugging
   echo "===== tvOS Validation Process Failed ====="
   exit 1
 }
-
-# Set up trap to call cleanup function on error
 trap cleanup ERR
-
-set -e  # Exit on any error
-
+set -e
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
 BUILD_DIR="${ROOT_DIR}/validation-builds/ios"
-
-# Configuration
 APP_NAME="TVOSLlamaTest"
 BUNDLE_ID="org.ggml.TVOSLlamaTest"
 XCFRAMEWORK_PATH="${ROOT_DIR}/build-apple/llama.xcframework"
@@ -76,15 +55,10 @@ TEMP_DIR="${BUILD_DIR}/temp"
 ARCHIVE_PATH="${BUILD_DIR}/${APP_NAME}.xcarchive"
 IPA_PATH="${BUILD_DIR}/${APP_NAME}.ipa"
 VALIDATION_DIR="${BUILD_DIR}/validation"
-
-# Create necessary directories
 mkdir -p "${BUILD_DIR}"
 mkdir -p "${TEMP_DIR}"
 mkdir -p "${VALIDATION_DIR}"
-
 echo "===== tvOS Validation Process Started ====="
-
-# 1. Create a simple test app project
 echo "Creating test tvOS app project..."
 mkdir -p "${TEMP_DIR}/${APP_NAME}/${APP_NAME}"
 cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}/Info.plist" << EOF
@@ -115,15 +89,10 @@ cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}/Info.plist" << EOF
 </dict>
 </plist>
 EOF
-
-# Create SwiftUI app files
 mkdir -p "${TEMP_DIR}/${APP_NAME}/${APP_NAME}/Sources"
-
-# Create App.swift
 cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}/Sources/App.swift" << EOF
 import SwiftUI
 import llama
-
 @main
 struct LlamaTestApp: App {
     var body: some Scene {
@@ -133,49 +102,38 @@ struct LlamaTestApp: App {
     }
 }
 EOF
-
-# Create ContentView.swift with tvOS specific elements
 cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}/Sources/ContentView.swift" << EOF
 import SwiftUI
 import llama
-
 struct ContentView: View {
     // Test that we can initialize a llama context params struct
     let params = llama_context_default_params()
-
     var body: some View {
         VStack(spacing: 40) {
             Text("Llama Framework Test on tvOS")
                 .font(.largeTitle)
                 .padding()
-
             Text("llama_context_default_params() created successfully")
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .padding()
-
             // Display some param values to confirm the framework is working
             Text("n_ctx: \(params.n_ctx)")
                 .font(.title2)
-
             Text("n_batch: \(params.n_batch)")
                 .font(.title2)
-
             Spacer()
         }
         .padding(50)
         // Larger size suitable for TV display
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
 EOF
-
-# Create project.pbxproj, fixing the framework search paths issues
 mkdir -p "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj"
 cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
 // !$*UTF8*$!
@@ -185,14 +143,12 @@ cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
     };
     objectVersion = 54;
     objects = {
-
 /* Begin PBXBuildFile section */
         11111111111111111111111 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22222222222222222222222; };
         33333333333333333333333 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44444444444444444444444; };
         55555555555555555555555 /* llama.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66666666666666666666666; };
         77777777777777777777777 /* llama.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66666666666666666666666; };
 /* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
         88888888888888888888888 /* Embed Frameworks */ = {
             isa = PBXCopyFilesBuildPhase;
@@ -206,11 +162,8 @@ cat > "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
             runOnlyForDeploymentPostprocessing = 0;
         };
 /* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 EOF
-
-# Continue with the project.pbxproj file, using the APP_NAME variable appropriately
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
         99999999999999999999999 /* ${APP_NAME}.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "${APP_NAME}.app"; sourceTree = BUILT_PRODUCTS_DIR; };
         22222222222222222222222 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -219,8 +172,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
         66666666666666666666666 /* llama.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = llama.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 EOF
-
-# Add the rest of the project file with fixed framework search paths
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
 /* Begin PBXFrameworksBuildPhase section */
         BBBBBBBBBBBBBBBBBBBBBBBB /* Frameworks */ = {
@@ -232,11 +183,8 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
             runOnlyForDeploymentPostprocessing = 0;
         };
 /* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 EOF
-
-# Continue with the project.pbxproj file, using the APP_NAME variable appropriately
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
         CCCCCCCCCCCCCCCCCCCCCCCC /* Products */ = {
             isa = PBXGroup;
@@ -247,7 +195,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
             sourceTree = "<group>";
         };
 EOF
-
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
         DDDDDDDDDDDDDDDDDDDDDDDD /* Frameworks */ = {
             isa = PBXGroup;
@@ -286,8 +233,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
         };
 /* End PBXGroup section */
 EOF
-
-# Continue with the project.pbxproj file, using the APP_NAME variable appropriately
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
 /* Begin PBXNativeTarget section */
         3333333333333333333333AA /* ${APP_NAME} */ = {
@@ -309,7 +254,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
             productType = "com.apple.product-type.application";
         };
 /* End PBXNativeTarget section */
-
 /* Begin PBXProject section */
         7777777777777777777777AA /* Project object */ = {
             isa = PBXProject;
@@ -340,8 +284,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
         };
 /* End PBXProject section */
 EOF
-
-# Add the rest of the file with correct FRAMEWORK_SEARCH_PATHS and tvOS settings
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
 /* Begin PBXResourcesBuildPhase section */
         6666666666666666666666AA /* Resources */ = {
@@ -352,7 +294,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
             runOnlyForDeploymentPostprocessing = 0;
         };
 /* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
         5555555555555555555555AA /* Sources */ = {
             isa = PBXSourcesBuildPhase;
@@ -364,7 +305,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
             runOnlyForDeploymentPostprocessing = 0;
         };
 /* End PBXSourcesBuildPhase section */
-
 /* Begin XCBuildConfiguration section */
         9999999999999999999999AA /* Debug */ = {
             isa = XCBuildConfiguration;
@@ -531,8 +471,6 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << 'EOF'
         };
 /* End XCBuildConfiguration section */
 EOF
-
-# Finish the project.pbxproj file
 cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
 /* Begin XCConfigurationList section */
         8888888888888888888888AA /* Build configuration list for PBXProject "${APP_NAME}" */ = {
@@ -558,16 +496,10 @@ cat >> "${TEMP_DIR}/${APP_NAME}/${APP_NAME}.xcodeproj/project.pbxproj" << EOF
     rootObject = 7777777777777777777777AA /* Project object */;
 }
 EOF
-
-# 2. Copy XCFramework to test project
 echo "Copying XCFramework to test project..."
 cp -R "${XCFRAMEWORK_PATH}" "${TEMP_DIR}/${APP_NAME}/"
-
-# 3. Build and archive the app
 echo "Building and archiving test app..."
 cd "${TEMP_DIR}/${APP_NAME}"
-
-# Create a simple xcscheme file to avoid xcodebuild scheme issues
 mkdir -p "${APP_NAME}.xcodeproj/xcshareddata/xcschemes"
 cat > "${APP_NAME}.xcodeproj/xcshareddata/xcschemes/${APP_NAME}.xcscheme" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -649,25 +581,16 @@ cat > "${APP_NAME}.xcodeproj/xcshareddata/xcschemes/${APP_NAME}.xcscheme" << EOF
    </ArchiveAction>
 </Scheme>
 EOF
-
-# Now use xcodebuild with an explicitly defined product name for tvOS
 xcodebuild -project "${APP_NAME}.xcodeproj" -scheme "${APP_NAME}" -sdk appletvos -configuration Release archive -archivePath "${ARCHIVE_PATH}" CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO PRODUCT_NAME="${APP_NAME}" SWIFT_OPTIMIZATION_LEVEL="-Onone" -quiet
-
-# 4. Create IPA from archive
 echo "Creating IPA from archive..."
 mkdir -p "${TEMP_DIR}/Payload"
 cp -R "${ARCHIVE_PATH}/Products/Applications/${APP_NAME}.app" "${TEMP_DIR}/Payload/"
-
-# Check and log app structure before zipping
 echo "App structure:"
 ls -la "${TEMP_DIR}/Payload/${APP_NAME}.app/"
 echo "Frameworks:"
 ls -la "${TEMP_DIR}/Payload/${APP_NAME}.app/Frameworks/" 2>/dev/null || echo "No Frameworks directory found"
-
 cd "${TEMP_DIR}"
 zip -r "${IPA_PATH}" Payload
-
-# Check embedded provisioning profile
 echo "Checking provisioning profile (if any)..."
 PROVISIONING_PROFILE=$(find "${ARCHIVE_PATH}/Products/Applications/${APP_NAME}.app" -name "embedded.mobileprovision" 2>/dev/null)
 if [ -n "$PROVISIONING_PROFILE" ]; then
@@ -676,12 +599,8 @@ if [ -n "$PROVISIONING_PROFILE" ]; then
 else
     echo "No embedded provisioning profile found (expected for ad-hoc builds)"
 fi
-
-# 5. Validate the IPA
 echo "Validating IPA..."
 VALIDATION_OUTPUT="${VALIDATION_DIR}/validation_output.txt"
-
-# Check if authentication credentials are provided
 AUTH_ARGS=""
 if [ -n "$APPLE_ID" ] && [ -n "$APPLE_PASSWORD" ]; then
     echo "Using Apple ID authentication for validation..."
@@ -692,58 +611,39 @@ else
     echo "  APPLE_ID='your.email@example.com' APPLE_PASSWORD='your-app-specific-password' ./validate-tvos.sh"
     echo "Note: You need to create an app-specific password at https://appleid.apple.com/account/manage"
 fi
-
-# Run validation with detailed output
 echo "Running validation with altool..."
 if [ -n "$AUTH_ARGS" ]; then
-    # Use eval to properly handle the quoted arguments
     eval "xcrun altool --validate-app -f \"${IPA_PATH}\" --type tvos --output-format xml $AUTH_ARGS" 2>&1 | tee "${VALIDATION_OUTPUT}"
 else
     xcrun altool --validate-app -f "${IPA_PATH}" --type tvos --output-format xml 2>&1 | tee "${VALIDATION_OUTPUT}"
 fi
 VALIDATION_RESULT=$?
-
-# Final validation result
 FINAL_VALIDATION_RESULT=0
-
-# Check if validation failed because the app isn't in App Store Connect
 if grep -q "No suitable application records were found" "${VALIDATION_OUTPUT}"; then
     echo "⚠️ App Store Connect Warning: The app bundle identifier is not found in App Store Connect"
     echo "This is expected for apps that haven't been registered in App Store Connect yet."
     echo "This doesn't indicate a problem with the build or framework."
-
-    # Perform alternative validation
     echo "Performing alternative validation checks..."
-
-    # Check if IPA was created successfully
     if [ -f "${IPA_PATH}" ] && [ -s "${IPA_PATH}" ]; then
         echo "✅ IPA file created successfully"
     else
         echo "❌ IPA file not created or empty"
         FINAL_VALIDATION_RESULT=1
     fi
-
-    # Check if app binary exists and is executable
     if [ -f "${TEMP_DIR}/Payload/${APP_NAME}.app/${APP_NAME}" ] && [ -x "${TEMP_DIR}/Payload/${APP_NAME}.app/${APP_NAME}" ]; then
         echo "✅ App binary exists and is executable"
     else
         echo "❌ App binary missing or not executable"
         FINAL_VALIDATION_RESULT=1
     fi
-
-    # Check if framework was properly embedded
     if [ -d "${TEMP_DIR}/Payload/${APP_NAME}.app/Frameworks/llama.framework" ]; then
         echo "✅ llama.framework properly embedded"
     else
         echo "❌ llama.framework not properly embedded"
         FINAL_VALIDATION_RESULT=1
     fi
-
-    # Check if framework binary exists
     if [ -f "${TEMP_DIR}/Payload/${APP_NAME}.app/Frameworks/llama.framework/llama" ]; then
         echo "✅ Framework binary exists"
-
-        # Further validate framework by checking architecture
         ARCHS=$(lipo -info "${TEMP_DIR}/Payload/${APP_NAME}.app/Frameworks/llama.framework/llama" 2>/dev/null | grep -o "arm64\\|x86_64" | tr '\n' ' ')
         if [ -n "$ARCHS" ]; then
             echo "✅ Framework architecture(s): $ARCHS"
@@ -754,7 +654,6 @@ if grep -q "No suitable application records were found" "${VALIDATION_OUTPUT}"; 
         echo "❌ Framework binary missing"
         FINAL_VALIDATION_RESULT=1
     fi
-
     if [ $FINAL_VALIDATION_RESULT -eq 0 ]; then
         echo "✅ Alternative validation PASSED: App built successfully with embedded framework"
     else
@@ -768,46 +667,31 @@ else
     echo "See validation output at ${VALIDATION_OUTPUT}"
     echo ""
     echo "==== VALIDATION ERRORS ===="
-
-    # Try to extract specific errors from the output
     if grep -q "Error" "${VALIDATION_OUTPUT}"; then
         grep -A 5 "Error" "${VALIDATION_OUTPUT}"
     else
-        # If no specific error found, show the whole log
         cat "${VALIDATION_OUTPUT}"
     fi
-
-    # Additional debugging: check IPA contents
     echo ""
     echo "==== IPA CONTENTS ===="
     mkdir -p "${TEMP_DIR}/ipa_contents"
     unzip -q "${IPA_PATH}" -d "${TEMP_DIR}/ipa_contents"
     ls -la "${TEMP_DIR}/ipa_contents/Payload/${APP_NAME}.app/"
-
-    # Check for code signing issues
     echo ""
     echo "==== CODE SIGNING INFO ===="
     codesign -vv -d "${TEMP_DIR}/ipa_contents/Payload/${APP_NAME}.app" 2>&1 || echo "Code signing verification failed"
-
-    # Check embedded frameworks
     echo ""
     echo "==== FRAMEWORK INFO ===="
     ls -la "${TEMP_DIR}/ipa_contents/Payload/${APP_NAME}.app/Frameworks/" 2>/dev/null || echo "No Frameworks directory found"
 fi
-
-# Don't clean up on error to allow inspection
 if [ $FINAL_VALIDATION_RESULT -ne 0 ]; then
     echo ""
     echo "Temporary files kept for inspection at: ${TEMP_DIR}"
     echo "===== tvOS Validation Process Failed ====="
     exit 1
 fi
-
-# Clean up temporary files but keep build artifacts
 if [ $FINAL_VALIDATION_RESULT -eq 0 ]; then
     echo "Cleaning up temporary files..."
-    #rm -rf "${TEMP_DIR}"
 fi
-
 echo "===== tvOS Validation Process Completed ====="
 exit $FINAL_VALIDATION_RESULT

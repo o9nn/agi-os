@@ -1,7 +1,3 @@
-/**
- * Twitter Service Types
- */
-
 export interface SearchOptions {
   count?: number
   includeReplies?: boolean
@@ -11,7 +7,6 @@ export interface SearchOptions {
   maxId?: string
   sinceId?: string
 }
-
 export interface TimelineOptions {
   count?: number
   includeReplies?: boolean

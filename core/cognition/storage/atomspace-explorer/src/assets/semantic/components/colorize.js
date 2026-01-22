@@ -1,72 +1,43 @@
-/*!
- * # Semantic UI 2.0.0 - Colorize
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Copyright 2015 Contributors
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ( $, window, document, undefined ) {
-
   "use strict";
-
   $.fn.colorize = function(parameters) {
     var
       settings          = ( $.isPlainObject(parameters) )
         ? $.extend(true, {}, $.fn.colorize.settings, parameters)
         : $.extend({}, $.fn.colorize.settings),
-      // hoist arguments
       moduleArguments = arguments || false
     ;
     $(this)
       .each(function(instanceIndex) {
-
         var
           $module         = $(this),
-
           mainCanvas      = $('<canvas />')[0],
           imageCanvas     = $('<canvas />')[0],
           overlayCanvas   = $('<canvas />')[0],
-
           backgroundImage = new Image(),
-
-          // defs
           mainContext,
           imageContext,
           overlayContext,
-
           image,
           imageName,
-
           width,
           height,
-
-          // shortcuts
           colors    = settings.colors,
           paths     = settings.paths,
           namespace = settings.namespace,
           error     = settings.error,
-
-          // boilerplate
           instance   = $module.data('module-' + namespace),
           module
         ;
-
         module = {
-
           checkPreconditions: function() {
             module.debug('Checking pre-conditions');
-
             if( !$.isPlainObject(colors) || $.isEmptyObject(colors) ) {
               module.error(error.undefinedColors);
               return false;
             }
             return true;
           },
-
           async: function(callback) {
             if(settings.async) {
               setTimeout(callback, 0);
@@ -75,7 +46,6 @@
               callback();
             }
           },
-
           getMetadata: function() {
             module.debug('Grabbing metadata');
             image     = $module.data('image') || settings.image || undefined;
@@ -86,15 +56,12 @@
               module.error(error.undefinedSize);
             }
           },
-
           initialize: function() {
             module.debug('Initializing with colors', colors);
             if( module.checkPreconditions() ) {
-
               module.async(function() {
                 module.getMetadata();
                 module.canvas.create();
-
                 module.draw.image(function() {
                   module.draw.colors();
                   module.canvas.merge();
@@ -105,7 +72,6 @@
               });
             }
           },
-
           redraw: function() {
             module.debug('Redrawing image');
             module.async(function() {
@@ -114,7 +80,6 @@
               module.canvas.merge();
             });
           },
-
           change: {
             color: function(colorName, color) {
               module.debug('Changing color', colorName);
@@ -126,22 +91,18 @@
               module.redraw();
             }
           },
-
           canvas: {
             create: function() {
               module.debug('Creating canvases');
-
               mainCanvas.width     = width;
               mainCanvas.height    = height;
               imageCanvas.width    = width;
               imageCanvas.height   = height;
               overlayCanvas.width  = width;
               overlayCanvas.height = height;
-
               mainContext    = mainCanvas.getContext('2d');
               imageContext   = imageCanvas.getContext('2d');
               overlayContext = overlayCanvas.getContext('2d');
-
               $module
                 .append( mainCanvas )
               ;
@@ -161,9 +122,7 @@
               overlayContext.blendOnto(mainContext, 'multiply');
             }
           },
-
           draw: {
-
             image: function(callback) {
               module.debug('Drawing image');
               callback = callback || function(){};
@@ -179,16 +138,13 @@
                 callback();
               }
             },
-
             colors: function() {
               module.debug('Drawing color overlays', colors);
               $.each(colors, function(colorName, color) {
                 settings.onDraw(overlayContext, imageName, colorName, color);
               });
             }
-
           },
-
           debug: function(message, variableName) {
             if(settings.debug) {
               if(variableName !== undefined) {
@@ -207,7 +163,6 @@
               method
             ;
             methodArguments = methodArguments || Array.prototype.slice.call( arguments, 2 );
-
             if(typeof methodName == 'string' && instance !== undefined) {
               methodName = methodName.split('.');
               $.each(methodName, function(index, name) {
@@ -228,39 +183,29 @@
               : false
             ;
           }
-
         };
         if(instance !== undefined && moduleArguments) {
-          // simpler than invoke realizing to invoke itself (and losing scope due prototype.call()
           if(moduleArguments[0] == 'invoke') {
             moduleArguments = Array.prototype.slice.call( moduleArguments, 1 );
           }
           return module.invoke(moduleArguments[0], this, Array.prototype.slice.call( moduleArguments, 1 ) );
         }
-        // initializing
         module.initialize();
       })
     ;
     return this;
   };
-
   $.fn.colorize.settings = {
     name      : 'Image Colorizer',
     debug     : true,
     namespace : 'colorize',
-
     onDraw    : function(overlayContext, imageName, colorName, color) {},
-
-    // whether to block execution while updating canvas
     async     : true,
-    // object containing names and default values of color regions
     colors    : {},
-
     metadata: {
       image : 'image',
       name  : 'name'
     },
-
     error: {
       noImage         : 'No tracing image specified',
       undefinedColors : 'No default colors specified.',
@@ -268,7 +213,5 @@
       missingPlugin   : 'Blend onto plug-in must be included',
       undefinedHeight : 'The width or height of image canvas could not be automatically determined. Please specify a height.'
     }
-
   };
-
 })( jQuery, window , document );

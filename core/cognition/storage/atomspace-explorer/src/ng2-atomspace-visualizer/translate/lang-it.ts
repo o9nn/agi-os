@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
-// Italian
 export const LANG_IT_NAME = 'it';
-
 export const LANG_IT_TRANS = {
   'Play-TT': 'Giocare  (Metti in pausa la chiave)',
   'Pause-TT': 'Pausa  (Metti in pausa la chiave)',

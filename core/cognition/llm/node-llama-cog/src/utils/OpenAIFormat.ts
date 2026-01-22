@@ -11,13 +11,8 @@ import {GbnfJsonSchema} from "./gbnfJson/types.js";
 import {getChatWrapperSegmentDefinition} from "./getChatWrapperSegmentDefinition.js";
 import {LlamaText} from "./LlamaText.js";
 import {removeUndefinedFields} from "./removeNullFields.js";
-
-// Note: this is a work in progress and is not yet complete.
-// Will be exported through the main index.js file once this is complete and fully tested
-
 export class OpenAIFormat {
     public readonly chatWrapper: ChatWrapper;
-
     public constructor({
         chatWrapper
     }: {
@@ -25,12 +20,6 @@ export class OpenAIFormat {
     }) {
         this.chatWrapper = chatWrapper;
     }
-
-    /**
-     * Convert `node-llama-cpp`'s chat history to OpenAI format.
-     *
-     * Note that this conversion is lossy, as OpenAI's format is more limited than `node-llama-cpp`'s.
-     */
     public toOpenAiChat<Functions extends ChatModelFunctions>({
         chatHistory,
         functionCalls,
@@ -49,20 +38,17 @@ export class OpenAIFormat {
             functions,
             useRawValues
         });
-
         return {
             ...res,
             messages: fromIntermediateToCompleteOpenAiMessages(res.messages)
         };
     }
-
     public async fromOpenAiChat<Functions extends ChatModelFunctions = ChatModelFunctions>(
         options: OpenAiChatCreationOptions, {llama, model}: {llama?: Llama, model?: LlamaModel} = {}
     ): Promise<{
         chatHistory: ChatHistoryItem[],
         functionCalls?: LlamaChatResponseFunctionCall<ChatModelFunctions>[],
         functions?: Functions,
-
         tokenBias?: TokenBias,
         maxTokens?: number,
         maxParallelFunctionCalls?: number,
@@ -75,18 +61,15 @@ export class OpenAIFormat {
         topP?: number
     }> {
         const {messages, tools} = options;
-
         if (
             (options["response_format"]?.type === "json_schema" || options["response_format"]?.type === "json_object") &&
             tools != null && options["tool_choice"] !== "none"
         )
             throw new Error("Using both JSON response format and tools is not supported yet");
-
         const {chatHistory, functionCalls: pendingFunctionCalls} = fromOpenAiMessagesToChatHistory({
             messages,
             chatWrapper: this.chatWrapper
         });
-
         const functions: Functions = {} as Functions;
         for (const tool of tools ?? []) {
             functions[tool.function.name as keyof Functions] = {
@@ -94,14 +77,12 @@ export class OpenAIFormat {
                 params: tool.function.parameters
             } as Functions[keyof Functions];
         }
-
         let tokenBias: TokenBias | undefined;
         if (options["logit_bias"] != null && model != null) {
             tokenBias = TokenBias.for(model);
             for (const [token, bias] of Object.entries(options["logit_bias"]!))
                 tokenBias.set(token, {logit: bias});
         }
-
         let grammar: LlamaGrammar | undefined;
         if (options["response_format"]?.type === "json_schema" && llama != null) {
             const schema = options["response_format"]?.json_schema?.schema;
@@ -111,14 +92,12 @@ export class OpenAIFormat {
                 grammar = await llama.getGrammarFor("json");
         } else if (options["response_format"]?.type === "json_object" && llama != null)
             grammar = await llama.getGrammarFor("json");
-
         return {
             chatHistory,
             functionCalls: pendingFunctionCalls,
             functions: Object.keys(functions).length === 0
                 ? undefined
                 : functions,
-
             tokenBias,
             maxTokens: options["max_completion_tokens"] ?? options["max_tokens"] ?? undefined,
             maxParallelFunctionCalls: options["parallel_tool_calls"] === false ? 1 : undefined,
@@ -136,7 +115,6 @@ export class OpenAIFormat {
         };
     }
 }
-
 export function fromIntermediateToCompleteOpenAiMessages(messages: IntermediateOpenAiMessage[]) {
     return messages.map((message) => {
         if (message.content != null && LlamaText.isLlamaText(message.content))
@@ -144,11 +122,9 @@ export function fromIntermediateToCompleteOpenAiMessages(messages: IntermediateO
                 ...message,
                 content: message.content.toString()
             };
-
         return message as OpenAiChatMessage;
     });
 }
-
 export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends ChatModelFunctions>({
     chatHistory,
     chatWrapperSettings,
@@ -171,12 +147,10 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
     squashModelTextResponses?: boolean
 }): IntermediateOpenAiConversionFromChatHistory {
     const messages: IntermediateOpenAiMessage[] = [];
-
     for (let i = 0; i < chatHistory.length; i++) {
         const item = chatHistory[i];
         if (item == null)
             continue;
-
         if (item.type === "system")
             messages.push({
                 role: "system",
@@ -191,7 +165,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
             let lastModelTextMessage: (IntermediateOpenAiMessage & {role: "assistant"}) | null = null;
             const segmentStack: ChatModelSegmentType[] = [];
             let canUseLastAssistantMessage = squashModelTextResponses;
-
             const addResponseText = (text: LlamaText | string) => {
                 const lastResItem = canUseLastAssistantMessage
                     ? messages.at(-1)
@@ -210,17 +183,14 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                     canUseLastAssistantMessage = true;
                 }
             };
-
             for (let j = 0; j < item.response.length; j++) {
                 const response = item.response[j];
                 if (response == null)
                     continue;
-
                 if (typeof response === "string")
                     addResponseText(response);
                 else if (response.type === "segment") {
                     const segmentDefinition = getChatWrapperSegmentDefinition(chatWrapperSettings, response.segmentType);
-
                     if (response.raw != null && useRawValues)
                         addResponseText(LlamaText.fromJSON(response.raw));
                     else
@@ -235,12 +205,10 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                                     : ""
                             ])
                         );
-
                     if (!response.ended && segmentStack.at(-1) !== response.segmentType)
                         segmentStack.push(response.segmentType);
                     else if (response.ended && segmentStack.at(-1) === response.segmentType) {
                         segmentStack.pop();
-
                         if (segmentStack.length === 0 && segmentDefinition?.suffix == null &&
                             chatWrapperSettings.segments?.closeAllSegments != null
                         )
@@ -248,7 +216,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                     }
                 } else if (response.type === "functionCall") {
                     const toolCallId = generateToolCallId(i, j);
-
                     if (lastModelTextMessage == null ||
                         (!combineModelMessageAndToolCalls && lastModelTextMessage.content != null && lastModelTextMessage.content !== "") ||
                         (
@@ -261,7 +228,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                         };
                         messages.push(lastModelTextMessage);
                     }
-
                     lastModelTextMessage["tool_calls"] ||= [];
                     lastModelTextMessage["tool_calls"].push({
                         id: toolCallId,
@@ -286,19 +252,16 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                     });
                 }
             }
-
             addResponseText("");
         } else
             void (item satisfies never);
     }
-
     if (functionCalls != null && functionCalls.length > 0) {
         let modelMessage = messages.at(-1);
         const messageIndex = chatHistory.length - 1;
         const functionCallStartIndex = modelMessage?.role === "assistant"
             ? (modelMessage.tool_calls?.length ?? 0)
             : 0;
-
         if (modelMessage?.role !== "assistant" ||
             (!combineModelMessageAndToolCalls && modelMessage.content != null && modelMessage.content !== "")
         ) {
@@ -307,14 +270,11 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
             };
             messages.push(modelMessage);
         }
-
         modelMessage["tool_calls"] ||= [];
-
         for (let i = 0; i < functionCalls.length; i++) {
             const functionCall = functionCalls[i];
             if (functionCall == null)
                 continue;
-
             const toolCallId = generateToolCallId(messageIndex, functionCallStartIndex + i);
             modelMessage["tool_calls"].push({
                 id: toolCallId,
@@ -330,7 +290,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
             });
         }
     }
-
     const tools: OpenAiChatTool[] = [];
     for (const [funcName, func] of Object.entries(functions ?? {}))
         tools.push({
@@ -343,7 +302,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
                 })
             }
         });
-
     return removeUndefinedFields({
         messages,
         tools: tools.length > 0
@@ -351,7 +309,6 @@ export function fromChatHistoryToIntermediateOpenAiMessages<Functions extends Ch
             : undefined
     });
 }
-
 function fromOpenAiMessagesToChatHistory({
     messages, chatWrapper
 }: {
@@ -359,21 +316,16 @@ function fromOpenAiMessagesToChatHistory({
 }) {
     const chatHistory: ChatHistoryItem[] = [];
     const pendingFunctionCalls: LlamaChatResponseFunctionCall<ChatModelFunctions>[] = [];
-
     const findToolCallResult = (startIndex: number, toolCallId: string | undefined, toolCallIndex: number) => {
         let foundToolIndex: number = 0;
-
         for (let i = startIndex; i < messages.length; i++) {
             const message = messages[i];
             if (message == null)
                 continue;
-
             if (message.role === "user" || message.role === "assistant")
                 break;
-
             if (message.role !== "tool")
                 continue;
-
             if (toolCallId == null) {
                 if (toolCallIndex === foundToolIndex)
                     return message;
@@ -381,30 +333,24 @@ function fromOpenAiMessagesToChatHistory({
                     return undefined;
             } else if (message?.tool_call_id === toolCallId)
                 return message;
-
             foundToolIndex++;
         }
-
         return undefined;
     };
-
     let lastUserOrAssistantMessageIndex = messages.length - 1;
     for (let i = messages.length - 1; i >= 0; i--) {
         const message = messages[i];
         if (message == null)
             continue;
-
         if (message.role === "user" || message.role === "assistant") {
             lastUserOrAssistantMessageIndex = i;
             break;
         }
     }
-
     for (let i = 0; i < messages.length; i++) {
         const message = messages[i];
         if (message == null)
             continue;
-
         if (message.role === "system") {
             if (message.content != null)
                 chatHistory.push({
@@ -418,7 +364,6 @@ function fromOpenAiMessagesToChatHistory({
             });
         else if (message.role === "assistant") {
             const isLastAssistantMessage = i === lastUserOrAssistantMessageIndex;
-
             let chatItem = chatHistory.at(-1);
             if (chatItem?.type !== "model") {
                 chatItem = {
@@ -427,14 +372,12 @@ function fromOpenAiMessagesToChatHistory({
                 };
                 chatHistory.push(chatItem);
             }
-
             const text = resolveOpenAiText(message.content);
             if (text != null && text !== "") {
                 const segmentDefinitions = new Map<ChatModelSegmentType, {
                     prefix: string,
                     suffix?: string
                 }>();
-
                 for (const segmentType of allSegmentTypes) {
                     const segmentDefinition = getChatWrapperSegmentDefinition(chatWrapper.settings, segmentType);
                     if (segmentDefinition != null)
@@ -445,14 +388,12 @@ function fromOpenAiMessagesToChatHistory({
                                 : undefined
                         });
                 }
-
                 const modelResponseSegments = segmentModelResponseText(text, {
                     segmentDefinitions,
                     closeAllSegments: chatWrapper.settings.segments?.closeAllSegments != null
                         ? LlamaText(chatWrapper.settings.segments.closeAllSegments).toString()
                         : undefined
                 });
-
                 for (const segment of modelResponseSegments) {
                     if (segment.type == null) {
                         if (typeof chatItem.response.at(-1) === "string")
@@ -468,12 +409,10 @@ function fromOpenAiMessagesToChatHistory({
                         });
                 }
             }
-
             let toolCallIndex = 0;
             for (const toolCall of message.tool_calls ?? []) {
                 const functionName = toolCall.function.name;
                 const callParams = parseToolSerializedValue(toolCall.function.arguments);
-
                 const toolCallResult = findToolCallResult(i + 1, toolCall.id, toolCallIndex);
                 if (toolCallResult == null) {
                     pendingFunctionCalls.push({
@@ -482,7 +421,6 @@ function fromOpenAiMessagesToChatHistory({
                         raw: chatWrapper.generateFunctionCall(functionName, callParams).toJSON()
                     });
                 }
-
                 if (toolCallResult != null || !isLastAssistantMessage)
                     chatItem.response.push({
                         type: "functionCall",
@@ -493,40 +431,27 @@ function fromOpenAiMessagesToChatHistory({
                             ? true
                             : undefined
                     });
-
                 toolCallIndex++;
             }
         }
     }
-
     return {
         chatHistory,
         functionCalls: pendingFunctionCalls
     };
 }
-
 export type IntermediateOpenAiConversionFromChatHistory = {
     messages: IntermediateOpenAiMessage[],
     tools?: OpenAiChatTool[]
 };
-
 export type OpenAiChatCreationOptions = {
     messages: OpenAiChatMessage[],
     tools?: OpenAiChatTool[],
     "tool_choice"?: "none" | "auto",
-
     "logit_bias"?: Record<string, number> | null,
     "max_completion_tokens"?: number | null,
-
-    /** Overridden by `"max_completion_tokens"` */
     "max_tokens"?: number | null,
-
     "parallel_tool_calls"?: boolean,
-
-    /**
-     * Only used when a Llama instance is provided.
-     * A llama instance is provided through a context sequence.
-     */
     "response_format"?: {
         type: "text"
     } | {
@@ -540,7 +465,6 @@ export type OpenAiChatCreationOptions = {
     } | {
         type: "json_object"
     },
-
     seed?: number | null,
     stop?: string | null | string[],
     temperature?: number | null,
@@ -548,7 +472,6 @@ export type OpenAiChatCreationOptions = {
     "top_p"?: number | null,
     "top_k"?: number | null
 };
-
 type OpenAiChatTool = {
     type: "function",
     function: {
@@ -558,7 +481,6 @@ type OpenAiChatTool = {
         strict?: boolean | null
     }
 };
-
 export type IntermediateOpenAiMessage = (
     Omit<OpenAiChatSystemMessage, "content"> & {content: LlamaText | string} |
     Omit<OpenAiChatUserMessage, "content"> & {content: LlamaText | string} |
@@ -567,7 +489,6 @@ export type IntermediateOpenAiMessage = (
         content?: LlamaText | string,
         "tool_calls"?: Array<{
             id: string,
-
             type: "function",
             function: {
                 name: string,
@@ -576,9 +497,7 @@ export type IntermediateOpenAiMessage = (
         }>
     }
 );
-
 export type OpenAiChatMessage = OpenAiChatSystemMessage | OpenAiChatUserMessage | OpenAiChatAssistantMessage | OpenAiChatToolMessage;
-
 export type OpenAiChatSystemMessage = {
     role: "system",
     content: string | {type: "text", text: string}[]
@@ -587,13 +506,11 @@ export type OpenAiChatUserMessage = {
     role: "user",
     content: string | {type: "text", text: string}[]
 };
-
 export type OpenAiChatAssistantMessage = {
     role: "assistant",
     content?: string | {type: "text", text: string}[] | null,
     "tool_calls"?: Array<{
         id: string,
-
         type: "function",
         function: {
             name: string,
@@ -606,38 +523,30 @@ export type OpenAiChatToolMessage = {
     content: string | {type: "text", text: string}[],
     "tool_call_id": string
 };
-
 function generateToolCallId(messageIndex: number, callIndex: number) {
     const length = 9;
     const start = "fc_" + String(messageIndex) + "_";
-
     return start + String(callIndex).padStart(length - start.length, "0");
 }
-
 export function resolveOpenAiText(text: string | {type: "text", text: string}[]): string;
 export function resolveOpenAiText(text: string | {type: "text", text: string}[] | null | undefined): string | null;
 export function resolveOpenAiText(text: string | {type: "text", text: string}[] | null | undefined): string | null {
     if (typeof text === "string")
         return text;
-
     if (text instanceof Array)
         return text.map((item) => item?.text ?? "").join("");
-
     return null;
 }
-
 function parseToolSerializedValue(value: string | {type: "text", text: string}[] | null | undefined) {
     const text = resolveOpenAiText(value);
     if (text == null || text === "")
         return undefined;
-
     try {
         return JSON.parse(text);
     } catch (err) {
         return text;
     }
 }
-
 function segmentModelResponseText<const S extends ChatModelSegmentType = ChatModelSegmentType>(text: string, {
     segmentDefinitions, closeAllSegments
 }: {
@@ -652,19 +561,14 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
         {type: "prefix", segmentType: S} |
         {type: "suffix", segmentType: S}
     )>();
-
     for (const [segmentType, {prefix, suffix}] of segmentDefinitions) {
         separatorActions.set(prefix, {type: "prefix", segmentType});
-
         if (suffix != null)
             separatorActions.set(suffix, {type: "suffix", segmentType});
     }
-
     if (closeAllSegments != null)
         separatorActions.set(closeAllSegments, {type: "closeAll"});
-
     const textParts = splitText(text, [...separatorActions.keys()]);
-
     const segments: Array<{
         type: S | undefined,
         text: string,
@@ -672,7 +576,6 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
     }> = [];
     const stack: S[] = [];
     const stackSet = new Set<S>();
-
     const pushTextToLastSegment = (text: string) => {
         const lastSegment = segments.at(-1);
         if (lastSegment != null && !lastSegment.ended)
@@ -684,7 +587,6 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
                 ended: false
             });
     };
-
     for (const item of textParts) {
         if (typeof item === "string" || !separatorActions.has(item.separator))
             pushTextToLastSegment(
@@ -694,12 +596,10 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
             );
         else {
             const action = separatorActions.get(item.separator)!;
-
             if (action.type === "closeAll") {
                 while (stack.length > 0) {
                     const segmentType = stack.pop()!;
                     stackSet.delete(segmentType);
-
                     const lastSegment = segments.at(-1);
                     if (lastSegment != null && lastSegment.type != undefined && lastSegment.type === segmentType)
                         lastSegment.ended = true;
@@ -710,7 +610,6 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
                 if (!stackSet.has(action.segmentType)) {
                     stack.push(action.segmentType);
                     stackSet.add(action.segmentType);
-
                     segments.push({type: action.segmentType, text: "", ended: false});
                 } else
                     pushTextToLastSegment(item.separator);
@@ -720,7 +619,6 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
                     const lastSegment = segments.at(-1);
                     if (lastSegment != null && lastSegment.type != null && lastSegment.type === action.segmentType) {
                         lastSegment.ended = true;
-
                         stack.pop();
                         stackSet.delete(action.segmentType);
                     } else
@@ -733,7 +631,6 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
                         for (let i = stack.length - 1; i >= segmentTypeIndex; i--) {
                             const segmentType = stack.pop()!;
                             stackSet.delete(segmentType);
-
                             segments.push({type: segmentType, text: "", ended: true});
                         }
                     }
@@ -741,6 +638,5 @@ function segmentModelResponseText<const S extends ChatModelSegmentType = ChatMod
             }
         }
     }
-
     return segments;
 }

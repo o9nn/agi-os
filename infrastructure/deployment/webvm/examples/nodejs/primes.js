@@ -1,5 +1,4 @@
 (function () {
-
 function isPrime(p) {
     const upper = Math.sqrt(p);
     for(let i = 2; i <= upper; i++) {
@@ -9,8 +8,6 @@ function isPrime(p) {
     }
     return true;
 }
-
-// Return n-th prime
 function prime(n) {
     if (n < 1) {
         throw Error("n too small: " + n);
@@ -25,7 +22,5 @@ function prime(n) {
     }
     return result;
 }
-
 console.log("your prime is ", prime(100000));
-
 }());

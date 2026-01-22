@@ -2,11 +2,8 @@ import { clean } from '@xsai/shared'
 import { tool } from '@xsai/tool'
 import { description, object, pipe, string } from 'valibot'
 import { describe, expect, it } from 'vitest'
-
 import type { StreamTextEvent } from '../src/types/event'
-
 import { streamText } from '../src'
-
 describe('@xsai/stream-text tool', async () => {
   it('basic tool calls', async () => {
     const add = await tool({
@@ -24,7 +21,6 @@ describe('@xsai/stream-text tool', async () => {
         ),
       }),
     })
-
     const { fullStream, steps } = streamText({
       baseURL: 'http://localhost:11434/v1/',
       maxSteps: 2,
@@ -43,28 +39,23 @@ describe('@xsai/stream-text tool', async () => {
       toolChoice: 'required',
       tools: [add],
     })
-
     const events: StreamTextEvent[] = []
     for await (const event of fullStream) {
-      // eslint-disable-next-line @masknet/type-no-force-cast-via-top-type
       events.push(clean({
         ...event,
         toolCallId: undefined,
       }) as unknown as StreamTextEvent)
     }
-
     expect(events.find(e => e.type === 'tool-call-streaming-start')).toStrictEqual({
       toolName: 'add',
       type: 'tool-call-streaming-start',
     })
-
     expect(events.find(e => e.type === 'tool-call')).toStrictEqual({
       args: '{"a":"114514","b":"1919810"}',
       toolCallType: 'function',
       toolName: 'add',
       type: 'tool-call',
     })
-
     expect(events.find(e => e.type === 'tool-result')).toStrictEqual({
       args: {
         a: '114514',
@@ -74,14 +65,11 @@ describe('@xsai/stream-text tool', async () => {
       toolName: 'add',
       type: 'tool-result',
     })
-
     const allSteps = await steps
-
     const cleanToolCallId = (obj: object) => clean({
       ...obj,
       toolCallId: undefined,
     })
-
     expect(allSteps.length).toBe(2)
     expect(allSteps[0].toolCalls.map(cleanToolCallId)).toStrictEqual([
       {

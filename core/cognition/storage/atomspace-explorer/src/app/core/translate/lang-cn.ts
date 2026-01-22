@@ -1,6 +1,4 @@
-// Chinese
 export const LANG_CN_NAME = 'cn';
-
 export const LANG_CN_TRANS = {
     'Visualize': '想像',
     'Fetch': '取',

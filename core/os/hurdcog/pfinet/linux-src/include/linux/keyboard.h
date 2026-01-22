@@ -1,6 +1,5 @@
 #ifndef __LINUX_KEYBOARD_H
 #define __LINUX_KEYBOARD_H
-
 #define KG_SHIFT	0
 #define KG_CTRL		2
 #define KG_ALT		3
@@ -10,15 +9,10 @@
 #define KG_CTRLL	6
 #define KG_CTRLR	7
 #define KG_CAPSSHIFT	8
-
 #define NR_SHIFT	9
-
 #define NR_KEYS		128
 #define MAX_NR_KEYMAPS	256
-/* This means 64Kb if all keymaps are allocated. Only the superuser
-	may increase the number of keymaps beyond MAX_NR_OF_USER_KEYMAPS. */
-#define MAX_NR_OF_USER_KEYMAPS 256 	/* should be at least 7 */
-
+#define MAX_NR_OF_USER_KEYMAPS 256
 #ifdef __KERNEL__
 extern const int NR_TYPES;
 extern const int max_vals[];
@@ -27,11 +21,9 @@ extern unsigned short plain_map[NR_KEYS];
 extern struct wait_queue * keypress_wait;
 extern unsigned char keyboard_type;
 #endif
-
-#define MAX_NR_FUNC	256	/* max nr of strings assigned to keys */
-
-#define KT_LATIN	0	/* we depend on this being zero */
-#define KT_LETTER	11	/* symbol that can be acted upon by CapsLock */
+#define MAX_NR_FUNC	256
+#define KT_LATIN	0
+#define KT_LETTER	11
 #define KT_FN		1
 #define KT_SPEC		2
 #define KT_PAD		3
@@ -43,11 +35,9 @@ extern unsigned char keyboard_type;
 #define KT_ASCII	9
 #define KT_LOCK		10
 #define KT_SLOCK	12
-
 #define K(t,v)		(((t)<<8)|(v))
 #define KTYP(x)		((x) >> 8)
 #define KVAL(x)		((x) & 0xff)
-
 #define K_F1		K(KT_FN,0)
 #define K_F2		K(KT_FN,1)
 #define K_F3		K(KT_FN,2)
@@ -72,8 +62,8 @@ extern unsigned char keyboard_type;
 #define K_INSERT	K(KT_FN,21)
 #define K_REMOVE	K(KT_FN,22)
 #define K_SELECT	K(KT_FN,23)
-#define K_PGUP		K(KT_FN,24) /* PGUP is a synonym for PRIOR */
-#define K_PGDN		K(KT_FN,25) /* PGDN is a synonym for NEXT */
+#define K_PGUP		K(KT_FN,24)
+#define K_PGDN		K(KT_FN,25)
 #define K_MACRO	 	K(KT_FN,26)
 #define K_HELP		K(KT_FN,27)
 #define K_DO		K(KT_FN,28)
@@ -304,8 +294,6 @@ extern unsigned char keyboard_type;
 #define K_F244		K(KT_FN,253)
 #define K_F245		K(KT_FN,254)
 #define K_UNDO		K(KT_FN,255)
-
-
 #define K_HOLE		K(KT_SPEC,0)
 #define K_ENTER		K(KT_SPEC,1)
 #define K_SH_REGS	K(KT_SPEC,2)
@@ -326,10 +314,8 @@ extern unsigned char keyboard_type;
 #define K_INCRCONSOLE	K(KT_SPEC,17)
 #define K_SPAWNCONSOLE	K(KT_SPEC,18)
 #define K_BARENUMLOCK	K(KT_SPEC,19)
-
-#define K_ALLOCATED	K(KT_SPEC,126) /* dynamically allocated keymap */
-#define K_NOSUCHMAP	K(KT_SPEC,127) /* returned by KDGKBENT */
-
+#define K_ALLOCATED	K(KT_SPEC,126)
+#define K_NOSUCHMAP	K(KT_SPEC,127)
 #define K_P0		K(KT_PAD,0)
 #define K_P1		K(KT_PAD,1)
 #define K_P2		K(KT_PAD,2)
@@ -340,33 +326,28 @@ extern unsigned char keyboard_type;
 #define K_P7		K(KT_PAD,7)
 #define K_P8		K(KT_PAD,8)
 #define K_P9		K(KT_PAD,9)
-#define K_PPLUS		K(KT_PAD,10)	/* key-pad plus */
-#define K_PMINUS	K(KT_PAD,11)	/* key-pad minus */
-#define K_PSTAR		K(KT_PAD,12)	/* key-pad asterisk (star) */
-#define K_PSLASH	K(KT_PAD,13)	/* key-pad slash */
-#define K_PENTER	K(KT_PAD,14)	/* key-pad enter */
-#define K_PCOMMA	K(KT_PAD,15)	/* key-pad comma: kludge... */
-#define K_PDOT		K(KT_PAD,16)	/* key-pad dot (period): kludge... */
-#define K_PPLUSMINUS	K(KT_PAD,17)	/* key-pad plus/minus */
-#define K_PPARENL	K(KT_PAD,18)	/* key-pad left parenthesis */
-#define K_PPARENR	K(KT_PAD,19)	/* key-pad right parenthesis */
-
+#define K_PPLUS		K(KT_PAD,10)
+#define K_PMINUS	K(KT_PAD,11)
+#define K_PSTAR		K(KT_PAD,12)
+#define K_PSLASH	K(KT_PAD,13)
+#define K_PENTER	K(KT_PAD,14)
+#define K_PCOMMA	K(KT_PAD,15)
+#define K_PDOT		K(KT_PAD,16)
+#define K_PPLUSMINUS	K(KT_PAD,17)
+#define K_PPARENL	K(KT_PAD,18)
+#define K_PPARENR	K(KT_PAD,19)
 #define NR_PAD		20
-
 #define K_DGRAVE	K(KT_DEAD,0)
 #define K_DACUTE	K(KT_DEAD,1)
 #define K_DCIRCM	K(KT_DEAD,2)
 #define K_DTILDE	K(KT_DEAD,3)
 #define K_DDIERE	K(KT_DEAD,4)
 #define K_DCEDIL	K(KT_DEAD,5)
-
 #define NR_DEAD		6
-
 #define K_DOWN		K(KT_CUR,0)
 #define K_LEFT		K(KT_CUR,1)
 #define K_RIGHT		K(KT_CUR,2)
 #define K_UP		K(KT_CUR,3)
-
 #define K_SHIFT		K(KT_SHIFT,KG_SHIFT)
 #define K_CTRL		K(KT_SHIFT,KG_CTRL)
 #define K_ALT		K(KT_SHIFT,KG_ALT)
@@ -376,7 +357,6 @@ extern unsigned char keyboard_type;
 #define K_CTRLL	 	K(KT_SHIFT,KG_CTRLL)
 #define K_CTRLR	 	K(KT_SHIFT,KG_CTRLR)
 #define K_CAPSSHIFT	K(KT_SHIFT,KG_CAPSSHIFT)
-
 #define K_ASC0		K(KT_ASCII,0)
 #define K_ASC1		K(KT_ASCII,1)
 #define K_ASC2		K(KT_ASCII,2)
@@ -403,9 +383,7 @@ extern unsigned char keyboard_type;
 #define K_HEXd		K(KT_ASCII,23)
 #define K_HEXe		K(KT_ASCII,24)
 #define K_HEXf		K(KT_ASCII,25)
-
 #define NR_ASCII	26
-
 #define K_SHIFTLOCK	K(KT_LOCK,KG_SHIFT)
 #define K_CTRLLOCK	K(KT_LOCK,KG_CTRL)
 #define K_ALTLOCK	K(KT_LOCK,KG_ALT)
@@ -414,7 +392,6 @@ extern unsigned char keyboard_type;
 #define K_SHIFTRLOCK	K(KT_LOCK,KG_SHIFTR)
 #define K_CTRLLLOCK	K(KT_LOCK,KG_CTRLL)
 #define K_CTRLRLOCK	K(KT_LOCK,KG_CTRLR)
-
 #define K_SHIFT_SLOCK	K(KT_SLOCK,KG_SHIFT)
 #define K_CTRL_SLOCK	K(KT_SLOCK,KG_CTRL)
 #define K_ALT_SLOCK	K(KT_SLOCK,KG_ALT)
@@ -423,8 +400,6 @@ extern unsigned char keyboard_type;
 #define K_SHIFTR_SLOCK	K(KT_SLOCK,KG_SHIFTR)
 #define K_CTRLL_SLOCK	K(KT_SLOCK,KG_CTRLL)
 #define K_CTRLR_SLOCK	K(KT_SLOCK,KG_CTRLR)
-
 #define NR_LOCK		8
-
 #define MAX_DIACR	256
 #endif

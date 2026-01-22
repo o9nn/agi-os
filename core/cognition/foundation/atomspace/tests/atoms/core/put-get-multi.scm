@@ -1,8 +1,6 @@
 (use-modules (opencog) (opencog exec))
-
 (Inheritance (Concept "Jim") (Concept "Father"))
 (Inheritance (Concept "Jane") (Concept "Mother"))
-
 (define put-get-multi
 	(PutLink
 		(LambdaLink
@@ -18,7 +16,6 @@
 				(Inheritance (Variable "$X") (Concept "Father")))
 			(GetLink (TypedVariable (Variable "$X") (Type 'ConceptNode))
 				(Inheritance (Variable "$X") (Concept "Mother"))))))
-
 (define put-get-multi-empty
 	(PutLink
 		(LambdaLink

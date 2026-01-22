@@ -1,6 +1,3 @@
-;; KB for testing the full deduction rule
-
-;; Premises
 (define P (Predicate "P"))
 (define Q (Predicate "Q"))
 (define R (Predicate "R"))
@@ -10,6 +7,4 @@
 (define PQ (Implication PQ-tv P Q))
 (define PQR (Implication PQR-tv (And P Q) R))
 (define PNQR (Implication PNQR-tv (And P (Not Q)) R))
-
-;; Conclusion
 (define conclusion (Implication P R))

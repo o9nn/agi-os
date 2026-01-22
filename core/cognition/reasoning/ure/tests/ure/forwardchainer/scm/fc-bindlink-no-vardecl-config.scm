@@ -4,15 +4,12 @@
     (Concept "dog")
   )
 )
-
 (define YZ
   (Member
     (Concept "dog")
     (Concept "animal")
   )
 )
-
-;;Rule without Variable Declaration
 (define rule
   (BindLink
     (And
@@ -31,12 +28,10 @@
     )
   )
 )
-
 (define rule-name
   (DefinedSchema "rule"))
 (Define rule-name
   rule)
-
 (define rbs (Concept "URE"))
 (ure-add-rules rbs
                (list

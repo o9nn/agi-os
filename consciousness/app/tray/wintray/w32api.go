@@ -1,18 +1,12 @@
-//go:build windows
-
 package wintray
-
 import (
 	"runtime"
-
 	"golang.org/x/sys/windows"
 )
-
 var (
 	k32 = windows.NewLazySystemDLL("Kernel32.dll")
 	u32 = windows.NewLazySystemDLL("User32.dll")
 	s32 = windows.NewLazySystemDLL("Shell32.dll")
-
 	pCreatePopupMenu       = u32.NewProc("CreatePopupMenu")
 	pCreateWindowEx        = u32.NewProc("CreateWindowExW")
 	pDefWindowProc         = u32.NewProc("DefWindowProcW")
@@ -39,16 +33,15 @@ var (
 	pUnregisterClass       = u32.NewProc("UnregisterClassW")
 	pUpdateWindow          = u32.NewProc("UpdateWindow")
 )
-
 const (
 	CS_HREDRAW          = 0x0002
 	CS_VREDRAW          = 0x0001
 	CW_USEDEFAULT       = 0x80000000
-	IDC_ARROW           = 32512 // Standard arrow
+	IDC_ARROW           = 32512 
 	IDI_APPLICATION     = 32512
-	IMAGE_ICON          = 1          // Loads an icon
-	LR_DEFAULTSIZE      = 0x00000040 // Loads default-size icon for windows(SM_CXICON x SM_CYICON) if cx, cy are set to zero
-	LR_LOADFROMFILE     = 0x00000010 // Loads the stand-alone image from the file
+	IMAGE_ICON          = 1          
+	LR_DEFAULTSIZE      = 0x00000040 
+	LR_LOADFROMFILE     = 0x00000010 
 	MF_BYCOMMAND        = 0x00000000
 	MFS_DISABLED        = 0x00000003
 	MFT_SEPARATOR       = 0x00000800
@@ -78,14 +71,9 @@ const (
 	WS_SYSMENU          = 0x00080000
 	WS_THICKFRAME       = 0x00040000
 )
-
-// Not sure if this is actually needed on windows
 func init() {
 	runtime.LockOSThread()
 }
-
-// The POINT structure defines the x- and y- coordinates of a point.
-// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805(v=vs.85).aspx
 type point struct {
 	X, Y int32
 }

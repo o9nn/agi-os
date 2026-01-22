@@ -1,14 +1,10 @@
 import type { LoadingManager } from 'three'
-
 import { VmdObject } from 'babylon-mmd/esm/Loader/Parser/vmdObject'
 import { FileLoader, Loader } from 'three'
-
-/** @experimental */
 export class VMDLoader extends Loader<VmdObject> {
   constructor(manager?: LoadingManager) {
     super(manager)
   }
-
   public load(
     url: string,
     onLoad: (object: VmdObject) => void,
@@ -27,7 +23,6 @@ export class VMDLoader extends Loader<VmdObject> {
       onError as (error: unknown) => void,
     )
   }
-
   public async loadAsync(
     url: string,
     onProgress?: (event: ProgressEvent) => void,

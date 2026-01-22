@@ -1,7 +1,4 @@
-//go:build integration && models
-
 package integration
-
 import (
 	"bytes"
 	"context"
@@ -10,10 +7,8 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func TestQuantization(t *testing.T) {
 	sourceModels := []string{
 		"qwen2.5:0.5b-instruct-fp16",
@@ -31,7 +26,6 @@ func TestQuantization(t *testing.T) {
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
 	for _, base := range sourceModels {
 		if err := PullIfMissing(ctx, client, base); err != nil {
 			t.Fatalf("pull failed %s", err)
@@ -48,7 +42,6 @@ func TestQuantization(t *testing.T) {
 					From:         base,
 				}
 				fn := func(resp api.ProgressResponse) error {
-					// fmt.Print(".")
 					return nil
 				}
 				t.Logf("quantizing: %s -> %s", base, quant)
@@ -64,7 +57,6 @@ func TestQuantization(t *testing.T) {
 						t.Logf("failed to clean up %s: %s", req.Model, err)
 					}
 				}()
-				// Check metadata on the model
 				resp, err := client.Show(ctx, &api.ShowRequest{Name: newName})
 				if err != nil {
 					t.Fatalf("unable to show model: %s", err)
@@ -72,7 +64,6 @@ func TestQuantization(t *testing.T) {
 				if !strings.Contains(resp.Details.QuantizationLevel, quant) {
 					t.Fatalf("unexpected quantization for %s:\ngot: %s", newName, resp.Details.QuantizationLevel)
 				}
-
 				stream := true
 				genReq := api.GenerateRequest{
 					Model:     newName,
@@ -85,9 +76,6 @@ func TestQuantization(t *testing.T) {
 					Stream: &stream,
 				}
 				t.Logf("verifying: %s -> %s", base, quant)
-
-				// Some smaller quantizations can cause models to have poor quality
-				// or get stuck in repetition loops, so we stop as soon as we have any matches
 				anyResp := []string{"rayleigh", "scattering", "day", "sun", "moon", "color", "nitrogen", "oxygen"}
 				reqCtx, reqCancel := context.WithCancel(ctx)
 				atLeastOne := false
@@ -105,14 +93,12 @@ func TestQuantization(t *testing.T) {
 					}
 					return nil
 				}
-
 				done := make(chan int)
 				var genErr error
 				go func() {
 					genErr = client.Generate(reqCtx, &genReq, genfn)
 					done <- 0
 				}()
-
 				select {
 				case <-done:
 					if genErr != nil && !atLeastOne {
@@ -121,9 +107,7 @@ func TestQuantization(t *testing.T) {
 				case <-ctx.Done():
 					t.Error("outer test context done while waiting for generate")
 				}
-
 				t.Logf("passed")
-
 			})
 		}
 	}

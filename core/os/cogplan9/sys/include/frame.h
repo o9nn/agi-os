@@ -1,56 +1,50 @@
 #pragma	src	"/sys/src/libframe"
 #pragma	lib	"libframe.a"
-
 typedef struct Frbox Frbox;
 typedef struct Frame Frame;
-
 enum{
-	BACK,
-	HIGH,
-	BORD,
-	TEXT,
-	HTEXT,
-	NCOL
+BACK,
+HIGH,
+BORD,
+TEXT,
+HTEXT,
+NCOL
 };
-
 #define	FRTICKW	3
-
 struct Frbox
 {
-	long		wid;		/* in pixels */
-	long		nrune;		/* <0 ==> negate and treat as break char */
-	union{
-		uchar	*ptr;
-		struct{
-			short	bc;	/* break char */
-			short	minwid;
-		};
-	};
+long		wid;
+long		nrune;
+union{
+uchar	*ptr;
+struct{
+short	bc;
+short	minwid;
 };
-
+};
+};
 struct Frame
 {
-	Font		*font;		/* of chars in the frame */
-	Display		*display;	/* on which frame appears */
-	Image		*b;		/* on which frame appears */
-	Image		*cols[NCOL];	/* text and background colors */
-	Rectangle	r;		/* in which text appears */
-	Rectangle	entire;		/* of full frame */
-	void			(*scroll)(Frame*, int);	/* scroll function provided by application */
-	Frbox		*box;
-	ulong		p0, p1;		/* selection */
-	ushort		nbox, nalloc;
-	ushort		maxtab;		/* max size of tab, in pixels */
-	ushort		nchars;		/* # runes in frame */
-	ushort		nlines;		/* # lines with text */
-	ushort		maxlines;	/* total # lines in frame */
-	ushort		lastlinefull;	/* last line fills frame */
-	ushort		modified;	/* changed since frselect() */
-	Image		*tick;	/* typing tick */
-	Image		*tickback;	/* saved image under tick */
-	int			ticked;	/* flag: is tick onscreen? */
+Font		*font;
+Display		*display;
+Image		*b;
+Image		*cols[NCOL];
+Rectangle	r;
+Rectangle	entire;
+void			(*scroll)(Frame*, int);
+Frbox		*box;
+ulong		p0, p1;
+ushort		nbox, nalloc;
+ushort		maxtab;
+ushort		nchars;
+ushort		nlines;
+ushort		maxlines;
+ushort		lastlinefull;
+ushort		modified;
+Image		*tick;
+Image		*tickback;
+int			ticked;
 };
-
 ulong	frcharofpt(Frame*, Point);
 Point	frptofchar(Frame*, ulong);
 int	frdelete(Frame*, ulong, ulong);
@@ -62,7 +56,6 @@ Point frdrawsel0(Frame*, Point, ulong, ulong, Image*, Image*);
 void	frinit(Frame*, Rectangle, Font*, Image*, Image**);
 void	frsetrects(Frame*, Rectangle, Image*);
 void	frclear(Frame*, int);
-
 uchar	*_frallocstr(Frame*, unsigned);
 void	_frinsure(Frame*, int, unsigned);
 Point	_frdraw(Frame*, Point);
@@ -88,6 +81,5 @@ int	_frstrlen(Frame*, int);
 void	frtick(Frame*, Point, int);
 void	frinittick(Frame*);
 void	frredraw(Frame*);
-
 #define	NRUNE(b)	((b)->nrune<0? 1 : (b)->nrune)
 #define	NBYTE(b)	strlen((char*)(b)->ptr)

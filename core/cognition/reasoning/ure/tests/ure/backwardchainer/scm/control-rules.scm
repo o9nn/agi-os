@@ -1,4 +1,3 @@
-;; Context-free control rules for inference rule-1
 (ImplicationScopeLink (stv 0.5 0.0025)
    (VariableList
       (VariableNode "$T")
@@ -27,8 +26,6 @@
       (ListLink
          (VariableNode "$B")
          (VariableNode "$T"))))
-
-;; Context-sensitive control rules for inference rule-2
 (ImplicationScopeLink (stv 1 0.001)
    (VariableList
       (VariableNode "$T")
@@ -59,9 +56,6 @@
       (ListLink
          (VariableNode "$B")
          (VariableNode "$T"))))
-
-;; Context-sensitive control rules for inference rule-3
-;; This time the context is on target of preproof-of
 (ImplicationScopeLink (stv 1 0.005)
   (VariableList
     (VariableNode "$PM-10c3adf6-5785115b")

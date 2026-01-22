@@ -1,6 +1,3 @@
-/*
- * sorted by 4,/^$/|sort -bd +1
- */
 int	fqid(int fd, Qid *qid);
 int	BNList(Biobuf *b, NList *nl, char *sep);
 int	BSList(Biobuf *b, SList *sl, char *sep);
@@ -112,14 +109,11 @@ int	subscribe(char *mbox, int how);
 void	wrImpFlags(char *buf, int flags, int killRecent);
 void	writeErr(void);
 void	writeFlags(Biobuf *b, Msg *m, int recentOk);
-
 #pragma	varargck argpos	bye		1
 #pragma	varargck argpos	debuglog	1
-
 #define	MK(t)		((t*)emalloc(sizeof(t)))
 #define	MKZ(t)		((t*)ezmalloc(sizeof(t)))
 #define	MKN(t,n)	((t*)emalloc((n)*sizeof(t)))
 #define	MKNZ(t,n)	((t*)ezmalloc((n)*sizeof(t)))
 #define	MKNA(t,at,n)	((t*)emalloc(sizeof(t) + (n)*sizeof(at)))
-
 #define STRLEN(cs)	(sizeof(cs)-1)

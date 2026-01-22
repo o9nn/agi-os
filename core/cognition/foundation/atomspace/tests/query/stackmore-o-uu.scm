@@ -1,16 +1,3 @@
-;
-; stackmore-o-uu.scm
-;
-;; The matching solution, and the bind link are in the middle 
-;; of this file, so that the pattern matcher doesn't accidentally
-;; start searching with the correct solution first, just because
-;; we loaded it into the atomspace first. Its down in the middle
-;; of this file ...
-
-;; Just like stackmore-o-u.scm except that there are 4 items
-;; in the unordered link
-
-;; this should not match.
 (InheritanceLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -27,8 +14,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -44,8 +29,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -62,8 +45,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -80,8 +61,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(FeatureNode "here kitty kitty")
@@ -98,8 +77,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(ConceptNode "big idea")
@@ -116,12 +93,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; Should match to this, and only this.
-;; Put this in the middle of the file, so that its kind-of
-;; randomized in the atomspace -- i.e. not at the beginning (lowest
-;; handle uuid's) nor at the end (highest handle numbers) of the
-;; atomspace
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -138,8 +109,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -155,8 +124,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (FeatureLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -173,8 +140,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -191,8 +156,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SemeNode "ActivationModulatorUpdater")
 	(ConceptNode "big idea")
@@ -209,8 +172,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -227,15 +188,12 @@
 		(NumberNode "3.0")
 	)
 )
-
 (define (bind_ouu)
 	(BindLink
-		;; variable decls
 		(VariableList
 			(VariableNode "$var_number")
 			(VariableNode "$var_schema")
 		)
-		;; body
 		(MemberLink
 			(VariableNode "$var_schema")
 			(VariableNode "$var_number")
@@ -252,15 +210,12 @@
 				(NumberNode "1.0")
 			)
 		)
-		;; implicand -- result
 		(ListLink
 			(VariableNode "$var_number")
 			(VariableNode "$var_schema")
 		)
 	)
 )
-
-;; this should not match.
 (SubsetLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -277,8 +232,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(WordNode "bird is the word")
 	(NumberNode "0.24")
@@ -295,8 +248,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -313,8 +264,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(SchemaNode "ActivationModulatorUpdater")
 	(NumberNode "0.24")
@@ -331,8 +280,6 @@
 		(NumberNode "3.0")
 	)
 )
-
-;; this should not match.
 (MemberLink
 	(PrepositionalRelationshipNode "Big Red Button")
 	(NumberNode "0.24")
@@ -349,4 +296,3 @@
 		(NumberNode "3.0")
 	)
 )
-

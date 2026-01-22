@@ -1,30 +1,21 @@
 #!/bin/bash
-
 echo "=== GNU Mach PCI Modernization Implementation Validation ==="
 echo
-
-# Check if the key files were modified
 echo "1. Checking implementation files..."
 if [ -f "linux/src/include/linux/pci.h" ]; then
     echo "✓ PCI header file exists"
-    
-    # Check for PCIe constants
     if grep -q "PCI_CAP_ID_EXP" linux/src/include/linux/pci.h; then
         echo "✓ PCIe capability constants added"
     else
         echo "✗ PCIe capability constants missing"
         exit 1
     fi
-    
-    # Check for resource management 
     if grep -q "PCI_IORESOURCE" linux/src/include/linux/pci.h; then
         echo "✓ Resource management constants added"
     else
         echo "✗ Resource management constants missing"
         exit 1
     fi
-    
-    # Check for new functions
     if grep -q "pci_find_capability" linux/src/include/linux/pci.h; then
         echo "✓ PCIe capability functions declared"
     else
@@ -35,27 +26,22 @@ else
     echo "✗ PCI header file not found"
     exit 1
 fi
-
 echo
 echo "2. Checking PCI driver implementation..."
 if [ -f "linux/src/drivers/pci/pci.c" ]; then
     echo "✓ PCI driver file exists"
-    
-    # Check for implementation functions
     if grep -q "pci_find_capability" linux/src/drivers/pci/pci.c; then
         echo "✓ PCIe capability detection implemented"
     else
         echo "✗ PCIe capability detection not implemented"
         exit 1
     fi
-    
     if grep -q "pci_request_regions" linux/src/drivers/pci/pci.c; then
         echo "✓ Resource management functions implemented"
     else
         echo "✗ Resource management functions not implemented"
         exit 1
     fi
-    
     if grep -q "pci_setup_device_resources" linux/src/drivers/pci/pci.c; then
         echo "✓ Device resource setup implemented"
     else
@@ -66,7 +52,6 @@ else
     echo "✗ PCI driver file not found"
     exit 1
 fi
-
 echo
 echo "3. Running test suite..."
 cd /tmp
@@ -87,7 +72,6 @@ if [ -f "test_pci_comprehensive.c" ]; then
 else
     echo "✗ Test suite not available"
 fi
-
 echo
 echo "=== IMPLEMENTATION VALIDATION SUCCESSFUL ==="
 echo

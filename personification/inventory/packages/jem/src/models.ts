@@ -1,7 +1,4 @@
-// Auto-generated file. Do not edit.
-
 import type { Model } from './types.ts'
-
 export const models = [
   {
     modelId: 'MiniMax-Text-01',

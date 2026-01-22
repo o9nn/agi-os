@@ -1,13 +1,3 @@
-/*
- * Support for source maps in V8 stack traces
- * https://github.com/evanw/node-source-map-support
- */
-/*
- The buffer module from node.js, for the browser.
-
- @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- license  MIT
-*/
 ;(
   this.define ||
   function (R, U) {
@@ -211,7 +201,6 @@
                     ''
                   );
                   0 !== a.length % 4;
-
                 )
                   a += '='
               y = e.byteLength(a, b)
@@ -1514,7 +1503,6 @@
                 for (
                   k = n.originalColumn;
                   n && n.originalLine === u && n.originalColumn == k;
-
                 )
                   g.push({
                     line: f.getArg(n, 'generatedLine', null),
@@ -1595,7 +1583,6 @@
                 N,
                 P;
               L < D;
-
             )
               if (';' === k.charAt(L)) d++, L++, (g = 0)
               else if (',' === k.charAt(L)) L++
@@ -1714,7 +1701,7 @@
               if (g[n] == k) return this.sourcesContent[n]
             let v
             if (null != this.sourceRoot && (v = f.urlParse(this.sourceRoot))) {
-              g = d.replace(/^file:\/\//, '')
+              g = d.replace(/^file:\/\
               if ('file' == v.scheme && this._sources.has(g))
                 return this.sourcesContent[this._sources.indexOf(g)]
               if ((!v.path || '/' == v.path) && this._sources.has('/' + d))
@@ -2322,7 +2309,7 @@
           function p(d) {
             let g = ''
             d.scheme && (g += d.scheme + ':')
-            g += '//'
+            g += '
             d.auth && (g += d.auth + '@')
             d.host && (g += d.host)
             d.port && (g += ':' + d.port)
@@ -2425,115 +2412,7 @@
               const v = d.lastIndexOf('/')
               if (0 > v) return g
               d = d.slice(0, v)
-              if (d.match(/^([^\/]+:\/)?\/*$/)) return g
-              ++n
-            }
-            return Array(n + 1).join('../') + g.substr(d.length + 1)
-          }
-          C = !('__proto__' in Object.create(null))
-          A.toSetString = C ? f : c
-          A.fromSetString = C ? f : l
-          A.compareByOriginalPositions = function (d, g, n) {
-            let v = r(d.source, g.source)
-            if (0 !== v) return v
-            v = d.originalLine - g.originalLine
-            if (0 !== v) return v
-            v = d.originalColumn - g.originalColumn
-            if (0 !== v || n) return v
-            v = d.generatedColumn - g.generatedColumn
-            if (0 !== v) return v
-            v = d.generatedLine - g.generatedLine
-            return 0 !== v ? v : r(d.name, g.name)
-          }
-          A.compareByGeneratedPositionsDeflated = function (d, g, n) {
-            let v = d.generatedLine - g.generatedLine
-            if (0 !== v) return v
-            v = d.generatedColumn - g.generatedColumn
-            if (0 !== v || n) return v
-            v = r(d.source, g.source)
-            if (0 !== v) return v
-            v = d.originalLine - g.originalLine
-            if (0 !== v) return v
-            v = d.originalColumn - g.originalColumn
-            return 0 !== v ? v : r(d.name, g.name)
-          }
-          A.compareByGeneratedPositionsInflated = function (d, g) {
-            let n = d.generatedLine - g.generatedLine
-            if (0 !== n) return n
-            n = d.generatedColumn - g.generatedColumn
-            if (0 !== n) return n
-            n = r(d.source, g.source)
-            if (0 !== n) return n
-            n = d.originalLine - g.originalLine
-            if (0 !== n) return n
-            n = d.originalColumn - g.originalColumn
-            return 0 !== n ? n : r(d.name, g.name)
-          }
-          A.parseSourceMapInput = function (d) {
-            return JSON.parse(d.replace(/^\)]}'[^\n]*\n/, ''))
-          }
-          A.computeSourceURL = function (d, g, n) {
-            g = g || ''
-            d &&
-              ('/' !== d[d.length - 1] && '/' !== g[0] && (d += '/'),
-              (g = d + g))
-            if (n) {
-              d = e(n)
-              if (!d) throw Error('sourceMapURL could not be parsed')
-              d.path &&
-                ((n = d.path.lastIndexOf('/')),
-                0 <= n && (d.path = d.path.substring(0, n + 1)))
-              g = m(p(d), g)
-            }
-            return t(g)
-          }
-        },
-        {},
-      ],
-      20: [
-        function (C, J, A) {
-          A.SourceMapGenerator = C(
-            './lib/source-map-generator'
-          ).SourceMapGenerator
-          A.SourceMapConsumer = C('./lib/source-map-consumer').SourceMapConsumer
-          A.SourceNode = C('./lib/source-node').SourceNode
-        },
-        {
-          './lib/source-map-consumer': 16,
-          './lib/source-map-generator': 17,
-          './lib/source-node': 18,
-        },
-      ],
-      21: [
-        function (C, J, A) {
-          ;(function (e) {
-            function p() {
-              return 'browser' === a
-                ? !0
-                : 'node' === a
-                  ? !1
-                  : 'undefined' !== typeof window &&
-                    'function' === typeof XMLHttpRequest &&
-                    !(
-                      window.require &&
-                      window.module &&
-                      window.process &&
-                      'renderer' === window.process.type
-                    )
-            }
-            function t(x) {
-              return function (B) {
-                for (let F = 0; F < x.length; F++) {
-                  const E = x[F](B)
-                  if (E) return E
-                }
-                return null
-              }
-            }
-            function m(x, B) {
-              if (!x) return B
-              let F = n.dirname(x),
-                E = /^\w+:\/\/[^\/]*/.exec(F)
+              if (d.match(/^([^\/]+:\/)?\.exec(F)
               E = E ? E[0] : ''
               const H = F.slice(E.length)
               return E && /^\/\w:/.test(H)

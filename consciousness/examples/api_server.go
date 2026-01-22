@@ -1,8 +1,4 @@
-//go:build examples
-// +build examples
-
 package main
-
 import (
 	"context"
 	"fmt"
@@ -10,55 +6,39 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/orchestration"
 )
-
 func main() {
 	fmt.Println("🌊 Deep Tree Echo API Server")
 	fmt.Println("============================")
 	fmt.Println()
-
-	// Initialize orchestration engine
 	client := api.Client{}
 	engine := orchestration.NewEngine(client)
 	ctx := context.Background()
-
-	// Register default tools and plugins
 	orchestration.RegisterDefaultTools(engine)
 	orchestration.RegisterDefaultPlugins(engine)
-
-	// Initialize Deep Tree Echo system
 	fmt.Println("🧠 Initializing Deep Tree Echo System...")
 	err := engine.InitializeDeepTreeEcho(ctx)
 	if err != nil {
 		log.Fatalf("Failed to initialize Deep Tree Echo: %v", err)
 	}
 	fmt.Println("✅ Deep Tree Echo system initialized")
-
-	// Create some default agents
 	fmt.Println("🤖 Creating default agents...")
 	_, err = engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeReflective, "self-analysis")
 	if err != nil {
 		log.Printf("Warning: Failed to create reflective agent: %v", err)
 	}
-
 	_, err = engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeOrchestrator, "coordination")
 	if err != nil {
 		log.Printf("Warning: Failed to create orchestrator agent: %v", err)
 	}
-
 	_, err = engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeSpecialist, "cognitive-computing")
 	if err != nil {
 		log.Printf("Warning: Failed to create specialist agent: %v", err)
 	}
-
 	fmt.Println("✅ Default agents created")
-
-	// Create and start API server
 	server := orchestration.NewAPIServer(engine)
-
 	fmt.Println("🌐 Starting API server on port 8080...")
 	fmt.Println()
 	fmt.Println("📍 Available endpoints:")
@@ -79,20 +59,15 @@ func main() {
 	fmt.Println("   GET  /api/orchestration/tools           - Get available tools")
 	fmt.Println("   GET  /api/orchestration/plugins         - Get available plugins")
 	fmt.Println()
-	fmt.Println("🚀 Server ready at http://localhost:8080")
+	fmt.Println("🚀 Server ready at http:
 	fmt.Println()
-
-	// Handle graceful shutdown
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-
 	go func() {
 		<-c
 		fmt.Println("\n\n🛑 Shutting down server...")
 		os.Exit(0)
 	}()
-
-	// Start server
 	if err := server.Run(8080); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}

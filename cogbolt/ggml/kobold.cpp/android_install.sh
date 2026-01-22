@@ -1,34 +1,26 @@
 #!/bin/bash
-
-# Exit on any error
 set -e
-
 if [ "$(uname -o)" != "Android" ]; then
 echo "Error: This script is only intended for Termux on Android!"
 exit 1
 fi
-
 echo "--------------------------------------------"
 echo "KoboldCPP Quick Installer for Termux (Android only!)"
 echo "--------------------------------------------"
-if [ $# -ge 1 ]; then
+if [ $
     choice="$1"
     echo "Using command-line argument: $choice"
-# Check if running interactively (terminal input)
 elif [ -t 0 ]; then
-    # Running interactively
     echo "[1] - Proceed to install and launch with default model Gemma3-1B"
     echo "[2] - Proceed to install without a model, you can download one later."
     echo "[3] - Exit script"
     echo "--------------------------------------------"
     read -p "Enter your choice [1-3]: " choice
 else
-    # Non-interactive, default to choice 1
     echo "Defaulting to normal install and model download. Run script interactively for other options. Install will start in 3 seconds."
     choice="1"
     sleep 3
 fi
-
 if [ "$choice" = "3" ]; then
     echo "Exiting script. Goodbye!"
     exit 0
@@ -42,7 +34,6 @@ else
     echo "Invalid choice. Exiting."
     exit 1
 fi
-
 echo "[*] Checking Dependencies..."
 check_wget=$(command -v wget || true)
 check_git=$(command -v git || true)
@@ -56,14 +47,11 @@ else
     pkg install -y wget git python
     pkg upgrade -o Dpkg::Options::="--force-confold" -y
 fi
-
-# Determine script directory (works for both curl|sh and ./install.sh)
 if [ -f "$0" ]; then
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"  # Normal execution (./install.sh)
+    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 else
-    SCRIPT_DIR="$(pwd)"  # Piped execution (curl | sh)
+    SCRIPT_DIR="$(pwd)"
 fi
-# Check if koboldcpp.py already exists nearby
 if [ -f "$SCRIPT_DIR/koboldcpp.py" ]; then
     echo "[*] Detected existing koboldcpp.py in $SCRIPT_DIR"
     KOBOLDCPP_DIR="$SCRIPT_DIR"
@@ -76,8 +64,6 @@ else
     git clone https://github.com/LostRuins/koboldcpp.git
     KOBOLDCPP_DIR="$SCRIPT_DIR/koboldcpp"
 fi
-
-# build if needed
 cd "$KOBOLDCPP_DIR"
 if [ -f "$KOBOLDCPP_DIR/koboldcpp_default.so" ]; then
     echo "[*] Found koboldcpp_default.so — skipping build step."
@@ -85,8 +71,6 @@ else
     echo "[*] Building KoboldCPP now..."
     make -j 2
 fi
-
-# grab model if needed
 echo "[*] Your KoboldCPP Installation is Complete!"
 if [ "$INSTALL_MODEL" = true ]; then
     echo "[*] Downloading Gemma3-1B, a small GGUF model..."

@@ -7,33 +7,26 @@
 #define SCY(A) ((((A) - e1->ymin)*e1->scaley + e1->bottom)+.5)
 #define	SCR(A) ((A)*e1->scalex+.5)
 #define unorm(y)	(double)(e1->sidey - y)
-#define	BIGINT	0x3FFFFFFF	/* a large, but valid, int */
+#define	BIGINT	0x3FFFFFFF
 extern struct penvir {
-	double left, bottom;
-	double xmin, ymin;
-	double scalex, scaley;
-	double sidex, sidey;
-	double copyx, copyy;
-	double quantum;
-	double grade;
-	int pgap;
-	double pslant;
-	int pmode, foregr, backgr;
+double left, bottom;
+double xmin, ymin;
+double scalex, scaley;
+double sidex, sidey;
+double copyx, copyy;
+double quantum;
+double grade;
+int pgap;
+double pslant;
+int pmode, foregr, backgr;
 } *e0, *e1, *esave;
-#define RADIAN 57.3	/* radians per degree */
+#define RADIAN 57.3
 struct seg {
-	int x, y, X, Y;
-	char stat;
+int x, y, X, Y;
+char stat;
 };
-
-/*
- * display parameters
- */
-int clipminx, clipminy, clipmaxx, clipmaxy;	/* clipping rectangle */
-int mapminx, mapminy, mapmaxx, mapmaxy;		/* centered square */
-/*
- * Prototypes
- */
+int clipminx, clipminy, clipmaxx, clipmaxy;
+int mapminx, mapminy, mapmaxx, mapmaxy;
 #include "../plot.h"
 void m_clrwin(int, int, int, int, int);
 void m_finish(void);

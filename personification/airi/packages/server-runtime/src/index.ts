@@ -1,61 +1,43 @@
 import type { WebSocketEvent } from '@proj-airi/server-shared/types'
-
 import type { AuthenticatedPeer, Peer } from './types'
-
 import { env } from 'node:process'
-
 import { availableLogLevelStrings, Format, LogLevel, logLevelStringToLogLevelMap, setGlobalFormat, setGlobalLogLevel, useLogg } from '@guiiai/logg'
 import { defineWebSocketHandler, H3 } from 'h3'
-
 import { WebSocketReadyState } from './types'
-
 setGlobalFormat(Format.Pretty)
 setGlobalLogLevel(LogLevel.Log)
-
 if (env.LOG_LEVEL) {
   const level = env.LOG_LEVEL as typeof availableLogLevelStrings[number]
   if (availableLogLevelStrings.includes(level)) {
     setGlobalLogLevel(logLevelStringToLogLevelMap[level])
   }
 }
-
-// cache token once
 const AUTH_TOKEN = env.AUTHENTICATION_TOKEN || ''
-
-// pre-stringified responses
 const RESPONSES = {
   authenticated: JSON.stringify({ type: 'module:authenticated', data: { authenticated: true } }),
   notAuthenticated: JSON.stringify({ type: 'error', data: { message: 'not authenticated' } }),
 }
-
-// helper send function
 function send(peer: Peer, event: WebSocketEvent<Record<string, unknown>> | string) {
   peer.send(typeof event === 'string' ? event : JSON.stringify(event))
 }
-
 function setupApp(): H3 {
   const appLogger = useLogg('App').useGlobalConfig()
   const websocketLogger = useLogg('WebSocket').useGlobalConfig()
-
   const app = new H3({
     onError: error => appLogger.withError(error).error('an error occurred'),
   })
-
   const peers = new Map<string, AuthenticatedPeer>()
   const peersByModule = new Map<string, Map<number | undefined, AuthenticatedPeer>>()
-
   function registerModulePeer(p: AuthenticatedPeer, name: string, index?: number) {
     if (!peersByModule.has(name)) {
       peersByModule.set(name, new Map())
     }
     const group = peersByModule.get(name)!
     if (group.has(index)) {
-      // log instead of silent overwrite
       websocketLogger.withFields({ name, index }).debug('peer replaced for module')
     }
     group.set(index, p)
   }
-
   function unregisterModulePeer(p: AuthenticatedPeer) {
     if (!p.name)
       return
@@ -67,7 +49,6 @@ function setupApp(): H3 {
       }
     }
   }
-
   app.get('/ws', defineWebSocketHandler({
     open: (peer) => {
       if (AUTH_TOKEN) {
@@ -77,7 +58,6 @@ function setupApp(): H3 {
         peer.send(RESPONSES.authenticated)
         peers.set(peer.id, { peer, authenticated: true, name: '' })
       }
-
       websocketLogger.withFields({ peer: peer.id, activePeers: peers.size }).log('connected')
     },
     message: (peer, message) => {
@@ -90,7 +70,6 @@ function setupApp(): H3 {
         send(peer, { type: 'error', data: { message: `invalid JSON, error: ${errorMessage}` } })
         return
       }
-
       switch (event.type) {
         case 'module:authenticate': {
           if (AUTH_TOKEN && event.data.token !== AUTH_TOKEN) {
@@ -98,7 +77,6 @@ function setupApp(): H3 {
             send(peer, { type: 'error', data: { message: 'invalid token' } })
             return
           }
-
           peer.send(RESPONSES.authenticated)
           const p = peers.get(peer.id)
           if (p) {
@@ -130,10 +108,8 @@ function setupApp(): H3 {
           }
           return
         }
-
         case 'ui:configure': {
           const { moduleName, moduleIndex, config } = event.data
-
           if (moduleName === '') {
             send(peer, { type: 'error', data: { message: 'the field \'moduleName\' can\'t be empty for event \'ui:configure\'' } })
             return
@@ -147,7 +123,6 @@ function setupApp(): H3 {
               return
             }
           }
-
           const target = peersByModule.get(moduleName)?.get(moduleIndex)
           if (target) {
             send(target.peer, { type: 'module:configure', data: { config } })
@@ -158,18 +133,14 @@ function setupApp(): H3 {
           return
         }
       }
-
-      // default case
       const p = peers.get(peer.id)
       if (!p?.authenticated) {
         websocketLogger.withFields({ peer: peer.id }).debug('not authenticated')
         peer.send(RESPONSES.notAuthenticated)
         return
       }
-
       const payload = JSON.stringify(event)
       websocketLogger.withFields({ peer: peer.id, event: payload }).debug('broadcasting event to peers')
-
       for (const [id, other] of peers.entries()) {
         if (id === peer.id) {
           websocketLogger.withFields({ peer: peer.id, event: payload }).debug('not sending event to self')
@@ -193,13 +164,10 @@ function setupApp(): H3 {
       const p = peers.get(peer.id)
       if (p)
         unregisterModulePeer(p)
-
       websocketLogger.withFields({ peer: peer.id, details, activePeers: peers.size }).log('closed')
       peers.delete(peer.id)
     },
   }))
-
   return app
 }
-
 export const app = setupApp() as H3

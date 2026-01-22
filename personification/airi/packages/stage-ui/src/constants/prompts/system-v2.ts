@@ -1,7 +1,5 @@
 import type { SystemMessage } from '@xsai/shared-chat'
-
 import { EMOTION_VALUES } from '../emotions'
-
 function message(prefix: string, suffix: string) {
   return {
     role: 'system',
@@ -12,5 +10,4 @@ function message(prefix: string, suffix: string) {
     ].join('\n\n'),
   } satisfies SystemMessage
 }
-
 export default message

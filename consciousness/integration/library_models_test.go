@@ -1,18 +1,11 @@
-//go:build integration && library
-
 package integration
-
 import (
 	"context"
 	"log/slog"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 )
-
-// First run of this scenario on a target system will take a long time to download
-// ~1.5TB of models.  Set a sufficiently large -timeout for your network speed
 func TestLibraryModelsGenerate(t *testing.T) {
 	softTimeout, hardTimeout := getTimeouts(t)
 	slog.Info("Setting timeouts", "soft", softTimeout, "hard", hardTimeout)
@@ -20,7 +13,6 @@ func TestLibraryModelsGenerate(t *testing.T) {
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
 	chatModels := libraryChatModels
 	for _, model := range chatModels {
 		t.Run(model, func(t *testing.T) {
@@ -40,7 +32,6 @@ func TestLibraryModelsGenerate(t *testing.T) {
 				},
 			}
 			anyResp := []string{"rayleigh", "scatter", "atmosphere", "nitrogen", "oxygen", "wavelength"}
-			// Special cases
 			if model == "duckdb-nsql" {
 				anyResp = []string{"select", "from"}
 			} else if model == "granite3-guardian" || model == "shieldgemma" || model == "llama-guard3" || model == "bespoke-minicheck" {

@@ -1,8 +1,6 @@
 import {describe, expect, test} from "vitest";
 import {ChatHistoryItem, defineChatSessionFunction, FunctionaryChatWrapper} from "../../../src/index.js";
 import {defaultChatSystemPrompt} from "../../../src/config.js";
-
-
 describe("FunctionaryChatWrapper", () => {
     const conversationHistory: ChatHistoryItem[] = [{
         type: "system",
@@ -20,7 +18,6 @@ describe("FunctionaryChatWrapper", () => {
         type: "model",
         response: ["I'm good, how are you?"]
     }];
-
     const functions = {
         getRandomNumber: defineChatSessionFunction({
             description: "Get a random number",
@@ -143,7 +140,6 @@ describe("FunctionaryChatWrapper", () => {
                 }
             },
             handler(params) {
-
             }
         })
     };
@@ -185,108 +181,70 @@ describe("FunctionaryChatWrapper", () => {
             "The total result of rolling the dice twice is 3 + 4 = 7."
         ]
     }];
-
     describe("v2.llama3", () => {
         test("should generate valid context text", () => {
             const chatWrapper = new FunctionaryChatWrapper({variation: "v2.llama3"});
             const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|start_header_id|>system<|end_header_id|>
-
               "),
                 "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "Hi there!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "Hello!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "How are you?",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "I'm good, how are you?",
               ])
             `);
-
             const chatWrapper2 = new FunctionaryChatWrapper({variation: "v2.llama3"});
             const {contextText: contextText2} = chatWrapper2.generateContextState({
                 chatHistory: conversationHistory2,
                 availableFunctions: functions
             });
-
             expect(contextText2).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|start_header_id|>system<|end_header_id|>
-
               "),
-                "// Supported function definitions that should be called when necessary.
+                "
               namespace functions {
-
-              // Get a random number
               type getRandomNumber = (_: {min: number, max: number}) => any;
-
-              // Send a notification to the owner, and create sub notifications
-              type notifyOwner = (_: /* Type: notification */ {message: string, subNotifications: (/* notification type */ any)[]}) => any;
-
-              // Send a notification to the owner, and create sub notifications
-              type notifyOwner2 = (_: /* Type: notification */ {
-                  // Notification message
+              type notifyOwner = (_:  {message: string, subNotifications: ( any)[]}) => any;
+              type notifyOwner2 = (_:  {
                   message: string,
-                  
-                  // Sub notifications
-                  subNotifications: (/* notification type */ any)[]
+                  subNotifications: ( any)[]
               }) => any;
-
-              // Some function
               type func1 = (_: {
-                  // Some message
-                  // minimum length: 3, maximum length: 10
                   message: string,
-                  
-                  // Some words
-                  // maximum items: 5
                   words: [string, string, ...string[]],
-                  
-                  // Some headers
-                  // minimum number of properties: 4, maximum number of properties: 12
                   headers: {[key: string]: string},
-                  
-                  // Some mappings
-                  // minimum number of properties: 4, maximum number of properties: 12
                   mappings: {a: boolean, b: number, c: string | null} & {[key: string]: string}
               }) => any;
-
-              } // namespace functions",
+              } 
                 new SpecialTokensText("<|eot_id|><|start_header_id|>system<|end_header_id|>
-
               "),
                 "The assistant calls functions with appropriate input when necessary. The assistant writes <|stop|> when finished answering.",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>system<|end_header_id|>
-
               "),
                 "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "Hi there!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "Hello!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "Role a dice twice and tell me the total result",
                 new SpecialTokensText("<|eot_id|><|reserved_special_token_249|>"),
@@ -300,26 +258,22 @@ describe("FunctionaryChatWrapper", () => {
               "),
                 "{"min": 1, "max": 6}",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>tool<|end_header_id|>
-
               name="),
                 "getRandomNumber",
                 new SpecialTokensText("
               "),
                 "3",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>tool<|end_header_id|>
-
               name="),
                 "getRandomNumber",
                 new SpecialTokensText("
               "),
                 "4",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "The total result of rolling the dice twice is 3 + 4 = 7.",
               ])
             `);
-
             const chatWrapper3 = new FunctionaryChatWrapper({variation: "v2.llama3"});
             const {contextText: contextText3} = chatWrapper3.generateContextState({chatHistory: conversationHistory});
             const {contextText: contextText3WithOpenModelResponse} = chatWrapper3.generateContextState({
@@ -331,71 +285,56 @@ describe("FunctionaryChatWrapper", () => {
                     }
                 ]
             });
-
             expect(contextText3).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|start_header_id|>system<|end_header_id|>
-
               "),
                 "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "Hi there!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "Hello!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "How are you?",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "I'm good, how are you?",
               ])
             `);
-
             expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|start_header_id|>system<|end_header_id|>
-
               "),
                 "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
               If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "Hi there!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "Hello!",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>user<|end_header_id|>
-
               "),
                 "How are you?",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
                 "I'm good, how are you?",
                 new SpecialTokensText("<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-
               "),
               ])
             `);
         });
     });
-
     describe("v2", () => {
         test("should generate valid context text", () => {
             const chatWrapper = new FunctionaryChatWrapper({variation: "v2"});
             const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
             expect(contextText).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
@@ -426,57 +365,32 @@ describe("FunctionaryChatWrapper", () => {
                 "I'm good, how are you?",
               ])
             `);
-
             const chatWrapper2 = new FunctionaryChatWrapper({variation: "v2"});
             const {contextText: contextText2} = chatWrapper2.generateContextState({
                 chatHistory: conversationHistory2,
                 availableFunctions: functions
             });
-
             expect(contextText2).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
                 new SpecialTokensText("<|from|>system
               <|recipient|>all
               <|content|>"),
-                "// Supported function definitions that should be called when necessary.
+                "
               namespace functions {
-
-              // Get a random number
               type getRandomNumber = (_: {min: number, max: number}) => any;
-
-              // Send a notification to the owner, and create sub notifications
-              type notifyOwner = (_: /* Type: notification */ {message: string, subNotifications: (/* notification type */ any)[]}) => any;
-
-              // Send a notification to the owner, and create sub notifications
-              type notifyOwner2 = (_: /* Type: notification */ {
-                  // Notification message
+              type notifyOwner = (_:  {message: string, subNotifications: ( any)[]}) => any;
+              type notifyOwner2 = (_:  {
                   message: string,
-                  
-                  // Sub notifications
-                  subNotifications: (/* notification type */ any)[]
+                  subNotifications: ( any)[]
               }) => any;
-
-              // Some function
               type func1 = (_: {
-                  // Some message
-                  // minimum length: 3, maximum length: 10
                   message: string,
-                  
-                  // Some words
-                  // maximum items: 5
                   words: [string, string, ...string[]],
-                  
-                  // Some headers
-                  // minimum number of properties: 4, maximum number of properties: 12
                   headers: {[key: string]: string},
-                  
-                  // Some mappings
-                  // minimum number of properties: 4, maximum number of properties: 12
                   mappings: {a: boolean, b: number, c: string | null} & {[key: string]: string}
               }) => any;
-
-              } // namespace functions",
+              } 
                 new SpecialTokensText("
               <|from|>system
               <|recipient|>all
@@ -538,7 +452,6 @@ describe("FunctionaryChatWrapper", () => {
                 "The total result of rolling the dice twice is 3 + 4 = 7.",
               ])
             `);
-
             const chatWrapper3 = new FunctionaryChatWrapper({variation: "v2"});
             const {contextText: contextText3} = chatWrapper3.generateContextState({chatHistory: conversationHistory});
             const {contextText: contextText3WithOpenModelResponse} = chatWrapper3.generateContextState({
@@ -550,7 +463,6 @@ describe("FunctionaryChatWrapper", () => {
                     }
                 ]
             });
-
             expect(contextText3).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),
@@ -581,7 +493,6 @@ describe("FunctionaryChatWrapper", () => {
                 "I'm good, how are you?",
               ])
             `);
-
             expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
               LlamaText([
                 new SpecialToken("BOS"),

@@ -1,5 +1,4 @@
 package handlers
-
 import (
 	"bytes"
 	"encoding/json"
@@ -11,21 +10,15 @@ import (
 	"io"
 	"net/http"
 	"shared/go/connect/galatea/v1/galateav1connect"
-
 	"github.com/bufbuild/connect-go"
 	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/go-chi/chi/v4"
 	"github.com/go-chi/chi/v4/middleware"
 )
-
 var ErrNotImplemented = errors.New("not implemented")
-
-// ErrorObject is used by the front end react-fetching-library
 type ErrorObject struct {
 	Message string `json:"message"`
 }
-
-// WithError handles the error returned from our custom Handler signature and makes it compatible with stdlib
 func WithError(next func(w http.ResponseWriter, r *http.Request) (int, error)) func(w http.ResponseWriter, r *http.Request) {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		contents, _ := io.ReadAll(r.Body)
@@ -62,7 +55,6 @@ func New(dbConn *db.DB, jwtsecret string, gotrueURL string, imageBucketName stri
 	r.Get("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
-
 	log.L.Info().Msg("Prepare reflection service")
 	reflector := grpcreflect.NewStaticReflector(
 		galateav1connect.AuthServiceName,

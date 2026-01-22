@@ -6,8 +6,6 @@ import {
 import {
     harmonyJinjaTemplate, harmonyJinjaTemplate2, harmonyJinjaTemplate3, harmonyJinjaTemplate4, harmonyJinjaTemplate5
 } from "./jinjaTemplates.js";
-
-
 const alpacaJinjaTemplate = `
 {%- for message in messages %}
     {%- if message['role'] == 'system' -%}
@@ -22,7 +20,6 @@ const alpacaJinjaTemplate = `
     {{- '### Response:\\n'-}}
 {%- endif -%}
 `.slice(1, -1);
-
 const chatMLJinjaTemplate = `
 {%- for message in messages %}
     {%- if message['role'] == 'system' -%}
@@ -37,7 +34,6 @@ const chatMLJinjaTemplate = `
     {{- '<|im_start|>assistant\\n'-}}
 {%- endif -%}
 `.slice(1, -1);
-
 const falconJinjaTemplate = `
 {%- if messages[0]['role'] == 'system' %}
     {%- set loop_messages = messages[1:] %}
@@ -63,11 +59,9 @@ const falconJinjaTemplate = `
     {{- '\n\nAssistant:' }}
 {%- endif %}
 `.slice(1, -1);
-
 const funcationaryJinjaTemplateV2 = "{% for message in messages %}\n{% if message['role'] == 'user' or message['role'] == 'system' %}\n{{ '<|from|>' + message['role'] + '\n<|recipient|>all\n<|content|>' + message['content'] + '\n' }}{% elif message['role'] == 'tool' %}\n{{ '<|from|>' + message['name'] + '\n<|recipient|>all\n<|content|>' + message['content'] + '\n' }}{% else %}\n{% set contain_content='no'%}\n{% if message['content'] is not none %}\n{{ '<|from|>assistant\n<|recipient|>all\n<|content|>' + message['content'] }}{% set contain_content='yes'%}\n{% endif %}\n{% if 'tool_calls' in message and message['tool_calls'] is not none %}\n{% for tool_call in message['tool_calls'] %}\n{% set prompt='<|from|>assistant\n<|recipient|>' + tool_call['function']['name'] + '\n<|content|>' + tool_call['function']['arguments'] %}\n{% if loop.index == 1 and contain_content == \"no\" %}\n{{ prompt }}{% else %}\n{{ '\n' + prompt}}{% endif %}\n{% endfor %}\n{% endif %}\n{{ '<|stop|>\n' }}{% endif %}\n{% endfor %}\n{% if add_generation_prompt %}{{ '<|from|>assistant\n<|recipient|>' }}{% endif %}";
 const funcationaryJinjaTemplateV2Llama3 = "{% for message in messages %}\n{% if message['role'] == 'user' or message['role'] == 'system' %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n' + message['content'] + '<|eot_id|>' }}{% elif message['role'] == 'tool' %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n' + 'name=' + message['name'] + '\n' + message['content'] + '<|eot_id|>' }}{% else %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n'}}{% if message['content'] is not none %}\n{{ message['content'] }}{% endif %}\n{% if 'tool_calls' in message and message['tool_calls'] is not none %}\n{% for tool_call in message['tool_calls'] %}\n{{ '<|reserved_special_token_249|>' + tool_call['function']['name'] + '\n' + tool_call['function']['arguments'] }}{% endfor %}\n{% endif %}\n{{ '<|eot_id|>' }}{% endif %}\n{% endfor %}\n{% if add_generation_prompt %}{{ '<|start_header_id|>{role}<|end_header_id|>\n\n' }}{% endif %}";
 const funcationaryJinjaTemplateV3 = "{% for message in messages %}\n{% if message['role'] == 'user' or message['role'] == 'system' %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n' + message['content'] + '<|eot_id|>' }}{% elif message['role'] == 'tool' %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n' + message['content'] + '<|eot_id|>' }}{% else %}\n{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n'}}{% if message['content'] is not none %}\n{{ '>>>all\n' + message['content'] }}{% endif %}\n{% if 'tool_calls' in message and message['tool_calls'] is not none %}\n{% for tool_call in message['tool_calls'] %}\n{{ '>>>' + tool_call['function']['name'] + '\n' + tool_call['function']['arguments'] }}{% endfor %}\n{% endif %}\n{{ '<|eot_id|>' }}{% endif %}\n{% endfor %}\n{% if add_generation_prompt %}{{ '<|start_header_id|>{role}<|end_header_id|>\n\n' }}{% endif %}";
-
 const gemmaJinjaTemplate = `
 {%- if messages[0]['role'] == 'system' %}
     {{- raise_exception('System role not supported') }}
@@ -87,7 +81,6 @@ const gemmaJinjaTemplate = `
     {{- '<start_of_turn>model\n' }}
 {%- endif %}
 `.slice(1, -1);
-
 const generalJinjaTemplate = `
 {%- for message in messages %}
     {%- if message['role'] == 'system' -%}
@@ -102,7 +95,6 @@ const generalJinjaTemplate = `
     {{- '### Assistant\\n'-}}
 {%- endif -%}
 `.slice(1, -1);
-
 const llama2ChatJinjaTemplate = `
 {%- set ns = namespace(found=false) -%}
 {%- for message in messages -%}
@@ -123,7 +115,6 @@ const llama2ChatJinjaTemplate = `
     {%- endif -%}
 {%- endfor -%}
 `.slice(1, -1);
-
 const llama3ChatJinjaTemplate = `
 {%- set loop_messages = messages -%}
 {%- for message in loop_messages -%}
@@ -135,7 +126,6 @@ const llama3ChatJinjaTemplate = `
 {%- endfor -%}
 {{- '<|start_header_id|>assistant<|end_header_id|>\n\n' -}}
 `.slice(1, -1);
-
 const llama3_1ChatJinjaTemplate = `
 {{- bos_token }}
 {%- if custom_tools is defined %}
@@ -150,7 +140,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- if not tools is defined %}
     {%- set tools = none %}
 {%- endif %}
-
 {#- This block extracts the system message, so we can slot it into the right place. #}
 {%- if messages[0]['role'] == 'system' %}
     {%- set system_message = messages[0]['content']|trim %}
@@ -158,7 +147,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- else %}
     {%- set system_message = "" %}
 {%- endif %}
-
 {#- System message + builtin tools #}
 {{- "<|start_header_id|>system<|end_header_id|>\\n\\n" }}
 {%- if builtin_tools is defined or tools is not none %}
@@ -180,7 +168,6 @@ const llama3_1ChatJinjaTemplate = `
 {%- endif %}
 {{- system_message }}
 {{- '<|eot_id|>' }}
-
 {#- Custom tools are passed in a user message with some extra guidance #}
 {%- if tools_in_user_message and not tools is none %}
     {#- Extract the first user message so we can plug it in here #}
@@ -201,7 +188,6 @@ const llama3_1ChatJinjaTemplate = `
     {%- endfor %}
     {{- first_user_message + '<|eot_id|>'}}
 {%- endif %}
-
 {%- for message in messages %}
     {%- if not (message.role == 'ipython' or message.role == 'tool' or 'tool_calls' in message) %}
         {{- '<|start_header_id|>' + message['role'] + '<|end_header_id|>\\n\\n'+ message['content'] | trim + '<|eot_id|>' }}
@@ -247,7 +233,6 @@ const llama3_1ChatJinjaTemplate = `
     {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}
 {%- endif %}
 `.slice(1, -1);
-
 const mistralJinjaTemplate = `
 {%- if messages[0]["role"] == "system" -%}
     {%- set system_message = messages[0]["content"] -%}
@@ -329,7 +314,6 @@ const mistralJinjaTemplate = `
     {%- endif -%}
 {%- endfor -%}
 `.slice(1, -1);
-
 const deepSeekJinjaTemplate = `
 {%- if not add_generation_prompt is defined -%}
     {%- set add_generation_prompt = false -%}
@@ -388,7 +372,6 @@ const deepSeekJinjaTemplate = `
     {{- '<｜Assistant｜>' -}}
 {%- endif -%}
 `.slice(1, -1);
-
 const qwqJinjaTemplate = `
 {%- if tools %}
     {{- '<|im_start|>system\\n' }}
@@ -447,7 +430,6 @@ const qwqJinjaTemplate = `
     {{- '<|im_start|>assistant\\n' }}
 {%- endif %}
 `.slice(1, -1);
-
 const qwen3Template = `
 {%- if tools %}
     {{- '<|im_start|>system\\n' }}
@@ -535,8 +517,6 @@ const qwen3Template = `
     {%- endif %}
 {%- endif %}
 `.slice(1, -1);
-
-
 describe("resolveChatWrapper", () => {
     test("should resolve to specialized AlpacaChatWrapper", () => {
         const chatWrapper = resolveChatWrapper({
@@ -549,7 +529,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(AlpacaChatWrapper);
     });
-
     test("should resolve to specialized ChatMLChatWrapper", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -561,7 +540,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(ChatMLChatWrapper);
     });
-
     test("should resolve to specialized FalconChatWrapper", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -573,7 +551,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(FalconChatWrapper);
     });
-
     test("should resolve to specialized FunctionaryChatWrapper v2", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -586,7 +563,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(FunctionaryChatWrapper);
     });
-
     test("should resolve to specialized FunctionaryChatWrapper v2.llama3", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -599,7 +575,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(FunctionaryChatWrapper);
     });
-
     test("should resolve to specialized FunctionaryChatWrapper v3", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -612,7 +587,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(FunctionaryChatWrapper);
     });
-
     test("should resolve to specialized GemmaChatWrapper", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -624,7 +598,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(GemmaChatWrapper);
     });
-
     test("should resolve to specialized GeneralChatWrapper", () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -636,7 +609,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(GeneralChatWrapper);
     });
-
     test("should resolve to specialized Llama2ChatWrapper", async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -648,7 +620,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(Llama2ChatWrapper);
     });
-
     test("should resolve to specialized Llama3_1ChatWrapper", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -660,7 +631,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(Llama3_1ChatWrapper);
     });
-
     test("should resolve to specialized Llama3_1ChatWrapper 2", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -670,10 +640,8 @@ describe("resolveChatWrapper", () => {
             },
             fallbackToOtherWrappersOnJinjaError: false
         });
-
         expect(chatWrapper).to.be.instanceof(Llama3_1ChatWrapper);
     });
-
     test("should resolve to specialized MistralChatWrapper", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -685,7 +653,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(MistralChatWrapper);
     });
-
     test("should resolve to specialized DeepSeekChatWrapper", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -697,7 +664,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(DeepSeekChatWrapper);
     });
-
     test("should resolve to specialized QwenChatWrapper", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -709,7 +675,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(QwenChatWrapper);
     });
-
     test("should resolve to specialized QwenChatWrapper 2", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -721,7 +686,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(QwenChatWrapper);
     });
-
     test("should resolve to specialized HarmonyChatWrapper", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -733,7 +697,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(HarmonyChatWrapper);
     });
-
     test("should resolve to specialized HarmonyChatWrapper 2", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -745,7 +708,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(HarmonyChatWrapper);
     });
-
     test("should resolve to specialized HarmonyChatWrapper 3", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -757,7 +719,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(HarmonyChatWrapper);
     });
-
     test("should resolve to specialized HarmonyChatWrapper 4", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {
@@ -769,7 +730,6 @@ describe("resolveChatWrapper", () => {
         });
         expect(chatWrapper).to.be.instanceof(HarmonyChatWrapper);
     });
-
     test("should resolve to specialized HarmonyChatWrapper 5", {timeout: 1000 * 60 * 60 * 2}, async () => {
         const chatWrapper = resolveChatWrapper({
             customWrapperSettings: {

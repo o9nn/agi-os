@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
- // English
 export const LANG_EN_NAME = 'en';
-
 export const LANG_EN_TRANS = {
   'Play-TT': 'Play  (Pause key)',
   'Pause-TT': 'Pause  (Pause key)',

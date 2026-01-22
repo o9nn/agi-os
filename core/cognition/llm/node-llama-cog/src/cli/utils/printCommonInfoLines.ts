@@ -3,7 +3,6 @@ import {getPrettyBuildGpuName} from "../../bindings/consts.js";
 import {LlamaContext} from "../../evaluator/LlamaContext/LlamaContext.js";
 import {printInfoLine} from "./printInfoLine.js";
 import {toBytes} from "./toBytes.js";
-
 export async function printCommonInfoLines({
     context,
     draftContext,
@@ -32,7 +31,6 @@ export async function printCommonInfoLines({
             ? ("Draft context".length + 1)
             : 0
     );
-
     if (llama.gpu !== false) {
         const [
             vramState,
@@ -41,7 +39,6 @@ export async function printCommonInfoLines({
             llama.getVramState(),
             llama.getGpuDeviceNames()
         ]);
-
         printInfoLine({
             title: "GPU",
             padTitle: padTitle,
@@ -115,10 +112,8 @@ export async function printCommonInfoLines({
             value: "enabled"
         }]
     });
-
     if (draftContext != null) {
         const draftModel = draftContext.model;
-
         printInfoLine({
             title: "Draft model",
             padTitle: padTitle,
@@ -171,10 +166,8 @@ export async function printCommonInfoLines({
             }]
         });
     }
-
     return padTitle;
 }
-
 function toOneLine(text: string) {
     return text.replaceAll("\n", chalk.gray("\\n"));
 }

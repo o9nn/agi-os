@@ -1,6 +1,5 @@
 import { GLOB_MARKDOWN, GLOB_MARKDOWN_CODE, GLOB_TESTS } from '@antfu/eslint-config'
 import { defineConfig } from '@moeru/eslint-config'
-
 export default defineConfig()
   .append({
     rules: {

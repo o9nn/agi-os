@@ -1,5 +1,4 @@
 import { supabase } from "../src/services/supabaseClient";
-
 export interface OrchestrationEvent {
   event_type: string;
   description: string;
@@ -7,30 +6,25 @@ export interface OrchestrationEvent {
   user_id?: string;
   data?: Record<string, unknown>;
 }
-
 export interface SystemHealthStatus {
   operational_status: "optimal" | "degraded" | "impaired";
   memory_usage: number;
   active_connections: number;
   details?: Record<string, unknown>;
 }
-
 export class OrchestratorDatabaseService {
   private static instance: OrchestratorDatabaseService;
   private userId: string | null = null;
   private isAuthenticated: boolean = false;
-
   private constructor() {
     this.initializeAuth();
   }
-
   public static getInstance(): OrchestratorDatabaseService {
     if (!OrchestratorDatabaseService.instance) {
       OrchestratorDatabaseService.instance = new OrchestratorDatabaseService();
     }
     return OrchestratorDatabaseService.instance;
   }
-
   private async initializeAuth(): Promise<void> {
     try {
       const { data } = await supabase.auth.getSession();
@@ -38,8 +32,6 @@ export class OrchestratorDatabaseService {
         this.isAuthenticated = true;
         this.userId = data.session.user.id;
       }
-
-      // Listen for auth changes
       supabase.auth.onAuthStateChange((event: string, session: unknown) => {
         if (event === "SIGNED_IN" && session && typeof session === 'object' && session !== null && 'user' in session) {
           this.isAuthenticated = true;
@@ -56,13 +48,11 @@ export class OrchestratorDatabaseService {
       );
     }
   }
-
   public async logEvent(event: OrchestrationEvent): Promise<void> {
     if (!this.isAuthenticated) {
       console.log("Not authenticated, storing event locally only");
       return;
     }
-
     try {
       const { error } = await supabase.from("orchestration_events").insert({
         event_type: event.event_type,
@@ -71,7 +61,6 @@ export class OrchestratorDatabaseService {
         user_id: this.userId,
         data: event.data || {},
       });
-
       if (error) {
         console.error("Error logging event to database:", error);
       }
@@ -79,13 +68,11 @@ export class OrchestratorDatabaseService {
       console.error("Exception logging event to database:", error);
     }
   }
-
   public async recordSystemHealth(status: SystemHealthStatus): Promise<void> {
     if (!this.isAuthenticated) {
       console.log("Not authenticated, storing system health locally only");
       return;
     }
-
     try {
       const { error } = await supabase.from("system_health").insert({
         operational_status: status.operational_status,
@@ -94,7 +81,6 @@ export class OrchestratorDatabaseService {
         details: status.details || {},
         created_by: "orchestrator",
       });
-
       if (error) {
         console.error("Error recording system health to database:", error);
       }
@@ -102,12 +88,10 @@ export class OrchestratorDatabaseService {
       console.error("Exception recording system health to database:", error);
     }
   }
-
   public async getRecentEvents(limit: number = 20): Promise<OrchestrationEvent[]> {
     if (!this.isAuthenticated) {
       return [];
     }
-
     try {
       const { data, error } = await supabase
         .from("orchestration_events")
@@ -115,24 +99,20 @@ export class OrchestratorDatabaseService {
         .eq("user_id", this.userId)
         .order("timestamp", { ascending: false })
         .limit(limit);
-
       if (error) {
         console.error("Error getting recent events:", error);
         return [];
       }
-
       return data || [];
     } catch (error) {
       console.error("Exception getting recent events:", error);
       return [];
     }
   }
-
   public async getLatestSystemHealth(): Promise<SystemHealthStatus | null> {
     if (!this.isAuthenticated) {
       return null;
     }
-
     try {
       const { data, error } = await supabase
         .from("system_health")
@@ -140,12 +120,10 @@ export class OrchestratorDatabaseService {
         .order("last_check", { ascending: false })
         .limit(1)
         .single();
-
       if (error) {
         console.error("Error getting latest system health:", error);
         return null;
       }
-
       return {
         operational_status: data.operational_status,
         memory_usage: data.memory_usage,
@@ -157,18 +135,15 @@ export class OrchestratorDatabaseService {
       return null;
     }
   }
-
   public async clearUserEvents(): Promise<void> {
     if (!this.isAuthenticated || !this.userId) {
       return;
     }
-
     try {
       const { error } = await supabase
         .from("orchestration_events")
         .delete()
         .eq("user_id", this.userId);
-
       if (error) {
         console.error("Error clearing user events:", error);
       }
@@ -176,7 +151,6 @@ export class OrchestratorDatabaseService {
       console.error("Exception clearing user events:", error);
     }
   }
-
   public getAuthStatus(): { isAuthenticated: boolean; userId: string | null } {
     return {
       isAuthenticated: this.isAuthenticated,
@@ -184,11 +158,8 @@ export class OrchestratorDatabaseService {
     };
   }
 }
-
-// Create a hook for using the orchestrator database service
 export const useOrchestratorDatabaseService = () => {
   const service = OrchestratorDatabaseService.getInstance();
-
   return {
     logEvent: (event: OrchestrationEvent) => service.logEvent(event),
     recordSystemHealth: (status: SystemHealthStatus) =>

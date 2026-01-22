@@ -745,7 +745,7 @@ const calculate_sub_results = (fragment, desired_excerpt_length) => {
           fq_url.hash = next_anchor.id
           anchored_url = fq_url.toString()
         } else {
-          if (!/^\//.test(anchored_url)) {
+          if (!/^\
             anchored_url = `/${anchored_url}`
           }
           const fq_url = new URL(`https://example.com${anchored_url}`)
@@ -1058,7 +1058,7 @@ ${e?.toString()}`)
     return fragment
   }
   fullUrl(raw) {
-    if (/^(https?:)?\/\//.test(raw)) {
+    if (/^(https?:)?\/\
       return raw
     }
     return `${this.baseUrl}/${raw}`

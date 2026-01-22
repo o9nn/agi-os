@@ -3,7 +3,6 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-
 char ENoDir[] = "directory entry is not allocated";
 char ENoFile[] = "no such file or directory";
 char EBadPath[] = "bad path";

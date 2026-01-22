@@ -1,251 +1,202 @@
-/***** spin: spin.h *****/
-
-/* Copyright (c) 1989-2009 by Lucent Technologies, Bell Laboratories.     */
-/* All Rights Reserved.  This software is for educational purposes only.  */
-/* No guarantee whatsoever is expressed or implied by the distribution of */
-/* this code.  Permission is given to distribute this code provided that  */
-/* this introductory message is not removed and no monies are exchanged.  */
-/* Software written by Gerard J. Holzmann.  For tool documentation see:   */
-/*             http://spinroot.com/                                       */
-/* Send all bug-reports and/or questions to: bugs@spinroot.com            */
-
 #ifndef SEEN_SPIN_H
 #define SEEN_SPIN_H
-
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
-enum	    { INIV, PUTV, LOGV };	/* for pangen[14].c */
+enum	    { INIV, PUTV, LOGV };
 enum btypes { NONE, N_CLAIM, I_PROC, A_PROC, P_PROC, E_TRACE, N_TRACE };
-
 typedef struct Lextok {
-	unsigned short	ntyp;	/* node type */
-	short	ismtyp;		/* CONST derived from MTYP */
-	int	val;		/* value attribute */
-	int	ln;		/* line number */
-	int	indstep;	/* part of d_step sequence */
-	int	uiid;		/* inline id, if non-zero */
-	struct Symbol	*fn;	/* file name */
-	struct Symbol	*sym;	/* symbol reference */
-        struct Sequence *sq;	/* sequence */
-        struct SeqList	*sl;	/* sequence list */
-	struct Lextok	*lft, *rgt; /* children in parse tree */
+unsigned short	ntyp;
+short	ismtyp;
+int	val;
+int	ln;
+int	indstep;
+int	uiid;
+struct Symbol	*fn;
+struct Symbol	*sym;
+struct Sequence *sq;
+struct SeqList	*sl;
+struct Lextok	*lft, *rgt;
 } Lextok;
-
 typedef struct Slicer {
-	Lextok	*n;		/* global var, usable as slice criterion */
-	short	code;		/* type of use: DEREF_USE or normal USE */
-	short	used;		/* set when handled */
-	struct Slicer *nxt;	/* linked list */
+Lextok	*n;
+short	code;
+short	used;
+struct Slicer *nxt;
 } Slicer;
-
 typedef struct Access {
-	struct Symbol	*who;	/* proctype name of accessor */
-	struct Symbol	*what;	/* proctype name of accessed */
-	int	cnt, typ;	/* parameter nr and, e.g., 's' or 'r' */
-	struct Access	*lnk;	/* linked list */
+struct Symbol	*who;
+struct Symbol	*what;
+int	cnt, typ;
+struct Access	*lnk;
 } Access;
-
 typedef struct Symbol {
-	char	*name;
-	int	Nid;		/* unique number for the name */
-	unsigned short	type;	/* bit,short,.., chan,struct  */
-	unsigned char	hidden; /* bit-flags:
-				   1=hide, 2=show,
-				   4=bit-equiv,   8=byte-equiv,
-				  16=formal par, 32=inline par,
-				  64=treat as if local; 128=read at least once
-				 */
-	unsigned char	colnr;	/* for use with xspin during simulation */
-	unsigned char	isarray; /* set if decl specifies array bound */
-	unsigned char	*bscp;	/* block scope */
-	int	nbits;		/* optional width specifier */
-	int	nel;		/* 1 if scalar, >1 if array   */
-	int	setat;		/* last depth value changed   */
-	int	*val;		/* runtime value(s), initl 0  */
-	Lextok	**Sval;	/* values for structures */
-
-	int	xu;		/* exclusive r or w by 1 pid  */
-	struct Symbol	*xup[2];  /* xr or xs proctype  */
-	struct Access	*access;/* e.g., senders and receives of chan */
-	Lextok	*ini;	/* initial value, or chan-def */
-	Lextok	*Slst;	/* template for structure if struct */
-	struct Symbol	*Snm;	/* name of the defining struct */
-	struct Symbol	*owner;	/* set for names of subfields in typedefs */
-	struct Symbol	*context; /* 0 if global, or procname */
-	struct Symbol	*next;	/* linked list */
+char	*name;
+int	Nid;
+unsigned short	type;
+unsigned char	hidden;
+unsigned char	colnr;
+unsigned char	isarray;
+unsigned char	*bscp;
+int	nbits;
+int	nel;
+int	setat;
+int	*val;
+Lextok	**Sval;
+int	xu;
+struct Symbol	*xup[2];
+struct Access	*access;
+Lextok	*ini;
+Lextok	*Slst;
+struct Symbol	*Snm;
+struct Symbol	*owner;
+struct Symbol	*context;
+struct Symbol	*next;
 } Symbol;
-
-typedef struct Ordered {	/* links all names in Symbol table */ 
-	struct Symbol	*entry;
-	struct Ordered	*next;
+typedef struct Ordered {
+struct Symbol	*entry;
+struct Ordered	*next;
 } Ordered;
-
 typedef struct Queue {
-	short	qid;		/* runtime q index */
-	int	qlen;		/* nr messages stored */
-	int	nslots, nflds;	/* capacity, flds/slot */
-	int	setat;		/* last depth value changed */
-	int	*fld_width;	/* type of each field */
-	int	*contents;	/* the values stored */
-	int	*stepnr;	/* depth when each msg was sent */
-	struct Queue	*nxt;	/* linked list */
+short	qid;
+int	qlen;
+int	nslots, nflds;
+int	setat;
+int	*fld_width;
+int	*contents;
+int	*stepnr;
+struct Queue	*nxt;
 } Queue;
-
-typedef struct FSM_state {	/* used in pangen5.c - dataflow */
-	int from;		/* state number */
-	int seen;		/* used for dfs */
-	int in;			/* nr of incoming edges */
-	int cr;			/* has reachable 1-relevant successor */
-	int scratch;
-	unsigned long *dom, *mod; /* to mark dominant nodes */
-	struct FSM_trans *t;	/* outgoing edges */
-	struct FSM_trans *p;	/* incoming edges, predecessors */
-	struct FSM_state *nxt;	/* linked list of all states */
+typedef struct FSM_state {
+int from;
+int seen;
+int in;
+int cr;
+int scratch;
+unsigned long *dom, *mod;
+struct FSM_trans *t;
+struct FSM_trans *p;
+struct FSM_state *nxt;
 } FSM_state;
-
-typedef struct FSM_trans {	/* used in pangen5.c - dataflow */
-	int to;
-	short	relevant;	/* when sliced */
-	short	round;		/* ditto: iteration when marked */
-	struct FSM_use *Val[2];	/* 0=reads, 1=writes */
-	struct Element *step;
-	struct FSM_trans *nxt;
+typedef struct FSM_trans {
+int to;
+short	relevant;
+short	round;
+struct FSM_use *Val[2];
+struct Element *step;
+struct FSM_trans *nxt;
 } FSM_trans;
-
-typedef struct FSM_use {	/* used in pangen5.c - dataflow */
-	Lextok *n;
-	Symbol *var;
-	int special;
-	struct FSM_use *nxt;
+typedef struct FSM_use {
+Lextok *n;
+Symbol *var;
+int special;
+struct FSM_use *nxt;
 } FSM_use;
-
 typedef struct Element {
-	Lextok	*n;		/* defines the type & contents */
-	int	Seqno;		/* identifies this el within system */
-	int	seqno;		/* identifies this el within a proc */
-	int	merge;		/* set by -O if step can be merged */
-	int	merge_start;
-	int	merge_single;
-	short	merge_in;	/* nr of incoming edges */
-	short	merge_mark;	/* state was generated in merge sequence */
-	unsigned int	status;	/* used by analyzer generator  */
-	struct FSM_use	*dead;	/* optional dead variable list */
-	struct SeqList	*sub;	/* subsequences, for compounds */
-	struct SeqList	*esc;	/* zero or more escape sequences */
-	struct Element	*Nxt;	/* linked list - for global lookup */
-	struct Element	*nxt;	/* linked list - program structure */
+Lextok	*n;
+int	Seqno;
+int	seqno;
+int	merge;
+int	merge_start;
+int	merge_single;
+short	merge_in;
+short	merge_mark;
+unsigned int	status;
+struct FSM_use	*dead;
+struct SeqList	*sub;
+struct SeqList	*esc;
+struct Element	*Nxt;
+struct Element	*nxt;
 } Element;
-
 typedef struct Sequence {
-	Element	*frst;
-	Element	*last;		/* links onto continuations */
-	Element *extent;	/* last element in original */
-	int	maxel;		/* 1+largest id in sequence */
+Element	*frst;
+Element	*last;
+Element *extent;
+int	maxel;
 } Sequence;
-
 typedef struct SeqList {
-	Sequence	*this;	/* one sequence */
-	struct SeqList	*nxt;	/* linked list  */
+Sequence	*this;
+struct SeqList	*nxt;
 } SeqList;
-
 typedef struct Label {
-	Symbol	*s;
-	Symbol	*c;
-	Element	*e;
-	int	uiid;		/* non-zero if label appears in an inline */
-	int	visible;	/* label referenced in claim (slice relevant) */
-	struct Label	*nxt;
+Symbol	*s;
+Symbol	*c;
+Element	*e;
+int	uiid;
+int	visible;
+struct Label	*nxt;
 } Label;
-
 typedef struct Lbreak {
-	Symbol	*l;
-	struct Lbreak	*nxt;
+Symbol	*l;
+struct Lbreak	*nxt;
 } Lbreak;
-
 typedef struct RunList {
-	Symbol	*n;		/* name            */
-	int	tn;		/* ordinal of type */
-	int	pid;		/* process id      */
-	int	priority;	/* for simulations only */
-	enum btypes b;		/* the type of process */
-	Element	*pc;		/* current stmnt   */
-	Sequence *ps;		/* used by analyzer generator */
-	Lextok	*prov;		/* provided clause */
-	Symbol	*symtab;	/* local variables */
-	struct RunList	*nxt;	/* linked list */
+Symbol	*n;
+int	tn;
+int	pid;
+int	priority;
+enum btypes b;
+Element	*pc;
+Sequence *ps;
+Lextok	*prov;
+Symbol	*symtab;
+struct RunList	*nxt;
 } RunList;
-
 typedef struct ProcList {
-	Symbol	*n;		/* name       */
-	Lextok	*p;		/* parameters */
-	Sequence *s;		/* body       */
-	Lextok	*prov;		/* provided clause */
-	enum btypes b;		/* e.g., claim, trace, proc */
-	short	tn;		/* ordinal number */
-	unsigned char	det;	/* deterministic */
-	unsigned char   unsafe;	/* contains global var inits */
-	struct ProcList	*nxt;	/* linked list */
+Symbol	*n;
+Lextok	*p;
+Sequence *s;
+Lextok	*prov;
+enum btypes b;
+short	tn;
+unsigned char	det;
+unsigned char   unsafe;
+struct ProcList	*nxt;
 } ProcList;
-
 typedef	Lextok *Lexptr;
-
 #define YYSTYPE	Lexptr
-
 #define ZN	(Lextok *)0
 #define ZS	(Symbol *)0
 #define ZE	(Element *)0
-
-#define DONE	  1     	/* status bits of elements */
-#define ATOM	  2     	/* part of an atomic chain */
-#define L_ATOM	  4     	/* last element in a chain */
-#define I_GLOB    8		/* inherited global ref    */
-#define DONE2	 16		/* used in putcode and main*/
-#define D_ATOM	 32		/* deterministic atomic    */
-#define ENDSTATE 64		/* normal endstate         */
-#define CHECK2	128		/* status bits for remote ref check */
-#define CHECK3	256		/* status bits for atomic jump check */
-
-#define Nhash	255    		/* slots in symbol hash-table */
-
-#define XR	  	1	/* non-shared receive-only */
-#define XS	  	2	/* non-shared send-only    */
-#define XX	  	4	/* overrides XR or XS tag  */
-
-#define CODE_FRAG	2	/* auto-numbered code-fragment */
-#define CODE_DECL	4	/* auto-numbered c_decl */
-#define PREDEF	  	3	/* predefined name: _p, _last */
-
-#define UNSIGNED  5		/* val defines width in bits */
-#define BIT	  1		/* also equal to width in bits */
-#define BYTE	  8		/* ditto */
-#define SHORT	 16		/* ditto */
-#define INT	 32		/* ditto */
-#define	CHAN	 64		/* not */
-#define STRUCT	128		/* user defined structure name */
-
+#define DONE	  1
+#define ATOM	  2
+#define L_ATOM	  4
+#define I_GLOB    8
+#define DONE2	 16
+#define D_ATOM	 32
+#define ENDSTATE 64
+#define CHECK2	128
+#define CHECK3	256
+#define Nhash	255
+#define XR	  	1
+#define XS	  	2
+#define XX	  	4
+#define CODE_FRAG	2
+#define CODE_DECL	4
+#define PREDEF	  	3
+#define UNSIGNED  5
+#define BIT	  1
+#define BYTE	  8
+#define SHORT	 16
+#define INT	 32
+#define	CHAN	 64
+#define STRUCT	128
 #define SOMETHINGBIG	65536
 #define RATHERSMALL	512
 #define MAXSCOPESZ	1024
-
 #ifndef max
 #define max(a,b) (((a)<(b)) ? (b) : (a))
 #endif
-
 #ifdef PC
-	#define MFLAGS	"wb"
+#define MFLAGS	"wb"
 #else
-	#define MFLAGS	"w"
+#define MFLAGS	"w"
 #endif
-
-/***** prototype definitions *****/
 Element	*eval_sub(Element *);
 Element	*get_lab(Lextok *, int);
 Element	*huntele(Element *, int, int);
 Element	*huntstart(Element *);
 Element	*target(Element *);
-
 Lextok	*do_unless(Lextok *, Lextok *);
 Lextok	*expand(Lextok *, int);
 Lextok	*getuname(Symbol *);
@@ -254,21 +205,16 @@ Lextok	*nn(Lextok *, int, Lextok *, Lextok *);
 Lextok	*rem_lab(Symbol *, Lextok *, Symbol *);
 Lextok	*rem_var(Symbol *, Lextok *, Symbol *, Lextok *);
 Lextok	*tail_add(Lextok *, Lextok *);
-
 ProcList *ready(Symbol *, Lextok *, Sequence *, int, Lextok *, enum btypes);
-
 SeqList	*seqlist(Sequence *, SeqList *);
 Sequence *close_seq(int);
-
 Symbol	*break_dest(void);
 Symbol	*findloc(Symbol *);
 Symbol	*has_lab(Element *, int);
 Symbol	*lookup(char *);
 Symbol	*prep_inline(Symbol *, Lextok *);
-
 char	*emalloc(size_t);
 long	Rand(void);
-
 int	any_oper(Lextok *, int);
 int	any_undo(Lextok *);
 int	c_add_sv(FILE *);
@@ -318,7 +264,6 @@ int	Width_set(int *, int, Lextok *);
 int	yyparse(void);
 int	yywrap(void);
 int	yylex(void);
-
 void	AST_track(Lextok *, int);
 void	add_seq(Lextok *);
 void	alldone(int);
@@ -407,7 +352,7 @@ void	sync_product(void);
 void	trackchanuse(Lextok *, Lextok *, int);
 void	trackvar(Lextok *, Lextok *);
 void	trackrun(Lextok *);
-void	trapwonly(Lextok * /* , char * */);	/* spin.y and main.c */
+void	trapwonly(Lextok * );
 void	typ2c(Symbol *);
 void	typ_ck(int, int, char *);
 void	undostmnt(Lextok *, int);

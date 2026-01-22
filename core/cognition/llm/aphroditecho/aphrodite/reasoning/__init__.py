@@ -7,16 +7,4 @@ from .hunyuan_a13b_reasoning_parser import HunyuanA13BReasoningParser
 from .mistral_reasoning_parser import MistralReasoningParser
 from .qwen3_reasoning_parser import Qwen3ReasoningParser
 from .step3_reasoning_parser import Step3ReasoningParser
-
-__all__ = [
-    "ReasoningParser",
-    "ReasoningParserManager",
-    "DeepSeekR1ReasoningParser",
-    "GraniteReasoningParser",
-    "HunyuanA13BReasoningParser",
-    "Qwen3ReasoningParser",
-    "Glm4MoeModelReasoningParser",
-    "MistralReasoningParser",
-    "Step3ReasoningParser",
-    "GptOssReasoningParser",
-]
+__all__ = ['ReasoningParser', 'ReasoningParserManager', 'DeepSeekR1ReasoningParser', 'GraniteReasoningParser', 'HunyuanA13BReasoningParser', 'Qwen3ReasoningParser', 'Glm4MoeModelReasoningParser', 'MistralReasoningParser', 'Step3ReasoningParser', 'GptOssReasoningParser']

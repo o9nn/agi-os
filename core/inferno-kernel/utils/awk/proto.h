@@ -1,34 +1,9 @@
-/****************************************************************
-Copyright (C) Lucent Technologies 1997
-All Rights Reserved
-
-Permission to use, copy, modify, and distribute this software and
-its documentation for any purpose and without fee is hereby
-granted, provided that the above copyright notice appear in all
-copies and that both that the copyright notice and this
-permission notice and warranty disclaimer appear in supporting
-documentation, and that the name Lucent Technologies or any of
-its entities not be used in advertising or publicity pertaining
-to distribution of the software without specific, written prior
-permission.
-
-LUCENT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
-INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
-IN NO EVENT SHALL LUCENT OR ANY OF ITS ENTITIES BE LIABLE FOR ANY
-SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
-ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
-THIS SOFTWARE.
-****************************************************************/
-
 extern	int	yywrap(void);
 extern	void	setfname(Cell *);
 extern	int	constnode(Node *);
 extern	char	*strnode(Node *);
 extern	Node	*notnull(Node *);
 extern	int	yyparse(void);
-
 extern	int	yylex(void);
 extern	void	startreg(void);
 extern	int	input(void);
@@ -37,7 +12,6 @@ extern	void	unputstr(char *);
 extern	int	yylook(void);
 extern	int	yyback(int *, int);
 extern	int	yyinput(void);
-
 extern	fa	*makedfa(char *, int);
 extern	fa	*mkdfa(char *, int);
 extern	int	makeinit(fa *, int);
@@ -63,10 +37,8 @@ extern	Node	*unary(Node *);
 extern	int	relex(void);
 extern	int	cgoto(fa *, int, int);
 extern	void	freefa(fa *);
-
 extern	int	pgetc(void);
 extern	char	*cursource(void);
-
 extern	Node	*nodealloc(int);
 extern	Node	*exptostat(Node *);
 extern	Node	*node1(int, Node *);
@@ -92,7 +64,6 @@ extern	char	*tokname(int);
 extern	Cell	*(*proctab[])(Node **, int);
 extern	int	ptoi(void *);
 extern	Node	*itonp(int);
-
 extern	void	syminit(void);
 extern	void	arginit(int, char **);
 extern	void	envinit(char **);
@@ -110,7 +81,6 @@ extern	double	getfval(Cell *);
 extern	char	*getsval(Cell *);
 extern	char	*tostring(char *);
 extern	char	*qstring(char *, int);
-
 extern	void	recinit(unsigned int);
 extern	void	initgetrec(void);
 extern	void	makefields(int, int);
@@ -139,7 +109,6 @@ extern	void	bclass(int);
 extern	double	errcheck(double, char *);
 extern	int	isclvar(char *);
 extern	int	is_number(char *);
-
 extern	int	adjbuf(char **pb, int *sz, int min, int q, char **pbp, char *what);
 extern	void	run(Node *);
 extern	Cell	*execute(Node *);
@@ -189,6 +158,5 @@ extern	Cell	*closefile(Node **, int);
 extern	void	closeall(void);
 extern	Cell	*sub(Node **, int);
 extern	Cell	*gsub(Node **, int);
-
 extern	FILE	*popen(const char *, const char *);
 extern	int	pclose(FILE *);

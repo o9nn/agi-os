@@ -1,15 +1,12 @@
 package cmd
-
 import (
 	"context"
 	"errors"
 	"os"
 	"os/exec"
 	"regexp"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func startApp(ctx context.Context, client *api.Client) error {
 	exe, err := os.Executable()
 	if err != nil {

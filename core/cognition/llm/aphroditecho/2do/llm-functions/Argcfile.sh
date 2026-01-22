@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
 set -e
-
-# @meta dotenv
-
 BIN_DIR=bin
 TMP_DIR="cache/__tmp__"
 VENV_DIR=".venv"
-
 LANG_CMDS=( \
     "sh:bash" \
     "js:node" \
     "py:python" \
 )
-
-# @cmd Run the tool
-# @option -C --cwd <dir> Change the current working directory
-# @alias tool:run
-# @arg tool![`_choice_tool`] The tool name
-# @arg json The json data
 run@tool() {
     if [[ -z "$argc_json" ]]; then
         declaration="$(generate-declarations@tool "$argc_tool" | jq -r '.[0]')"
@@ -28,19 +18,12 @@ run@tool() {
     if [[ -z "$argc_json" ]]; then
         _die "error: no JSON data"
     fi
-    lang="${argc_tool##*.}"
+    lang="${argc_tool
     cmd="$(_lang_to_cmd "$lang")"
     run_tool_script="scripts/run-tool.$lang"
     [[ -n "$argc_cwd" ]] && cd "$argc_cwd"
     exec "$cmd" "$run_tool_script" "$argc_tool" "$argc_json"
 }
-
-# @cmd Run the agent
-# @alias agent:run
-# @option -C --cwd <dir> Change the current working directory
-# @arg agent![`_choice_agent`] The agent name
-# @arg action![?`_choice_agent_action`] The agent action
-# @arg json The json data
 run@agent() {
     if [[ -z "$argc_json" ]]; then
         declaration="$(generate-declarations@agent "$argc_agent" | jq --arg name "$argc_action" '.[] | select(.name == $name)')"
@@ -52,14 +35,12 @@ run@agent() {
         _die "error: no JSON data"
     fi
     tools_path="$(_get_agent_tools_path "$argc_agent")"
-    lang="${tools_path##*.}"
+    lang="${tools_path
     cmd="$(_lang_to_cmd "$lang")"
     run_agent_script="scripts/run-agent.$lang"
     [[ -n "$argc_cwd" ]] && cd "$argc_cwd"
     exec "$cmd" "$run_agent_script"  "$argc_agent" "$argc_action" "$argc_json"
 }
-
-# @cmd Build the project
 build() {
     if [[ -f tools.txt ]]; then
         argc build@tool
@@ -75,15 +56,8 @@ build() {
         argc mcp merge-functions -S
     fi
 }
-
-# @cmd Build tools
-# @alias tool:build
-# @option --names-file=tools.txt Path to a file containing tool filenames, one per line.
-# This file specifies which tools will be used.
-# @option --declarations-file=functions.json <FILE> Path to a json file to save function declarations
-# @arg tools*[`_choice_tool`] The tool filenames
 build@tool() {
-    if [[ "${#argc_tools[@]}" -gt 0 ]]; then
+    if [[ "${
         mkdir -p "$TMP_DIR"
         argc_names_file="$TMP_DIR/tools.txt"
         printf "%s\n" "${argc_tools[@]}" > "$argc_names_file"
@@ -93,18 +67,13 @@ build@tool() {
     argc build-declarations@tool --names-file "${argc_names_file}" --declarations-file "${argc_declarations_file}"
     argc build-bin@tool --names-file "${argc_names_file}"
 }
-
-# @cmd Build tools to bin
-# @alias tool:build-bin
-# @option --names-file=tools.txt Path to a file containing tool filenames, one per line.
-# @arg tools*[`_choice_tool`] The tool filenames
 build-bin@tool() {
     mkdir -p "$BIN_DIR"
-    if [[ "${#argc_tools[@]}" -gt 0 ]]; then
+    if [[ "${
         names=("${argc_tools[@]}" )
     elif [[ -f "$argc_names_file" ]]; then
-        names=($(cat "$argc_names_file" | grep -v '^#'))
-        if [[ "${#names[@]}" -gt 0 ]]; then
+        names=($(cat "$argc_names_file" | grep -v '^
+        if [[ "${
             (cd "$BIN_DIR" && rm -rf "${names[@]}")
         fi
     fi
@@ -114,7 +83,7 @@ build-bin@tool() {
     not_found_tools=()
     for name in "${names[@]}"; do
         basename="${name%.*}"
-        lang="${name##*.}"
+        lang="${name
         tool_path="tools/$name"
         if [[  -f "$tool_path" ]]; then
             if _is_win; then
@@ -139,17 +108,11 @@ build-bin@tool() {
         _die "error: not found tools: ${not_found_tools[*]}"
     fi
 }
-
-# @cmd Build tools function declarations file
-# @alias tool:build-declarations
-# @option --names-file=tools.txt Path to a file containing tool filenames, one per line.
-# @option --declarations-file=functions.json <FILE> Path to a json file to save function declarations
-# @arg tools*[`_choice_tool`] The tool filenames
 build-declarations@tool() {
-    if [[ "${#argc_tools[@]}" -gt 0 ]]; then
+    if [[ "${
         names=("${argc_tools[@]}" )
     elif [[ -f "$argc_names_file" ]]; then
-        names=($(cat "$argc_names_file" | grep -v '^#'))
+        names=($(cat "$argc_names_file" | grep -v '^
     fi
     if [[ -z "$names" ]]; then
         _die "error: no tools provided. '$argc_names_file' is missing. please create it and add some tools."
@@ -158,7 +121,7 @@ build-declarations@tool() {
     not_found_tools=()
     build_failed_tools=()
     for name in "${names[@]}"; do
-        lang="${name##*.}"
+        lang="${name
         tool_path="tools/$name"
         if [[ ! -f "$tool_path" ]]; then
             not_found_tools+=("$name")
@@ -186,23 +149,13 @@ build-declarations@tool() {
         echo "$json_data" > "$argc_declarations_file"
     fi
 }
-
-
-# @cmd Generate function declaration for the tool
-# @alias tool:generate-declarations
-# @arg tool![`_choice_tool`] The tool name
 generate-declarations@tool() {
-    lang="${1##*.}"
+    lang="${1
     cmd="$(_lang_to_cmd "$lang")"
     "$cmd" "scripts/build-declarations.$lang" "tools/$1"
 }
-
-# @cmd Build agents
-# @alias agent:build
-# @option --names-file=agents.txt Path to a file containing agent filenames, one per line.
-# @arg agents*[`_choice_agent`] The agent filenames
 build@agent() {
-    if [[ "${#argc_agents[@]}" -gt 0 ]]; then
+    if [[ "${
         mkdir -p "$TMP_DIR"
         argc_names_file="$TMP_DIR/agents.txt"
         printf "%s\n" "${argc_agents[@]}" > "$argc_names_file"
@@ -212,18 +165,13 @@ build@agent() {
     argc build-declarations@agent --names-file "${argc_names_file}"
     argc build-bin@agent --names-file "${argc_names_file}"
 }
-
-# @cmd Build agents to bin
-# @alias agent:build-bin
-# @option --names-file=agents.txt Path to a file containing agent dirs, one per line.
-# @arg agents*[`_choice_agent`] The agent names
 build-bin@agent() {
     mkdir -p "$BIN_DIR"
-    if [[ "${#argc_agents[@]}" -gt 0 ]]; then
+    if [[ "${
         names=("${argc_agents[@]}" )
     elif [[ -f "$argc_names_file" ]]; then
-        names=($(cat "$argc_names_file" | grep -v '^#'))
-        if [[ "${#names[@]}" -gt 0 ]]; then
+        names=($(cat "$argc_names_file" | grep -v '^
+        if [[ "${
             (cd "$BIN_DIR" && rm -rf "${names[@]}")
         fi
     fi
@@ -268,16 +216,11 @@ build-bin@agent() {
         _die "error: not found agents: ${not_found_agents[*]}"
     fi
 }
-
-# @cmd Build agents function declarations file
-# @alias agent:build-declarations
-# @option --names-file=agents.txt Path to a file containing agent dirs, one per line.
-# @arg agents*[`_choice_agent`] The tool filenames
 build-declarations@agent() {
-    if [[ "${#argc_agents[@]}" -gt 0 ]]; then
+    if [[ "${
         names=("${argc_agents[@]}" )
     elif [[ -f "$argc_names_file" ]]; then
-        names=($(cat "$argc_names_file" | grep -v '^#'))
+        names=($(cat "$argc_names_file" | grep -v '^
     fi
     if [[ -z "$names" ]]; then
         _die "error: no agents provided. '$argc_names_file' is missing. please create it and add some agents."
@@ -344,17 +287,12 @@ build-declarations@agent() {
         _die "error: invalid agents: ${build_failed_agents[*]}"
     fi
 }
-
-# @cmd Generate function declarations for the agent
-# @alias agent:generate-declarations
-# @flag --oneline Summary JSON in one line
-# @arg agent![`_choice_agent`] The agent name
 generate-declarations@agent() {
     tools_path="$(_get_agent_tools_path "$1")"
     if [[ -z "$tools_path" ]]; then
         _die "error: no found entry file at agents/$1/tools.<lang>"
     fi
-    lang="${tools_path##*.}"
+    lang="${tools_path
     cmd="$(_lang_to_cmd "$lang")"
     json="$("$cmd" "scripts/build-declarations.$lang" "$tools_path" | jq 'map(. + {agent: true})')"
     if [[ -n "$argc_oneline" ]]; then
@@ -363,22 +301,16 @@ generate-declarations@agent() {
         echo "$json"
     fi
 }
-
-# @cmd Check environment variables, Node/Python dependencies, MCP-Bridge-Server status
 check() {
     argc check@tool
     argc check@agent
     argc mcp check
 }
-
-# @cmd Check dependencies and environment variables for a specific tool
-# @alias tool:check
-# @arg tools*[`_choice_tool`] The tool name
 check@tool() {
-    if [[ "${#argc_tools[@]}" -gt 0 ]]; then
+    if [[ "${
         tool_names=("${argc_tools[@]}")
     else
-        tool_names=($(cat tools.txt | grep -v '^#'))
+        tool_names=($(cat tools.txt | grep -v '^
     fi
     for name in "${tool_names[@]}"; do
         tool_path="tools/$name"
@@ -392,15 +324,11 @@ check@tool() {
         fi
     done
 }
-
-# @cmd Check dependencies and environment variables for a specific agent
-# @alias agent:check
-# @arg agents*[`_choice_agent`] The agent name
 check@agent() {
-    if [[ "${#argc_agents[@]}" -gt 0 ]]; then
+    if [[ "${
         agent_names=("${argc_agents[@]}")
     else
-        agent_names=($(cat agents.txt | grep -v '^#'))
+        agent_names=($(cat agents.txt | grep -v '^
     fi
     for name in "${agent_names[@]}"; do
         agent_dir="agents/$name"
@@ -421,31 +349,16 @@ check@agent() {
         fi
     done
 }
-
-# @cmd List tools which can be put into functions.txt
-# @alias tool:list
-# Examples:
-#      argc list-tools > tools.txt
 list@tool() {
     _choice_tool
 }
-
-# @cmd List agents which can be put into agents.txt
-# @alias agent:list
-# Examples:
-#      argc list-agents > agents.txt
 list@agent() {
     _choice_agent
 }
-
-# @cmd Test the project
 test() {
     test@tool
     test@agent
 }
-
-# @cmd Test tools
-# @alias tool:test
 test@tool() {
     mkdir -p "$TMP_DIR"
     names_file="$TMP_DIR/tools.txt"
@@ -454,9 +367,6 @@ test@tool() {
     argc build@tool --names-file "$names_file" --declarations-file "$declarations_file"
     test-demo@tool
 }
-
-# @cmd Test demo tools
-# @alias tool:test-demo
 test-demo@tool() {
     for item in "${LANG_CMDS[@]}"; do
         lang="${item%:*}"
@@ -483,9 +393,6 @@ test-demo@tool() {
         echo
     done
 }
-
-# @cmd Test agents
-# @alias agent:test
 test@agent() {
     mkdir -p "$TMP_DIR"
     names_file="$TMP_DIR/agents.txt"
@@ -493,15 +400,12 @@ test@agent() {
     argc build@agent --names-file "$names_file"
     test-demo@agent
 }
-
-# @cmd Test demo agents
-# @alias agent:test-demo
 test-demo@agent() {
     echo "---- Test demo agent ---"
     args=(demo get_ipinfo '{}')
     argc run@agent "${args[@]}"
     for item in "${LANG_CMDS[@]}"; do
-        cmd="${item#*:}"
+        cmd="${item
         lang="${item%:*}"
         echo "---- Test agents/demo/tools.$lang ---"
         if [[ "$cmd" == "sh" ]]; then
@@ -512,47 +416,25 @@ test-demo@agent() {
         fi
     done
 }
-
-# @cmd Clean the project
 clean() {
     clean@tool
     clean@agent
     rm -rf "$BIN_DIR/"*
 }
-
-# @cmd Clean tools
-# @alias tool:clean
 clean@tool() {
     _choice_tool | sed -E 's/\.([a-z]+)$//' |  xargs -I{} rm -rf "$BIN_DIR/{}"
     rm -rf functions.json
 }
-
-# @cmd Clean agents
-# @alias agent:clean
 clean@agent() {
     _choice_agent | xargs -I{} rm -rf "$BIN_DIR/{}"
     _choice_agent | xargs -I{} rm -rf agents/{}/functions.json
 }
-
-# @cmd Link a tool as web_search tool
-#
-# Example:
-#   argc link-web-search web_search_perplexity.sh
-# @arg tool![`_choice_web_search`]  The tool work as web_search
 link-web-search() {
     _link_tool $1 web_search
 }
-
-# @cmd Link a tool as code_interpreter tool
-#
-# Example:
-#   argc link-code-interpreter execute_py_code.py
-# @arg tool![`_choice_code_interpreter`]  The tool work as code_interpreter
 link-code-interpreter() {
     _link_tool $1 code_interpreter
 }
-
-# @cmd Link this repo to aichat functions_dir
 link-to-aichat() {
     functions_dir="$(aichat --info | grep -w functions_dir | awk '{$1=""; print substr($0,2)}')"
     if [[ -z "$functions_dir" ]]; then
@@ -570,21 +452,12 @@ link-to-aichat() {
         echo "$functions_dir already exists"
     fi
 }
-
-# @cmd Run mcp command
-# @arg args~[?`_choice_mcp_args`] The mcp command and arguments
 mcp() {
     bash ./scripts/mcp.sh "$@"
 }
-
-# @cmd Create a boilplate tool script
-# @alias tool:create
-# @arg args~
 create@tool() {
     ./scripts/create-tool.sh "$@"
 }
-
-# @cmd Displays version information for required tools
 version() {
     uname -a
     if command -v aichat &> /dev/null; then
@@ -594,7 +467,7 @@ version() {
     jq --version
     ls --version 2>&1 | head -n 1
     for item in "${LANG_CMDS[@]}"; do
-        cmd="${item#*:}"
+        cmd="${item
         if [[ "$cmd" == "bash" ]]; then
             echo "$(argc --argc-shell-path) $("$(argc --argc-shell-path)" --version | head -n 1)"
         elif command -v "$cmd" &> /dev/null; then
@@ -602,17 +475,15 @@ version() {
         fi
     done
 }
-
 _lang_to_cmd() {
     match_lang="$1"
     for item in "${LANG_CMDS[@]}"; do
         lang="${item%:*}"
         if [[ "$lang" == "$match_lang" ]]; then
-            echo "${item#*:}"
+            echo "${item
         fi
     done
 }
-
 _get_agent_tools_path() {
     name="$1"
     for item in "${LANG_CMDS[@]}"; do
@@ -624,7 +495,6 @@ _get_agent_tools_path() {
         fi
     done
 }
-
 _build_win_shim() {
     kind="$1"
     lang="$2"
@@ -641,30 +511,23 @@ _build_win_shim() {
     cat <<-EOF
 @echo off
 setlocal
-
 set "bin_dir=%~dp0"
 for %%i in ("%bin_dir:~0,-1%") do set "script_dir=%%~dpi"
 set "script_name=%~n0"
-
 $run "%script_dir%scripts\run-$kind.$lang" "%script_name%" %*
 EOF
 }
-
 _build_py_shim() {
     kind="$1"
     lang="$2"
     cat <<-'EOF' | sed -e "s|__ROOT_DIR__|$PWD|g" -e "s|__VENV_DIR__|$VENV_DIR|g" -e "s/__KIND__/$kind/g"
-#!/usr/bin/env bash
 set -e
-
 if [[ -f "__ROOT_DIR__/__VENV_DIR__/bin/activate" ]]; then
     source "__ROOT_DIR__/__VENV_DIR__/bin/activate"
 fi
-
 python "__ROOT_DIR__/scripts/run-__KIND__.py" "$(basename "$0")" "$@"
 EOF
 }
-
 _check_bin() {
     bin_name="$1"
     if _is_win; then
@@ -674,7 +537,6 @@ _check_bin() {
         echo "✗ missing bin/$bin_name"
     fi
 }
-
 _check_envs() {
     script_path="$1"
     envs=( $(sed -E -n 's/.* @env ([A-Z0-9_]+)!.*/\1/p' $script_path) )
@@ -688,10 +550,9 @@ _check_envs() {
         echo "✗ missing envs ${missing_envs[*]}"
     fi
 }
-
 _link_tool() {
     from="$1"
-    to="$2.${1##*.}"
+    to="$2.${1
     rm -rf tools/$to
     if _is_win; then
         (cd tools && cp -f $from $to)
@@ -700,7 +561,6 @@ _link_tool() {
     fi
     (cd tools && ls -l $to)
 }
-
 _ask_json_data() {
     declaration="$1"
     echo 'Missing the JSON data but here are its properties:'
@@ -715,11 +575,9 @@ _ask_json_data() {
         argc_json="$res"
     fi
 }
-
 _declarations_json_data() {
    ./scripts/declarations-util.sh generate-json | tail -n +2
 }
-
 _normalize_path() {
     if _is_win; then
         cygpath -w "$1"
@@ -727,7 +585,6 @@ _normalize_path() {
         echo "$1"
     fi
 }
-
 _is_win() {
     if [[ "$OS" == "Windows_NT" ]]; then
         return 0
@@ -735,35 +592,29 @@ _is_win() {
         return 1
     fi
 }
-
 _argc_before() {
     if [[ -d ".venv/bin/activate" ]]; then
         source .venv/bin/activate
     fi
 }
-
 _choice_tool() {
     for item in "${LANG_CMDS[@]}"; do
         lang="${item%:*}"
-        cmd="${item#*:}"
+        cmd="${item
         if command -v "$cmd" &> /dev/null; then
             ls -1 tools | grep "\.$lang$"
         fi
     done
 }
-
 _choice_web_search() {
     _choice_tool | grep '^web_search_'
 }
-
 _choice_code_interpreter() {
     _choice_tool | grep '^execute_.*_code'
 }
-
 _choice_agent() {
     ls -1 agents
 }
-
 _choice_agent_action() {
     if [[ "$ARGC_COMPGEN" -eq 1 ]]; then
         expr="s/: /\t/"
@@ -772,7 +623,6 @@ _choice_agent_action() {
     fi
     argc generate-declarations@agent "$1" --oneline | sed "$expr"
 }
-
 _choice_mcp_args() {
     if [[ "$ARGC_COMPGEN" -eq 1 ]]; then
         args=( "${argc__positionals[@]}" )
@@ -782,13 +632,9 @@ _choice_mcp_args() {
         :;
     fi
 }
-
 _die() {
     echo "$*" >&2
     exit 1
 }
-
 if _is_win; then set -o igncr; fi
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

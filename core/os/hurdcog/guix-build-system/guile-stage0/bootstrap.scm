@@ -1,7 +1,3 @@
-;;;; Stage0: Minimal Bootstrap for GUIX Guile Integration
-;;;; Copyright 2024 Unicorn Dynamics
-;;;; Part of SKZ Integration Strategy - Phase 3: Build System Orchestration
-
 (define-module (guix-build-system guile-stage0 bootstrap)
   #:use-module (guix packages)
   #:use-module (guix download)
@@ -9,7 +5,6 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (gnu packages base)
   #:export (stage0-guile))
-
 (define stage0-guile
   (package
     (name "guile-stage0")
@@ -25,10 +20,8 @@
        (modify-phases %standard-phases
          (add-after 'unpack 'bootstrap-minimal
            (lambda _
-             ;; Clear environment for minimal bootstrap
              (setenv "GUILE_LOAD_PATH" "")
              (setenv "GUILE_LOAD_COMPILED_PATH" "")
-             ;; Ensure minimal dependencies
              (setenv "BOOTSTRAP_STAGE" "0")
              #t))
          (add-after 'install 'mark-stage0-complete

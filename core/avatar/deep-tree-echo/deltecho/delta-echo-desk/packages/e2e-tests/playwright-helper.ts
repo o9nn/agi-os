@@ -1,22 +1,16 @@
 import { BrowserContext, expect, Page } from '@playwright/test'
-
 export const chatmailServer = 'https://ci-chatmail.testrun.org'
-
 export const userNames = ['Alice', 'Bob', 'Chris', 'Denis', 'Eve']
-
 export const groupName = 'TestGroup'
-
 export type User = {
   name: string
   id: string
   address: string
   password?: string
 }
-
 export async function reloadPage(page: Page): Promise<void> {
   await page.goto('https://localhost:3000/')
 }
-
 export async function clickThroughTestIds(
   page: Page,
   testIds: string[]
@@ -25,19 +19,17 @@ export async function clickThroughTestIds(
     await page.getByTestId(testId).click()
   }
 }
-
 export async function switchToProfile(
   page: Page,
   accountId: string
 ): Promise<void> {
-  await page.getByTestId(`account-item-${accountId}`).hover() // without click is not received!
+  await page.getByTestId(`account-item-${accountId}`).hover() 
   await page.getByTestId(`account-item-${accountId}`).click()
   await expect(page.getByTestId(`selected-account:${accountId}`)).toHaveCount(
     1,
     { timeout: 10000 }
   )
 }
-
 export async function createUser(
   userName: string,
   page: Page,
@@ -45,14 +37,11 @@ export async function createUser(
   isFirstOnboarding: boolean
 ): Promise<User> {
   const user = await createNewProfile(page, userName, isFirstOnboarding)
-
   expect(user.id).toBeDefined()
-
   existingProfiles.push(user)
   console.log(`User ${user.name} wurde angelegt!`, user)
   return user
 }
-
 export const getUser = (index: number, existingProfiles: User[]) => {
   if (!existingProfiles || existingProfiles.length < index + 1) {
     throw new Error(
@@ -66,10 +55,6 @@ export const getUser = (index: number, existingProfiles: User[]) => {
   }
   return existingProfiles[index]
 }
-
-/**
- * create a profile after pasting DCACCOUNT link
- */
 export async function createNewProfile(
   page: Page,
   name: string,
@@ -77,14 +62,10 @@ export async function createNewProfile(
 ): Promise<User> {
   await page.waitForSelector('.styles_module_account')
   const accountList = page.locator('.styles_module_account')
-
   if (!isFirstOnboarding) {
-    // add account to show onboarding screen
     await page.getByTestId('add-account-button').click()
   }
-  // create a new account
   await page.getByTestId('create-account-button').click()
-
   await page.evaluate(
     `navigator.clipboard.writeText('dcaccount:${chatmailServer}/new')`
   )
@@ -93,28 +74,17 @@ export async function createNewProfile(
     'scan-qr-login',
     'paste',
   ])
-
-  // Wait for the dialog to close, so that the underlying content
-  // becomes interactive, otherwise `fill()` might silently do nothing.
   await expect(page.getByTestId('qrscan-dialog')).not.toBeVisible()
-
   const nameInput = page.locator('#displayName')
-
   await expect(nameInput).toBeVisible()
-
   await nameInput.fill(name)
-
   await page.getByTestId('login-button').click()
-
   const newAccountList = page.locator('.styles_module_account')
   await expect(newAccountList.last()).toHaveClass(
     /(^|\s)styles_module_active(\s|$)/
   )
-  // open settings to validate the name and to get
-  // the (randomly) created mail address
   const settingsButton = page.getByTestId('open-settings-button')
   await settingsButton.click()
-
   await expect(page.locator('.styles_module_profileDisplayName')).toHaveText(
     name
   )
@@ -123,16 +93,12 @@ export async function createNewProfile(
   const addressLocator = page.locator('#addr')
   await expect(addressLocator).toHaveValue(/.+@.+/)
   const address = await addressLocator.inputValue()
-
   await page.getByTestId('cancel').click()
   await page.getByTestId('settings-advanced-close').click()
-
   const newId = await accountList
     .last()
     .getAttribute('x-account-sidebar-account-id')
-
   expect(newId).not.toBeNull()
-
   if (newId && address) {
     return {
       id: newId,
@@ -143,7 +109,6 @@ export async function createNewProfile(
     throw new Error(`User ${name} could not be created!`)
   }
 }
-
 export async function getProfile(
   page: Page,
   accountId: string,
@@ -166,7 +131,6 @@ export async function getProfile(
   }
   await page.getByTestId('cancel').click()
   await page.getByTestId('settings-advanced-close').click()
-
   return {
     id: accountId,
     name: name ?? '',
@@ -174,7 +138,6 @@ export async function getProfile(
     password: password,
   }
 }
-
 export async function createProfiles(
   number: number,
   existingProfiles: User[],
@@ -204,7 +167,6 @@ export async function createProfiles(
     }
   }
 }
-
 export async function deleteAllProfiles(
   page: Page,
   existingProfiles: User[]
@@ -217,24 +179,14 @@ export async function deleteAllProfiles(
     const deleted = await deleteProfile(page, profileToDelete.id)
     expect(deleted).toContain(profileToDelete.name)
     if (deleted) {
-      /* ignore-console-log */
       console.log(`User ${profileToDelete.name} was deleted!`)
     }
   }
 }
-
-/**
- * can be used to load existing profiles from db
- * if fixtures are used, and the profiles are already created
- */
 export async function loadExistingProfiles(page: Page): Promise<User[]> {
-  // await page.goto('https://localhost:3000/')
   const existingProfiles: User[] = []
   await page.waitForSelector('.main-container')
   await expect(page.locator('.main-container')).toBeVisible()
-  // TODO: the next waitFor calls are needed when loading existing profiles
-  // and skipping the createProfiles step, but will never succeed if there
-  // are no profiles yet
   await page.waitForSelector('button.styles_module_account')
   await page.waitForSelector('button.styles_module_account[aria-busy=false]')
   const accountList = page.locator('button.styles_module_account')
@@ -246,16 +198,12 @@ export async function loadExistingProfiles(page: Page): Promise<User[]> {
         .locator('.styles_module_welcome')
         .isVisible()
       if (welcomeDialog) {
-        // special case: when no account exists on app start a new empty
-        // account is created but not yet persisted, so there are no
-        // existing profiles in database yet
         return []
       }
     }
     for (let i = 0; i < existingAccountItems; i++) {
       const account = accountList.nth(i)
       const id = await account.getAttribute('x-account-sidebar-account-id')
-      /* ignore-console-log */
       console.log(`Found account ${id}`)
       if (id) {
         const p = await getProfile(page, id)
@@ -266,10 +214,9 @@ export async function loadExistingProfiles(page: Page): Promise<User[]> {
   }
   return []
 }
-
 export async function deleteProfile(
   page: Page,
-  accountId?: string // if empty, the last account will be deleted
+  accountId?: string 
 ): Promise<string | null> {
   await page.waitForSelector('.styles_module_account')
   const accountList = page.locator('.styles_module_account')
@@ -283,7 +230,6 @@ export async function deleteProfile(
     } else {
       await accountList.last().click({ button: 'right' })
     }
-    // await page.screenshot({ path: 'accountList.png' })
     await page.getByTestId('delete-account-menu-item').click()
     await expect(page.getByTestId('account-deletion-dialog')).toBeVisible()
     const userName: string | null = await page

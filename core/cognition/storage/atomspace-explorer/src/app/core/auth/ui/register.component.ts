@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { CustomValidators } from "../../../shared/validators/validators";
 import { UserAccount } from "../models/user-account.model.interface";
-
 @Component({
   selector: 'app-register',
   templateUrl: '../templates/register.component.html',
@@ -21,9 +20,7 @@ export class RegisterComponent implements OnInit {
       email: ['', CustomValidators.emailValidator],
     });
   }
-
   ngOnInit() {
-    // initialize model here
     this.user = {
       username: '',
       email: '',
@@ -31,7 +28,6 @@ export class RegisterComponent implements OnInit {
       confirmPassword: ''
     }
   }
-
   public register() {
     this._authService.register(this.user)
       .subscribe(

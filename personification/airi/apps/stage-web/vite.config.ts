@@ -1,6 +1,5 @@
 import { join, resolve } from 'node:path'
 import { cwd, env } from 'node:process'
-
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
@@ -10,26 +9,19 @@ import VueRouter from 'unplugin-vue-router/vite'
 import Yaml from 'unplugin-yaml/vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
-
 import { Download } from '@proj-airi/unplugin-fetch/vite'
 import { DownloadLive2DSDK } from '@proj-airi/unplugin-live2d-sdk/vite'
 import { templateCompilerOptions } from '@tresjs/core'
 import { LFS, SpaceCard } from 'hfup/vite'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-
 export default defineConfig({
   optimizeDeps: {
     exclude: [
-      // Internal Packages
       '@proj-airi/stage-ui/*',
       '@proj-airi/drizzle-duckdb-wasm',
       '@proj-airi/drizzle-duckdb-wasm/*',
-
-      // Static Assets: Models, Images, etc.
       'public/assets/*',
-
-      // Live2D SDK
       '@framework/live2dcubismframework',
       '@framework/math/cubismmatrix44',
       '@framework/type/csmvector',
@@ -65,9 +57,7 @@ export default defineConfig({
   },
   plugins: [
     Info(),
-
     Yaml(),
-
     VueMacros({
       plugins: {
         vue: Vue({
@@ -78,8 +68,6 @@ export default defineConfig({
       },
       betterDefine: false,
     }),
-
-    // https://github.com/posva/unplugin-vue-router
     VueRouter({
       extensions: ['.vue', '.md'],
       dts: resolve(import.meta.dirname, 'src/typed-router.d.ts'),
@@ -89,15 +77,8 @@ export default defineConfig({
         resolve(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src', 'pages'),
       ],
     }),
-
-    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
     Layouts(),
-
-    // https://github.com/antfu/unocss
-    // see uno.config.ts for config
     Unocss(),
-
-    // https://github.com/antfu/vite-plugin-pwa
     ...(env.TARGET_HUGGINGFACE_SPACE
       ? []
       : [VitePWA({
@@ -134,31 +115,24 @@ export default defineConfig({
           workbox: {
             maximumFileSizeToCacheInBytes: 64 * 1024 * 1024,
             navigateFallbackDenylist: [
-              /^\/docs\//,
-              /^\/ui\//,
-              /^\/remote-assets\//,
-              /^\/api\//,
+              /^\/docs\
+              /^\/ui\
+              /^\/remote-assets\
+              /^\/api\
             ],
           },
         })]),
-
-    // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
     VueI18n({
       runtimeOnly: true,
       compositionOnly: true,
       fullInstall: true,
     }),
-
-    // https://github.com/webfansplz/vite-plugin-vue-devtools
     VueDevTools(),
-
     DownloadLive2DSDK(),
     Download('https://dist.ayaka.moe/live2d-models/hiyori_free_zh.zip', 'hiyori_free_zh.zip', 'assets/live2d/models'),
     Download('https://dist.ayaka.moe/live2d-models/hiyori_pro_zh.zip', 'hiyori_pro_zh.zip', 'assets/live2d/models'),
     Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-A/AvatarSample_A.vrm', 'AvatarSample_A.vrm', 'assets/vrm/models/AvatarSample-A'),
     Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-B/AvatarSample_B.vrm', 'AvatarSample_B.vrm', 'assets/vrm/models/AvatarSample-B'),
-
-    // HuggingFace Spaces
     LFS({ root: cwd(), extraGlobs: ['*.vrm', '*.vrma', '*.hdr', '*.cmo3', '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.bmp', '*.ttf'] }),
     SpaceCard({
       root: cwd(),

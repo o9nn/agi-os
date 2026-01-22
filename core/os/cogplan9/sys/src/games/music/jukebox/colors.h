@@ -24,7 +24,5 @@ extern	Image		*red;
 extern	Image		*sea;
 extern	Image		*white;
 extern	Image		*yellow;
-
 extern	Font			*romanfont, *boldfont;
-
 void	colorinit(char*, char*);

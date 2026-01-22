@@ -1,48 +1,39 @@
-typedef uchar		BYTE;		/* 8  bits */
-typedef int		WORD;		/* 32 bits */
-typedef unsigned int	UWORD;		/* 32 bits */
-typedef vlong		LONG;		/* 64 bits */
-typedef uvlong		ULONG;		/* 64 bits */
-typedef double		REAL;		/* 64 double IEEE754 */
-typedef short		SHORT;		/* 16 bits */
-typedef float		SREAL;		/* 32 float IEEE754 */
-
+typedef uchar		BYTE;
+typedef int		WORD;
+typedef unsigned int	UWORD;
+typedef vlong		LONG;
+typedef uvlong		ULONG;
+typedef double		REAL;
+typedef short		SHORT;
+typedef float		SREAL;
 enum ProgState
 {
-	Palt,				/* blocked in alt instruction */
-	Psend,				/* waiting to send */
-	Precv,				/* waiting to recv */
-	Pdebug,				/* debugged */
-	Pready,				/* ready to be scheduled */
-	Prelease,			/* interpreter released */
-	Pexiting,			/* exit because of kill or error */
-	Pbroken,			/* thread crashed */
+Palt,
+Psend,
+Precv,
+Pdebug,
+Pready,
+Prelease,
+Pexiting,
+Pbroken,
 };
-
 enum
 {
-	propagator	= 3,		/* gc marking color */
-
-	PRNSIZE	= 1024,
-	BIHASH	= 23,
-	PQUANTA	= 2048,	/* prog time slice */
-
-	/* STRUCTALIGN is the unit to which the compiler aligns structs. */
-	/* It really should be defined somewhere else */
-	STRUCTALIGN = sizeof(int)	/* must be >=2 because of Strings */
+propagator	= 3,
+PRNSIZE	= 1024,
+BIHASH	= 23,
+PQUANTA	= 2048,
+STRUCTALIGN = sizeof(int)
 };
-
 enum
 {
-	/* Prog and Progs flags */
-	Ppropagate = 1<<0,	/* propagate exceptions within group */
-	Pnotifyleader = 1<<1,	/* send exceptions to group leader */
-	Prestrict = 1<<2,	/* enforce memory limits */
-	Prestricted = 1<<3,
-	Pkilled = 1<<4,
-	Pprivatemem = 1<<5	/* keep heap and stack private */
+Ppropagate = 1<<0,
+Pnotifyleader = 1<<1,
+Prestrict = 1<<2,
+Prestricted = 1<<3,
+Pkilled = 1<<4,
+Pprivatemem = 1<<5
 };
-
 typedef struct Alt	Alt;
 typedef struct Channel	Channel;
 typedef struct Progq	Progq;
@@ -68,286 +59,257 @@ typedef struct Atidle	Atidle;
 typedef struct Altc	Altc;
 typedef struct Except Except;
 typedef struct Handler Handler;
-
 struct ILock
 {
-	int	lk;
-	int	pid;
-	void*	ql;
+int	lk;
+int	pid;
+void*	ql;
 };
-
 struct Frame
 {
-	Inst*		lr;	/* REGLINK isa.h */
-	uchar*		fp;	/* REGFP */
-	Modlink*	mr;	/* REGMOD */
-	Type*		t;	/* REGTYPE */
+Inst*		lr;
+uchar*		fp;
+Modlink*	mr;
+Type*		t;
 };
-
 union Stkext
 {
-	uchar	stack[1];
-	struct {
-		Type*	TR;
-		uchar*	SP;
-		uchar*	TS;
-		uchar*	EX;
-		union {
-			uchar	fu[1];
-			Frame	fr[1];
-		} tos;
-	} reg;
+uchar	stack[1];
+struct {
+Type*	TR;
+uchar*	SP;
+uchar*	TS;
+uchar*	EX;
+union {
+uchar	fu[1];
+Frame	fr[1];
+} tos;
+} reg;
 };
-
 struct Array
 {
-	WORD	len;
-	Type*	t;
-	Array*	root;
-	uchar*	data;
+WORD	len;
+Type*	t;
+Array*	root;
+uchar*	data;
 };
-
 struct List
 {
-	List*	tail;
-	Type*	t;
-	WORD	data[1];
+List*	tail;
+Type*	t;
+WORD	data[1];
 };
-
 struct Channel
 {
-	Array*	buf;		/* For buffered channels - must be first */
-	Progq*	send;		/* Queue of progs ready to send */
-	Progq*	recv;		/* Queue of progs ready to receive */
-	void*	aux;		/* Rock for devsrv */
-	void	(*mover)(void);	/* Data mover */
-	union {
-		WORD	w;
-		Type*	t;
-	} mid;
-	int	front;	/* Front of buffered queue */
-	int	size;		/* Number of data items in buffered queue */
+Array*	buf;
+Progq*	send;
+Progq*	recv;
+void*	aux;
+void	(*mover)(void);
+union {
+WORD	w;
+Type*	t;
+} mid;
+int	front;
+int	size;
 };
-
 struct Progq
 {
-	Prog*	prog;
-	Progq*	next;
+Prog*	prog;
+Progq*	next;
 };
-	
 struct String
 {
-	int	len;		/* string length */
-	int	max;		/* maximum length in representation */
-	char*	tmp;
-	union {
-	#define	Sascii	data.ascii
-	#define Srune	data.runes
-		char	ascii[STRUCTALIGN];	/* string.c relies on having extra space (eg, in string2c) */
-		Rune	runes[1];
-	}data;	
+int	len;
+int	max;
+char*	tmp;
+union {
+#define	Sascii	data.ascii
+#define Srune	data.runes
+char	ascii[STRUCTALIGN];
+Rune	runes[1];
+}data;
 };
-
 union Linkpc
 {
-	void	(*runt)(void*);
-	Inst*	pc;
+void	(*runt)(void*);
+Inst*	pc;
 };
-
 struct Link
 {
-	int	sig;
-	Type*	frame;
-	Linkpc	u;
-	char	*name;
+int	sig;
+Type*	frame;
+Linkpc	u;
+char	*name;
 };
-
 typedef union	Adr	Adr;
 union Adr
 {
-	WORD	imm;
-	WORD	ind;
-	Inst*	ins;
-	struct {
-		ushort	f;	/* First indirection */	
-		ushort	s;	/* Second indirection */
-	} i;
+WORD	imm;
+WORD	ind;
+Inst*	ins;
+struct {
+ushort	f;
+ushort	s;
+} i;
 };
-
 struct Inst
 {
-	uchar	op;
-	uchar	add;
-	ushort	reg;
-	Adr	s;
-	Adr	d;
+uchar	op;
+uchar	add;
+ushort	reg;
+Adr	s;
+Adr	d;
 };
-
 struct Altc
 {
-	Channel*	c;
-	void*		ptr;
+Channel*	c;
+void*		ptr;
 };
-
 struct Alt
 {
-	int	nsend;
-	int	nrecv;
-	Altc	ac[1];
+int	nsend;
+int	nrecv;
+Altc	ac[1];
 };
-
 struct Type
 {
-	int	ref;
-	void	(*free)(Heap*, int);
-	void	(*mark)(Type*, void*);
-	int	size;
-	int	np;
-	void*	destroy;
-	void*	initialize;
-	uchar	map[STRUCTALIGN];
+int	ref;
+void	(*free)(Heap*, int);
+void	(*mark)(Type*, void*);
+int	size;
+int	np;
+void*	destroy;
+void*	initialize;
+uchar	map[STRUCTALIGN];
 };
-
 struct REG
 {
-	Inst*		PC;		/* Program counter */
-	uchar*		MP;		/* Module data */
-	uchar*		FP;		/* Frame pointer */
-	uchar*		SP;		/* Stack pointer */
-	uchar*		TS;		/* Top of allocated stack */
-	uchar*		EX;		/* Extent register */
-	Modlink*	M;		/* Module */
-	int		IC;		/* Instruction count for this quanta */
-	Inst*		xpc;		/* Saved program counter */
-	void*		s;		/* Source */
-	void*		d;		/* Destination */
-	void*		m;		/* Middle */
-	WORD		t;		/* Middle temporary */
-	WORD		st;		/* Source temporary */
-	WORD		dt;		/* Destination temporary */
+Inst*		PC;
+uchar*		MP;
+uchar*		FP;
+uchar*		SP;
+uchar*		TS;
+uchar*		EX;
+Modlink*	M;
+int		IC;
+Inst*		xpc;
+void*		s;
+void*		d;
+void*		m;
+WORD		t;
+WORD		st;
+WORD		dt;
 };
-
 struct Progs
 {
-	int	id;
-	int	flags;
-	Progs*	parent;
-	Progs*	child;
-	Progs*	sib;
-	Prog*	head;	/* live group leader is at head */
-	Prog*	tail;
+int	id;
+int	flags;
+Progs*	parent;
+Progs*	child;
+Progs*	sib;
+Prog*	head;
+Prog*	tail;
 };
-
 struct Prog
 {
-	REG		R;		/* Register set */
-	Prog*		link;		/* Run queue */
-	Channel*		chan;	/* Channel pointer */
-	void*		ptr;		/* Channel data pointer */
-	enum ProgState	state;		/* Scheduler state */
-	char*		kill;		/* Set if prog should error */
-	char*		killstr;	/* kill string buffer when needed */
-	int		pid;		/* unique Prog id */
-	int		quanta;		/* time slice */
-	ulong	ticks;		/* time used */
-	int		flags;		/* error recovery flags */
-	Prog*		prev;
-	Prog*		next;
-	Prog*	pidlink;	/* next in pid hash chain */
-	Progs*	group;	/* process group */
-	Prog*	grpprev;	/* previous group member */
-	Prog*	grpnext;	/* next group member */
-	void*	exval;	/* current exception */
-	char*	exstr;	/* last exception */
-	void		(*addrun)(Prog*);
-	void		(*xec)(Prog*);
-
-	void*		osenv;
+REG		R;
+Prog*		link;
+Channel*		chan;
+void*		ptr;
+enum ProgState	state;
+char*		kill;
+char*		killstr;
+int		pid;
+int		quanta;
+ulong	ticks;
+int		flags;
+Prog*		prev;
+Prog*		next;
+Prog*	pidlink;
+Progs*	group;
+Prog*	grpprev;
+Prog*	grpnext;
+void*	exval;
+char*	exstr;
+void		(*addrun)(Prog*);
+void		(*xec)(Prog*);
+void*		osenv;
 };
-
 struct Module
 {
-	int	ref;		/* Use count */
-	int	compiled;	/* Compiled into native assembler */
-	ulong	ss;		/* Stack size */
-	ulong	rt;		/* Runtime flags */
-	ulong	mtime;		/* Modtime of dis file */
-	Qid		qid;		/* Qid of dis file */
-	ushort	dtype;		/* type of dis file's server*/
-	uint	dev;	/* subtype of dis file's server */
-	int	nprog;		/* number of instructions */
-	Inst*	prog;		/* text segment */
-	uchar*	origmp;		/* unpolluted Module data */
-	int	ntype;		/* Number of type descriptors */
-	Type**	type;		/* Type descriptors */
-	Inst*	entry;		/* Entry PC */
-	Type*	entryt;		/* Entry frame */
-	char*	name;	/* Implements type */
-	char*	path;		/* File module loaded from */
-	Module*	link;		/* Links */
-	Link*	ext;		/* External dynamic links */
-	Import**	ldt;	/* Internal linkage descriptor tables */
-	Handler*	htab;	/* Exception handler table */
-	ulong*	pctab;	/* dis pc to code pc when compiled */
-	void*	dlm;		/* dynamic C module */
+int	ref;
+int	compiled;
+ulong	ss;
+ulong	rt;
+ulong	mtime;
+Qid		qid;
+ushort	dtype;
+uint	dev;
+int	nprog;
+Inst*	prog;
+uchar*	origmp;
+int	ntype;
+Type**	type;
+Inst*	entry;
+Type*	entryt;
+char*	name;
+char*	path;
+Module*	link;
+Link*	ext;
+Import**	ldt;
+Handler*	htab;
+ulong*	pctab;
+void*	dlm;
 };
-
 struct Modl
 {
-	Linkpc	u;		/* PC of Dynamic link */
-	Type*	frame;		/* Frame type for this entry */
+Linkpc	u;
+Type*	frame;
 };
-
 struct Modlink
 {
-	uchar*	MP;		/* Module data for this instance */
-	Module*	m;		/* The real module */
-	int	compiled;	/* Compiled into native assembler */
-	Inst*	prog;		/* text segment */
-	Type**	type;		/* Type descriptors */
-	uchar*	data;		/* for dynamic C modules */
-	int	nlinks;		/* ?apparently required by Java */
-	Modl	links[1];
+uchar*	MP;
+Module*	m;
+int	compiled;
+Inst*	prog;
+Type**	type;
+uchar*	data;
+int	nlinks;
+Modl	links[1];
 };
-
-/* must be a multiple of 8 bytes */
 struct Heap
 {
-	int	color;		/* Allocation color */
-	ulong	ref;
-	Type*	t;
-	ulong	hprof;	/* heap profiling */
+int	color;
+ulong	ref;
+Type*	t;
+ulong	hprof;
 };
-
 struct	Atidle
 {
-	int	(*fn)(void*);
-	void*	arg;
-	Atidle*	link;
+int	(*fn)(void*);
+void*	arg;
+Atidle*	link;
 };
-
 struct Import
 {
-	int	sig;
-	char*	name;
+int	sig;
+char*	name;
 };
-
 struct Except
 {
-	char*	s;
-	ulong	pc;
+char*	s;
+ulong	pc;
 };
-
 struct Handler
 {
-	ulong	pc1;
-	ulong	pc2;
-	ulong	eoff;
-	ulong	ne;
-	Type*	t;
-	Except*	etab;
+ulong	pc1;
+ulong	pc2;
+ulong	eoff;
+ulong	ne;
+Type*	t;
+Except*	etab;
 };
-
 #define H2D(t, x)	((t)(((uchar*)(x))+sizeof(Heap)))
 #define D2H(x)		((Heap*)(((uchar*)(x))-sizeof(Heap)))
 #define H		((void*)(-1))
@@ -356,7 +318,6 @@ struct Handler
 #define gclock()	gchalt++
 #define gcunlock()	gchalt--
 #define gcruns()	(gchalt == 0)
-
 extern	int	bflag;
 extern	int	cflag;
 extern	int	nproc;
@@ -382,7 +343,6 @@ extern	int	nprop;
 extern	int	gchalt;
 extern	int	gccolor;
 extern	int	minvalid;
-
 extern	int		Dconv(Fmt*);
 extern	void		acquire(void);
 extern	void		addrun(Prog*);
@@ -532,9 +492,7 @@ extern	String*		slicer(ulong, ulong, String*);
 extern	String*		addstring(String*, String*, int);
 extern	int		brpatch(Inst*, Module*);
 extern	void		readimagemodinit(void);
-
 #define	O(t,e)		((long)(&((t*)0)->e))
 #define	OA(t,e)		((long)(((t*)0)->e))
-
 #pragma	varargck	type	"D"	Inst*
 #pragma varargck argpos errorf 1

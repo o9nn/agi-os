@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -e
-
-# @env LLM_OUTPUT=/dev/stdout The output path
-
 ROOT_DIR="${LLM_ROOT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
-
-# @cmd Add a new todo item
-# @option --desc! The todo description
 add_todo() {
     todos_file="$(_get_todos_file)"
     if [[ -f "$todos_file" ]]; then
@@ -22,9 +16,6 @@ add_todo() {
         > "$todos_file"
     echo "Successfully added todo id=$num" >> "$LLM_OUTPUT"
 }
-
-# @cmd Delete an todo item
-# @option --id! <INT> The todo id
 del_todo() {
     todos_file="$(_get_todos_file)"
     if [[ -f "$todos_file" ]]; then
@@ -37,9 +28,6 @@ del_todo() {
         echo "The operation failed because the todo list is currently empty." >> "$LLM_OUTPUT"
     fi
 }
-
-# @cmd Set a todo item status as done
-# @option --id! <INT> The todo id
 done_todo() {
     todos_file="$(_get_todos_file)"
     if [[ -f "$todos_file" ]]; then
@@ -52,8 +40,6 @@ done_todo() {
         echo "The operation failed because the todo list is currently empty." >> "$LLM_OUTPUT"
     fi
 }
-
-# @cmd Display the current todo list in json format
 list_todos() {
     todos_file="$(_get_todos_file)"
     if [[ -f "$todos_file" ]]; then
@@ -62,8 +48,6 @@ list_todos() {
         echo '[]' >> "$LLM_OUTPUT"
     fi
 }
-
-# @cmd Clean the entire todo list
 clear_todos() {
     todos_file="$(_get_todos_file)"
     if [[ -f "$todos_file" ]]; then
@@ -74,12 +58,9 @@ clear_todos() {
         echo "The operation failed because the todo list is currently empty." >> "$LLM_OUTPUT"
     fi
 }
-
 _get_todos_file() {
     todos_dir="${LLM_AGENT_CACHE_DIR:-.}"
     mkdir -p "$todos_dir"
     echo "$todos_dir/todos.json"
 }
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

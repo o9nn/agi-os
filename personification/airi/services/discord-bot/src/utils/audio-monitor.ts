@@ -1,11 +1,6 @@
 import type { Readable } from 'node:stream'
-
 import { Buffer } from 'node:buffer'
-
 import { useLogg } from '@guiiai/logg'
-
-// eliza/packages/client-discord/src/voice.ts at develop · elizaOS/eliza
-// https://github.com/elizaOS/eliza/blob/develop/packages/client-discord/src/voice.ts
 export class AudioMonitor {
   private readable: Readable
   private buffers: Buffer[] = []
@@ -13,7 +8,6 @@ export class AudioMonitor {
   private lastFlagged: number = -1
   private ended: boolean = false
   private logger = useLogg('AudioMonitor').useGlobalConfig()
-
   constructor(
     readable: Readable,
     maxSize: number,
@@ -23,7 +17,6 @@ export class AudioMonitor {
     this.readable = readable
     this.maxSize = maxSize
     this.readable.on('data', (chunk: Buffer) => {
-      // this.logger.log('AudioMonitor got data');
       if (this.lastFlagged < 0) {
         this.lastFlagged = this.buffers.length
       }
@@ -61,18 +54,15 @@ export class AudioMonitor {
       this.reset()
     })
   }
-
   stop() {
     this.readable.removeAllListeners('data')
     this.readable.removeAllListeners('end')
     this.readable.removeAllListeners('speakingStopped')
     this.readable.removeAllListeners('speakingStarted')
   }
-
   isFlagged() {
     return this.lastFlagged >= 0
   }
-
   getBufferFromFlag() {
     if (this.lastFlagged < 0) {
       return null
@@ -80,17 +70,14 @@ export class AudioMonitor {
     const buffer = Buffer.concat(this.buffers.slice(this.lastFlagged))
     return buffer
   }
-
   getBufferFromStart() {
     const buffer = Buffer.concat(this.buffers)
     return buffer
   }
-
   reset() {
     this.buffers = []
     this.lastFlagged = -1
   }
-
   isEnded() {
     return this.ended
   }

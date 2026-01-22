@@ -1,25 +1,19 @@
 import type { EmbedResult } from '@xsai/embed'
 import type { SQL } from 'drizzle-orm'
 import type { Message, UserFromGetMe } from 'grammy/types'
-
 import { env } from 'node:process'
-
 import { useLogg } from '@guiiai/logg'
 import { embed } from '@xsai/embed'
 import { and, cosineDistance, desc, eq, gt, inArray, lt, ne, notInArray, sql } from 'drizzle-orm'
-
 import { useDrizzle } from '../db'
 import { chatMessagesTable } from '../db/schema'
 import { chatMessageToOneLine } from './common'
 import { findPhotoDescription } from './photos'
 import { findStickerDescription } from './stickers'
-
 export async function recordMessage(botInfo: UserFromGetMe, message: Message) {
   const replyToName = message.reply_to_message?.from.first_name || ''
-
   let embedding: EmbedResult
   let text: string
-
   if (message.sticker != null) {
     text = `A sticker sent by user ${await findStickerDescription(message.sticker.file_id)}, sticker set named ${message.sticker.set_name}`
   }
@@ -29,7 +23,6 @@ export async function recordMessage(botInfo: UserFromGetMe, message: Message) {
   else if (message.text) {
     text = message.text || message.caption || ''
   }
-
   if (text === '') {
     return
   }
@@ -41,7 +34,6 @@ export async function recordMessage(botInfo: UserFromGetMe, message: Message) {
       input: text,
     })
   }
-
   const values: Partial<Omit<typeof chatMessagesTable.$inferSelect, 'id' | 'created_at' | 'updated_at'>> = {
     platform: 'telegram',
     from_id: message.from.id.toString(),
@@ -53,7 +45,6 @@ export async function recordMessage(botInfo: UserFromGetMe, message: Message) {
     reply_to_name: replyToName === botInfo.first_name ? 'Yourself' : replyToName,
     reply_to_id: message.reply_to_message?.message_id.toString() || '',
   }
-
   switch (env.EMBEDDING_DIMENSION) {
     case '1536':
       values.content_vector_1536 = embedding.embedding
@@ -67,12 +58,10 @@ export async function recordMessage(botInfo: UserFromGetMe, message: Message) {
     default:
       throw new Error(`Unsupported embedding dimension: ${env.EMBEDDING_DIMENSION}`)
   }
-
   await useDrizzle()
     .insert(chatMessagesTable)
     .values(values)
 }
-
 export async function findLastNMessages(chatId: string, n: number) {
   const res = await useDrizzle()
     .select()
@@ -80,20 +69,15 @@ export async function findLastNMessages(chatId: string, n: number) {
     .where(eq(chatMessagesTable.in_chat_id, chatId))
     .orderBy(desc(chatMessagesTable.created_at))
     .limit(n)
-
   return res.reverse()
 }
-
 export async function findRelevantMessages(botId: string, chatId: string, unreadHistoryMessagesEmbedding: { embedding: number[] }[], excludeMessageIds: string[] = []) {
   const db = useDrizzle()
-  const contextWindowSize = 5 // Number of messages to include before and after
+  const contextWindowSize = 5 
   const logger = useLogg('findRelevantMessages').useGlobalConfig().withField('chatId', chatId)
-
   logger.withField('context_window_size', contextWindowSize).log('Querying relevant chat messages...')
-
   return await Promise.all(unreadHistoryMessagesEmbedding.map(async (embedding) => {
     let similarity: SQL<number>
-
     switch (env.EMBEDDING_DIMENSION) {
       case '1536':
         similarity = sql<number>`(1 - (${cosineDistance(chatMessagesTable.content_vector_1536, embedding.embedding)}))`
@@ -107,11 +91,8 @@ export async function findRelevantMessages(botId: string, chatId: string, unread
       default:
         throw new Error(`Unsupported embedding dimension: ${env.EMBEDDING_DIMENSION}`)
     }
-
     const timeRelevance = sql<number>`(1 - (CEIL(EXTRACT(EPOCH FROM NOW()) * 1000)::bigint - ${chatMessagesTable.created_at}) / 86400 / 30)`
     const combinedScore = sql<number>`((1.2 * ${similarity}) + (0.2 * ${timeRelevance}))`
-
-    // Get top messages with similarity above threshold
     const relevantMessages = await db
       .select({
         id: chatMessagesTable.id,
@@ -139,13 +120,9 @@ export async function findRelevantMessages(botId: string, chatId: string, unread
       ))
       .orderBy(desc(sql`combined_score`))
       .limit(3)
-
     logger.withField('number_of_relevant_messages', relevantMessages.length).log('Successfully found relevant chat messages')
-
-    // Now fetch the context for each message
     const relevantMessagesContext = await Promise.all(
       relevantMessages.map(async (message) => {
-        // Get N messages before the target message
         const messagesBefore = await db
           .select({
             id: chatMessagesTable.id,
@@ -170,8 +147,6 @@ export async function findRelevantMessages(botId: string, chatId: string, unread
           ))
           .orderBy(desc(chatMessagesTable.created_at))
           .limit(contextWindowSize)
-
-        // Get N messages after the target message
         const messagesAfter = await db
           .select({
             id: chatMessagesTable.id,
@@ -196,57 +171,24 @@ export async function findRelevantMessages(botId: string, chatId: string, unread
           ))
           .orderBy(chatMessagesTable.created_at)
           .limit(contextWindowSize)
-
-        // Combine all messages in chronological order
         return [
-          ...messagesBefore.reverse(), // Reverse to get chronological order
+          ...messagesBefore.reverse(), 
           message,
           ...messagesAfter,
         ]
       }),
     )
-
-    // Convert from
-    //
-    // [
-    //   [
-    //     { is_reply: true, reply_to_id: '123' },
-    //     { is_reply: false, reply_to_id: '124' }
-    //   ]
-    // ]
-    //
-    // to
-    //
-    // [['123', '124']]
     const repliedMessageIDsSubset = relevantMessagesContext.map(msgs => msgs.filter(m => m.is_reply).map(m => m.reply_to_id))
-    // Convert from
-    //
-    // [['123', '124']]
-    //
-    // to
-    //
-    // ['123', '124']
-    //
-    // with unique values
     const repliedMessageIDs = [...new Set(repliedMessageIDsSubset.flat())]
     const repliedMessages = await findMessagesByIDs(repliedMessageIDs)
-
-    // Queried results
-    //
-    // { '123': { ... }, '124': { ... } }
     const repliedMessagesSet = new Map(repliedMessages.map(m => [m.platform_message_id, m]))
-
-    // Map into one liners
     const relevantMessageOneliner = relevantMessagesContext.map(msgs => msgs.map(m => chatMessageToOneLine(botId, m, repliedMessagesSet.get(m.reply_to_id))).join('\n'))
     logger.withField('number_of_relevant_messages', relevantMessages.length).log('processed relevant chat messages with contextual messages')
-
     return relevantMessageOneliner
   }))
 }
-
 export async function findMessagesByIDs(messageIds: string[]) {
   const db = useDrizzle()
-
   return await db
     .select()
     .from(chatMessagesTable)

@@ -7,8 +7,6 @@ import {
   createTranscriptionProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://siliconflow.com/en/pricing} */
 export const createSiliconFlow = (apiKey: string, baseURL = 'https://api.siliconflow.cn/v1/') => merge(
   createMetadataProvider('silicon-flow'),
   createChatProvider<

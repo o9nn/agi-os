@@ -1,8 +1,4 @@
-// Generouted, changes to this file will be overridden
-/* eslint-disable */
-
 import { components, hooks, utils } from '@generouted/react-router/client'
-
 export type Path =
   | `/`
   | `/debug/expression`
@@ -13,13 +9,9 @@ export type Path =
   | `/debug/settings`
   | `/debug/text`
   | `/debug/vad-stt`
-
 export type Params = {
-  
 }
-
 export type ModalPath = never
-
 export const { Link, Navigate } = components<Path, Params>()
 export const { useModals, useNavigate, useParams } = hooks<Path, Params, ModalPath>()
 export const { redirect } = utils<Path, Params>()

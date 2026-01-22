@@ -1,7 +1,5 @@
 import { boolean, char, integer, json, pgSchema, real, smallint, text, varchar } from 'drizzle-orm/pg-core'
-
 const postgresInformationSchema = pgSchema('information_schema')
-
 export const postgresInformationSchemaTables = postgresInformationSchema.table('tables', {
   table_catalog: text(),
   table_schema: text(),
@@ -16,7 +14,6 @@ export const postgresInformationSchemaTables = postgresInformationSchema.table('
   is_typed: varchar(),
   commit_action: varchar(),
 })
-
 export const postgresInformationSchemaColumns = postgresInformationSchema.table('columns', {
   table_catalog: text(),
   table_schema: text(),
@@ -63,21 +60,18 @@ export const postgresInformationSchemaColumns = postgresInformationSchema.table(
   generation_expression: varchar(),
   is_updatable: varchar(),
 })
-
 export const postgresPgCatalogPgAm = pgSchema('pg_catalog').table('pg_am', {
   oid: text('oid'),
   amhandler: text('regproc'),
   amtype: text('amtype'),
   amname: text('amname'),
 })
-
 export const postgresPgCatalogPgNamespace = pgSchema('pg_catalog').table('pg_namespace', {
   oid: text('oid'),
   nspowner: text('nspowner'),
   nspacl: text('nspacl').array(),
   nspname: text('nspname'),
 })
-
 export const postgresPgCatalogPgClass = pgSchema('pg_catalog').table('pg_class', {
   oid: text('oid'),
   relfrozenxid: text('relfrozenxid'),
@@ -113,7 +107,6 @@ export const postgresPgCatalogPgClass = pgSchema('pg_catalog').table('pg_class',
   relpartbound: json('relpartbound'),
   reloptions: text('reloptions').array(),
 })
-
 export const postgresPgCatalogPgIndex = pgSchema('pg_catalog').table('pg_index', {
   indexrelid: text('indexrelid'),
   indrelid: text('indrelid'),
@@ -137,7 +130,6 @@ export const postgresPgCatalogPgIndex = pgSchema('pg_catalog').table('pg_index',
   indexprs: json('indexprs'),
   indpred: json('indpred'),
 })
-
 export const postgresPgCatalogPgAttribute = pgSchema('pg_catalog').table('pg_attribute', {
   attrelid: integer('attrelid').notNull().primaryKey(),
   attname: text('attname').notNull().primaryKey(),
@@ -166,7 +158,6 @@ export const postgresPgCatalogPgAttribute = pgSchema('pg_catalog').table('pg_att
   attfdwoptions: text('attfdwoptions').array(),
   attmissingval: json('attmissingval'),
 })
-
 export const postgresPgCatalogPgType = pgSchema('pg_catalog').table('pg_type', {
   oid: integer('oid').primaryKey(),
   typname: text('typname').notNull(),

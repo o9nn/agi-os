@@ -1,8 +1,6 @@
 import defu from 'defu'
 import { cwd } from 'node:process'
-
 import { createUnplugin, type UnpluginInstance } from 'unplugin'
-
 export interface LFSOptions {
   enableFn: (ctx: LFSOptions) => boolean | Promise<boolean>
   extraGlobs: string[]
@@ -10,7 +8,6 @@ export interface LFSOptions {
   withDefault: boolean
   root: string
 }
-
 const defaultGitAttributes = `# Default
 *.7z filter=lfs diff=lfs merge=lfs -text
 *.arrow filter=lfs diff=lfs merge=lfs -text
@@ -37,7 +34,7 @@ const defaultGitAttributes = `# Default
 *.pth filter=lfs diff=lfs merge=lfs -text
 *.rar filter=lfs diff=lfs merge=lfs -text
 *.safetensors filter=lfs diff=lfs merge=lfs -text
-saved_model/**/* filter=lfs diff=lfs merge=lfs -text
+saved_model* filter=lfs diff=lfs merge=lfs -text
 *.tar.* filter=lfs diff=lfs merge=lfs -text
 *.tar filter=lfs diff=lfs merge=lfs -text
 *.tflite filter=lfs diff=lfs merge=lfs -text
@@ -48,8 +45,6 @@ saved_model/**/* filter=lfs diff=lfs merge=lfs -text
 *.zst filter=lfs diff=lfs merge=lfs -text
 *tfevents* filter=lfs diff=lfs merge=lfs -text
 `
-
-
 export const LFS: UnpluginInstance<Partial<LFSOptions> | undefined, false>
   = createUnplugin((rawOptions) => {
     const options = defu<LFSOptions, LFSOptions[]>(rawOptions, {
@@ -60,14 +55,12 @@ export const LFS: UnpluginInstance<Partial<LFSOptions> | undefined, false>
       withDefault: true,
     }
   )
-
     return {
       name: 'hfup:lfs-gitattributes',
       async buildEnd() {
         if (options?.enableFn && !(await options.enableFn(options))) {
           return
         }
-
         const extraGlobs = options?.extraGlobs ?? []
         const extraAttributes = options?.extraAttributes ?? []
         const withDefault = options?.withDefault ?? true
@@ -75,7 +68,6 @@ export const LFS: UnpluginInstance<Partial<LFSOptions> | undefined, false>
         const extraGlobsIntoGitAttributes = extraGlobs.map((glob) => {
           return `${glob} filter=lfs diff=lfs merge=lfs -text`
         })
-
         this.emitFile({
           type: 'asset',
           fileName: '.gitattributes',

@@ -2,7 +2,6 @@
   (LambdaLink
     (VariableNode "$top-arg")
     (VariableNode "$top-arg")))
-
 (define inheritance-shallow-abstraction
   (LambdaLink
     (VariableList
@@ -11,7 +10,6 @@
     (InheritanceLink
       (VariableNode "$sha-arg-0")
       (VariableNode "$sha-arg-1"))))
-
 (define and-shallow-abstraction
   (LambdaLink
     (VariableList

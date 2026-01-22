@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
 export interface FileData {
   id: string;
   name: string;
@@ -10,7 +9,6 @@ export interface FileData {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface Memory {
   id: string;
   title: string;
@@ -19,14 +17,11 @@ export interface Memory {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface AppState {
   theme: "light" | "dark";
   currentFile: FileData | null;
   files: FileData[];
   editorType: "monaco" | "codemirror";
-
-  // Actions
   setTheme: (theme: "light" | "dark") => void;
   setCurrentFile: (file: FileData | null) => void;
   addFile: (file: FileData) => void;
@@ -35,7 +30,6 @@ export interface AppState {
   renameFile: (id: string, newName: string) => void;
   setEditorType: (type: "monaco" | "codemirror") => void;
 }
-
 export const useAppStore = create<AppState>()(
   persist(
     set => ({
@@ -43,7 +37,6 @@ export const useAppStore = create<AppState>()(
       currentFile: null,
       files: [],
       editorType: "monaco",
-
       setTheme: theme => set({ theme }),
       setCurrentFile: file => set({ currentFile: file }),
       addFile: file => set(state => ({ files: [...state.files, file] })),

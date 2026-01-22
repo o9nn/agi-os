@@ -1,10 +1,6 @@
-/*
- * arm.h
- */
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 typedef	struct	Registers	Registers;
 typedef	struct	Segment		Segment;
 typedef	struct	Memory		Memory;
@@ -14,134 +10,119 @@ typedef	struct	Inst		Inst;
 typedef	struct	Icache		Icache;
 typedef	struct	Tlb		Tlb;
 typedef	struct	Breakpoint	Breakpoint;
-
 enum
 {
-	Instruction	= 1,
-	Read		= 2,
-	Write		= 4,
-	Access		= 2|4,
-	Equal		= 4|8,
+Instruction	= 1,
+Read		= 2,
+Write		= 4,
+Access		= 2|4,
+Equal		= 4|8,
 };
-
 struct Breakpoint
 {
-	int		type;		/* Instruction/Read/Access/Write/Equal */
-	ulong		addr;		/* Place at address */
-	int		count;		/* To execute count times or value */
-	int		done;		/* How many times passed through */
-	Breakpoint*	next;		/* Link to next one */
+int		type;
+ulong		addr;
+int		count;
+int		done;
+Breakpoint*	next;
 };
-
 enum
 {
-	Imem,
-	Iarith,
-	Ibranch,
-	Isyscall,
+Imem,
+Iarith,
+Ibranch,
+Isyscall,
 };
-
 enum
 {
-	Nmaxtlb = 64,
-	REGARG	= 0,
-	REGRET	= 0,
-	REGPC	= 15,
-	REGLINK	= 14,
-	REGSP	= 13,
+Nmaxtlb = 64,
+REGARG	= 0,
+REGRET	= 0,
+REGPC	= 15,
+REGLINK	= 14,
+REGSP	= 13,
 };
-
 struct Tlb
 {
-	int	on;			/* Being updated */
-	int	tlbsize;		/* Number of entries */
-	ulong	tlbent[Nmaxtlb];	/* Virtual address tags */
-	int	hit;			/* Number of successful tag matches */
-	int	miss;			/* Number of failed tag matches */
-};		
-
+int	on;
+int	tlbsize;
+ulong	tlbent[Nmaxtlb];
+int	hit;
+int	miss;
+};
 struct Icache
 {
-	int	on;			/* Turned on */
-	int	linesize;		/* Line size in bytes */
-	int	stall;			/* Cache stalls */
-	int*	lines;			/* Tag array */
-	int*	(*hash)(ulong);		/* Hash function */
-	char*	hashtext;		/* What the function looks like */
+int	on;
+int	linesize;
+int	stall;
+int*	lines;
+int*	(*hash)(ulong);
+char*	hashtext;
 };
-
 struct Inst
 {
-	void 	(*func)(ulong);
-	char*	name;
-	int	type;
-	int	count;
-	int	taken;
-	int	useddelay;
+void 	(*func)(ulong);
+char*	name;
+int	type;
+int	count;
+int	taken;
+int	useddelay;
 };
-
 struct Registers
 {
-	ulong	ar;
-	ulong	ir;
-	Inst*	ip;
-	long	r[16];
-	long	cc1;
-	long	cc2;
-	int	class;
-	int	cond;
-	int	compare_op;
-	int	cbit;
-	int	cout;
+ulong	ar;
+ulong	ir;
+Inst*	ip;
+long	r[16];
+long	cc1;
+long	cc2;
+int	class;
+int	cond;
+int	compare_op;
+int	cbit;
+int	cout;
 };
-
 enum
 {
-	FPd	= 0,
-	FPs,
-	FPmemory,
+FPd	= 0,
+FPs,
+FPmemory,
 };
-
 enum
 {
-	MemRead,
-	MemReadstring,
-	MemWrite,
+MemRead,
+MemReadstring,
+MemWrite,
 };
-
 enum
 {
-	CCcmp, 
-	CCtst,
-	CCteq,
+CCcmp,
+CCtst,
+CCteq,
 };
-
 enum
 {
-	Stack,
-	Text,
-	Data,
-	Bss,
-	Nseg,
+Stack,
+Text,
+Data,
+Bss,
+Nseg,
 };
-
 struct Segment
 {
-	short	type;
-	ulong	base;
-	ulong	end;
-	ulong	fileoff;
-	ulong	fileend;
-	int	rss;
-	int	refs;
-	uchar**	table;
+short	type;
+ulong	base;
+ulong	end;
+ulong	fileoff;
+ulong	fileend;
+int	rss;
+int	refs;
+uchar**	table;
 };
-
 struct Memory
 {
-	Segment	seg[Nseg];
+Segment	seg[Nseg];
 };
-
 void		Ssyscall(ulong);
 int		armclass(long);
 void		breakpoint(char*, char*);
@@ -192,8 +173,6 @@ void		tlbsum(void);
 void		undef(ulong);
 void		updateicache(ulong addr);
 void*		vaddr(ulong);
-
-/* Globals */
 EXTERN	Registers	reg;
 EXTERN	Memory		memory;
 EXTERN	int		text;
@@ -217,24 +196,20 @@ EXTERN	Biobuf*		bioout;
 EXTERN	Biobuf*		bin;
 EXTERN	ulong*		iprof;
 EXTERN	int		datasize;
-EXTERN	Map*		symmap;	
-
-/* Plan9 Kernel constants */
+EXTERN	Map*		symmap;
 enum
 {
-	BY2PG		= 4096,
-	BY2WD		= 4,
-	UTZERO		= 0x1000,
-	STACKTOP	= 0x80000000,
-	STACKSIZE	= 0x10000,
-
-	PROFGRAN	= 4,
-	Sbit		= 1<<20,
-	SIGNBIT		= 0x80000000,
-
-	FP_U		= 3,
-	FP_L		= 1,
-	FP_G		= 2,
-	FP_E		= 0,
-	FP_CBIT		= 1<<23,
+BY2PG		= 4096,
+BY2WD		= 4,
+UTZERO		= 0x1000,
+STACKTOP	= 0x80000000,
+STACKSIZE	= 0x10000,
+PROFGRAN	= 4,
+Sbit		= 1<<20,
+SIGNBIT		= 0x80000000,
+FP_U		= 3,
+FP_L		= 1,
+FP_G		= 2,
+FP_E		= 0,
+FP_CBIT		= 1<<23,
 };

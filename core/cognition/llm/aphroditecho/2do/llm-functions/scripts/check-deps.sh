@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
 set -e
-
-# @describe Check dependencies
-#
-# Examples:
-#   ./scripts/check-deps.sh tools/execute_sql_code.sh
-#   ./scripts/check-deps.sh agents/json-viewer/tools.js
-#
-# @arg script-path! The script file path
-
 main() {
     script_path="$argc_script_path"
     if [[ ! -f "$script_path" ]]; then
         echo "✗ not found $script_path"
         exit 0
     fi
-    ext="${script_path##*.}"
+    ext="${script_path
     if [[ "$script_path" == tools/* ]]; then
         if [[ "$ext" == "sh" ]]; then
             check_sh_dependencies
@@ -30,7 +21,6 @@ main() {
         fi
     fi
 }
-
 check_sh_dependencies() {
     deps=( $(sed -E -n 's/.*@meta require-tools //p' "$script_path") )
     missing_deps=()
@@ -43,7 +33,6 @@ check_sh_dependencies() {
         echo "✗ missing tools: ${missing_deps[*]}"
     fi
 }
-
 check_agent_js_dependencies() {
     agent_dir="$(dirname "$script_path")"
     if [[ -f "$agent_dir/package.json" ]]; then
@@ -58,7 +47,6 @@ check_agent_js_dependencies() {
         }
     fi
 }
-
 check_agent_py_dependencies() {
     agent_dir="$(dirname "$script_path")"
     if [[ -f "$agent_dir/requirements.txt" ]]; then
@@ -73,6 +61,4 @@ check_agent_py_dependencies() {
         }
     fi
 }
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

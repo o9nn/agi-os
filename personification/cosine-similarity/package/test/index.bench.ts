@@ -4,62 +4,46 @@ import { cosineSimilarity as aiCosineSimilarity } from 'ai'
 import computeCosineSimilarity from 'compute-cosine-similarity'
 import { cosineSimilarity as fastCosineSimilarity } from 'fast-cosine-similarity'
 import { bench, describe } from 'vitest'
-
 const conn = {
   baseURL: 'http://localhost:11434/v1/',
   model: 'nomic-embed-text',
 } as const
-
-// eslint-disable-next-line @masknet/no-top-level
 describe('basic', () => {
   const vecA = [5, 23, 2, 5, 9]
   const vecB = [3, 21, 2, 5, 14]
-
   bench('@moeru-ai/cosine-similarity', () => {
     moeruAICosineSimilarity(vecA, vecB)
   })
-
   bench('ai', () => {
     aiCosineSimilarity(vecA, vecB)
   })
-
   bench('compute-cosine-similarity', () => {
     computeCosineSimilarity(vecA, vecB)
   })
-
   bench('fast-cosine-similarity', () => {
     fastCosineSimilarity(vecA, vecB)
   })
 })
-
-// eslint-disable-next-line @masknet/no-top-level
 describe('words', async () => {
   const { embeddings } = await embedMany({
     ...conn,
     input: ['sunny day at the beach', 'rainy afternoon in the city'],
   })
-
   const vecA = embeddings[0]
   const vecB = embeddings[1]
-
   bench('@moeru-ai/cosine-similarity', () => {
     moeruAICosineSimilarity(vecA, vecB)
   })
-
   bench('ai', () => {
     aiCosineSimilarity(vecA, vecB)
   })
-
   bench('compute-cosine-similarity', () => {
     computeCosineSimilarity(vecA, vecB)
   })
-
   bench('fast-cosine-similarity', () => {
     fastCosineSimilarity(vecA, vecB)
   })
 })
-
-// eslint-disable-next-line @masknet/no-top-level
 describe('lipsum 1', async () => {
   const { embeddings } = await embedMany({
     ...conn,
@@ -68,28 +52,21 @@ describe('lipsum 1', async () => {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis dapibus mattis. Quisque ornare mollis odio, a eleifend ipsum vestibulum ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed aliquam ornare ligula, in sagittis felis tincidunt a. Phasellus vestibulum finibus orci, a fermentum felis ornare eu. Vivamus venenatis iaculis lorem at volutpat. Mauris molestie justo vitae massa faucibus bibendum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vel purus a dolor semper pellentesque. Maecenas ac tempor nisl, nec faucibus nunc. Aenean fermentum molestie metus, vel facilisis risus pretium non. Aliquam iaculis ut dui non blandit. Vestibulum porta quam suscipit bibendum rhoncus. Curabitur tristique interdum consectetur. Sed non tellus sed nibh luctus facilisis. Praesent eu enim et dolor venenatis tempor nec id dolor.',
     ],
   })
-
   const vecA = embeddings[0]
   const vecB = embeddings[1]
-
   bench('@moeru-ai/cosine-similarity', () => {
     moeruAICosineSimilarity(vecA, vecB)
   })
-
   bench('ai', () => {
     aiCosineSimilarity(vecA, vecB)
   })
-
   bench('compute-cosine-similarity', () => {
     computeCosineSimilarity(vecA, vecB)
   })
-
   bench('fast-cosine-similarity', () => {
     fastCosineSimilarity(vecA, vecB)
   })
 })
-
-// eslint-disable-next-line @masknet/no-top-level
 describe('lipsum 5', async () => {
   const { embeddings } = await embedMany({
     ...conn,
@@ -106,22 +83,17 @@ Fusce feugiat magna enim, volutpat feugiat tortor accumsan eleifend. Nam convall
 Mauris vitae blandit diam. Nunc viverra, elit nec hendrerit facilisis, nunc mi convallis lacus, ultricies vehicula augue mauris in elit. Nullam vulputate vestibulum nisi at vulputate. Sed vitae placerat quam, quis consequat nisl. Praesent non imperdiet quam. Aenean in pulvinar ligula. Donec ac faucibus metus. Morbi massa neque, faucibus quis tellus eget, vestibulum lacinia urna. Integer iaculis leo eros, et pharetra mauris rutrum nec. Vestibulum sodales nibh id arcu vehicula facilisis. Pellentesque felis massa, tincidunt eu risus id, interdum lobortis tortor.`,
     ],
   })
-
   const vecA = embeddings[0]
   const vecB = embeddings[1]
-
   bench('@moeru-ai/cosine-similarity', () => {
     moeruAICosineSimilarity(vecA, vecB)
   })
-
   bench('ai', () => {
     aiCosineSimilarity(vecA, vecB)
   })
-
   bench('compute-cosine-similarity', () => {
     computeCosineSimilarity(vecA, vecB)
   })
-
   bench('fast-cosine-similarity', () => {
     fastCosineSimilarity(vecA, vecB)
   })

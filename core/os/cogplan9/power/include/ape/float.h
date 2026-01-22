@@ -1,10 +1,7 @@
 #ifndef __FLOAT
 #define __FLOAT
-/* IEEE, default rounding */
-
 #define FLT_ROUNDS	1
 #define FLT_RADIX	2
-
 #define FLT_DIG		6
 #define FLT_EPSILON	1.19209290e-07
 #define FLT_MANT_DIG	24
@@ -14,7 +11,6 @@
 #define FLT_MIN		1.17549435e-38
 #define FLT_MIN_10_EXP	-37
 #define FLT_MIN_EXP	-125
-
 #define DBL_DIG		15
 #define DBL_EPSILON	2.2204460492503131e-16
 #define DBL_MANT_DIG	53
@@ -33,24 +29,20 @@
 #define LDBL_MAX_EXP	DBL_MAX_EXP
 #define LDBL_MAX	DBL_MAX
 #define LDBL_MAX_10_EXP	DBL_MAX_10_EXP
-
 typedef 	union FPdbleword FPdbleword;
 union FPdbleword
 {
-	double	x;
-	struct {	/* big endian */
-		long hi;
-		long lo;
-	};
+double	x;
+struct {
+long hi;
+long lo;
 };
-
+};
 #ifdef _RESEARCH_SOURCE
-/* define stuff needed for floating conversion */
 #define IEEE_MC68k	1
 #define Sudden_Underflow 1
 #endif
 #ifdef _PLAN9_SOURCE
-/* FCR */
 #define	FPINEX	(1<<7)
 #define	FPOVFL	(1<<9)
 #define	FPUNFL	(1<<8)
@@ -64,10 +56,9 @@ union FPdbleword
 #define	FPPSGL	0
 #define	FPPDBL	0
 #define	FPPMASK	0
-/* FSR */
 #define	FPAINEX	(1<<2)
 #define	FPAOVFL	(1<<4)
 #define	FPAUNFL	(1<<3)
 #define	FPAZDIV	(1<<5)
 #endif
-#endif /* __FLOAT */
+#endif

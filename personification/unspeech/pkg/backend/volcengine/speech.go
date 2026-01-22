@@ -1,5 +1,4 @@
 package volcengine
-
 import (
 	"bytes"
 	"encoding/base64"
@@ -7,7 +6,6 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
-
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/moeru-ai/unspeech/pkg/apierrors"
@@ -16,17 +14,14 @@ import (
 	"github.com/samber/lo"
 	"github.com/samber/mo"
 )
-
 type SpeechRequestOptionsApp struct {
 	AppID   string `json:"appid"`
 	Token   string `json:"token"`
 	Cluster string `json:"cluster"`
 }
-
 type SpeechRequestOptionsUser struct {
 	UserID string `json:"uid"`
 }
-
 type SpeechRequestOptionsAudio struct {
 	VoiceType        string   `json:"voice_type"`
 	Emotion          *string  `json:"emotion,omitempty"`
@@ -40,7 +35,6 @@ type SpeechRequestOptionsAudio struct {
 	ContextLanguage  *string  `json:"context_language,omitempty"`
 	LoudnessRatio    *float64 `json:"loudness_ratio,omitempty"`
 }
-
 type SpeechRequestOptionsRequest struct {
 	RequestID             string         `json:"reqid"`
 	Text                  string         `json:"text"`
@@ -54,44 +48,35 @@ type SpeechRequestOptionsRequest struct {
 	CacheConfig           map[string]any `json:"cache_config,omitempty"`
 	UseCache              *bool          `json:"use_cache,omitempty"`
 }
-
 type SpeechRequestOptions struct {
 	App     SpeechRequestOptionsApp     `json:"app"`
 	User    SpeechRequestOptionsUser    `json:"user"`
 	Audio   SpeechRequestOptionsAudio   `json:"audio"`
 	Request SpeechRequestOptionsRequest `json:"request"`
 }
-
 func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions]) mo.Result[any] {
 	opts := options.MustGet()
-
 	token := strings.TrimPrefix(c.Request().Header.Get("Authorization"), "Bearer ")
-
 	cluster := utils.GetByJSONPath[string](opts.ExtraBody, "{ .app.cluster }")
 	if cluster == "" {
 		cluster = "volcano_tts"
 	}
-
 	userID := utils.GetByJSONPath[string](opts.ExtraBody, "{ .user.uid }")
 	if userID == "" {
 		userID = uuid.New().String()
 	}
-
 	requestID := utils.GetByJSONPath[string](opts.ExtraBody, "{ .request.reqid }")
 	if requestID == "" {
 		requestID = uuid.New().String()
 	}
-
 	operation := utils.GetByJSONPath[*string](opts.ExtraBody, "{ .request.operation }")
 	if operation == nil || *operation == "" {
 		operation = lo.ToPtr("query")
 	}
-
 	speedRatio := utils.GetByJSONPath[*float64](opts.ExtraBody, "{ .audio.speed_ratio }")
 	if speedRatio == nil || *speedRatio == 0 {
 		speedRatio = lo.ToPtr(1.0)
 	}
-
 	newReqParams := &SpeechRequestOptions{
 		App: SpeechRequestOptionsApp{
 			AppID:   utils.GetByJSONPath[string](opts.ExtraBody, "{ .app.appid }"),
@@ -127,26 +112,20 @@ func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions])
 			CacheConfig:           utils.GetByJSONPath[map[string]any](opts.ExtraBody, "{ .request.cache_config }"),
 		},
 	}
-
 	jsonBytes, err := json.Marshal(newReqParams)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithCaller())
 	}
-
-	req, err := http.NewRequestWithContext(c.Request().Context(), http.MethodPost, "https://openspeech.bytedance.com/api/v1/tts", bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequestWithContext(c.Request().Context(), http.MethodPost, "https:
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithCaller())
 	}
-
 	req.Header.Set("Authorization", "Bearer;"+token)
-
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithCaller())
 	}
-
 	defer func() { _ = resp.Body.Close() }()
-
 	if resp.StatusCode >= 400 && resp.StatusCode < 600 {
 		switch {
 		case strings.HasPrefix(resp.Header.Get("Content-Type"), "application/json"):
@@ -165,23 +144,18 @@ func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions])
 			)
 		}
 	}
-
 	var resBody map[string]any
-
 	err = json.NewDecoder(resp.Body).Decode(&resBody)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithError(err).WithCaller())
 	}
-
 	audioBase64String := utils.GetByJSONPath[string](resBody, "{ .data }")
 	if audioBase64String == "" {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail("upstream returned empty audio base64 string").WithCaller())
 	}
-
 	audioBytes, err := base64.StdEncoding.DecodeString(audioBase64String)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(err.Error()).WithError(err).WithCaller())
 	}
-
 	return mo.Ok[any](c.Blob(http.StatusOK, "audio/mp3", audioBytes))
 }

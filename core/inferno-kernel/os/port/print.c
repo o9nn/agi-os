@@ -3,29 +3,24 @@
 #include "mem.h"
 #include "dat.h"
 #include "fns.h"
-
 static Lock fmtl;
-
 void
 _fmtlock(void)
 {
-	lock(&fmtl);
+lock(&fmtl);
 }
-
 void
 _fmtunlock(void)
 {
-	unlock(&fmtl);
+unlock(&fmtl);
 }
-
 int
 _efgfmt(Fmt*)
 {
-	return -1;
+return -1;
 }
-
 int
 errfmt(Fmt*)
 {
-	return -1;
+return -1;
 }

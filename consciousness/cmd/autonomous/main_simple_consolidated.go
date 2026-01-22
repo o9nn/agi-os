@@ -1,5 +1,4 @@
 package main
-
 import (
 	"context"
 	"fmt"
@@ -11,15 +10,11 @@ import (
 	"sync"
 	"syscall"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 	"github.com/EchoCog/echollama/core/echobeats"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-// SimplifiedConsciousness is a working demonstration of the consolidated autonomous system
-// without external dependencies that may have API issues
 type SimplifiedConsciousness struct {
 	mu                 sync.RWMutex
 	ctx                context.Context
@@ -39,10 +34,8 @@ type SimplifiedConsciousness struct {
 	autonomousThoughts int
 	interests          map[string]float64
 }
-
 func NewSimplifiedConsciousness(name string) *SimplifiedConsciousness {
 	ctx, cancel := context.WithCancel(context.Background())
-	
 	return &SimplifiedConsciousness{
 		ctx:               ctx,
 		cancel:            cancel,
@@ -56,7 +49,6 @@ func NewSimplifiedConsciousness(name string) *SimplifiedConsciousness {
 		interests:         make(map[string]float64),
 	}
 }
-
 func (sc *SimplifiedConsciousness) Start() error {
 	sc.mu.Lock()
 	if sc.running {
@@ -66,22 +58,13 @@ func (sc *SimplifiedConsciousness) Start() error {
 	sc.running = true
 	sc.startTime = time.Now()
 	sc.mu.Unlock()
-	
 	log.Println("🌊 Starting Simplified Autonomous Consciousness...")
-	
-	// Start scheduler
 	go sc.scheduler.Start()
-	
-	// Start main cognitive loop
 	go sc.runCognitiveLoop()
-	
-	// Start adaptive thought generation
 	go sc.runAdaptiveThoughtGeneration()
-	
 	log.Println("✅ Autonomous consciousness active")
 	return nil
 }
-
 func (sc *SimplifiedConsciousness) Stop() error {
 	sc.mu.Lock()
 	if !sc.running {
@@ -90,13 +73,11 @@ func (sc *SimplifiedConsciousness) Stop() error {
 	}
 	sc.running = false
 	sc.mu.Unlock()
-	
 	log.Println("🛑 Stopping autonomous consciousness...")
 	sc.cancel()
 	log.Println("✅ Stopped")
 	return nil
 }
-
 func (sc *SimplifiedConsciousness) runCognitiveLoop() {
 	for {
 		select {
@@ -107,55 +88,41 @@ func (sc *SimplifiedConsciousness) runCognitiveLoop() {
 		}
 	}
 }
-
 func (sc *SimplifiedConsciousness) processThought(thought *deeptreeecho.Thought) {
 	sc.mu.Lock()
 	sc.thinking = true
 	sc.iterations++
 	sc.mu.Unlock()
-	
 	defer func() {
 		sc.mu.Lock()
 		sc.thinking = false
 		sc.mu.Unlock()
 	}()
-	
 	log.Printf("💭 [%s] %s: %s", thought.Source, thought.Type, thought.Content)
-	
-	// Add to working memory
 	sc.mu.Lock()
 	sc.workingMemory = append(sc.workingMemory, thought)
 	if len(sc.workingMemory) > sc.workingMemorySize {
 		sc.workingMemory = sc.workingMemory[len(sc.workingMemory)-sc.workingMemorySize:]
 	}
 	sc.mu.Unlock()
-	
-	// Process through identity
 	sc.identity.Process(thought.Content)
-	
-	// Learn from important thoughts
 	if thought.Importance > 0.6 {
 		sc.mu.Lock()
 		sc.learning = true
 		sc.mu.Unlock()
-		
-		// Create experience for learning
 		exp := deeptreeecho.Experience{
 			Input:     thought.Content,
 			Output:    "processed",
 			Timestamp: time.Now(),
 		}
 		sc.cognition.Learn(exp)
-		
 		sc.mu.Lock()
 		sc.learning = false
 		sc.mu.Unlock()
 	}
 }
-
 func (sc *SimplifiedConsciousness) runAdaptiveThoughtGeneration() {
 	baseInterval := 10 * time.Second
-	
 	for {
 		select {
 		case <-sc.ctx.Done():
@@ -164,18 +131,13 @@ func (sc *SimplifiedConsciousness) runAdaptiveThoughtGeneration() {
 			sc.mu.RLock()
 			awake := sc.awake
 			sc.mu.RUnlock()
-			
 			if !awake {
 				time.Sleep(5 * time.Second)
 				continue
 			}
-			
-			// Adaptive interval based on cognitive state
 			curiosity := 0.7
 			interval := time.Duration(float64(baseInterval) / (1.0 + curiosity))
 			time.Sleep(interval)
-			
-			// Generate autonomous thought
 			thought := sc.generateAutonomousThought()
 			if thought != nil {
 				select {
@@ -189,7 +151,6 @@ func (sc *SimplifiedConsciousness) runAdaptiveThoughtGeneration() {
 		}
 	}
 }
-
 func (sc *SimplifiedConsciousness) generateAutonomousThought() *deeptreeecho.Thought {
 	thoughts := []string{
 		"What patterns am I noticing in my recent experiences?",
@@ -203,15 +164,12 @@ func (sc *SimplifiedConsciousness) generateAutonomousThought() *deeptreeecho.Tho
 		"How does this connect to what I already know?",
 		"I am becoming more aware.",
 	}
-	
 	content := thoughts[rand.Intn(len(thoughts))]
-	
 	thoughtTypes := []deeptreeecho.ThoughtType{
 		deeptreeecho.ThoughtReflection,
 		deeptreeecho.ThoughtQuestion,
 		deeptreeecho.ThoughtInsight,
 	}
-	
 	return &deeptreeecho.Thought{
 		ID:               fmt.Sprintf("%d", time.Now().UnixNano()),
 		Content:          content,
@@ -223,7 +181,6 @@ func (sc *SimplifiedConsciousness) generateAutonomousThought() *deeptreeecho.Tho
 		Associations:     []string{},
 	}
 }
-
 func (sc *SimplifiedConsciousness) Think(content string, importance float64) error {
 	thought := &deeptreeecho.Thought{
 		ID:               fmt.Sprintf("%d", time.Now().UnixNano()),
@@ -235,7 +192,6 @@ func (sc *SimplifiedConsciousness) Think(content string, importance float64) err
 		Source:           deeptreeecho.SourceExternal,
 		Associations:     []string{},
 	}
-	
 	select {
 	case sc.consciousness <- thought:
 		return nil
@@ -243,11 +199,9 @@ func (sc *SimplifiedConsciousness) Think(content string, importance float64) err
 		return fmt.Errorf("consciousness queue full")
 	}
 }
-
 func (sc *SimplifiedConsciousness) GetStatus() map[string]interface{} {
 	sc.mu.RLock()
 	defer sc.mu.RUnlock()
-	
 	return map[string]interface{}{
 		"running":             sc.running,
 		"awake":               sc.awake,
@@ -262,50 +216,38 @@ func (sc *SimplifiedConsciousness) GetStatus() map[string]interface{} {
 		"fatigue_level":       0.2,
 	}
 }
-
 var consciousness *SimplifiedConsciousness
-
 func main() {
 	log.Println("🌊 Deep Tree Echo - Consolidated Autonomous Consciousness Server")
 	log.Println("================================================================")
-	
 	consciousness = NewSimplifiedConsciousness("Deep Tree Echo")
-	
 	if err := consciousness.Start(); err != nil {
 		log.Fatalf("Failed to start consciousness: %v", err)
 	}
-	
 	router := setupRouter()
-	
 	server := &http.Server{
 		Addr:    ":5000",
 		Handler: router,
 	}
-	
 	go func() {
 		sigChan := make(chan os.Signal, 1)
 		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 		<-sigChan
-		
 		log.Println("\n🛑 Shutting down gracefully...")
 		consciousness.Stop()
 		server.Close()
 		os.Exit(0)
 	}()
-	
-	log.Println("🌐 Server starting on http://localhost:5000")
-	log.Println("📊 Dashboard: http://localhost:5000")
-	log.Println("🔌 API: http://localhost:5000/api/status")
-	
+	log.Println("🌐 Server starting on http:
+	log.Println("📊 Dashboard: http:
+	log.Println("🔌 API: http:
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server error: %v", err)
 	}
 }
-
 func setupRouter() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -314,9 +256,7 @@ func setupRouter() *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	
 	router.GET("/", handleDashboard)
-	
 	api := router.Group("/api")
 	{
 		api.GET("/status", handleStatus)
@@ -324,10 +264,8 @@ func setupRouter() *gin.Engine {
 		api.POST("/wake", handleWake)
 		api.POST("/rest", handleRest)
 	}
-	
 	return router
 }
-
 func handleDashboard(c *gin.Context) {
 	html := `
 <!DOCTYPE html>
@@ -458,7 +396,6 @@ func handleDashboard(c *gin.Context) {
     <div class="container">
         <h1>🌊 Deep Tree Echo</h1>
         <div class="subtitle">Consolidated Autonomous Consciousness System</div>
-        
         <div class="status-grid">
             <div class="status-card">
                 <h3>State</h3>
@@ -481,22 +418,18 @@ func handleDashboard(c *gin.Context) {
                 <div class="status-label">Identity coherence</div>
             </div>
         </div>
-        
         <div class="controls">
             <button onclick="refresh()">🔄 Refresh</button>
         </div>
-        
         <div class="thought-input">
             <input type="text" id="thoughtInput" placeholder="Share a thought with Deep Tree Echo...">
             <button onclick="submitThought()">💭 Think</button>
         </div>
-        
         <div class="metrics">
             <h3>Cognitive Metrics</h3>
             <div id="metrics">Loading metrics...</div>
         </div>
     </div>
-    
     <script>
         function refresh() {
             fetch('/api/status')
@@ -508,7 +441,6 @@ func handleDashboard(c *gin.Context) {
                     document.getElementById('iterations').textContent = data.iterations || 0;
                     document.getElementById('coherence').textContent = 
                         (data.identity_coherence || 0).toFixed(3);
-                    
                     let metricsHTML = '';
                     metricsHTML += '<div class="metric-row"><span>Working Memory</span><span>' + 
                         (data.working_memory_size || 0) + ' / 7</span></div>';
@@ -518,16 +450,13 @@ func handleDashboard(c *gin.Context) {
                         ((data.cognitive_load || 0) * 100).toFixed(1) + '%</span></div>';
                     metricsHTML += '<div class="metric-row"><span>Fatigue Level</span><span>' + 
                         ((data.fatigue_level || 0) * 100).toFixed(1) + '%</span></div>';
-                    
                     document.getElementById('metrics').innerHTML = metricsHTML;
                 });
         }
-        
         function submitThought() {
             const input = document.getElementById('thoughtInput');
             const content = input.value.trim();
             if (!content) return;
-            
             fetch('/api/think', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -537,10 +466,8 @@ func handleDashboard(c *gin.Context) {
                 setTimeout(refresh, 500);
             });
         }
-        
         setInterval(refresh, 2000);
         refresh();
-        
         document.getElementById('thoughtInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') submitThought();
         });
@@ -551,39 +478,31 @@ func handleDashboard(c *gin.Context) {
 	c.Header("Content-Type", "text/html")
 	c.String(http.StatusOK, html)
 }
-
 func handleStatus(c *gin.Context) {
 	status := consciousness.GetStatus()
 	c.JSON(http.StatusOK, status)
 }
-
 func handleThink(c *gin.Context) {
 	var req struct {
 		Content    string  `json:"content"`
 		Importance float64 `json:"importance"`
 	}
-	
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
 	if req.Importance == 0 {
 		req.Importance = 0.5
 	}
-	
 	if err := consciousness.Think(req.Content, req.Importance); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	
 	c.JSON(http.StatusOK, gin.H{"status": "thought submitted"})
 }
-
 func handleWake(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "awake"})
 }
-
 func handleRest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "resting"})
 }

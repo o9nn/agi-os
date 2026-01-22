@@ -4,17 +4,12 @@ import {GbnfJsonFormatStringSchema} from "../types.js";
 import {reservedRuleNames} from "./gbnfConsts.js";
 import {GbnfGrammar} from "./GbnfGrammar.js";
 import {GbnfString} from "./GbnfString.js";
-
-
 export class GbnfFormatString extends GbnfTerminal {
     public readonly format: GbnfJsonFormatStringSchema["format"];
-
     public constructor(format: GbnfJsonFormatStringSchema["format"]) {
         super();
-
         this.format = format;
     }
-
     public getGrammar(grammarGenerator: GbnfGrammarGenerator): string {
         const quote = '"\\""';
         if (this.format === "date")
@@ -37,17 +32,14 @@ export class GbnfFormatString extends GbnfTerminal {
                 this._getTimeGrammar(),
                 quote
             ]).getGrammar();
-
         return new GbnfString({
             minLength: 0,
             maxLength: 0
         }).resolve(grammarGenerator);
     }
-
     protected override getRuleName(): string {
         return reservedRuleNames.formatString(this.format);
     }
-
     private _getDateGrammar(): string {
         return new GbnfGrammar([
             "[0-9]{4}",
@@ -64,7 +56,6 @@ export class GbnfFormatString extends GbnfTerminal {
             ])
         ]).getGrammar();
     }
-
     private _getTimeGrammar(): string {
         return new GbnfGrammar([
             or([
@@ -94,7 +85,6 @@ export class GbnfFormatString extends GbnfTerminal {
         ]).getGrammar();
     }
 }
-
 function or(values: string[]) {
     return "(" + values.join(" | ") + ")";
 }

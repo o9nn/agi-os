@@ -1,5 +1,4 @@
 package main
-
 import (
 	"context"
 	"fmt"
@@ -10,28 +9,22 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
 	"github.com/cogpy/echo9llama/core/echobridge"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
-
 const (
 	grpcPort = ":50051"
 	httpPort = ":50052"
 )
-
-// SimpleScheduler is a basic implementation of the Scheduler interface
 type SimpleScheduler struct {
 	events chan *echobridge.CognitiveEvent
 }
-
 func NewSimpleScheduler() *SimpleScheduler {
 	return &SimpleScheduler{
 		events: make(chan *echobridge.CognitiveEvent, 1000),
 	}
 }
-
 func (s *SimpleScheduler) ScheduleEvent(event *echobridge.CognitiveEvent) error {
 	select {
 	case s.events <- event:
@@ -40,7 +33,6 @@ func (s *SimpleScheduler) ScheduleEvent(event *echobridge.CognitiveEvent) error 
 		return fmt.Errorf("scheduler queue full")
 	}
 }
-
 func (s *SimpleScheduler) GetNextEvent() (*echobridge.CognitiveEvent, error) {
 	select {
 	case event := <-s.events:
@@ -49,45 +41,30 @@ func (s *SimpleScheduler) GetNextEvent() (*echobridge.CognitiveEvent, error) {
 		return nil, fmt.Errorf("no events available")
 	}
 }
-
 func (s *SimpleScheduler) CancelEvent(eventID string) error {
-	// Simple implementation - would need more sophisticated logic for production
 	return nil
 }
-
 func main() {
 	log.Println("🌳 Starting EchoBridge gRPC Server...")
-	
-	// Create scheduler
 	scheduler := NewSimpleScheduler()
-	
-	// Create gRPC server
 	grpcServer := grpc.NewServer()
 	bridgeServer := echobridge.NewEchoBridgeServer(scheduler)
 	echobridge.RegisterEchoBridgeServer(grpcServer, bridgeServer)
-	
-	// Enable reflection for debugging
 	reflection.Register(grpcServer)
-	
-	// Start gRPC server
 	lis, err := net.Listen("tcp", grpcPort)
 	if err != nil {
 		log.Fatalf("Failed to listen on %s: %v", grpcPort, err)
 	}
-	
 	go func() {
 		log.Printf("✅ gRPC server listening on %s", grpcPort)
 		if err := grpcServer.Serve(lis); err != nil {
 			log.Fatalf("Failed to serve gRPC: %v", err)
 		}
 	}()
-	
-	// Start HTTP status server
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "OK\n")
 	})
-	
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		metrics := bridgeServer.GetMetrics()
 		w.Header().Set("Content-Type", "application/json")
@@ -114,7 +91,6 @@ func main() {
 		}
 		fmt.Fprintf(w, "\n}\n")
 	})
-	
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
@@ -144,26 +120,19 @@ func main() {
 </body>
 </html>`, grpcPort, httpPort)
 	})
-	
 	go func() {
 		log.Printf("✅ HTTP status server listening on %s", httpPort)
 		if err := http.ListenAndServe(httpPort, nil); err != nil {
 			log.Fatalf("Failed to serve HTTP: %v", err)
 		}
 	}()
-	
-	// Graceful shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-	
 	<-sigChan
 	log.Println("🛑 Shutting down EchoBridge server...")
-	
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	
 	grpcServer.GracefulStop()
-	
 	<-ctx.Done()
 	log.Println("✅ EchoBridge server stopped")
 }

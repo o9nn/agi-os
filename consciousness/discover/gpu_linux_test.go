@@ -1,11 +1,9 @@
 package discover
-
 import (
 	"bytes"
 	"log/slog"
 	"testing"
 )
-
 func TestLinuxCPUDetails(t *testing.T) {
 	type results struct {
 		cores      int
@@ -46,7 +44,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 1
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -74,7 +71,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 2
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -102,7 +98,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 3
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -130,7 +125,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 4
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -158,7 +152,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 5
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -186,7 +179,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 6
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -214,7 +206,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
-
 processor	: 7
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -257,8 +248,6 @@ power management:
 			},
 			expThreadCount: 8,
 		},
-
-		// Single Socket, 8 cores
 		"#5554 LXC direct output": {
 			input: `processor	: 0
 vendor_id	: AuthenticAMD
@@ -287,7 +276,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 1
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -315,7 +303,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 2
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -343,7 +330,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 3
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -371,7 +357,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 4
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -399,7 +384,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 5
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -427,7 +411,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 6
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -455,7 +438,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 7
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -493,9 +475,6 @@ power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 			},
 			expThreadCount: 8,
 		},
-
-		// Note: this was a partial cut-and-paste missing at least some initial logical processor definitions
-		// Single Socket, 29 cores
 		"#5554 LXC docker container output": {
 			input: `processor	: 483
 vendor_id	: AuthenticAMD
@@ -524,7 +503,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 484
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -552,7 +530,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 485
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -580,7 +557,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 486
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -608,7 +584,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 487
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -636,7 +611,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 488
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -664,7 +638,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 489
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -692,7 +665,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 490
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -720,7 +692,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 491
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -748,7 +719,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 492
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -776,7 +746,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 493
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -804,7 +773,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 494
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -832,7 +800,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 495
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -860,7 +827,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 496
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -888,7 +854,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 497
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -916,7 +881,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 498
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -944,7 +908,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 499
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -972,7 +935,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 500
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1000,7 +962,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 501
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1028,7 +989,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 502
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1056,7 +1016,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 503
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1084,7 +1043,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 504
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1112,7 +1070,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 505
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1140,7 +1097,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 506
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1168,7 +1124,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 507
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1196,7 +1151,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 508
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1224,7 +1178,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 509
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1252,7 +1205,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 510
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1280,7 +1232,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 511
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1318,7 +1269,6 @@ power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 			},
 			expThreadCount: 29,
 		},
-
 		"#5554 LXC docker output": {
 			input: `processor	: 0
 vendor_id	: AuthenticAMD
@@ -1347,7 +1297,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 1
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1375,7 +1324,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 2
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1403,7 +1351,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 3
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1431,7 +1378,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 4
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1459,7 +1405,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 5
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1487,7 +1432,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 6
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1515,7 +1459,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 processor	: 7
 vendor_id	: AuthenticAMD
 cpu family	: 25
@@ -1543,7 +1486,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
-
 `,
 			expCPUs: []results{
 				{
@@ -1554,8 +1496,6 @@ power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 			},
 			expThreadCount: 8,
 		},
-
-		// exposed as 8 sockets, each with 1 core, no hyperthreading
 		"#7359 VMware multi-core core VM": {
 			input: `processor	: 0
 vendor_id	: GenuineIntel
@@ -1583,7 +1523,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 1
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1610,7 +1549,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 2
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1637,7 +1575,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 3
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1664,7 +1601,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 4
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1691,7 +1627,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 5
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1718,7 +1653,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 6
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1745,7 +1679,6 @@ clflush size	: 64
 cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
-
 processor	: 7
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -1817,8 +1750,6 @@ power management:
 			},
 			expThreadCount: 8,
 		},
-
-		// Emulated dual socket setup, 2 sockets, 2 cores each, with hyperthreading
 		"#7287 HyperV 2 socket exposed to VM": {
 			input: `processor	: 0
 vendor_id	: AuthenticAMD
@@ -1847,7 +1778,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 1
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -1875,7 +1805,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 2
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -1903,7 +1832,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 3
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -1931,7 +1859,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 4
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -1959,7 +1886,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 5
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -1987,7 +1913,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 6
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -2015,7 +1940,6 @@ clflush size	: 64
 cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
-
 processor	: 7
 vendor_id	: AuthenticAMD
 cpu family	: 23
@@ -2066,7 +1990,6 @@ power management:
 			if err != nil {
 				t.Fatal(err)
 			}
-
 			slog.Info("example", "scenario", k, "cpus", cpus)
 			si := SystemInfo{
 				System: CPUInfo{
@@ -2088,7 +2011,6 @@ power management:
 					t.Fatalf("incorrect number of threads: expected:%v got:%v", v.expCPUs[i], c)
 				}
 			}
-
 			if threadCount != v.expThreadCount {
 				t.Fatalf("incorrect thread count expected:%d got:%d", v.expThreadCount, threadCount)
 			}

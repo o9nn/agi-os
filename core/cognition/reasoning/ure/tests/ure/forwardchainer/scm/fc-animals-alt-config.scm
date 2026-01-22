@@ -1,7 +1,3 @@
-;;
-;; Alternate configuration file for FC animals unit test. Uses custom
-;; conditional instantiations instead of the generic one.
-
 (define if-croaks-and-eats-flies-then-frog-rule
   (BindLink
     (Variable "$X")
@@ -21,7 +17,6 @@
     )
   )
 )
-
 (define if-frog-then-green-rule
   (Bind
     (Variable "$X")
@@ -35,21 +30,14 @@
     )
   )
 )
-
-
 (define if-croaks-and-eats-flies-then-frog-rule-name
   (DefinedSchema "if-croaks-and-eats-flies-then-frog-rule"))
 (Define if-croaks-and-eats-flies-then-frog-rule-name
   if-croaks-and-eats-flies-then-frog-rule)
-
 (define if-frog-then-green-rule-name
   (DefinedSchema "if-frog-then-green-rule"))
 (Define if-frog-then-green-rule-name
   if-frog-then-green-rule)
-
-;; Associate the rules to the rule base (with weights, their semantics
-;; is currently undefined, we might settled with probabilities but it's
-;; not sure)
 (define rbs (Concept "URE"))
 (ure-add-rules rbs
                (list

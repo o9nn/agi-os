@@ -1,22 +1,17 @@
 import { PmxObject } from 'babylon-mmd/esm/Loader/Parser/pmxObject'
 import { BufferAttribute, BufferGeometry } from 'three'
-
 export const buildGeometry = (pmx: PmxObject): BufferGeometry => {
   const geometry = new BufferGeometry()
-
   const vertexCount = pmx.vertices.length
   const positions = new Float32Array(vertexCount * 3)
   const normals = new Float32Array(vertexCount * 3)
   const uvs = new Float32Array(vertexCount * 2)
-
   const skinIndices = new Uint16Array(vertexCount * 4)
   const skinWeights = new Float32Array(vertexCount * 4)
-
   pmx.vertices.forEach((v, i) => {
     positions.set(v.position, i * 3)
     normals.set(v.normal, i * 3)
-    uvs.set([v.uv[0], 1 - v.uv[1]], i * 2) // Flip Y Axis
-
+    uvs.set([v.uv[0], 1 - v.uv[1]], i * 2) 
     switch (v.weightType) {
       case PmxObject.Vertex.BoneWeightType.Bdef1: {
         const bw = v.boneWeight as PmxObject.Vertex.BoneWeight<PmxObject.Vertex.BoneWeightType.Bdef1>
@@ -31,7 +26,7 @@ export const buildGeometry = (pmx: PmxObject): BufferGeometry => {
         break
       }
       case PmxObject.Vertex.BoneWeightType.Bdef4:
-      case PmxObject.Vertex.BoneWeightType.Qdef: { // QDEF is not supported, fallback to BDEF4
+      case PmxObject.Vertex.BoneWeightType.Qdef: { 
         const bw = v.boneWeight as PmxObject.Vertex.BoneWeight<PmxObject.Vertex.BoneWeightType.Bdef4>
         skinIndices.set(bw.boneIndices, i * 4)
         skinWeights.set(bw.boneWeights, i * 4)
@@ -45,29 +40,21 @@ export const buildGeometry = (pmx: PmxObject): BufferGeometry => {
       }
     }
   })
-
   geometry.setAttribute('position', new BufferAttribute(positions, 3))
   geometry.setAttribute('normal', new BufferAttribute(normals, 3))
   geometry.setAttribute('uv', new BufferAttribute(uvs, 2))
   geometry.setAttribute('skinIndex', new BufferAttribute(skinIndices, 4))
   geometry.setAttribute('skinWeight', new BufferAttribute(skinWeights, 4))
-
   geometry.setIndex(Array.from(pmx.indices))
-
   let faceIndex = 0
   for (const material of pmx.materials) {
     geometry.addGroup(faceIndex, material.indexCount, pmx.materials.indexOf(material))
     faceIndex += material.indexCount
   }
-
-  // Morph targets
-  // const morphTargets: { name: string }[] = []
   const morphPositions: BufferAttribute[] = []
-
   const updateAttributes = (attribute: BufferAttribute, morph: PmxObject.Morph, ratio: number) => {
     if (morph.type !== PmxObject.Morph.Type.VertexMorph)
       return
-
     for (let i = 0; i < morph.indices.length; i++) {
       const index = morph.indices[i]
       attribute.array[index * 3 + 0] += morph.positions[i * 3 + 0] * ratio
@@ -75,7 +62,6 @@ export const buildGeometry = (pmx: PmxObject): BufferGeometry => {
       attribute.array[index * 3 + 2] += morph.positions[i * 3 + 2] * ratio
     }
   }
-
   for (const morph of pmx.morphs) {
     if (
       morph.type !== PmxObject.Morph.Type.VertexMorph
@@ -83,35 +69,26 @@ export const buildGeometry = (pmx: PmxObject): BufferGeometry => {
     ) {
       continue
     }
-
-    // morphTargets.push({ name: morph.name })
     const attribute = new BufferAttribute(positions.slice(), 3)
     attribute.name = morph.name
-
     if (morph.type === PmxObject.Morph.Type.GroupMorph) {
       for (let i = 0; i < morph.indices.length; i++) {
         const targetMorph = pmx.morphs[morph.indices[i]]
         const ratio = morph.ratios[i]
-
         if (targetMorph.type === PmxObject.Morph.Type.VertexMorph) {
           updateAttributes(attribute, targetMorph, ratio)
         }
       }
     }
-    else { // VertexMorph
+    else { 
       updateAttributes(attribute, morph, 1.0)
     }
-
     morphPositions.push(attribute)
   }
-
   if (morphPositions.length > 0) {
     geometry.morphAttributes.position = morphPositions
-    // geometry.morphTargets = morphTargets
     geometry.morphTargetsRelative = false
   }
-
   geometry.computeBoundingSphere()
-
   return geometry
 }

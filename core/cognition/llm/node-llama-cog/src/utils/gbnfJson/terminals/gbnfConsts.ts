@@ -16,7 +16,6 @@ export const reservedRuleNames = {
                 minLength,
                 "-rule"
             ].join("");
-
         return [
             "string-",
             minLength,
@@ -33,7 +32,6 @@ export const reservedRuleNames = {
     }) {
         if (!newLine)
             return "whitespace-no-new-lines-rule";
-
         return [
             "whitespace-",
             newLine === "before"
@@ -51,7 +49,6 @@ export const reservedRuleNames = {
     }) {
         if (!newLine)
             return "comma-whitespace-no-new-lines-rule";
-
         return [
             "comma-whitespace-",
             newLine === "before"

@@ -1,12 +1,4 @@
-;
-; quote-var.scm
-;
-; Test simple quoted variables.  The pattern will search for a 
-; quoted variable.
-;
-
 (use-modules (opencog) (opencog exec))
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -14,7 +6,6 @@
 		(ConceptNode "banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -22,7 +13,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -30,8 +20,6 @@
 		(ConceptNode "grape")
 	)
 )
-
-; We expect this one to be found by the bindy pattern below.
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -39,8 +27,6 @@
 		(ConceptNode "banana")
 	)
 )
-
-; The bindy pattern must not find this one.
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -48,11 +34,6 @@
 		(ConceptNode "apple")
 	)
 )
-
-; The pattern below uses $var-a in a confusing way: both as
-; variable, as as something quoted.  It should behave the same
-; way that "bother" below does: the quoted and unquoted forms
-; are distinct from one-another.
 (define bindy
 	(BindLink
 		(TypedVariableLink
@@ -69,9 +50,6 @@
 		(VariableNode "$var-a")
 	)
 )
-
-; Same as above, but explicitly made non-confusing. This is
-; what the above form must actually behave like ...
 (define bother
 	(BindLink
 		(TypedVariableLink
@@ -88,7 +66,6 @@
 		(VariableNode "$other")
 	)
 )
-
 (define bunbound
 	(BindLink
 		(VariableNode "$other")

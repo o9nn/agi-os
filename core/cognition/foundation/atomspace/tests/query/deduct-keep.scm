@@ -1,13 +1,5 @@
-;;
-;; deduct-keep.scm
-;;
-;; Print out who keeps what
-;;
-;; Part of the "Einstein puzzle" demo.
-
 (define (print-ownership)
 	(BindLink
-		;; variable declarations
 		(VariableList
 			(TypedVariableLink
 				(VariableNode "$person")
@@ -17,7 +9,6 @@
 			(VariableNode "$house")
 			(VariableNode "$pet")
 		)
-		;; body -- if all parts of AndLink hold true ... then
 		(AndLink
 			(EvaluationLink
 				(PredicateNode "Nationality")
@@ -49,11 +40,8 @@
 		)
 	)
 )
-
-
 (define (print-results)
 	(BindLink
-		;; variable declarations
 		(VariableList
 			(TypedVariableLink
 				(VariableNode "$person")
@@ -65,7 +53,6 @@
 				(TypeNode "ConceptNode")
 			)
 		)
-		;; body -- if all parts of AndLink hold true ... then
 		(AndLink
 			(EvaluationLink
 				(VariableNode "$pred")
@@ -82,5 +69,3 @@
 		)
 	)
 )
-
-

@@ -13,13 +13,11 @@ typedef long	jmp_buf[2];
 #define	JMPBUFSP	0
 #define	JMPBUFPC	1
 #define	JMPBUFDPC	(-8)
-typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
+typedef unsigned int	mpdigit;
 typedef unsigned char u8int;
 typedef unsigned short u16int;
 typedef unsigned int	u32int;
 typedef unsigned long long u64int;
-
-/* FCR */
 #define	FPINEX	(1<<23)
 #define	FPOVFL	(1<<26)
 #define	FPUNFL	(1<<25)
@@ -34,7 +32,6 @@ typedef unsigned long long u64int;
 #define	FPPSGL	0
 #define	FPPDBL	0
 #define	FPPMASK	0
-/* FSR */
 #define	FPAINEX	(1<<5)
 #define	FPAZDIV	(1<<6)
 #define	FPAUNFL	(1<<7)
@@ -42,23 +39,22 @@ typedef unsigned long long u64int;
 #define	FPAINVAL	(1<<9)
 union FPdbleword
 {
-	double	x;
-	struct {	/* big endian */
-		ulong hi;
-		ulong lo;
-	};
+double	x;
+struct {
+ulong hi;
+ulong lo;
 };
-
+};
 typedef	char*	va_list;
 #define va_start(list, start) list =\
-	(sizeof(start) < 4?\
-		(char*)((int*)&(start)+1):\
-		(char*)(&(start)+1))
+(sizeof(start) < 4?\
+(char*)((int*)&(start)+1):\
+(char*)(&(start)+1))
 #define va_end(list)\
-	USED(list)
+USED(list)
 #define va_arg(list, mode)\
-	((sizeof(mode) == 1)?\
-		((mode*)(list += 4))[-1]:\
-	(sizeof(mode) == 2)?\
-		((mode*)(list += 4))[-1]:\
-		((mode*)(list += sizeof(mode)))[-1])
+((sizeof(mode) == 1)?\
+((mode*)(list += 4))[-1]:\
+(sizeof(mode) == 2)?\
+((mode*)(list += 4))[-1]:\
+((mode*)(list += sizeof(mode)))[-1])

@@ -1,10 +1,4 @@
-;
-; glob-pivot.scm
-;
-; Unit test for bug #2167
-;
 (use-modules (opencog) (opencog exec))
-
 (EvaluationLink
 	(PredicateNode "pred-1")
 	(ListLink
@@ -17,7 +11,6 @@
 		(ConceptNode "blah")
 	)
 )
-
 (define glob-pivot
 	(GetLink
 		(TypedVariableLink

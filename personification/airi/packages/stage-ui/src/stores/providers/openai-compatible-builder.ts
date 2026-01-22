@@ -1,38 +1,29 @@
 import type { ModelInfo, ProviderMetadata } from '../providers'
-
 import { generateText } from '@xsai/generate-text'
 import { listModels } from '@xsai/model'
 import { message } from '@xsai/utils-chat'
-
 type ProviderCreator = (apiKey: string, baseUrl: string) => any
-
-// Lightweight normalization utilities and conditional logging
 function normalizeString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
 }
-
 function normalizeBaseUrl(value: unknown): string {
   let base = normalizeString(value)
   if (base && !base.endsWith('/'))
     base += '/'
   return base
 }
-
 function shouldLog(): boolean {
   try {
-    // Opt-in via localStorage to minimize I/O in production
     return typeof localStorage !== 'undefined' && localStorage.getItem('airi:debug') === '1'
   }
   catch {
     return false
   }
 }
-
 function logWarn(...args: unknown[]) {
   if (shouldLog())
     console.warn(...args)
 }
-
 export function buildOpenAICompatibleProvider(
   options: Partial<ProviderMetadata> & {
     id: string
@@ -70,31 +61,22 @@ export function buildOpenAICompatibleProvider(
     transcriptionFeatures,
     ...rest
   } = options
-
   const finalCapabilities = capabilities || {
     listModels: async (config: Record<string, unknown>) => {
-      // Safer casting of apiKey/baseUrl (prevents .trim() crash if not a string)
       const apiKey = normalizeString(config.apiKey)
       const baseUrl = normalizeBaseUrl(config.baseUrl)
-
-      // If not configured yet, avoid remote calls and return empty
       if (!apiKey || !baseUrl) {
         return []
       }
-
       const provider = await creator(apiKey, baseUrl)
-      // Check provider.model exists and is a function
       if (!provider || typeof provider.model !== 'function') {
         return []
       }
-
-      // Previously: fetch(`${baseUrl}models`)
       const models = await listModels({
         apiKey,
         baseURL: baseUrl,
         headers: additionalHeaders,
       })
-
       return models.map((model: any) => {
         return {
           id: model.id,
@@ -107,21 +89,17 @@ export function buildOpenAICompatibleProvider(
       })
     },
   }
-
   const finalValidators = validators || {
     validateProviderConfig: async (config: Record<string, unknown>) => {
       const errors: Error[] = []
       let baseUrl = normalizeString(config.baseUrl)
       const apiKey = normalizeString(config.apiKey)
-
       if (!apiKey) {
         errors.push(new Error('API Key is required'))
       }
-
       if (!baseUrl) {
         errors.push(new Error('Base URL is required'))
       }
-
       try {
         if (new URL(baseUrl).host.length === 0) {
           errors.push(new Error('Base URL is not absolute. Check your input.'))
@@ -130,10 +108,7 @@ export function buildOpenAICompatibleProvider(
       catch {
         errors.push(new Error('Base URL is invalid. It must be an absolute URL.'))
       }
-
-      // normalize trailing slash instead of rejecting
       baseUrl = normalizeBaseUrl(baseUrl)
-
       if (errors.length > 0) {
         return {
           errors,
@@ -141,10 +116,8 @@ export function buildOpenAICompatibleProvider(
           valid: false,
         }
       }
-
       const validationChecks = validation || []
       const hasApiKey = Boolean(apiKey)
-      // Prepare model auto-detection promise for checks that need it
       const modelPromise = (async () => {
         let detected = 'test'
         if (!hasApiKey)
@@ -170,8 +143,6 @@ export function buildOpenAICompatibleProvider(
         }
         return detected
       })()
-
-      // Health check = try generating text (was: fetch(`${baseUrl}chat/completions`))
       const asyncChecks: Promise<Error | null>[] = []
       if (validationChecks.includes('health') && hasApiKey) {
         asyncChecks.push((async () => {
@@ -192,8 +163,6 @@ export function buildOpenAICompatibleProvider(
           }
         })())
       }
-
-      // Model list validation (was: fetch(`${baseUrl}models`))
       if (validationChecks.includes('model_list') && hasApiKey) {
         asyncChecks.push((async () => {
           try {
@@ -212,8 +181,6 @@ export function buildOpenAICompatibleProvider(
           }
         })())
       }
-
-      // Chat completions validation = generateText again (was: fetch(`${baseUrl}chat/completions`))
       if (validationChecks.includes('chat_completions') && hasApiKey) {
         asyncChecks.push((async () => {
           try {
@@ -233,7 +200,6 @@ export function buildOpenAICompatibleProvider(
           }
         })())
       }
-
       if (asyncChecks.length > 0) {
         const results = await Promise.allSettled(asyncChecks)
         for (const r of results) {
@@ -243,18 +209,14 @@ export function buildOpenAICompatibleProvider(
             errors.push(new Error(String(r.reason)))
         }
       }
-
       return {
         errors,
-        // Consistent reason string (empty when no errors)
         reason: errors.length > 0 ? errors.map(e => e.message).join(', ') : '',
         valid: errors.length === 0,
       }
     },
   }
-
   const resolvedCategory = category ?? 'chat'
-
   return {
     id,
     category: resolvedCategory,

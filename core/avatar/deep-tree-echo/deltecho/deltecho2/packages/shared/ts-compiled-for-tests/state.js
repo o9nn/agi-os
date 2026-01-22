@@ -7,7 +7,6 @@ export function getDefaultState() {
     notifications: true,
     showNotificationContent: true,
     locale: null,
-    // if this is null, the system chooses the system language that electron reports
     credentials: void 0,
     lastAccount: void 0,
     enableAVCalls: false,
@@ -31,7 +30,6 @@ export function getDefaultState() {
     contentProtectionEnabled: false,
     isMentionsEnabled: true,
     autostart: true,
-    // Deep Tree Echo Bot settings
     deepTreeEchoBotEnabled: false,
     deepTreeEchoBotMemoryEnabled: false,
     deepTreeEchoBotVisionEnabled: false,
@@ -39,4 +37,3 @@ export function getDefaultState() {
     deepTreeEchoBotEmbodimentEnabled: false
   };
 }
-//# sourceMappingURL=state.js.map

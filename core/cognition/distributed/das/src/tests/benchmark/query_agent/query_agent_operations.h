@@ -1,5 +1,4 @@
 #pragma once
-
 #include <chrono>
 #include <cstdlib>
 #include <functional>
@@ -12,18 +11,14 @@
 #include <string>
 #include <thread>
 #include <vector>
-
 #include "query_agent_runner.h"
-
 extern const size_t BATCH_SIZE;
-
 class PatternMatchingQuery : public QueryAgentRunner {
-   public:
-    using QueryAgentRunner::QueryAgentRunner;
-
-    void simple_query(string log_file);
-    void complex_query(string log_file);
-    void positive_importance();
-    void update_attention_broker();
-    void link_template_cache();
+public:
+using QueryAgentRunner::QueryAgentRunner;
+void simple_query(string log_file);
+void complex_query(string log_file);
+void positive_importance();
+void update_attention_broker();
+void link_template_cache();
 };

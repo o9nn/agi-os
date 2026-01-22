@@ -1,7 +1,6 @@
 import {Token, Tokenizer} from "../types.js";
 import {isLlamaText, LlamaText} from "./LlamaText.js";
 import {isToken} from "./isToken.js";
-
 export function tokenizeInput(
     input: Token | Token[] | string | LlamaText,
     tokenizer: Tokenizer,
@@ -14,9 +13,7 @@ export function tokenizeInput(
         return input.tokenize(tokenizer, options);
     else if (isToken(input))
         return [input];
-
     if (clone)
         return input.slice();
-
     return input;
 }

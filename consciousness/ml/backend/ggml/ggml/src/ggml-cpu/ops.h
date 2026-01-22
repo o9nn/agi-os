@@ -1,11 +1,5 @@
 #pragma once
-
 #include "ggml.h"
-
-//
-// cache line
-//
-
 #if defined(__cpp_lib_hardware_interference_size)
 #define CACHE_LINE_SIZE std::hardware_destructive_interference_size
 #else
@@ -17,13 +11,10 @@
 #define CACHE_LINE_SIZE 64
 #endif
 #endif
-
 static const size_t CACHE_LINE_SIZE_F32 = CACHE_LINE_SIZE/sizeof(float);
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 void ggml_compute_forward_dup(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_add(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_add1(const struct ggml_compute_params * params, struct ggml_tensor * dst);
@@ -77,16 +68,16 @@ void ggml_compute_forward_timestep_embedding(const struct ggml_compute_params * 
 void ggml_compute_forward_argsort(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_leaky_relu(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_flash_attn_ext(
-    const struct ggml_compute_params * params,
-    const struct ggml_tensor * q,
-    const struct ggml_tensor * k,
-    const struct ggml_tensor * v,
-    const struct ggml_tensor * mask,
-    struct ggml_tensor * dst);
+const struct ggml_compute_params * params,
+const struct ggml_tensor * q,
+const struct ggml_tensor * k,
+const struct ggml_tensor * v,
+const struct ggml_tensor * mask,
+struct ggml_tensor * dst);
 void ggml_compute_forward_flash_attn_back(
-        const struct ggml_compute_params * params,
-        const bool masked,
-        struct ggml_tensor * dst);
+const struct ggml_compute_params * params,
+const bool masked,
+struct ggml_tensor * dst);
 void ggml_compute_forward_ssm_conv(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_ssm_scan(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_win_part(const struct ggml_compute_params * params, struct ggml_tensor * dst);
@@ -104,7 +95,6 @@ void ggml_compute_forward_custom(const struct ggml_compute_params * params, stru
 void ggml_compute_forward_cross_entropy_loss(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_cross_entropy_loss_back(const struct ggml_compute_params * params, struct ggml_tensor * dst);
 void ggml_compute_forward_opt_step_adamw(const struct ggml_compute_params * params, struct ggml_tensor * dst);
-
 #ifdef __cplusplus
 }
 #endif

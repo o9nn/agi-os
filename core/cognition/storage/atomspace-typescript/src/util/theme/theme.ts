@@ -1,25 +1,21 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-
 import { light } from './palette';
 import {BreakpointOverrides} from "@mui/material/styles";
 import React from "react";
-
 const mode = sessionStorage.getItem('themeMode') || 'light';
-
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
-        xs: false; // removes the `xs` breakpoint
+        xs: false; 
         sm: false;
         md: false;
         lg: false;
         xl: false;
-        mobile: true; // adds the `mobile` breakpoint
+        mobile: true; 
         tablet: true;
         laptop: true;
         desktop: true;
     }
 }
-
 declare module '@mui/material/styles/createTheme' {
     interface Theme {
         layout: {
@@ -27,7 +23,6 @@ declare module '@mui/material/styles/createTheme' {
             breakpoint: BreakpointOverrides
         }
     }
-    // allow configuration using `createTheme`
     interface ThemeOptions {
         layout?: {
             contentWidth?: React.CSSProperties['width']
@@ -35,10 +30,7 @@ declare module '@mui/material/styles/createTheme' {
         },
     }
 }
-
-
 declare module '@mui/material/styles/createPalette' {
-
     interface TypeBackground {
         paper: string;
         default: string;
@@ -46,7 +38,6 @@ declare module '@mui/material/styles/createPalette' {
         level1: string;
         footer: string;
     }
-
     interface Palette {
         cardShadow?: string;
         alternate: {
@@ -79,4 +70,3 @@ const theme = responsiveFontSizes(
 );
 export const themeContentWidth = 1236;
 export default theme;
-

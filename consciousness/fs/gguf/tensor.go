@@ -1,21 +1,17 @@
 package gguf
-
 import (
 	"log/slog"
 	"strings"
 )
-
 type TensorInfo struct {
 	Name   string
 	Offset uint64
 	Shape  []uint64
 	Type   TensorType
 }
-
 func (ti TensorInfo) Valid() bool {
 	return ti.Name != "" && ti.NumBytes() > 0
 }
-
 func (ti TensorInfo) NumValues() int64 {
 	var numItems int64 = 1
 	for _, dim := range ti.Shape {
@@ -23,12 +19,9 @@ func (ti TensorInfo) NumValues() int64 {
 	}
 	return numItems
 }
-
-// NumBytes returns the number of bytes in the tensor.
 func (ti TensorInfo) NumBytes() int64 {
 	return int64(float64(ti.NumValues()) * ti.Type.NumBytes())
 }
-
 func (ti TensorInfo) LogValue() slog.Value {
 	return slog.GroupValue(
 		slog.String("name", ti.Name),
@@ -39,19 +32,14 @@ func (ti TensorInfo) LogValue() slog.Value {
 		slog.Any("type", ti.Type),
 	)
 }
-
 type TensorType uint32
-
 const (
 	TensorTypeF32 TensorType = iota
 	TensorTypeF16
 	TensorTypeQ4_0
 	TensorTypeQ4_1
-
-	// unexported // unused in gguf
 	tensorTypeQ4_2
 	tensorTypeQ4_3
-
 	TensorTypeQ5_0
 	TensorTypeQ5_1
 	TensorTypeQ8_0
@@ -62,8 +50,6 @@ const (
 	TensorTypeQ5_K
 	TensorTypeQ6_K
 	TensorTypeQ8_K
-
-	// unexported // unquantizable by ollama
 	tensorTypeIQ2_XXS
 	tensorTypeIQ2_XS
 	tensorTypeIQ3_XXS
@@ -72,37 +58,25 @@ const (
 	tensorTypeIQ3_S
 	tensorTypeIQ2_S
 	tensorTypeIQ4_XS
-
 	TensorTypeI8
 	TensorTypeI16
 	TensorTypeI32
 	TensorTypeI64
 	TensorTypeF64
-
-	// unexported // unquantizable by ollama
 	tensorTypeIQ1_M
-
 	TensorTypeBF16
-
-	// unexported // unused in gguf
 	tensorTypeQ4_0_4_4
 	tensorTypeQ4_0_4_8
 	tensorTypeQ4_0_8_8
-
-	// unexported // unquantizable by ollama
 	tensorTypeTQ1_0
 	tensorTypeTQ2_0
-
-	// unexported // unused in gguf
 	tensorTypeIQ4_NL_4_4
 	tensorTypeIQ4_NL_4_8
 	tensorTypeIQ4_NL_8_8
 )
-
 func (tt TensorType) NumBytes() float64 {
 	return float64(tt.typeSize()) / float64(tt.blockSize())
 }
-
 func (tt TensorType) typeSize() int64 {
 	switch tt {
 	case TensorTypeF32:
@@ -167,7 +141,6 @@ func (tt TensorType) typeSize() int64 {
 		return 0
 	}
 }
-
 func (tt TensorType) blockSize() int64 {
 	switch tt {
 	case TensorTypeF32,
@@ -191,7 +164,6 @@ func (tt TensorType) blockSize() int64 {
 		return 256
 	}
 }
-
 func (tt TensorType) String() string {
 	switch tt {
 	case TensorTypeF32:
@@ -276,7 +248,6 @@ func (tt TensorType) String() string {
 		return "unknown"
 	}
 }
-
 func (tt TensorType) LogValue() slog.Value {
 	return slog.GroupValue(
 		slog.Uint64("value", uint64(tt)),

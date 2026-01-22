@@ -13,7 +13,7 @@
 #elif Tamd64
 #include "amd64.h"
 #else
-	I do not know about your architecture.
-	Update switch in arch.h with new architecture.
-#endif	/* T386 */
-#endif /* _ARCH_H */
+I do not know about your architecture.
+Update switch in arch.h with new architecture.
+#endif
+#endif

@@ -16,7 +16,6 @@ long	writefile(Xfile*, void*, vlong, long);
 char *	xerrstr(int);
 Xfile *	xfile(Fid*, int);
 int	xfspurge(void);
-
 int ext2fs(Xfs *);
 int get_inode( Xfile *, uint);
 char *getname(Xfile *, char *);
@@ -51,9 +50,6 @@ int dowstat(Xfile *, Dir *);
 long getmode(Xfile *);
 Ext2 getext2(Xfs *, char, int);
 void CleanSuper(Xfs *);
-
-/* Iobuf operations */
-
 Iobuf *getbuf(Xfs *, long addr);
 void putbuf(Iobuf *);
 void purgebuf(Xfs *);
@@ -62,9 +58,7 @@ int xread(Xfs *, Iobuf *, long);
 void syncbuf(void);
 void xwrite(Iobuf *);
 void dirtybuf(Iobuf *);
-
 void mchat(char *fmt, ...);
 void dumpbuf(void);
-
 void gidfile(char*);
 void uidfile(char*);

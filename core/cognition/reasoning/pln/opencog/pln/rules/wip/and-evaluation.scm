@@ -1,20 +1,3 @@
-; =============================================================================
-; AndEvaluationRule
-;
-; AndLink
-;   MemberLink
-;       C
-;       A
-;   MemberLink
-;       C
-;       B
-; |-
-; AndLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define and-evaluation-rule
     (BindLink
         (VariableList
@@ -40,11 +23,9 @@
                 (MemberLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (and-evaluation-formula AB CA CB)
     (cog-set-tv!
         AB (and-evaluation-side-effect-free-formula AB CA CB)))
-
 (define (and-evaluation-side-effect-free-formula AB CA CB)
     (let 
         ((sCA (cog-mean CA))
@@ -55,7 +36,5 @@
             (and (>= sCA 0.5) (>= sCB 0.5))
             (stv 1 1)
             (stv 0 1))))
-
-; Name the rule
 (define and-evaluation-rule-name (DefinedSchemaNode "and-evaluation-rule"))
 (DefineLink and-evaluation-rule-name and-evaluation-rule)

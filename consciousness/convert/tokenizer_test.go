@@ -1,5 +1,4 @@
 package convert
-
 import (
 	"io"
 	"io/fs"
@@ -7,13 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
 	"github.com/google/go-cmp/cmp"
 )
-
 func createTokenizerFS(t *testing.T, dir string, files map[string]io.Reader) fs.FS {
 	t.Helper()
-
 	for k, v := range files {
 		if err := func() error {
 			f, err := os.Create(filepath.Join(dir, k))
@@ -21,20 +17,16 @@ func createTokenizerFS(t *testing.T, dir string, files map[string]io.Reader) fs.
 				return err
 			}
 			defer f.Close()
-
 			if _, err := io.Copy(f, v); err != nil {
 				return err
 			}
-
 			return nil
 		}(); err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	}
-
 	return os.DirFS(dir)
 }
-
 func TestParseTokenizer(t *testing.T) {
 	cases := []struct {
 		name              string
@@ -309,14 +301,12 @@ func TestParseTokenizer(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			tokenizer, err := parseTokenizer(tt.fsys, tt.specialTokenTypes)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-
 			if diff := cmp.Diff(tt.want, tokenizer); diff != "" {
 				t.Errorf("unexpected tokenizer (-want +got):\n%s", diff)
 			}

@@ -7,17 +7,12 @@ import {SpecialToken, LlamaText, SpecialTokensText} from "../utils/LlamaText.js"
 import {ChatModelFunctionsDocumentationGenerator} from "./utils/ChatModelFunctionsDocumentationGenerator.js";
 import {jsonDumps} from "./utils/jsonDumps.js";
 import {isLlama3_2LightweightModel} from "./utils/isLlama3_2LightweightModel.js";
-
-// source: https://llama.meta.com/docs/model-cards-and-prompt-formats/llama3_1
 export class Llama3_1ChatWrapper extends ChatWrapper {
     public readonly wrapperName: string = "Llama 3.1";
-
     public readonly cuttingKnowledgeDate?: Date | (() => Date) | null;
     public readonly todayDate: Date | (() => Date) | null;
     public readonly noToolInstructions: boolean;
-
-    /** @internal */ private readonly _specialTokensTextForPreamble: boolean;
-
+     private readonly _specialTokensTextForPreamble: boolean;
     public override readonly settings: ChatWrapperSettings = {
         supportsSystemMessages: true,
         functions: {
@@ -33,37 +28,19 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
             }
         }
     };
-
     public constructor(options: {
-        /**
-         * Set to `null` to disable
-         *
-         * Defaults to December 2023
-         */
         cuttingKnowledgeDate?: Date | (() => Date) | number | string | null,
-
-        /**
-         * Set to `null` to disable
-         *
-         * Defaults to current date
-         */
         todayDate?: Date | (() => Date) | number | string | null,
-
         noToolInstructions?: boolean,
-
-        /** @internal */
         _specialTokensTextForPreamble?: boolean
     } = {}) {
         super();
-
         const {
             cuttingKnowledgeDate = new Date("2023-12-01T00:00:00Z"),
             todayDate = () => new Date(),
             noToolInstructions = false,
-
             _specialTokensTextForPreamble = false
         } = options;
-
         this.cuttingKnowledgeDate = cuttingKnowledgeDate == null
             ? null
             : cuttingKnowledgeDate instanceof Function
@@ -75,10 +52,8 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                 ? todayDate
                 : new Date(todayDate);
         this.noToolInstructions = noToolInstructions;
-
         this._specialTokensTextForPreamble = _specialTokensTextForPreamble;
     }
-
     public override addAvailableFunctionsSystemMessageToHistory(
         history: readonly ChatHistoryItem[],
         availableFunctions?: ChatModelFunctions, {
@@ -88,17 +63,13 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
         } = {}
     ) {
         const availableFunctionNames = Object.keys(availableFunctions ?? {});
-
         if (availableFunctions == null || availableFunctionNames.length === 0)
             return history;
-
         const res = history.slice();
-
         const functionsSystemMessage: ChatSystemMessage = {
             type: "system",
             text: this.generateAvailableFunctionsSystemText(availableFunctions, {documentParams}).toJSON()
         };
-
         if (res.length >= 2 && res[0]!.type === "system" && res[1]!.type === "system")
             res.splice(1, 0, functionsSystemMessage);
         else
@@ -106,10 +77,8 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                 type: "system",
                 text: this.generateAvailableFunctionsSystemText(availableFunctions, {documentParams}).toJSON()
             });
-
         return res;
     }
-
     public override generateContextState({
         chatHistory, availableFunctions, documentFunctionParams
     }: ChatWrapperGenerateContextStateOptions): ChatWrapperGeneratedContextState {
@@ -117,18 +86,15 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
         const historyWithFunctions = this.addAvailableFunctionsSystemMessageToHistory(chatHistoryWithPreamble, availableFunctions, {
             documentParams: documentFunctionParams
         });
-
         const resultItems: Array<{
             system: LlamaText | null,
             user: LlamaText | null,
             model: LlamaText | null
         }> = [];
-
         let systemTexts: LlamaText[] = [];
         let userTexts: LlamaText[] = [];
         let modelTexts: LlamaText[] = [];
         let currentAggregateFocus: "system" | "user" | "model" | null = null;
-
         const flush = () => {
             if (systemTexts.length > 0 || userTexts.length > 0 || modelTexts.length > 0)
                 resultItems.push({
@@ -147,43 +113,35 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                         ? null
                         : LlamaText.joinValues("\n\n", modelTexts)
                 });
-
             systemTexts = [];
             userTexts = [];
             modelTexts = [];
         };
-
         for (const item of historyWithFunctions) {
             if (item.type === "system") {
                 if (currentAggregateFocus !== "system")
                     flush();
-
                 currentAggregateFocus = "system";
                 systemTexts.push(LlamaText.fromJSON(item.text));
             } else if (item.type === "user") {
                 if (currentAggregateFocus !== "user")
                     flush();
-
                 currentAggregateFocus = "user";
                 userTexts.push(LlamaText(item.text));
             } else if (item.type === "model") {
                 if (currentAggregateFocus !== "model")
                     flush();
-
                 currentAggregateFocus = "model";
                 modelTexts.push(this.generateModelResponseText(item.response));
             } else
                 void (item satisfies never);
         }
-
         flush();
-
         const contextText = LlamaText(
             new SpecialToken("BOS"),
             resultItems.map((item, index) => {
                 const isLastItem = index === resultItems.length - 1;
                 const res: LlamaText[] = [];
-
                 if (item.system != null) {
                     res.push(
                         LlamaText([
@@ -193,7 +151,6 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                         ])
                     );
                 }
-
                 if (item.user != null) {
                     res.push(
                         LlamaText([
@@ -203,7 +160,6 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                         ])
                     );
                 }
-
                 if (item.model != null) {
                     res.push(
                         LlamaText([
@@ -215,11 +171,9 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                         ])
                     );
                 }
-
                 return LlamaText(res);
             })
         );
-
         return {
             contextText,
             stopGenerationTriggers: [
@@ -232,15 +186,12 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
             ]
         };
     }
-
     public override generateAvailableFunctionsSystemText(availableFunctions: ChatModelFunctions, {documentParams = true}: {
         documentParams?: boolean
     }) {
         const functionsDocumentationGenerator = new ChatModelFunctionsDocumentationGenerator(availableFunctions);
-
         if (!functionsDocumentationGenerator.hasAnyFunctions)
             return LlamaText([]);
-
         return LlamaText.joinValues("\n", [
             "You have access to the following functions:",
             "",
@@ -275,50 +226,39 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
             "- Only call functions when needed"
         ]);
     }
-
     public prependPreambleToChatHistory(chatHistory: readonly ChatHistoryItem[]): readonly ChatHistoryItem[] {
         const res = chatHistory.slice();
-
         const formatMonthDate = (date: Date, timezone?: "UTC") => {
             const today = this.todayDate instanceof Function
                 ? this.todayDate()
                 : (this.todayDate ?? new Date());
-
             if (today.getUTCMonth() === date.getUTCMonth() && today.getUTCFullYear() === date.getUTCFullYear())
                 return formatDate(date, timezone);
-
             const month = date.toLocaleDateString("en-US", {month: "long", timeZone: timezone});
             const year = date.toLocaleDateString("en-US", {year: "numeric", timeZone: timezone});
             return `${month} ${year}`;
         };
-
         const lines: string[] = [];
-
         if (this.cuttingKnowledgeDate != null) {
             const date = this.cuttingKnowledgeDate instanceof Function
                 ? this.cuttingKnowledgeDate()
                 : this.cuttingKnowledgeDate;
-
             lines.push(`Cutting Knowledge Date: ${formatMonthDate(date, "UTC")}`);
         }
-
         if (this.todayDate != null) {
             const date = this.todayDate instanceof Function
                 ? this.todayDate()
                 : this.todayDate;
             lines.push(`Today Date: ${formatDate(date, undefined)}`);
         }
-
         if (!this.noToolInstructions) {
             if (lines.length > 0)
                 lines.push("");
-
             lines.push("# Tool Instructions");
             lines.push("- When looking for real time information use relevant functions if available");
             lines.push("");
             lines.push("");
         }
-
         if (lines.length > 0)
             res.unshift({
                 type: "system",
@@ -326,21 +266,15 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                     ? LlamaText(new SpecialTokensText(lines.join("\n"))).toJSON()
                     : LlamaText.joinValues("\n", lines).toJSON()
             });
-
         return res;
     }
-
-    /** @internal */
     public static override _checkModelCompatibility(options: ChatWrapperCheckModelCompatibilityParams): boolean {
         if (options.tokenizer != null) {
             const tokens = options.tokenizer("<|eom_id|>", true, "trimLeadingSpace");
             return tokens.length === 1 && options.tokenizer.isSpecialToken(tokens[0]!) && !isLlama3_2LightweightModel(options);
         }
-
         return !isLlama3_2LightweightModel(options);
     }
-
-    /** @internal */
     public static override _getOptionConfigurationsToTestIfCanSupersedeJinjaTemplate(): ChatWrapperJinjaMatchConfiguration<typeof this> {
         return [
             [{}, undefined, {functionCallMessageTemplate: "noJinja"}],
@@ -354,7 +288,6 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                 {},
                 {functionCallMessageTemplate: "noJinja"}
             ],
-
             [
                 {
                     todayDate: new Date("2024-07-26T00:00:00"),
@@ -367,7 +300,6 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
                     functionCallMessageTemplate: "noJinja"
                 }
             ],
-
             [
                 {
                     todayDate: new Date("2024-07-26T00:00:00"),
@@ -384,7 +316,6 @@ export class Llama3_1ChatWrapper extends ChatWrapper {
         ];
     }
 }
-
 function formatDate(date: Date, timezone?: "UTC") {
     const day = date.toLocaleDateString("en-US", {day: "numeric", timeZone: timezone});
     const month = date.toLocaleDateString("en-US", {month: "short", timeZone: timezone});

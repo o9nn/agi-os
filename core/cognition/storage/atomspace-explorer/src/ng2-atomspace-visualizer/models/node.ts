@@ -1,8 +1,3 @@
-/**
- * Created by tsadik on 11/8/17.
- */
-
-
 export interface Node {
   id: string;
   name: string;

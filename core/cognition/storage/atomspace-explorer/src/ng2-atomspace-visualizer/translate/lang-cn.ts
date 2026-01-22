@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
- // Chinese
 export const LANG_CN_NAME = 'cn';
-
 export const LANG_CN_TRANS = {
   'Play-TT': '播放（暫停鍵）',
   'Pause-TT': '暫停（暫停鍵）',

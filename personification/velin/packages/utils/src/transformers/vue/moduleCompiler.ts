@@ -1,7 +1,5 @@
 import type { ExportSpecifier, Identifier, Node } from '@babel/types'
-
 import type { File } from './shared'
-
 import {
   babelParse,
   extractIdentifiers,
@@ -11,7 +9,6 @@ import {
   walk,
   walkIdentifiers,
 } from '@vue/compiler-sfc'
-
 export function compileModulesForPreview(options: {
   files: Record<string, File>
   mainFile: string
@@ -19,9 +16,7 @@ export function compileModulesForPreview(options: {
   const seen = new Set<File>()
   const processed: string[] = []
   processFile(options, options.files[options.mainFile], processed, seen, isSSR)
-
   if (!isSSR) {
-    // also add css files that are not imported
     for (const filename in options.files) {
       if (filename.endsWith('.css')) {
         const file = options.files[filename]
@@ -33,19 +28,13 @@ export function compileModulesForPreview(options: {
       }
     }
   }
-
-  // return the default export of the main module
   processed.push(`\nreturn __modules__["${options.mainFile}"].default`)
-
   return processed
 }
-
 const modulesKey = `__modules__`
 const exportKey = `__export__`
 const dynamicImportKey = `__dynamic_import__`
 const moduleKey = `__module__`
-
-// similar logic with Vite's SSR transform, except this is targeting the browser
 function processFile(
   options: {
     files: Record<string, File>
@@ -60,11 +49,9 @@ function processFile(
     return []
   }
   seen.add(file)
-
   if (!isSSR && file.filename.endsWith('.html')) {
     return processHtmlFile(options, file.code, file.filename, processed, seen)
   }
-
   let {
     code: js,
     importedFiles,
@@ -82,15 +69,11 @@ function processFile(
     seen,
     isSSR,
   )
-  // append css
   if (file.compiled.css && !isSSR) {
     js += `\nwindow.__css__.push(${JSON.stringify(file.compiled.css)})`
   }
-
-  // push self
   processed.push(js)
 }
-
 function processChildFiles(
   options: {
     files: Record<string, File>
@@ -103,7 +86,6 @@ function processChildFiles(
   isSSR: boolean,
 ) {
   if (hasDynamicImport) {
-    // process all files
     for (const file of Object.values(options.files)) {
       if (seen.has(file))
         continue
@@ -111,29 +93,24 @@ function processChildFiles(
     }
   }
   else if (importedFiles.size > 0) {
-    // crawl child imports
     for (const imported of importedFiles) {
       processFile(options, options.files[imported], processed, seen, isSSR)
     }
   }
 }
-
 function processModule(options: {
   files: Record<string, File>
   mainFile: string
 }, src: string, filename: string) {
   const s = new MagicString(src)
-
   const ast = babelParse(src, {
     sourceFilename: filename,
     sourceType: 'module',
   }).program.body
-
   const idToImportMap = new Map<string, string>()
   const declaredConst = new Set<string>()
   const importedFiles = new Set<string>()
   const importToIdMap = new Map<string, string>()
-
   function resolveImport(raw: string): string | undefined {
     const files = options.files
     let resolved = raw
@@ -143,7 +120,6 @@ function processModule(options: {
         || files[(resolved = `${raw}.js`)]
     return file ? resolved : undefined
   }
-
   function defineImport(node: Node, source: string) {
     const filename = resolveImport(source.replace(/^\.\/+/, 'src/'))
     if (!filename) {
@@ -161,23 +137,15 @@ function processModule(options: {
     )
     return id
   }
-
   function defineExport(name: string, local = name) {
     s.append(`\n${exportKey}(${moduleKey}, "${name}", () => ${local})`)
   }
-
-  // 0. instantiate module
   s.prepend(
     `const ${moduleKey} = ${modulesKey}[${JSON.stringify(
       filename,
     )}] = { [Symbol.toStringTag]: "Module" }\n\n`,
   )
-
-  // 1. check all import statements and record id -> importName map
   for (const node of ast) {
-    // import foo from 'foo' --> foo -> __import_foo__.default
-    // import { baz } from 'foo' --> baz -> __import_foo__.baz
-    // import * as ok from 'foo' --> ok -> __import_foo__
     if (node.type === 'ImportDeclaration') {
       const source = node.source.value
       if (source.startsWith('./')) {
@@ -193,7 +161,6 @@ function processModule(options: {
             idToImportMap.set(spec.local.name, `${importId}.default`)
           }
           else {
-            // namespace specifier
             idToImportMap.set(spec.local.name, importId)
           }
         }
@@ -201,21 +168,16 @@ function processModule(options: {
       }
     }
   }
-
-  // 2. check all export statements and define exports
   for (const node of ast) {
-    // named exports
     if (node.type === 'ExportNamedDeclaration') {
       if (node.declaration) {
         if (
           node.declaration.type === 'FunctionDeclaration'
           || node.declaration.type === 'ClassDeclaration'
         ) {
-          // export function foo() {}
           defineExport(node.declaration.id!.name)
         }
         else if (node.declaration.type === 'VariableDeclaration') {
-          // export const foo = 1, bar = 2
           for (const decl of node.declaration.declarations) {
             for (const id of extractIdentifiers(decl.id)) {
               defineExport(id.name)
@@ -225,7 +187,6 @@ function processModule(options: {
         s.remove(node.start!, node.declaration.start!)
       }
       else if (node.source) {
-        // export { foo, bar } from './foo'
         const importId = defineImport(node, node.source.value)
         for (const spec of node.specifiers) {
           defineExport(
@@ -236,7 +197,6 @@ function processModule(options: {
         s.remove(node.start!, node.end!)
       }
       else {
-        // export { foo, bar }
         for (const spec of node.specifiers) {
           const local = (spec as ExportSpecifier).local.name
           const binding = idToImportMap.get(local)
@@ -245,24 +205,16 @@ function processModule(options: {
         s.remove(node.start!, node.end!)
       }
     }
-
-    // default export
     if (node.type === 'ExportDefaultDeclaration') {
       if ('id' in node.declaration && node.declaration.id) {
-        // named hoistable/class exports
-        // export default function foo() {}
-        // export default class A {}
         const { name } = node.declaration.id
         s.remove(node.start!, node.start! + 15)
         s.append(`\n${exportKey}(${moduleKey}, "default", () => ${name})`)
       }
       else {
-        // anonymous default exports
         s.overwrite(node.start!, node.start! + 14, `${moduleKey}.default =`)
       }
     }
-
-    // export * from './foo'
     if (node.type === 'ExportAllDeclaration') {
       const importId = defineImport(node, node.source.value)
       s.remove(node.start!, node.end!)
@@ -273,8 +225,6 @@ function processModule(options: {
       }`)
     }
   }
-
-  // 3. convert references to import bindings
   for (const node of ast) {
     if (node.type === 'ImportDeclaration')
       continue
@@ -284,9 +234,6 @@ function processModule(options: {
         return
       }
       if (parent && isStaticProperty(parent) && parent.shorthand) {
-        // let binding used in a property shorthand
-        // { foo } -> { foo: __import_x__.foo }
-        // skip for destructure patterns
         if (
           !(parent as any).inPattern
           || isInDestructureAssignment(parent, parentStack)
@@ -301,7 +248,6 @@ function processModule(options: {
       ) {
         if (!declaredConst.has(id.name)) {
           declaredConst.add(id.name)
-          // locate the top-most node containing the class declaration
           const topNode = parentStack[1]
           s.prependRight(topNode.start!, `const ${id.name} = ${binding};\n`)
         }
@@ -311,8 +257,6 @@ function processModule(options: {
       }
     })
   }
-
-  // 4. convert dynamic imports
   let hasDynamicImport = false
   walk(ast, {
     enter(node: Node, parent: Node) {
@@ -330,20 +274,15 @@ function processModule(options: {
       }
     },
   })
-
   return {
     code: s.toString(),
     importedFiles,
     hasDynamicImport,
   }
 }
-
-// eslint-disable-next-line regexp/no-useless-assertions, regexp/match-any
 const scriptRE = /<script\b(?:\s[^>]*>|>)([^]*?)<\/script>/gi
 const scriptModuleRE
-  // eslint-disable-next-line regexp/no-contradiction-with-assertion, regexp/match-any
   = /<script\b[^>]*type\s*=\s*(?:"module"|'module')[^>]*>([^]*?)<\/script>/gi
-
 function processHtmlFile(
   options: {
     files: Record<string, File>

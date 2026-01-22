@@ -1,16 +1,6 @@
 #!/usr/bin/bash
-#
-# Pulled from https://github.com/vishnubob/wait-for-it on 2022-02-28.
-# Licensed under the MIT license as of 81b1373f.
-#
-# Below this line, wait-for-it is the original work of the author.
-#
-# Use this script to test if a given TCP host/port are available
-
-WAITFORIT_cmdname=${0##*/}
-
+WAITFORIT_cmdname=${0
 echoerr() { if [[ $WAITFORIT_QUIET -ne 1 ]]; then echo "$@" 1>&2; fi }
-
 usage()
 {
     cat << USAGE >&2
@@ -27,7 +17,6 @@ Usage:
 USAGE
     exit 1
 }
-
 wait_for()
 {
     if [[ $WAITFORIT_TIMEOUT -gt 0 ]]; then
@@ -54,10 +43,8 @@ wait_for()
     done
     return $WAITFORIT_result
 }
-
 wait_for_wrapper()
 {
-    # In order to support SIGINT during timeout: http://unix.stackexchange.com/a/57692
     if [[ $WAITFORIT_QUIET -eq 1 ]]; then
         timeout $WAITFORIT_BUSYTIMEFLAG $WAITFORIT_TIMEOUT $0 --quiet --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
     else
@@ -72,9 +59,7 @@ wait_for_wrapper()
     fi
     return $WAITFORIT_RESULT
 }
-
-# process arguments
-while [[ $# -gt 0 ]]
+while [[ $
 do
     case "$1" in
         *:* )
@@ -101,7 +86,7 @@ do
         shift 2
         ;;
         --host=*)
-        WAITFORIT_HOST="${1#*=}"
+        WAITFORIT_HOST="${1
         shift 1
         ;;
         -p)
@@ -110,7 +95,7 @@ do
         shift 2
         ;;
         --port=*)
-        WAITFORIT_PORT="${1#*=}"
+        WAITFORIT_PORT="${1
         shift 1
         ;;
         -t)
@@ -119,7 +104,7 @@ do
         shift 2
         ;;
         --timeout=*)
-        WAITFORIT_TIMEOUT="${1#*=}"
+        WAITFORIT_TIMEOUT="${1
         shift 1
         ;;
         --)
@@ -136,33 +121,25 @@ do
         ;;
     esac
 done
-
 if [[ "$WAITFORIT_HOST" == "" || "$WAITFORIT_PORT" == "" ]]; then
     echoerr "Error: you need to provide a host and port to test."
     usage
 fi
-
 WAITFORIT_TIMEOUT=${WAITFORIT_TIMEOUT:-15}
 WAITFORIT_STRICT=${WAITFORIT_STRICT:-0}
 WAITFORIT_CHILD=${WAITFORIT_CHILD:-0}
 WAITFORIT_QUIET=${WAITFORIT_QUIET:-0}
-
-# Check to see if timeout is from busybox?
 WAITFORIT_TIMEOUT_PATH=$(type -p timeout)
 WAITFORIT_TIMEOUT_PATH=$(realpath $WAITFORIT_TIMEOUT_PATH 2>/dev/null || readlink -f $WAITFORIT_TIMEOUT_PATH)
-
 WAITFORIT_BUSYTIMEFLAG=""
 if [[ $WAITFORIT_TIMEOUT_PATH =~ "busybox" ]]; then
     WAITFORIT_ISBUSY=1
-    # Check if busybox timeout uses -t flag
-    # (recent Alpine versions don't support -t anymore)
     if timeout &>/dev/stdout | grep -q -e '-t '; then
         WAITFORIT_BUSYTIMEFLAG="-t"
     fi
 else
     WAITFORIT_ISBUSY=0
 fi
-
 if [[ $WAITFORIT_CHILD -gt 0 ]]; then
     wait_for
     WAITFORIT_RESULT=$?
@@ -176,7 +153,6 @@ else
         WAITFORIT_RESULT=$?
     fi
 fi
-
 if [[ $WAITFORIT_CLI != "" ]]; then
     if [[ $WAITFORIT_RESULT -ne 0 && $WAITFORIT_STRICT -eq 1 ]]; then
         echoerr "$WAITFORIT_cmdname: strict mode, refusing to execute subprocess"
@@ -186,4 +162,3 @@ if [[ $WAITFORIT_CLI != "" ]]; then
 else
     exit $WAITFORIT_RESULT
 fi
-

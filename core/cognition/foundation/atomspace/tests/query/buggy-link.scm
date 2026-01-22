@@ -1,9 +1,3 @@
-;
-; buggy-link.scm
-;
-; Test a buggy binding issue.
-;
-
 (EvaluationLink
 	(PredicateNode "eat")
 	(ListLink
@@ -11,7 +5,6 @@
 		(ConceptNode "Doughnut")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "eat")
 	(ListLink
@@ -19,11 +12,6 @@
 		(ConceptNode "Cabbage")
 	)
 )
-
-; This one causes problems:  the old code used to accept this as
-; a valid grounding for one of the clauses, resulting in $var_1
-; being undefined, which subsequently leads to a crash. The new
-; code explicitly rejects this match.
 (EvaluationLink
 	(PredicateNode "eat")
 	(ListLink
@@ -31,7 +19,6 @@
 		(ConceptNode "Cabbage")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "like")
 	(ListLink
@@ -39,7 +26,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (define bindy
 	(BindLink
 		(VariableList
@@ -54,7 +40,6 @@
 					(ConceptNode "Doughnut")
 				)
 			)
-
 			(EvaluationLink
 				(VariableNode "$var_2")
 				(ListLink
@@ -62,7 +47,6 @@
 					(ConceptNode "Cabbage")
 				)
 			)
-
 			(EvaluationLink
 				(PredicateNode "like")
 				(ListLink
@@ -77,4 +61,3 @@
 		)
 	)
 )
-

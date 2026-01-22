@@ -1,6 +1,5 @@
 #pragma	lib	"libhttpd.a"
 #pragma	src	"/sys/src/libhttpd"
-
 typedef struct HConnect		HConnect;
 typedef struct HContent		HContent;
 typedef struct HContents	HContents;
@@ -12,218 +11,149 @@ typedef struct HttpHead		HttpHead;
 typedef struct HttpReq		HttpReq;
 typedef struct HRange		HRange;
 typedef struct HSPairs		HSPairs;
-
 typedef struct Bin		Bin;
-
 #pragma incomplete Bin
-
 enum
 {
-	HMaxWord	= 32*1024,
-	HBufSize	= 32*1024,
-
-	/*
-	 * error messages
-	 */
-	HInternal	= 0,
-	HTempFail,
-	HUnimp,
-	HBadReq,
-	HBadSearch,
-	HNotFound,
-	HUnauth,
-	HSyntax,
-	HNoSearch,
-	HNoData,
-	HExpectFail,
-	HUnkVers,
-	HBadCont,
-	HOK,
+HMaxWord	= 32*1024,
+HBufSize	= 32*1024,
+HInternal	= 0,
+HTempFail,
+HUnimp,
+HBadReq,
+HBadSearch,
+HNotFound,
+HUnauth,
+HSyntax,
+HNoSearch,
+HNoData,
+HExpectFail,
+HUnkVers,
+HBadCont,
+HOK,
 };
-
-/*
- * table of html character escape codes
- */
 struct Htmlesc
 {
-	char		*name;
-	Rune		value;
+char		*name;
+Rune		value;
 };
-
 struct HContent
 {
-	HContent	*next;
-	char		*generic;
-	char		*specific;
-	float		q;		/* desirability of this kind of file */
-	int		mxb;		/* max uchars until worthless */
+HContent	*next;
+char		*generic;
+char		*specific;
+float		q;
+int		mxb;
 };
-
 struct HContents
 {
-	HContent	*type;
-	HContent	 *encoding;
+HContent	*type;
+HContent	 *encoding;
 };
-
-/*
- * generic http header with a list of tokens,
- * each with an optional list of parameters
- */
 struct HFields
 {
-	char		*s;
-	HSPairs		*params;
-	HFields		*next;
+char		*s;
+HSPairs		*params;
+HFields		*next;
 };
-
-/*
- * list of pairs a strings
- * used for tag=val pairs for a search or form submission,
- * and attribute=value pairs in headers.
- */
 struct HSPairs
 {
-	char		*s;
-	char		*t;
-	HSPairs		*next;
+char		*s;
+char		*t;
+HSPairs		*next;
 };
-
-/*
- * byte ranges within a file
- */
 struct HRange
 {
-	int		suffix;			/* is this a suffix request? */
-	ulong		start;
-	ulong		stop;			/* ~0UL -> not given */
-	HRange		*next;
+int		suffix;
+ulong		start;
+ulong		stop;
+HRange		*next;
 };
-
-/*
- * list of http/1.1 entity tags
- */
 struct HETag
 {
-	char		*etag;
-	int		weak;
-	HETag		*next;
+char		*etag;
+int		weak;
+HETag		*next;
 };
-
-/*
- * HTTP custom IO
- * supports chunked transfer encoding
- * and initialization of the input buffer from a string.
- */
 enum
 {
-	Hnone,
-	Hread,
-	Hend,
-	Hwrite,
-	Herr,
-
-	Hsize = HBufSize
+Hnone,
+Hread,
+Hend,
+Hwrite,
+Herr,
+Hsize = HBufSize
 };
-
 struct Hio {
-	Hio		*hh; /* next lower layer Hio, or nil if reads from fd */
-	int		fd;		/* associated file descriptor */
-	ulong		seek;		/* of start */
-	uchar		state;		/* state of the file */
-	uchar		xferenc;	/* chunked transfer encoding state */
-	uchar		*pos;		/* current position in the buffer */
-	uchar		*stop;		/* last character active in the buffer */
-	uchar		*start;		/* start of data buffer */
-	ulong		bodylen;	/* remaining length of message body */
-	uchar		buf[Hsize+32];
+Hio		*hh;
+int		fd;
+ulong		seek;
+uchar		state;
+uchar		xferenc;
+uchar		*pos;
+uchar		*stop;
+uchar		*start;
+ulong		bodylen;
+uchar		buf[Hsize+32];
 };
-
-/*
- * request line
- */
 struct HttpReq
 {
-	char		*meth;
-	char		*uri;
-	char		*urihost;
-	char		*search;
-	int		vermaj;
-	int		vermin;
-	HSPairs		*searchpairs;
+char		*meth;
+char		*uri;
+char		*urihost;
+char		*search;
+int		vermaj;
+int		vermin;
+HSPairs		*searchpairs;
 };
-
-/*
- * header lines
- */
 struct HttpHead
 {
-	int	closeit;	/* http1.1 close connection after this request? */
-	uchar	persist;	/* http/1.1 requests a persistent connection */
-
-	uchar	expectcont;	/* expect a 100-continue */
-	uchar	expectother; /* expect anything else; should reject with ExpectFail */
-	ulong	contlen;	/* if != ~0UL, length of included message body */
-	HFields	*transenc;  /* if present, encoding of included message body */
-	char	*client;
-	char	*host;
-	HContent *okencode;
-	HContent *oklang;
-	HContent *oktype;
-	HContent *okchar;
-	ulong	ifmodsince;
-	ulong	ifunmodsince;
-	ulong	ifrangedate;
-	HETag	*ifmatch;
-	HETag	*ifnomatch;
-	HETag	*ifrangeetag;
-	HRange	*range;
-	char	*authuser;		/* authorization info */
-	char	*authpass;
-	HSPairs	*cookie;	/* if present, list of cookies */
-	HSPairs		*authinfo;		/* digest authorization */
-
-	/*
-	 * experimental headers
-	 */
-	int	fresh_thresh;
-	int	fresh_have;
+int	closeit;
+uchar	persist;
+uchar	expectcont;
+uchar	expectother;
+ulong	contlen;
+HFields	*transenc;
+char	*client;
+char	*host;
+HContent *okencode;
+HContent *oklang;
+HContent *oktype;
+HContent *okchar;
+ulong	ifmodsince;
+ulong	ifunmodsince;
+ulong	ifrangedate;
+HETag	*ifmatch;
+HETag	*ifnomatch;
+HETag	*ifrangeetag;
+HRange	*range;
+char	*authuser;
+char	*authpass;
+HSPairs	*cookie;
+HSPairs		*authinfo;
+int	fresh_thresh;
+int	fresh_have;
 };
-
-/*
- * all of the state for a particular connection
- */
 struct HConnect
 {
-	void	*private;		/* for the library clients */
-	void	(*replog)(HConnect*, char*, ...); /* called when reply sent */
-
-	char	*scheme;		/* "http" vs. "https" */
-	char	*port;		/* may be arbitrary, i.e., neither 80 nor 443 */
-
-	HttpReq	req;
-	HttpHead head;
-
-	Bin	*bin;
-
-	ulong	reqtime;		/* time at start of request */
-	char	xferbuf[HBufSize]; /* buffer for making up or transferring data */
-	uchar	header[HBufSize + 2];	/* room for \n\0 */
-	uchar	*hpos;
-	uchar	*hstop;
-	Hio	hin;
-	Hio	hout;
+void	*private;
+void	(*replog)(HConnect*, char*, ...);
+char	*scheme;
+char	*port;
+HttpReq	req;
+HttpHead head;
+Bin	*bin;
+ulong	reqtime;
+char	xferbuf[HBufSize];
+uchar	header[HBufSize + 2];
+uchar	*hpos;
+uchar	*hstop;
+Hio	hin;
+Hio	hout;
 };
-
-/*
- * configuration for all connections within the server
- */
 extern	char*		hmydomain;
 extern	char*		hversion;
 extern	Htmlesc		htmlesc[];
-
-/*
- * .+2,/^$/ | sort -bd +1
- */
 void			*halloc(HConnect *c, ulong size);
 Hio			*hbodypush(Hio *hh, ulong len, HFields *te);
 int			hbuflen(Hio *h, void *p);
@@ -267,14 +197,7 @@ int			hurlfmt(Fmt*);
 char			*hurlunesc(HConnect *c, char *s);
 int			hwrite(Hio*, void*, int);
 int			hxferenc(Hio*, int);
-
 #pragma			varargck	argpos	hprint	2
-
-/*
- * D is httpd format date conversion
- * U is url escape convertsion
- * H is html escape conversion
- */
 #pragma	varargck	type	"D"	long
 #pragma	varargck	type	"D"	ulong
 #pragma	varargck	type	"U"	char*

@@ -1,61 +1,43 @@
 #pragma	src	"/usr/inferno/libregexp"
 #pragma	lib	"libregexp.a"
-
 typedef struct Resub		Resub;
 typedef struct Reclass		Reclass;
 typedef struct Reinst		Reinst;
 typedef struct Reprog		Reprog;
-
-/*
- *	Sub expression matches
- */
 struct Resub{
-	union
-	{
-		char *sp;
-		Rune *rsp;
-	}s;
-	union
-	{
-		char *ep;
-		Rune *rep;
-	}e;
+union
+{
+char *sp;
+Rune *rsp;
+}s;
+union
+{
+char *ep;
+Rune *rep;
+}e;
 };
-
-/*
- *	character class, each pair of rune's defines a range
- */
 struct Reclass{
-	Rune	*end;
-	Rune	spans[64];
+Rune	*end;
+Rune	spans[64];
 };
-
-/*
- *	Machine instructions
- */
 struct Reinst{
-	int	type;
-	union	{
-		Reclass	*cp;		/* class pointer */
-		Rune	r;		/* character */
-		int	subid;		/* sub-expression id for RBRA and LBRA */
-		Reinst	*right;		/* right child of OR */
-	}u1;
-	union {	/* regexp relies on these two being in the same union */
-		Reinst *left;		/* left child of OR */
-		Reinst *next;		/* next instruction for CAT & LBRA */
-	}u2;
+int	type;
+union	{
+Reclass	*cp;
+Rune	r;
+int	subid;
+Reinst	*right;
+}u1;
+union {
+Reinst *left;
+Reinst *next;
+}u2;
 };
-
-/*
- *	Reprogram definition
- */
 struct Reprog{
-	Reinst	*startinst;	/* start pc */
-	Reclass	class[16];	/* .data */
-	Reinst	firstinst[5];	/* .text */
+Reinst	*startinst;
+Reclass	class[16];
+Reinst	firstinst[5];
 };
-
 extern Reprog	*regcomp(char*);
 extern Reprog	*regcomplit(char*);
 extern Reprog	*regcompnl(char*);

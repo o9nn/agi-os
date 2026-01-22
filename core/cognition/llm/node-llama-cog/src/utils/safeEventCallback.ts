@@ -1,8 +1,4 @@
 const safeCallbackSymbol = Symbol("safeCallback");
-
-/**
- * Wraps a callback in a try-catch block and logs any errors to the console
- */
 export function safeEventCallback<const Params extends any[]>(
     callback: ((...args: Params) => void) | ((...args: Params) => Promise<void>) | ((...args: Params) => void | Promise<void>),
     message?: string
@@ -20,15 +16,11 @@ export function safeEventCallback<const Params extends any[] = any[]>(
 ): undefined | ((...args: Params) => void) {
     if (callback == null)
         return undefined;
-
-    // do not wrap the callback if it's already wrapped
     if ((callback as any)?.[safeCallbackSymbol] === true)
         return callback;
-
     const res = (...args: Params) => {
         try {
             const res = callback(...args);
-
             if (res instanceof Promise)
                 res.catch((error) => {
                     if (message != null)
@@ -44,6 +36,5 @@ export function safeEventCallback<const Params extends any[] = any[]>(
         }
     };
     res[safeCallbackSymbol] = true;
-
     return res;
 }

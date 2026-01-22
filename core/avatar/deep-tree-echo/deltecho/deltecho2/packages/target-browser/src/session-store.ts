@@ -1,6 +1,5 @@
 import { SessionData, Store } from 'express-session'
 import { LocalStorage } from 'node-localstorage'
-
 export class FileStore extends Store {
   constructor(public localstorage: LocalStorage) {
     super()

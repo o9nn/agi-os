@@ -1,18 +1,5 @@
-;
-; greater-compute.scm
-;
-; Similar to the greater-than unit test, but requires that execution
-; of programs to occur during the process
-;
-
 (use-modules (opencog))
 (use-modules (opencog exec))
-
-; Raw data to populate the search space
-;
-; TRC rower Ken Gates set a world record in 2015--
-; an under-3-minute 1K time at the Erg Rodeo
-; a week before a 1st place finish at the CRASH-B's
 (EvaluationLink
 	(PredicateNode "ergs")
 	(ListLink
@@ -20,7 +7,6 @@
 		(NumberNode  10)
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "ergs")
 	(ListLink
@@ -28,7 +14,6 @@
 		(NumberNode  8)
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "ergs")
 	(ListLink
@@ -36,7 +21,6 @@
 		(NumberNode  4)
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "ergs")
 	(ListLink
@@ -44,15 +28,9 @@
 		(NumberNode  1)
 	)
 )
-
-; Function that takes the square root of a numeric values
 (define (eff x)
 	(NumberNode (sqrt (cog-number x)))
 )
-
-; Function that does some computation
-; It associates person with the cube of the quantity.
-; (Announces who is attending CRASH-B's this year.)
 (define (crash-b who quant)
 	(EvaluationLink
 		(PredicateNode "power")
@@ -62,7 +40,6 @@
 		)
 	)
 )
-
 (define (threshold)
 	(BindLink
 		(VariableList
@@ -77,11 +54,6 @@
 					(VariableNode "$how_much")
 				)
 			)
-			;; GreaterThan links are TV-valued when evaluated
-			;; Evaluate the inequality
-			;; 142 < (1.4 * $how_much * $how_much) + f($how_much)
-			;; true: 142 < (1.4 * 10 * 10) + sqrt(10)
-			;; false: 142 < (1.4 * 8 * 8) + sqrt(8)
 			(GreaterThanLink
 				(PlusLink
 					(TimesLink

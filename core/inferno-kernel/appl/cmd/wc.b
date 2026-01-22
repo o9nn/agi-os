@@ -1,5 +1,4 @@
 implement Wc;
-
 #
 # wc -- count things in utf-encoded text files
 # Bugs:
@@ -8,90 +7,83 @@ implement Wc;
 #	Should count characters that cannot occur in any rune (hex f0-ff) separately.
 #	Should count non-canonical runes (e.g. hex c1,80 instead of hex 40).
 #
-
 include "sys.m";
-	sys: Sys;
-
+sys: Sys;
 include "draw.m";
-
 Wc: module
 {
-	init:	fn(ctxt: ref Draw->Context, args: list of string);
+init:	fn(ctxt: ref Draw->Context, args: list of string);
 };
-
 NBUF:	con 8*1024;
-
 stderr:	ref Sys->FD;
 nline, tnline, pline: int;
 nword, tnword, pword: int;
 nchar, tnchar, pchar: int;
 nbadr, tnbadr, pbadr: int;
 nbyte, tnbyte, pbyte: int;
-
 init(nil: ref Draw->Context, argv: list of string)
 {
-	sys = load Sys Sys->PATH;
-	stderr = sys->fildes(2);
-
-	for(argv = tl argv; argv != nil; argv = tl argv){
-		arg := hd argv;
-		if(len arg < 2 || arg[0] != '-' || arg[1] == '-')
-			break;
-		for(i := 1; i < len arg; i++){
-			case arg[i]{
-			'l' => pline++;
-			'w' => pword++;
-			'c' => pchar++;
-			'e' => pbadr++;
-			'b' => pbyte++;
-			* =>
-				sys->fprint(stderr, "usage: wc [-lwcbe] [file ...]\n");
-				raise "fail:usage";
-			}
-		}
-	}
-	if(pline+pword+pchar+pbadr+pbyte == 0)
-		pline = pword = pchar = 1;
-	argc := len argv;
-	if(argc == 0)
-		count(sys->fildes(0), "");
-	else{
-		for(; argv != nil; argv = tl argv){
-			name := hd argv;
-			f := sys->open(name, sys->OREAD);
-			if(f == nil)
-				sys->fprint(stderr, "wc: can't open %s: %r\n", name);
-			else{
-				count(f, name);
-				tnline += nline;
-				tnword += nword;
-				tnchar += nchar;
-				tnbadr += nbadr;
-				tnbyte += nbyte;
-				f = nil;
-			}
-		}
-		if(argc > 1)
-			report(tnline, tnword, tnchar, tnbadr, tnbyte, "total");
-	}
-	exit;
+sys = load Sys Sys->PATH;
+stderr = sys->fildes(2);
+for(argv = tl argv; argv != nil; argv = tl argv){
+arg := hd argv;
+if(len arg < 2 || arg[0] != '-' || arg[1] == '-')
+break;
+for(i := 1; i < len arg; i++){
+case arg[i]{
+'l' => pline++;
+'w' => pword++;
+'c' => pchar++;
+'e' => pbadr++;
+'b' => pbyte++;
+* =>
+sys->fprint(stderr, "usage: wc [-lwcbe] [file ...]\n");
+raise "fail:usage";
+}
+}
+}
+if(pline+pword+pchar+pbadr+pbyte == 0)
+pline = pword = pchar = 1;
+argc := len argv;
+if(argc == 0)
+count(sys->fildes(0), "");
+else{
+for(; argv != nil; argv = tl argv){
+name := hd argv;
+f := sys->open(name, sys->OREAD);
+if(f == nil)
+sys->fprint(stderr, "wc: can't open %s: %r\n", name);
+else{
+count(f, name);
+tnline += nline;
+tnword += nword;
+tnchar += nchar;
+tnbadr += nbadr;
+tnbyte += nbyte;
+f = nil;
+}
+}
+if(argc > 1)
+report(tnline, tnword, tnchar, tnbadr, tnbyte, "total");
+}
+exit;
 }
 report(nline, nword, nchar, nbadr, nbyte: int, fname: string)
 {
-	line := "";
-	if(pline)
-		line += sys->sprint(" %7d", nline);
-	if(pword)
-		line += sys->sprint(" %7d", nword);
-	if(pchar)
-		line += sys->sprint(" %7d", nchar);
-	if(pbadr)
-		line += sys->sprint(" %7d", nbadr);
-	if(pbyte)
-		line += sys->sprint(" %7d", nbyte);
-	if(fname != nil)
-		line += sys->sprint(" %s", fname);
-	sys->print("%s\n", line[1:]);
+line := "";
+if(pline)
+line += sys->sprint(" %7d", nline);
+if(pword)
+line += sys->sprint(" %7d", nword);
+if(pchar)
+line += sys->sprint(" %7d", nchar);
+if(pbadr)
+line += sys->sprint(" %7d", nbadr);
+if(pbyte)
+line += sys->sprint(" %7d", nbyte);
+if(fname != nil)
+line += sys->sprint(" %s", fname);
+sys->print("%s\n", line[1:]);
 }
 #
 # How it works.  Start in statesp.  Each time we read a character,
@@ -106,25 +98,24 @@ report(nline, nword, nchar, nbadr, nbyte: int, fname: string)
 # statec2|ASPX |ASPNX|AWDX |AWDR |AC2X |AC3X |AWDX
 # statec3|ASPX |ASPNX|AWDX |AC2R |AC2X |AC3X |AWDX
 #
-			# actions
-	AC2,		# enter statec2
-	AC2R,		# enter statec2, don't count a rune
-	AC2W,		# enter statec2, count a word
-	AC2X,		# enter statec2, count a bad rune
-	AC3,		# enter statec3
-	AC3W,		# enter statec3, count a word
-	AC3X,		# enter statec3, count a bad rune
-	ASP,		# enter statesp
-	ASPN,		# enter statesp, count a newline
-	ASPNX,		# enter statesp, count a newline, count a bad rune
-	ASPX,		# enter statesp, count a bad rune
-	AWD,		# enter statewd
-	AWDR,		# enter statewd, don't count a rune
-	AWDW,		# enter statewd, count a word
-	AWDWX,		# enter statewd, count a word, count a bad rune
-	AWDX:		# enter statewd, count a bad rune
-		con byte iota;
-
+# actions
+AC2,		# enter statec2
+AC2R,		# enter statec2, don't count a rune
+AC2W,		# enter statec2, count a word
+AC2X,		# enter statec2, count a bad rune
+AC3,		# enter statec3
+AC3W,		# enter statec3, count a word
+AC3X,		# enter statec3, count a bad rune
+ASP,		# enter statesp
+ASPN,		# enter statesp, count a newline
+ASPNX,		# enter statesp, count a newline, count a bad rune
+ASPX,		# enter statesp, count a bad rune
+AWD,		# enter statewd
+AWDR,		# enter statewd, don't count a rune
+AWDW,		# enter statewd, count a word
+AWDWX,		# enter statewd, count a word, count a bad rune
+AWDX:		# enter statewd, count a bad rune
+con byte iota;
 statesp := array[256] of{	# looking for the start of a word
 AWDW, AWDW, AWDW, AWDW, AWDW, AWDW, AWDW, AWDW,	# 00-07
 AWDW, ASP,  ASPN, AWDW, AWDW, AWDW, AWDW, AWDW,	# 08-0f
@@ -264,40 +255,40 @@ AWDX, AWDX, AWDX, AWDX, AWDX, AWDX, AWDX, AWDX,	# f8-ff
 buf := array[NBUF] of byte;
 count(f: ref Sys->FD, name: string)
 {
-	state := statesp;
-	nline = nword = nchar = nbadr = nbyte = 0;
-	n := 0;
-	for(;;){
-		n = sys->read(f, buf, NBUF);
-		if(n <= 0)
-			break;
-		nbyte += n;
-		nchar += n;	# might be too large, gets decreased later
-		i := 0;
-		do{
-			case int state[int buf[i++]]{
-			int AC2 =>   state = statec2;
-			int AC2R =>  state = statec2; nchar--;
-			int AC2W =>  state = statec2; nword++;
-			int AC2X =>  state = statec2;          nbadr++;
-			int AC3 =>   state = statec3;
-			int AC3W =>  state = statec3; nword++;
-			int AC3X =>  state = statec3;          nbadr++;
-			int ASP =>   state = statesp;
-			int ASPN =>  state = statesp; nline++;
-			int ASPNX => state = statesp; nline++; nbadr++;
-			int ASPX =>  state = statesp;          nbadr++;
-			int AWD =>   state = statewd;
-			int AWDR =>  state = statewd; nchar--;
-			int AWDW =>  state = statewd; nword++;
-			int AWDWX => state = statewd; nword++; nbadr++;
-			int AWDX =>  state = statewd;          nbadr++;
-			}
-		}while(i < n);
-	}
-	if(state!=statesp && state!=statewd)
-		nbadr++;
-	if(n < 0)
-		sys->fprint(stderr, "wc: error reading %s: %r\n", name);
-	report(nline, nword, nchar, nbadr, nbyte, name);
+state := statesp;
+nline = nword = nchar = nbadr = nbyte = 0;
+n := 0;
+for(;;){
+n = sys->read(f, buf, NBUF);
+if(n <= 0)
+break;
+nbyte += n;
+nchar += n;	# might be too large, gets decreased later
+i := 0;
+do{
+case int state[int buf[i++]]{
+int AC2 =>   state = statec2;
+int AC2R =>  state = statec2; nchar--;
+int AC2W =>  state = statec2; nword++;
+int AC2X =>  state = statec2;          nbadr++;
+int AC3 =>   state = statec3;
+int AC3W =>  state = statec3; nword++;
+int AC3X =>  state = statec3;          nbadr++;
+int ASP =>   state = statesp;
+int ASPN =>  state = statesp; nline++;
+int ASPNX => state = statesp; nline++; nbadr++;
+int ASPX =>  state = statesp;          nbadr++;
+int AWD =>   state = statewd;
+int AWDR =>  state = statewd; nchar--;
+int AWDW =>  state = statewd; nword++;
+int AWDWX => state = statewd; nword++; nbadr++;
+int AWDX =>  state = statewd;          nbadr++;
+}
+}while(i < n);
+}
+if(state!=statesp && state!=statewd)
+nbadr++;
+if(n < 0)
+sys->fprint(stderr, "wc: error reading %s: %r\n", name);
+report(nline, nword, nchar, nbadr, nbyte, name);
 }

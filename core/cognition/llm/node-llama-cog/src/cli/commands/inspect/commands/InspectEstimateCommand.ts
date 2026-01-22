@@ -24,7 +24,6 @@ import {printModelDestination} from "../../../utils/printModelDestination.js";
 import {toBytes} from "../../../utils/toBytes.js";
 import {printDidYouMeanUri} from "../../../utils/resolveCommandGgufPath.js";
 import {isModelUri} from "../../../../utils/parseModelUri.js";
-
 type InspectEstimateCommand = {
     modelPath: string,
     header?: string[],
@@ -35,7 +34,6 @@ type InspectEstimateCommand = {
     noMmap?: boolean,
     swaFullCache?: boolean
 };
-
 export const InspectEstimateCommand: CommandModule<object, InspectEstimateCommand> = {
     command: "estimate [modelPath]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -60,13 +58,10 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
             })
             .option("gpu", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return undefined;
-
                     return parseNodeLlamaCppGpuOption(value);
                 },
                 defaultDescription: "Uses the latest local build, and fallbacks to \"auto\"",
@@ -81,7 +76,6 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 coerce: (value): InspectEstimateCommand["gpuLayers"] => {
                     if (value === "max")
                         return -2;
-
                     return parseInt(value);
                 },
                 default: -1,
@@ -98,7 +92,6 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 coerce: (value): InspectEstimateCommand["contextSize"] => {
                     if (value === "max" || value === "train")
                         return -2;
-
                     return parseInt(value);
                 },
                 default: -1,
@@ -131,9 +124,7 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
         if (gpuLayers === -2) gpuLayers = "max";
         if (contextSizeArg === -1) contextSizeArg = undefined;
         if (contextSizeArg === -2) contextSizeArg = "train";
-
         const headers = resolveHeaderFlag(headerArg);
-
         const [resolvedModelDestination, resolvedGgufPath] = isModelUri(ggufPath)
             ? await withOra({
                 loading: chalk.blue("Resolving model URI"),
@@ -142,13 +133,11 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 noSuccessLiveStatus: true
             }, () => resolveModelArgToFilePathOrUrl(ggufPath, headers))
             : await resolveModelArgToFilePathOrUrl(ggufPath, headers);
-
         if (resolvedModelDestination.type === "file" && !await fs.pathExists(resolvedGgufPath)) {
             console.error(`${chalk.red("File does not exist:")} ${resolvedGgufPath}`);
             printDidYouMeanUri(ggufPath);
             process.exit(1);
         }
-
         const llama = gpu == null
             ? await getLlama("lastBuild", {
                 logLevel: LlamaLogLevel.error
@@ -157,13 +146,10 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 gpu,
                 logLevel: LlamaLogLevel.error
             });
-
         const useMmap = !noMmap && llama.supportsMmap;
         printModelDestination(resolvedModelDestination);
-
         if (embedding)
             console.info(`${chalk.yellow("Estimating for an embedding context")}`);
-
         const ggufFileInfo = await withOra({
             loading: chalk.blue("Reading model metadata"),
             success: chalk.blue("Read model metadata"),
@@ -177,11 +163,9 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
             });
         });
         const ggufInsights = await GgufInsights.from(ggufFileInfo, llama);
-
         const contextSize = contextSizeArg === "train"
             ? ggufInsights.trainContextSize ?? defaultTrainContextSizeForEstimationPurposes
             : contextSizeArg;
-
         async function resolveCompatibilityScore(flashAttention: boolean) {
             return await ggufInsights.configurationResolver.resolveAndScoreConfig({
                 flashAttention,
@@ -192,7 +176,6 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 swaFullCache
             });
         }
-
         const [
             compatibilityScore,
             compatibilityScoreWithFlashAttention
@@ -200,9 +183,7 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
             resolveCompatibilityScore(false),
             resolveCompatibilityScore(true)
         ]);
-
         const longestTitle = Math.max("GPU info".length, "Model info".length, "Resolved config".length, "With flash attention".length) + 1;
-
         if (llama.gpu !== false) {
             const [
                 vramState,
@@ -211,7 +192,6 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 llama.getVramState(),
                 llama.getGpuDeviceNames()
             ]);
-
             printInfoLine({
                 title: "GPU info",
                 padTitle: longestTitle,
@@ -248,13 +228,11 @@ export const InspectEstimateCommand: CommandModule<object, InspectEstimateComman
                 value: getReadableContextSize(ggufInsights.trainContextSize ?? 0)
             }]
         });
-
         console.info();
         logCompatibilityScore("Resolved config", longestTitle, compatibilityScore, ggufInsights, llama, false);
         logCompatibilityScore("With flash attention", longestTitle, compatibilityScoreWithFlashAttention, ggufInsights, llama, true);
     }
 };
-
 function logCompatibilityScore(
     title: string,
     padTitle: number,
@@ -295,7 +273,6 @@ function logCompatibilityScore(
         }]
     });
 }
-
 function toOneLine(text: string) {
     return text.replaceAll("\n", chalk.gray("\\n"));
 }

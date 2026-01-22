@@ -1,20 +1,3 @@
-; =============================================================================
-; IntensionalInheritanceEvaluationRule
-;
-; AndLink
-;   AttractionLink
-;       C
-;       A
-;   AttractionLink
-;       C
-;       B
-; |-
-; IntensionalInheritanceLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define intensional-inheritance-evaluation-rule
     (BindLink
         (VariableList
@@ -40,11 +23,9 @@
                 (AttractionLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (intensional-inheritance-evaluation-formula AB CA CB)
     (cog-set-tv!
         AB (intensional-inheritance-evaluation-side-effect-free-formula AB CA CB)))
-
 (define (intensional-inheritance-evaluation-side-effect-free-formula AB CA CB)
     (let 
         ((sCA (cog-mean CA))
@@ -58,8 +39,6 @@
                 (< sCB 0.5)
                 (stv 1 0)
                 (stv 1 1)))))
-
-; Name the rule
 (define intensional-inheritance-evaluation-rule-name
   (DefinedSchemaNode "intensional-inheritance-evaluation-rule"))
 (DefineLink

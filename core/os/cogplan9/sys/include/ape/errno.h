@@ -1,15 +1,11 @@
 #ifndef __ERRNO
 #define __ERRNO
 #pragma lib "/$M/lib/ape/libap.a"
-
 extern int errno;
-
 #define EDOM	1000
 #define ERANGE	1001
 #define EPLAN9	1002
-
 #ifdef _POSIX_SOURCE
-
 #define E2BIG	1
 #define EACCES	2
 #define	EAGAIN	3
@@ -45,11 +41,9 @@ extern int errno;
 #define ESPIPE	33
 #define ESRCH	34
 #define EXDEV	35
-
-/* bsd networking software */
 #define ENOTSOCK	36
 #define EPROTONOSUPPORT	37
-#define EPROTOTYPE	37	/* two names for 37 */
+#define EPROTOTYPE	37
 #define ECONNREFUSED	38
 #define EAFNOSUPPORT	39
 #define ENOBUFS		40
@@ -73,14 +67,8 @@ extern int errno;
 #define EHOSTDOWN	58
 #define EHOSTUNREACH	59
 #define EGREG		60
-
-/* These added in 1003.1b-1993 */
 #define ECANCELED	61
 #define EINPROGRESS	62
-
-/* from research unix */
 #define ETXTBSY		63
-
-#endif /* _POSIX_SOURCE */
-
-#endif /* __ERRNO */
+#endif
+#endif

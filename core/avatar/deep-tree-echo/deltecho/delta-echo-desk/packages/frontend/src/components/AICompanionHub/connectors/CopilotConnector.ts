@@ -1,6 +1,3 @@
-// GitHub Copilot Connector: A Breathtaking Integration for Coding Excellence
-// Creates a revolutionary bridge to GitHub Copilot's advanced code generation capabilities
-
 import {
   BaseConnector,
   AIConnectorConfig,
@@ -8,20 +5,17 @@ import {
   ConversationContext,
   AIResponse,
 } from './BaseConnector'
-
-// Copilot-specific configuration options
 export interface CopilotConfig extends AIConnectorConfig {
-  githubToken?: string // GitHub token with Copilot access
-  editorContextLines?: number // Number of code context lines to include
-  language?: string // Default programming language
+  githubToken?: string 
+  editorContextLines?: number 
+  language?: string 
   maxTokens?: number
   temperature?: number
   topP?: number
-  frameworks?: string[] // Preferred frameworks
-  enabledLanguages?: string[] // Languages with Copilot support enabled
-  codeStylePreferences?: Record<string, string> // Code style preferences
+  frameworks?: string[] 
+  enabledLanguages?: string[] 
+  codeStylePreferences?: Record<string, string> 
 }
-
 interface CopilotMessage {
   role: 'system' | 'user' | 'assistant'
   content: string
@@ -32,12 +26,11 @@ interface CopilotMessage {
     repository?: string
     project_context?: {
       files: Array<{ path: string; content: string }>
-      dependencies?: Record<string, string> // package.json dependencies
-      configuration?: Record<string, any> // linting, formatting configs
+      dependencies?: Record<string, string> 
+      configuration?: Record<string, any> 
     }
   }
 }
-
 interface CopilotCompletionRequest {
   messages: CopilotMessage[]
   max_tokens?: number
@@ -46,7 +39,6 @@ interface CopilotCompletionRequest {
   stream?: boolean
   language?: string
 }
-
 interface CopilotResponse {
   choices: Array<{
     index: number
@@ -62,24 +54,17 @@ interface CopilotResponse {
     total_tokens: number
   }
 }
-
-/**
- * Copilot Connector: A masterpiece of integration with GitHub Copilot
- * Supports code generation, project analysis, and technical documentation
- */
 export class CopilotConnector extends BaseConnector {
   private copilotConfig: CopilotConfig
   private activeProject: string | null = null
-  private projectFiles: Map<string, string> = new Map() // path -> content
+  private projectFiles: Map<string, string> = new Map() 
   private projectDependencies: Record<string, string> = {}
   private projectConfig: Record<string, any> = {}
-
   constructor(config: CopilotConfig) {
-    // Set default values for Copilot-specific configuration
     const defaultConfig: Partial<CopilotConfig> = {
       editorContextLines: 10,
       maxTokens: 2048,
-      defaultTemperature: 0.3, // Lower temperature for more deterministic code
+      defaultTemperature: 0.3, 
       topP: 0.95,
       capabilities: [
         AICapability.CODE_GENERATION,
@@ -94,30 +79,16 @@ export class CopilotConnector extends BaseConnector {
         innovation: 0.75,
       },
     }
-
-    // Merge with provided config
     const mergedConfig = { ...defaultConfig, ...config } as CopilotConfig
-
     super(mergedConfig)
     this.copilotConfig = mergedConfig
   }
-
-  /**
-   * Authenticate with GitHub Copilot API
-   */
   async authenticate(): Promise<boolean> {
     try {
       if (!this.copilotConfig.githubToken && !this.copilotConfig.apiKey) {
         throw new Error('GitHub token or Copilot API key is required')
       }
-
-      // GitHub Copilot authentication is complex and involves multiple steps
-      // This is a simplified implementation that assumes direct API access
-      // In a real implementation, you would need to handle the GitHub OAuth flow
-      // and Copilot entitlement checks
-
       const token = this.copilotConfig.githubToken || this.copilotConfig.apiKey
-
       const testResponse = await fetch(
         'https://api.github.com/copilot/status',
         {
@@ -128,7 +99,6 @@ export class CopilotConnector extends BaseConnector {
           },
         }
       )
-
       if (!testResponse.ok) {
         const errorData = await testResponse.json()
         throw new Error(
@@ -137,13 +107,10 @@ export class CopilotConnector extends BaseConnector {
           }`
         )
       }
-
       const statusData = await testResponse.json()
-
       if (!statusData.enabled) {
         throw new Error('GitHub Copilot is not enabled for this account')
       }
-
       this.authenticated = true
       this.emit('authenticated', statusData)
       return true
@@ -154,10 +121,6 @@ export class CopilotConnector extends BaseConnector {
       return false
     }
   }
-
-  /**
-   * Set the active project context
-   */
   async setProjectContext(
     projectName: string,
     files: Array<{ path: string; content: string }>,
@@ -165,56 +128,38 @@ export class CopilotConnector extends BaseConnector {
     config?: Record<string, any>
   ): Promise<void> {
     this.activeProject = projectName
-
-    // Clear existing project data
     this.projectFiles.clear()
-
-    // Store new project data
     files.forEach(file => {
       this.projectFiles.set(file.path, file.content)
     })
-
     this.projectDependencies = dependencies || {}
     this.projectConfig = config || {}
-
     this.emit('projectContextChanged', {
       projectName,
       fileCount: files.length,
       dependencies: Object.keys(this.projectDependencies).length,
     })
   }
-
-  /**
-   * Format messages for Copilot API
-   */
   private formatCopilotMessages(
     context: ConversationContext
   ): CopilotMessage[] {
     const messages: CopilotMessage[] = []
-
-    // Process system messages first
     const systemMessages = context.messages.filter(msg => msg.role === 'system')
     const nonSystemMessages = context.messages.filter(
       msg => msg.role !== 'system'
     )
-
-    // Add system messages if any exist
     for (const msg of systemMessages) {
       messages.push({
         role: 'system',
         content: msg.content,
       })
     }
-
-    // Add default system message if none exists and we have a system prompt
     if (systemMessages.length === 0 && this.copilotConfig.systemPrompt) {
       messages.push({
         role: 'system',
         content: this.copilotConfig.systemPrompt,
       })
     }
-
-    // Add coding best practices to system message if not already included
     if (
       messages.length > 0 &&
       !messages[0].content.includes('coding best practices')
@@ -226,11 +171,8 @@ export class CopilotConnector extends BaseConnector {
 - Consider performance implications
 - Ensure security best practices are followed`
     }
-
-    // Process remaining messages
     for (const msg of nonSystemMessages) {
       if (msg.role === 'function') {
-        // Convert function messages to user messages for Copilot
         messages.push({
           role: 'user',
           content: `Function result from ${msg.name || 'unknown_function'}:\n${
@@ -243,22 +185,18 @@ export class CopilotConnector extends BaseConnector {
             msg.role === 'user' || msg.role === 'assistant' ? msg.role : 'user',
           content: msg.content,
         }
-
-        // Add code context if this is the last user message
         if (
           msg.role === 'user' &&
           msg === nonSystemMessages[nonSystemMessages.length - 1] &&
           this.activeProject
         ) {
-          // Parse the message to detect code-related queries
           const isCodeRelated = this.isCodeRelatedQuery(msg.content)
-
           if (isCodeRelated) {
             copilotMessage.context = {
               language: this.detectLanguage(msg.content),
               project_context: {
                 files: Array.from(this.projectFiles.entries())
-                  .slice(0, 5) // Limit to avoid token explosion
+                  .slice(0, 5) 
                   .map(([path, content]) => ({ path, content })),
                 dependencies: this.projectDependencies,
                 configuration: this.projectConfig,
@@ -266,17 +204,11 @@ export class CopilotConnector extends BaseConnector {
             }
           }
         }
-
         messages.push(copilotMessage)
       }
     }
-
     return messages
   }
-
-  /**
-   * Detect if a query is code-related
-   */
   private isCodeRelatedQuery(query: string): boolean {
     const codeRelatedKeywords = [
       'code',
@@ -305,7 +237,6 @@ export class CopilotConnector extends BaseConnector {
       'compile',
       'runtime',
     ]
-
     const lowerQuery = query.toLowerCase()
     return (
       codeRelatedKeywords.some(keyword => lowerQuery.includes(keyword)) ||
@@ -315,14 +246,8 @@ export class CopilotConnector extends BaseConnector {
       )
     )
   }
-
-  /**
-   * Detect programming language from query
-   */
   private detectLanguage(query: string): string {
     const lowerQuery = query.toLowerCase()
-
-    // Check for explicit language mentions
     if (lowerQuery.includes('javascript') || lowerQuery.includes('js'))
       return 'javascript'
     if (lowerQuery.includes('typescript') || lowerQuery.includes('ts'))
@@ -341,30 +266,18 @@ export class CopilotConnector extends BaseConnector {
     if (lowerQuery.includes('rust')) return 'rust'
     if (lowerQuery.includes('swift')) return 'swift'
     if (lowerQuery.includes('kotlin')) return 'kotlin'
-
-    // Check for code blocks with language tags
     const codeBlockMatch = query.match(/```(\w+)/)
     if (codeBlockMatch && codeBlockMatch[1]) {
       return codeBlockMatch[1]
     }
-
-    // Default to the configured language or JavaScript
     return this.copilotConfig.language || 'javascript'
   }
-
-  /**
-   * Generate a response from Copilot
-   */
   async generateResponse(context: ConversationContext): Promise<AIResponse> {
     try {
       if (!this.authenticated) {
         await this.authenticate()
       }
-
-      // Format the messages for Copilot API
       const messages = this.formatCopilotMessages(context)
-
-      // Prepare the request
       const requestBody: CopilotCompletionRequest = {
         messages,
         max_tokens: this.copilotConfig.maxTokens,
@@ -372,13 +285,9 @@ export class CopilotConnector extends BaseConnector {
         top_p: this.copilotConfig.topP,
         language: this.detectLanguage(messages[messages.length - 1].content),
       }
-
-      // GitHub Copilot API endpoint (this is a placeholder - actual endpoint may differ)
       const apiEndpoint =
         this.copilotConfig.apiEndpoint ||
         'https://api.github.com/copilot/completions'
-
-      // Make the API request
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
@@ -389,21 +298,14 @@ export class CopilotConnector extends BaseConnector {
         },
         body: JSON.stringify(requestBody),
       })
-
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(
           `Copilot API error: ${errorData.message || response.statusText}`
         )
       }
-
-      // Parse the response
       const data = (await response.json()) as CopilotResponse
-
-      // Extract the first choice
       const choice = data.choices[0]
-
-      // Format the AI response
       return {
         messageId: `copilot_${Date.now()}_${Math.random()
           .toString(36)
@@ -423,10 +325,6 @@ export class CopilotConnector extends BaseConnector {
       throw error
     }
   }
-
-  /**
-   * Get code suggestions for a specific file and position
-   */
   async getCodeSuggestions(
     filePath: string,
     content: string,
@@ -437,21 +335,15 @@ export class CopilotConnector extends BaseConnector {
       if (!this.authenticated) {
         await this.authenticate()
       }
-
-      // Prepare context with file content and position
       const fileContext = {
         path: filePath,
         content,
         language: language || this.detectLanguageFromFilePath(filePath),
         cursor_position: cursorPosition,
       }
-
-      // GitHub Copilot API endpoint for code suggestions
       const apiEndpoint = `${
         this.copilotConfig.apiEndpoint || 'https://api.github.com/copilot'
       }/suggestions`
-
-      // Make the API request
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
@@ -466,7 +358,6 @@ export class CopilotConnector extends BaseConnector {
           temperature: this.copilotConfig.defaultTemperature,
         }),
       })
-
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(
@@ -475,7 +366,6 @@ export class CopilotConnector extends BaseConnector {
           }`
         )
       }
-
       const data = await response.json()
       return data.suggestions.map((suggestion: any) => suggestion.text)
     } catch (error) {
@@ -483,13 +373,8 @@ export class CopilotConnector extends BaseConnector {
       throw error
     }
   }
-
-  /**
-   * Detect language from file path
-   */
   private detectLanguageFromFilePath(filePath: string): string {
     const extension = filePath.split('.').pop()?.toLowerCase()
-
     switch (extension) {
       case 'js':
         return 'javascript'
@@ -537,10 +422,6 @@ export class CopilotConnector extends BaseConnector {
         return 'text'
     }
   }
-
-  /**
-   * Review code and provide suggestions
-   */
   async reviewCode(
     code: string,
     language: string,
@@ -559,8 +440,6 @@ export class CopilotConnector extends BaseConnector {
       if (!this.authenticated) {
         await this.authenticate()
       }
-
-      // Create a conversation context for the code review
       const conversationId = `review_${Date.now()}`
       const reviewContext: ConversationContext = {
         conversationId,
@@ -575,7 +454,6 @@ Analyze the provided code for:
 3. Security vulnerabilities
 4. Style and readability problems
 5. Best practices violations
-
 Provide specific, actionable feedback with clear explanations.`,
             timestamp: Date.now(),
           },
@@ -583,41 +461,26 @@ Provide specific, actionable feedback with clear explanations.`,
             id: `user_${Date.now()}`,
             role: 'user',
             content: `Please review this ${language} code:
-
 \`\`\`${language}
 ${code}
 \`\`\`
-
 ${context ? `Additional context: ${context}` : ''}
-
 Provide a comprehensive review with specific suggestions for improvement.`,
             timestamp: Date.now(),
           },
         ],
       }
-
-      // Generate the review using the standard response generation
       const response = await this.generateResponse(reviewContext)
-
-      // Parse the response to extract structured review data
-      // This is a simplified implementation - in practice, you would want more robust parsing
       const reviewContent = response.content
-
-      // Extract summary (first paragraph)
       const summaryMatch = reviewContent.match(/^(.+?)(?:\n\n|\n\d\.|\n#)/s)
       const summary = summaryMatch
         ? summaryMatch[1].trim()
         : 'Code review completed.'
-
-      // Extract suggestions (look for numbered or bulleted lists)
       const suggestionRegex =
         /(?:^|\n)(?:\d+\.|\*|-)\s+(.+?)(?=(?:\n(?:\d+\.|\*|-|\n|$)))/gs
       const suggestionMatches = [...reviewContent.matchAll(suggestionRegex)]
-
       const suggestions = suggestionMatches.map(match => {
         const suggestion = match[1].trim()
-
-        // Try to determine severity based on keywords
         let severity: 'info' | 'warning' | 'error' = 'info'
         if (
           /error|bug|crash|exception|fail|incorrect|wrong/i.test(suggestion)
@@ -630,20 +493,16 @@ Provide a comprehensive review with specific suggestions for improvement.`,
         ) {
           severity = 'warning'
         }
-
-        // Try to extract line number if present
         const lineMatch = suggestion.match(/line\s+(\d+)/i)
         const line = lineMatch ? parseInt(lineMatch[1], 10) : undefined
-
         return {
           severity,
           message: suggestion,
           line,
-          column: undefined, // Hard to reliably extract from free text
-          fix: undefined, // Would need more structured output to reliably extract
+          column: undefined, 
+          fix: undefined, 
         }
       })
-
       return {
         summary,
         suggestions,
@@ -653,10 +512,6 @@ Provide a comprehensive review with specific suggestions for improvement.`,
       throw error
     }
   }
-
-  /**
-   * Generate embeddings (not directly supported by Copilot)
-   */
   async generateEmbeddings(text: string): Promise<number[]> {
     throw new Error('Embeddings not directly supported by GitHub Copilot API')
   }

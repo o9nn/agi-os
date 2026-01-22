@@ -1,14 +1,8 @@
-//@ts-check
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-/* global it console */
 import { describe } from 'mocha'
 import { expect } from 'chai'
 import { parseMailto } from '../ts-compiled-for-tests/parse_mailto.js'
-
 describe('/shared/parse_mailto', () => {
-  // the tests container
   it('mailto-parsing', () => {
-    // the single test
     expect(parseMailto('mailto:ex@example.com?body=hello')).to.deep.eq({
       to: 'ex@example.com',
       subject: undefined,
@@ -36,7 +30,6 @@ describe('/shared/parse_mailto', () => {
       subject: undefined,
       body: 'hello world',
     })
-    // unescaped
     expect(
       parseMailto('mailto:deltabot@example.com?body=/web+https://github.com/')
     ).to.deep.eq({

@@ -1,8 +1,6 @@
 import {describe, expect, test} from "vitest";
 import {ChatHistoryItem, ChatModelFunctions, DeepSeekChatWrapper} from "../../../src/index.js";
 import {defaultChatSystemPrompt} from "../../../src/config.js";
-
-
 describe("DeepSeekChatWrapper", () => {
     const conversationHistory: ChatHistoryItem[] = [{
         type: "system",
@@ -115,11 +113,9 @@ describe("DeepSeekChatWrapper", () => {
             }
         }
     };
-
     test("should generate valid context text", () => {
         const chatWrapper = new DeepSeekChatWrapper();
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
@@ -131,25 +127,21 @@ describe("DeepSeekChatWrapper", () => {
             "Hello!",
           ])
         `);
-
         const chatWrapper2 = new DeepSeekChatWrapper();
         const {contextText: contextText2} = chatWrapper2.generateContextState({
             chatHistory: conversationHistory2,
             availableFunctions: conversationHistory2Functions
         });
-
         expect(contextText2).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           The assistant calls the provided functions as needed to retrieve information instead of relying on existing knowledge.
           To fulfill a request, the assistant calls relevant functions in advance when needed before responding to the request, and does not tell the user prior to calling a function.
           If the result of function calls from previous turns might be stale, the assistant will call the functions again if needed.
           Provided functions:
           {"name": "getTime", "description": "Retrieve the current time", "parameters": {"type": "object", "properties": {"hours": {"enum": ["24", "12"]}, "seconds": {"type": "boolean"}}}}
-
           Calling any of the provided functions can be done like this:
           ",
             new SpecialTokensText("<function="),
@@ -158,11 +150,9 @@ describe("DeepSeekChatWrapper", () => {
             "{"someKey": "someValue"}",
             new SpecialTokensText("</function>"),
             "
-
           Note that the verbatim ",
             new SpecialTokensText("<function="),
             " prefix is mandatory.
-
           The assistant never assumes the results of function calls, and instead uses the raw results directly for processing.
           The assistant does not inform the user about using functions and does not explain anything before calling a function.
           After calling a function, the raw result appears afterwards and is not part of the conversation.
@@ -185,7 +175,6 @@ describe("DeepSeekChatWrapper", () => {
             "I'm good, how are you?",
           ])
         `);
-
         const chatWrapper3 = new DeepSeekChatWrapper();
         const {contextText: contextText3} = chatWrapper3.generateContextState({chatHistory: conversationHistory});
         const {contextText: contextText3WithOpenModelResponse} = chatWrapper3.generateContextState({
@@ -197,7 +186,6 @@ describe("DeepSeekChatWrapper", () => {
                 }
             ]
         });
-
         expect(contextText3).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
@@ -209,7 +197,6 @@ describe("DeepSeekChatWrapper", () => {
             "Hello!",
           ])
         `);
-
         expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
@@ -223,28 +210,23 @@ describe("DeepSeekChatWrapper", () => {
           ])
         `);
     });
-
     test("should generate valid context text for 2 sequential function calls", () => {
         const chatWrapper = new DeepSeekChatWrapper();
         const {contextText} = chatWrapper.generateContextState({
             chatHistory: conversationHistory3,
             availableFunctions: conversationHistory3Functions
         });
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialToken("BOS"),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           The assistant calls the provided functions as needed to retrieve information instead of relying on existing knowledge.
           To fulfill a request, the assistant calls relevant functions in advance when needed before responding to the request, and does not tell the user prior to calling a function.
           If the result of function calls from previous turns might be stale, the assistant will call the functions again if needed.
           Provided functions:
           {"name": "getTime", "description": "Retrieve the current time", "parameters": {"type": "object", "properties": {"hours": {"enum": ["24", "12"]}, "seconds": {"type": "boolean"}}}}
-
           {"name": "getDate", "description": "Retrieve the current date", "parameters": {"type": "object", "properties": {"timezone": {"type": "integer"}}}}
-
           Calling any of the provided functions can be done like this:
           ",
             new SpecialTokensText("<function="),
@@ -253,11 +235,9 @@ describe("DeepSeekChatWrapper", () => {
             "{"someKey": "someValue"}",
             new SpecialTokensText("</function>"),
             "
-
           Note that the verbatim ",
             new SpecialTokensText("<function="),
             " prefix is mandatory.
-
           The assistant never assumes the results of function calls, and instead uses the raw results directly for processing.
           The assistant does not inform the user about using functions and does not explain anything before calling a function.
           After calling a function, the raw result appears afterwards and is not part of the conversation.

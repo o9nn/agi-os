@@ -1,75 +1,54 @@
-// https://github.com/vuejs/repl/blob/f2b38cf978abb9c21c6c788589b4599b4ff85a7d/src/monaco/env.ts
-
 import type { WorkerLanguageService } from '@volar/monaco/worker'
-
 import type { Store } from './store'
 import type { CreateData } from './vue.worker'
-
 import EditorWorker from 'monaco-editor-core/esm/vs/editor/editor.worker?worker'
-
 import { editor, languages, Uri } from 'monaco-editor-core'
 import { watchEffect } from 'vue'
-
 import * as volar from '@volar/monaco'
-
 import VueWorker from './vue.worker?worker'
-
 import { debounce } from '../../utils/vue-repl'
 import { getOrCreateModel } from './utils'
-
 import * as languageConfigs from './language-configs'
-
 let initted = false
 export function initMonaco(store: Store) {
   if (initted)
     return
   loadMonacoEnv(store)
-
   watchEffect(() => {
-    // create a model for each file in the store
     for (const filename in store.files) {
       const file = store.files[filename]
-      if (editor.getModel(Uri.parse(`file:///${filename}`)))
+      if (editor.getModel(Uri.parse(`file:/
         continue
       getOrCreateModel(
-        Uri.parse(`file:///${filename}`),
+        Uri.parse(`file:/
         file.language,
         file.code,
       )
     }
-
-    // dispose of any models that are not in the store
     for (const model of editor.getModels()) {
       const uri = model.uri.toString()
-      if (store.files[uri.substring('file:///'.length)])
+      if (store.files[uri.substring('file:/
         continue
-
-      if (uri.startsWith('file:///node_modules'))
+      if (uri.startsWith('file:/
         continue
       if (uri.startsWith('inmemory://'))
         continue
-
       model.dispose()
     }
   })
-
   initted = true
 }
-
 export class WorkerHost {
   onFetchCdnFile(uri: string, text: string) {
     getOrCreateModel(Uri.parse(uri), undefined, text)
   }
 }
-
 let disposeVue: undefined | (() => void)
 export async function reloadLanguageTools(store: Store) {
   disposeVue?.()
-
   let dependencies: Record<string, string> = {
     ...store.dependencyVersion,
   }
-
   if (store.vueVersion) {
     dependencies = {
       ...dependencies,
@@ -84,14 +63,12 @@ export async function reloadLanguageTools(store: Store) {
       '@vue/shared': store.vueVersion,
     }
   }
-
   if (store.typescriptVersion) {
     dependencies = {
       ...dependencies,
       typescript: store.typescriptVersion,
     }
   }
-
   const worker = editor.createWebWorker<WorkerLanguageService>({
     moduleId: 'vs/language/vue/vueWorker',
     label: 'vue',
@@ -103,8 +80,7 @@ export async function reloadLanguageTools(store: Store) {
   })
   const languageId = ['vue', 'javascript', 'typescript']
   const getSyncUris = () =>
-    Object.keys(store.files).map(filename => Uri.parse(`file:///${filename}`))
-
+    Object.keys(store.files).map(filename => Uri.parse(`file:/
   const { dispose: disposeMarkers } = volar.activateMarkers(
     worker,
     languageId,
@@ -124,22 +100,18 @@ export async function reloadLanguageTools(store: Store) {
     getSyncUris,
     languages,
   )
-
   disposeVue = () => {
     disposeMarkers()
     disposeAutoInsertion()
     disposeProvides()
   }
 }
-
 export interface WorkerMessage {
   event: 'init'
   tsVersion: string
   tsLocale?: string
 }
-
 export function loadMonacoEnv(store: Store) {
-  // eslint-disable-next-line no-restricted-globals
   ;(self as any).MonacoEnvironment = {
     async getWorker(_: any, label: string) {
       if (label === 'vue') {
@@ -170,7 +142,6 @@ export function loadMonacoEnv(store: Store) {
   languages.setLanguageConfiguration('javascript', languageConfigs.js)
   languages.setLanguageConfiguration('typescript', languageConfigs.ts)
   languages.setLanguageConfiguration('css', languageConfigs.css)
-
   let languageToolsPromise: Promise<void> | undefined
   store.reloadLanguageTools = debounce(async () => {
     ;(languageToolsPromise ||= reloadLanguageTools(store)).finally(() => {
@@ -178,23 +149,19 @@ export function loadMonacoEnv(store: Store) {
     })
   }, 250)
   languages.onLanguage('vue', () => store.reloadLanguageTools!())
-
-  // Support for go to definition
   editor.registerEditorOpener({
     openCodeEditor(_, resource) {
-      if (resource.toString().startsWith('file:///node_modules')) {
+      if (resource.toString().startsWith('file:/
         return true
       }
-
       const path = resource.path
-      if (/^\//.test(path)) {
+      if (/^\
         const fileName = path.replace('/', '')
         if (fileName !== store.activeFile.filename) {
           store.setActive(fileName)
           return true
         }
       }
-
       return false
     },
   })

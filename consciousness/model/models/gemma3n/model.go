@@ -1,5 +1,4 @@
 package gemma3n
-
 import (
 	"github.com/EchoCog/echollama/fs"
 	"github.com/EchoCog/echollama/kvcache"
@@ -7,19 +6,14 @@ import (
 	"github.com/EchoCog/echollama/model"
 	"github.com/EchoCog/echollama/model/input"
 )
-
 type Model struct {
 	model.Base
 	model.SentencePieceModel
-
 	*TextModel
 }
-
-// Forward implements model.Model.
 func (m *Model) Forward(ctx ml.Context, batch input.Batch) (ml.Tensor, error) {
 	return m.TextModel.Forward(ctx, batch, m.Cache)
 }
-
 func New(c fs.Config) (model.Model, error) {
 	m := Model{
 		TextModel: newTextModel(c),
@@ -38,14 +32,12 @@ func New(c fs.Config) (model.Model, error) {
 			},
 		),
 	}
-
 	m.Cache = kvcache.NewWrapperCache(
 		kvcache.NewCausalCache(m.Shift),
 		kvcache.NewSWACache(int32(c.Uint("attention.sliding_window")), m.Shift),
 	)
 	return &m, nil
 }
-
 func init() {
 	model.Register("gemma3n", New)
 }

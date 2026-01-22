@@ -1,10 +1,8 @@
 package thinking
-
 import (
 	"testing"
 	"text/template"
 )
-
 func TestInferThinkingTags(t *testing.T) {
 	cases := []struct {
 		desc           string
@@ -70,18 +68,14 @@ func TestInferThinkingTags(t *testing.T) {
 {{ .System }}
 {{- end }}
 {{- if .Tools }}
-
 # Tools
-
 You may call one or more functions to assist with the user query.
-
 You are provided with function signatures within <tools></tools> XML tags:
 <tools>
 {{- range .Tools }}
 {"type": "function", "function": {{ .Function }}}
 {{- end }}
 </tools>
-
 For each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:
 <tool_call>
 {"name": <function-name>, "arguments": <args-json-object>}

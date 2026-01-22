@@ -1,10 +1,8 @@
 #!/dis/sh.dis
 load std
-
 port=$1
 DIR=/dis/demo/lego
 pctl forkns newpgrp
-
 cd $DIR
 if { firmdl $port /dis/demo/lego/styx.srec } {
 	legolink $port

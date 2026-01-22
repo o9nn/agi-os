@@ -1,12 +1,8 @@
 import process from 'node:process'
-
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname } from 'node:path'
-
 import { cac } from 'cac'
-
 import { getFilename } from './utils'
-
 async function main() {
   const cli = cac('name-of-artifact')
     .option(
@@ -29,30 +25,25 @@ async function main() {
       'Path to output the filename',
       { default: 'bundle_name', type: [String] },
     )
-
   const args = cli.parse()
-
   const argOptions = args.options as {
     release: boolean
     autoTag: boolean
     tag: string[]
     out: string[]
   }
-
   const target = args.args[0]
   const filename = await getFilename(target, argOptions)
   if (argOptions.out[0]) {
     if (!existsSync(dirname(argOptions.out[0]))) {
       mkdirSync(dirname(argOptions.out[0]), { recursive: true })
     }
-
     writeFileSync(argOptions.out[0], filename, { encoding: 'utf-8' })
   }
   else {
     console.info(filename)
   }
 }
-
 main()
   .catch((error) => {
     console.error('Error during generating name:', error)

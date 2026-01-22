@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
 import { join, dirname } from "path";
-
 export interface VirtualFile {
   name: string;
   content: string;
@@ -12,25 +11,20 @@ export interface VirtualFile {
   group: string;
   size: number;
 }
-
 export class FileSystemService {
   private static instance: FileSystemService;
   private root: string = "/home/project";
   private files: Map<string, VirtualFile> = new Map();
-
   private constructor() {
     this.initializeFileSystem();
   }
-
   public static getInstance(): FileSystemService {
     if (!FileSystemService.instance) {
       FileSystemService.instance = new FileSystemService();
     }
     return FileSystemService.instance;
   }
-
   private initializeFileSystem() {
-    // Initialize with some default files and directories
     this.createFile(
       "/home/project/package.json",
       readFileSync("package.json", "utf-8")
@@ -47,43 +41,32 @@ export class FileSystemService {
       "/home/project/vite.config.ts",
       readFileSync("vite.config.ts", "utf-8")
     );
-
-    // Create app directory
     this.createDirectory("/home/project/app");
-
-    // Create src directory with some example files
     this.createDirectory("/home/project/src");
     this.createFile(
       "/home/project/src/main.ts",
       `
 console.log('Hello from Deep Tree Echo!');
-
 function fibonacci(n: number): number {
   if (n <= 1) return n;
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
-
 console.log('Fibonacci(10):', fibonacci(10));
 `
     );
-
-    // Create examples directory with Python files
     this.createDirectory("/home/project/examples");
     this.createFile(
       "/home/project/examples/hello.py",
       `
 print("Hello from Deep Tree Echo!")
-
 def factorial(n):
     if n <= 1:
         return 1
     return n * factorial(n - 1)
-
 print("Factorial(5):", factorial(5))
 `
     );
   }
-
   public createFile(path: string, content: string): void {
     const now = new Date().toISOString();
     this.files.set(path, {
@@ -98,7 +81,6 @@ print("Factorial(5):", factorial(5))
       size: content.length,
     });
   }
-
   public createDirectory(path: string): void {
     const now = new Date().toISOString();
     this.files.set(path, {
@@ -113,7 +95,6 @@ print("Factorial(5):", factorial(5))
       size: 4096,
     });
   }
-
   public readFile(path: string): string | null {
     const file = this.files.get(path);
     if (file?.type === "file") {
@@ -121,7 +102,6 @@ print("Factorial(5):", factorial(5))
     }
     return null;
   }
-
   public writeFile(path: string, content: string): void {
     const file = this.files.get(path);
     if (file) {
@@ -132,13 +112,11 @@ print("Factorial(5):", factorial(5))
       this.createFile(path, content);
     }
   }
-
   public listDirectory(
     path: string,
     options: { long?: boolean } = {}
   ): string[] {
     const entries: string[] = [];
-
     for (const [filePath, file] of this.files.entries()) {
       if (filePath.startsWith(path) && filePath !== path) {
         const relativePath = filePath.slice(path.length + 1).split("/")[0];
@@ -153,23 +131,18 @@ print("Factorial(5):", factorial(5))
         }
       }
     }
-
     return entries;
   }
-
   public exists(path: string): boolean {
     return this.files.has(path);
   }
-
   public isDirectory(path: string): boolean {
     const file = this.files.get(path);
     return file?.type === "directory";
   }
-
   public delete(path: string): void {
     this.files.delete(path);
   }
-
   public move(oldPath: string, newPath: string): void {
     const file = this.files.get(oldPath);
     if (file) {
@@ -181,7 +154,6 @@ print("Factorial(5):", factorial(5))
       this.files.delete(oldPath);
     }
   }
-
   public copy(sourcePath: string, destPath: string): void {
     const file = this.files.get(sourcePath);
     if (file) {
@@ -193,25 +165,20 @@ print("Factorial(5):", factorial(5))
       });
     }
   }
-
   public getCurrentDirectory(): string {
     return this.root;
   }
-
   public changeDirectory(path: string): string {
     if (path.startsWith("/")) {
-      // Absolute path
       if (this.exists(path) && this.isDirectory(path)) {
         this.root = path;
       }
     } else if (path === "..") {
-      // Go up one directory
       const parentDir = dirname(this.root);
       if (parentDir !== this.root) {
         this.root = parentDir;
       }
     } else {
-      // Relative path
       const newPath = join(this.root, path);
       if (this.exists(newPath) && this.isDirectory(newPath)) {
         this.root = newPath;
@@ -220,10 +187,7 @@ print("Factorial(5):", factorial(5))
     return this.root;
   }
 }
-
-// Create a server-side file system service instance
 let fileSystemService: FileSystemService | null = null;
-
 export const getFileSystemService = () => {
   if (!fileSystemService) {
     fileSystemService = FileSystemService.getInstance();

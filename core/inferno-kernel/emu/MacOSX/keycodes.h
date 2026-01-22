@@ -1,4 +1,3 @@
-/* These are the Macintosh key scancode constants -- from Inside Macintosh */
 #define QZ_ESCAPE		0x35
 #define QZ_F1			0x7A
 #define QZ_F2			0x78
@@ -86,7 +85,6 @@
 #define QZ_COMMA		0x2B
 #define QZ_PERIOD		0x2F
 #define QZ_SLASH		0x2C
-/* These are the same as the left versions - use left by default */
 #if 0
 #define QZ_RSHIFT		0x38
 #endif
@@ -99,7 +97,6 @@
 #define QZ_LALT			0x3A
 #define QZ_LMETA		0x37
 #define QZ_SPACE		0x31
-/* These are the same as the left versions - use left by default */
 #if 0
 #define QZ_RMETA		0x37
 #define QZ_RALT			0x3A
@@ -110,8 +107,6 @@
 #define QZ_RIGHT		0x7C
 #define QZ_KP0			0x52
 #define QZ_KP_PERIOD		0x41
-
-/* Wierd, these keys are on my iBook under MacOS X */
 #define QZ_IBOOK_ENTER		0x34
 #define QZ_IBOOK_LEFT		0x3B
 #define QZ_IBOOK_RIGHT		0x3C
@@ -119,13 +114,8 @@
 #define QZ_IBOOK_UP		0x3E
 #define KEY_ENTER 13
 #define KEY_TAB 9
-
 #define KEY_BASE 0x100
-
-/*  Function keys  */
 #define KEY_F (KEY_BASE+64)
-
-/* Control keys */
 #define KEY_CTRL (KEY_BASE)
 #define KEY_BACKSPACE (KEY_CTRL+0)
 #define KEY_DELETE (KEY_CTRL+1)
@@ -135,23 +125,17 @@
 #define KEY_PAGE_UP (KEY_CTRL+5)
 #define KEY_PAGE_DOWN (KEY_CTRL+6)
 #define KEY_ESC (KEY_CTRL+7)
-
-/* Control keys short name */
 #define KEY_BS KEY_BACKSPACE
 #define KEY_DEL KEY_DELETE
 #define KEY_INS KEY_INSERT
 #define KEY_PGUP KEY_PAGE_UP
 #define KEY_PGDOWN KEY_PAGE_DOWN
 #define KEY_PGDWN KEY_PAGE_DOWN
-
-/* Cursor movement */
 #define KEY_CRSR (KEY_BASE+16)
 #define KEY_RIGHT (KEY_CRSR+0)
 #define KEY_LEFT (KEY_CRSR+1)
 #define KEY_DOWN (KEY_CRSR+2)
 #define KEY_UP (KEY_CRSR+3)
-
-/* Multimedia keyboard/remote keys */
 #define KEY_MM_BASE (0x100+384)
 #define KEY_POWER (KEY_MM_BASE+0)
 #define KEY_MENU (KEY_MM_BASE+1)
@@ -166,8 +150,6 @@
 #define KEY_VOLUME_UP (KEY_MM_BASE+10)
 #define KEY_VOLUME_DOWN (KEY_MM_BASE+11)
 #define KEY_MUTE (KEY_MM_BASE+12)
-
-/* Keypad keys */
 #define KEY_KEYPAD (KEY_BASE+32)
 #define KEY_KP0 (KEY_KEYPAD+0)
 #define KEY_KP1 (KEY_KEYPAD+1)
@@ -183,7 +165,5 @@
 #define KEY_KPINS (KEY_KEYPAD+11)
 #define KEY_KPDEL (KEY_KEYPAD+12)
 #define KEY_KPENTER (KEY_KEYPAD+13)
-
-/* Special keys */
 #define KEY_INTERN (0x1000)
 #define KEY_CLOSE_WIN (KEY_INTERN+0)

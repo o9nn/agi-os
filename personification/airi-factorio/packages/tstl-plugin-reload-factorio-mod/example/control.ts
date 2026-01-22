@@ -1,11 +1,8 @@
 import type { EventId } from 'factorio:runtime'
-
 import { add } from './example-dependency'
-
 if (!mods_globals) {
   mods_globals = {}
 }
-
 if (!mods_globals.example) {
   mods_globals.example = {
     remote_interfaces: [],
@@ -24,23 +21,19 @@ if (!mods_globals.example) {
           })
         })
       }
-
       mods_globals.example.event_listeners[event].push(callback)
     },
     before_reload: () => {
       log('before_reload')
-
       mods_globals.example.remote_interfaces.forEach((name) => {
         remote.remove_interface(name)
       })
-
       for (const event in mods_globals.example.event_listeners) {
         mods_globals.example.event_listeners[event] = []
       }
     },
     new_code_to_reload: '',
   }
-
   remote.add_interface('example_hot_reload', {
     before_reload: () => {
       mods_globals.example.before_reload()
@@ -54,26 +47,20 @@ if (!mods_globals.example) {
         log(`[tstl-plugin-reload-factorio-mod] error reload mod: ${err}`)
         return
       }
-
       const [success, run_err] = pcall(mod)
-
       if (!success) {
         log(`[tstl-plugin-reload-factorio-mod] error run mod: ${run_err}`)
         return
       }
-
       game.print('[tstl-plugin-reload-factorio-mod] Mod reloaded: example_mod')
       log('[tstl-plugin-reload-factorio-mod] Mod reloaded: example_mod')
-
       mods_globals.example.new_code_to_reload = ''
     },
   })
 }
-
 mods_globals.example.add_remote_interface('example_mod_test', {
   add: (a: number, b: number) => {
     log(`Result: ${add(a, b)}`)
   },
 })
-
 log('mod loaded 1')

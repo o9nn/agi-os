@@ -1,302 +1,242 @@
 #include <lib9.h>
 #include <bio.h>
 #include "mach.h"
-
-/*
- * i386-specific debugger interface
- * also amd64 extensions
- */
-
 static	char	*i386excep(Map*, Rgetter);
-
 static	int	i386trace(Map*, uvlong, uvlong, uvlong, Tracer);
 static	uvlong	i386frame(Map*, uvlong, uvlong, uvlong, uvlong);
 static	int	i386foll(Map*, uvlong, Rgetter, uvlong*);
 static	int	i386inst(Map*, uvlong, char, char*, int);
 static	int	i386das(Map*, uvlong, char*, int);
 static	int	i386instlen(Map*, uvlong);
-
 static	char	STARTSYM[] =	"_main";
 static	char	PROFSYM[] =	"_mainp";
 static	char	FRAMENAME[] =	".frame";
 static char *excname[65] =
 {
-/*[0]*/	"divide error",
-/*[1]*/	"debug exception",
-/*[2]*/	nil,
-/*[3]*/	nil,
-/*[4]*/	"overflow",
-/*[5]*/	"bounds check",
-/*[6]*/	"invalid opcode",
-/*[7]*/	"math coprocessor emulation",
-/*[8]*/	"double fault",
-/*[9]*/	"math coprocessor overrun",
-/*[10]*/	"invalid TSS",
-/*[11]*/	"segment not present",
-/*[12]*/	"stack exception",
-/*[13]*/	"general protection violation",
-/*[14]*/	"page fault",
-/*[15]*/	nil,
-/*[16]*/	"math coprocessor error",
-/*[17]*/	"alignment check",
-/*[18]*/	"machine check",
-/*[19]*/	"floating-point exception",
-/*[20]*/	nil,
-/*[21]*/	nil,
-/*[22]*/	nil,
-/*[23]*/	nil,
-/*[24]*/	"clock",
-/*[25]*/	"keyboard",
-/*[26]*/	nil,
-/*[27]*/	"modem status",
-/*[28]*/	"serial line status",
-/*[29]*/	nil,
-/*[30]*/	"floppy disk",
-/*[31]*/	nil,
-/*[32]*/	nil,
-/*[33]*/	nil,
-/*[34]*/	nil,
-/*[35]*/	nil,
-/*[36]*/	"mouse",
-/*[37]*/	"math coprocessor",
-/*[38]*/	"hard disk",
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,/* 39-54 */
-	0,0,0,0,0,0,0,0,0,		/* 55-63 */
-/*[64]*/	"system call",
+"divide error",
+"debug exception",
+nil,
+nil,
+"overflow",
+"bounds check",
+"invalid opcode",
+"math coprocessor emulation",
+"double fault",
+"math coprocessor overrun",
+"invalid TSS",
+"segment not present",
+"stack exception",
+"general protection violation",
+"page fault",
+nil,
+"math coprocessor error",
+"alignment check",
+"machine check",
+"floating-point exception",
+nil,
+nil,
+nil,
+nil,
+"clock",
+"keyboard",
+nil,
+"modem status",
+"serial line status",
+nil,
+"floppy disk",
+nil,
+nil,
+nil,
+nil,
+nil,
+"mouse",
+"math coprocessor",
+"hard disk",
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+"system call",
 };
-
 Machdata i386mach =
 {
-	{0xCC, 0, 0, 0},	/* break point: INT 3 */
-	1,			/* break point size */
-
-	leswab,			/* convert short to local byte order */
-	leswal,			/* convert long to local byte order */
-	leswav,			/* convert vlong to local byte order */
-	i386trace,		/* C traceback */
-	i386frame,		/* frame finder */
-	i386excep,		/* print exception */
-	0,			/* breakpoint fixup */
-	leieeesftos,		/* single precision float printer */
-	leieeedftos,		/* double precision float printer */
-	i386foll,		/* following addresses */
-	i386inst,		/* print instruction */
-	i386das,		/* dissembler */
-	i386instlen,		/* instruction size calculation */
+{0xCC, 0, 0, 0},
+1,
+leswab,
+leswal,
+leswav,
+i386trace,
+i386frame,
+i386excep,
+0,
+leieeesftos,
+leieeedftos,
+i386foll,
+i386inst,
+i386das,
+i386instlen,
 };
-
 static char*
 i386excep(Map *map, Rgetter rget)
 {
-	ulong c;
-	uvlong pc;
-	static char buf[16];
-
-	c = (*rget)(map, "TRAP");
-	if(c > 64 || excname[c] == 0) {
-		if (c == 3) {
-			pc = (*rget)(map, "PC");
-			if (get1(map, pc, (uchar*)buf, machdata->bpsize) > 0)
-			if (memcmp(buf, machdata->bpinst, machdata->bpsize) == 0)
-				return "breakpoint";
-		}
-		snprint(buf, sizeof(buf), "exception %ld", c);
-		return buf;
-	} else
-		return excname[c];
+ulong c;
+uvlong pc;
+static char buf[16];
+c = (*rget)(map, "TRAP");
+if(c > 64 || excname[c] == 0) {
+if (c == 3) {
+pc = (*rget)(map, "PC");
+if (get1(map, pc, (uchar*)buf, machdata->bpsize) > 0)
+if (memcmp(buf, machdata->bpinst, machdata->bpsize) == 0)
+return "breakpoint";
 }
-
+snprint(buf, sizeof(buf), "exception %ld", c);
+return buf;
+} else
+return excname[c];
+}
 static int
 i386trace(Map *map, uvlong pc, uvlong sp, uvlong link, Tracer trace)
 {
-	int i;
-	uvlong osp;
-	Symbol s, f;
-
-	USED(link);
-	i = 0;
-	osp = 0;
-	while(findsym(pc, CTEXT, &s)) {
-		if (osp == sp)
-			break;
-		osp = sp;
-
-		if(strcmp(STARTSYM, s.name) == 0 || strcmp(PROFSYM, s.name) == 0)
-			break;
-
-		if(pc != s.value) {	/* not at first instruction */
-			if(findlocal(&s, FRAMENAME, &f) == 0)
-				break;
-			sp += f.value-mach->szaddr;
-		}
-
-		if (geta(map, sp, &pc) < 0)
-			break;
-
-		if(pc == 0)
-			break;
-
-		(*trace)(map, pc, sp, &s);
-		sp += mach->szaddr;
-
-		if(++i > 1000)
-			break;
-	}
-	return i;
+int i;
+uvlong osp;
+Symbol s, f;
+USED(link);
+i = 0;
+osp = 0;
+while(findsym(pc, CTEXT, &s)) {
+if (osp == sp)
+break;
+osp = sp;
+if(strcmp(STARTSYM, s.name) == 0 || strcmp(PROFSYM, s.name) == 0)
+break;
+if(pc != s.value) {
+if(findlocal(&s, FRAMENAME, &f) == 0)
+break;
+sp += f.value-mach->szaddr;
 }
-
+if (geta(map, sp, &pc) < 0)
+break;
+if(pc == 0)
+break;
+(*trace)(map, pc, sp, &s);
+sp += mach->szaddr;
+if(++i > 1000)
+break;
+}
+return i;
+}
 static uvlong
 i386frame(Map *map, uvlong addr, uvlong pc, uvlong sp, uvlong link)
 {
-	Symbol s, f;
-
-	USED(link);
-	while (findsym(pc, CTEXT, &s)) {
-		if(strcmp(STARTSYM, s.name) == 0 || strcmp(PROFSYM, s.name) == 0)
-			break;
-
-		if(pc != s.value) {	/* not first instruction */
-			if(findlocal(&s, FRAMENAME, &f) == 0)
-				break;
-			sp += f.value-mach->szaddr;
-		}
-
-		if (s.value == addr)
-			return sp;
-
-		if (geta(map, sp, &pc) < 0)
-			break;
-		sp += mach->szaddr;
-	}
-	return 0;
+Symbol s, f;
+USED(link);
+while (findsym(pc, CTEXT, &s)) {
+if(strcmp(STARTSYM, s.name) == 0 || strcmp(PROFSYM, s.name) == 0)
+break;
+if(pc != s.value) {
+if(findlocal(&s, FRAMENAME, &f) == 0)
+break;
+sp += f.value-mach->szaddr;
 }
-
-	/* I386/486 - Disassembler and related functions */
-
-/*
- *  an instruction
- */
+if (s.value == addr)
+return sp;
+if (geta(map, sp, &pc) < 0)
+break;
+sp += mach->szaddr;
+}
+return 0;
+}
 typedef struct Instr Instr;
 struct	Instr
 {
-	uchar	mem[1+1+1+1+2+1+1+4+4];		/* raw instruction */
-	uvlong	addr;		/* address of start of instruction */
-	int	n;		/* number of bytes in instruction */
-	char	*prefix;	/* instr prefix */
-	char	*segment;	/* segment override */
-	uchar	jumptype;	/* set to the operand type for jump/ret/call */
-	uchar	amd64;
-	uchar	rex;		/* REX prefix (or zero) */
-	char	osize;		/* 'W' or 'L' (or 'Q' on amd64) */
-	char	asize;		/* address size 'W' or 'L' (or 'Q' or amd64) */
-	uchar	mod;		/* bits 6-7 of mod r/m field */
-	uchar	reg;		/* bits 3-5 of mod r/m field */
-	char	ss;		/* bits 6-7 of SIB */
-	char	index;		/* bits 3-5 of SIB */
-	char	base;		/* bits 0-2 of SIB */
-	char	rip;		/* RIP-relative in amd64 mode */
-	uchar	opre;		/* f2/f3 could introduce media */
-	short	seg;		/* segment of far address */
-	ulong	disp;		/* displacement */
-	ulong 	imm;		/* immediate */
-	ulong 	imm2;		/* second immediate operand */
-	uvlong	imm64;		/* big immediate */
-	char	*curr;		/* fill level in output buffer */
-	char	*end;		/* end of output buffer */
-	char	*err;		/* error message */
+uchar	mem[1+1+1+1+2+1+1+4+4];
+uvlong	addr;
+int	n;
+char	*prefix;
+char	*segment;
+uchar	jumptype;
+uchar	amd64;
+uchar	rex;
+char	osize;
+char	asize;
+uchar	mod;
+uchar	reg;
+char	ss;
+char	index;
+char	base;
+char	rip;
+uchar	opre;
+short	seg;
+ulong	disp;
+ulong 	imm;
+ulong 	imm2;
+uvlong	imm64;
+char	*curr;
+char	*end;
+char	*err;
 };
-
-	/* 386 register (ha!) set */
 enum{
-	AX=0,
-	CX,
-	DX,
-	BX,
-	SP,
-	BP,
-	SI,
-	DI,
-
-	/* amd64 */
-	R8,
-	R9,
-	R10,
-	R11,
-	R12,
-	R13,
-	R14,
-	R15
+AX=0,
+CX,
+DX,
+BX,
+SP,
+BP,
+SI,
+DI,
+R8,
+R9,
+R10,
+R11,
+R12,
+R13,
+R14,
+R15
 };
-
-	/* amd64 rex extension byte */
 enum{
-	REXW		= 1<<3,	/* =1, 64-bit operand size */
-	REXR		= 1<<2,	/* extend modrm reg */
-	REXX		= 1<<1,	/* extend sib index */
-	REXB		= 1<<0	/* extend modrm r/m, sib base, or opcode reg */
+REXW		= 1<<3,
+REXR		= 1<<2,
+REXX		= 1<<1,
+REXB		= 1<<0
 };
-	
-	/* Operand Format codes */
-/*
-%A	-	address size register modifier (!asize -> 'E')
-%C	-	Control register CR0/CR1/CR2
-%D	-	Debug register DR0/DR1/DR2/DR3/DR6/DR7
-%I	-	second immediate operand
-%O	-	Operand size register modifier (!osize -> 'E')
-%T	-	Test register TR6/TR7
-%S	-	size code ('W' or 'L')
-%W	-	Weird opcode: OSIZE == 'W' => "CBW"; else => "CWDE"
-%d	-	displacement 16-32 bits
-%e	-	effective address - Mod R/M value
-%f	-	floating point register F0-F7 - from Mod R/M register
-%g	-	segment register
-%i	-	immediate operand 8-32 bits
-%p	-	PC-relative - signed displacement in immediate field
-%r	-	Reg from Mod R/M
-%w	-	Weird opcode: OSIZE == 'W' => "CWD"; else => "CDQ"
-*/
-
 typedef struct Optable Optable;
 struct Optable
 {
-	int	x;
-	char	operand[2];
-	void	*proto;		/* actually either (char*) or (Optable*) */
+int	x;
+char	operand[2];
+void	*proto;
 };
-	/* Operand decoding codes */
 enum {
-	Ib = 1,			/* 8-bit immediate - (no sign extension)*/
-	Ibs,			/* 8-bit immediate (sign extended) */
-	Jbs,			/* 8-bit sign-extended immediate in jump or call */
-	Iw,			/* 16-bit immediate -> imm */
-	Iw2,			/* 16-bit immediate -> imm2 */
-	Iwd,			/* Operand-sized immediate (no sign extension)*/
-	Iwdq,			/* Operand-sized immediate, possibly 64 bits */
-	Awd,			/* Address offset */
-	Iwds,			/* Operand-sized immediate (sign extended) */
-	RM,			/* Word or long R/M field with register (/r) */
-	RMB,			/* Byte R/M field with register (/r) */
-	RMOP,			/* Word or long R/M field with op code (/digit) */
-	RMOPB,			/* Byte R/M field with op code (/digit) */
-	RMR,			/* R/M register only (mod = 11) */
-	RMM,			/* R/M memory only (mod = 0/1/2) */
-	R0,			/* Base reg of Mod R/M is literal 0x00 */
-	R1,			/* Base reg of Mod R/M is literal 0x01 */
-	FRMOP,			/* Floating point R/M field with opcode */
-	FRMEX,			/* Extended floating point R/M field with opcode */
-	JUMP,			/* Jump or Call flag - no operand */
-	RET,			/* Return flag - no operand */
-	OA,			/* literal 0x0a byte */
-	PTR,			/* Seg:Displacement addr (ptr16:16 or ptr16:32) */
-	AUX,			/* Multi-byte op code - Auxiliary table */
-	AUXMM,			/* multi-byte op code - auxiliary table chosen by prefix */
-	PRE,			/* Instr Prefix */
-	OPRE,			/* Instr Prefix or media op extension */
-	SEG,			/* Segment Prefix */
-	OPOVER,			/* Operand size override */
-	ADDOVER,		/* Address size override */
+Ib = 1,
+Ibs,
+Jbs,
+Iw,
+Iw2,
+Iwd,
+Iwdq,
+Awd,
+Iwds,
+RM,
+RMB,
+RMOP,
+RMOPB,
+RMR,
+RMM,
+R0,
+R1,
+FRMOP,
+FRMEX,
+JUMP,
+RET,
+OA,
+PTR,
+AUX,
+AUXMM,
+PRE,
+OPRE,
+SEG,
+OPOVER,
+ADDOVER,
 };
-	
 static Optable optab0F00[8]=
 {
 0x00,	0,0,		"MOVW	LDT,%e",
@@ -306,27 +246,20 @@ static Optable optab0F00[8]=
 0x04,	0,0,		"VERR	%e",
 0x05,	0,0,		"VERW	%e",
 };
-
 static Optable optab0F01[8]=
 {
 0x00,	0,0,		"MOVL	GDTR,%e",
 0x01,	0,0,		"MOVL	IDTR,%e",
 0x02,	0,0,		"MOVL	%e,GDTR",
 0x03,	0,0,		"MOVL	%e,IDTR",
-0x04,	0,0,		"MOVW	MSW,%e",	/* word */
-0x06,	0,0,		"MOVW	%e,MSW",	/* word */
-0x07,	0,0,		"INVLPG	%e",		/* or SWAPGS */
+0x04,	0,0,		"MOVW	MSW,%e",
+0x06,	0,0,		"MOVW	%e,MSW",
+0x07,	0,0,		"INVLPG	%e",
 };
-
 static Optable optab0F01F8[1]=
 {
 0x00,	0,0,		"SWAPGS",
 };
-
-/* 0F71 */
-/* 0F72 */
-/* 0F73 */
-
 static Optable optab0FAE[8]=
 {
 0x00,	0,0,		"FXSAVE	%e",
@@ -337,10 +270,6 @@ static Optable optab0FAE[8]=
 0x06,	0,0,		"MFENCE",
 0x07,	0,0,		"SFENCE",
 };
-
-/* 0F18 */
-/* 0F0D */
-
 static Optable optab0FBA[8]=
 {
 0x04,	Ib,0,		"BT%S	%i,%e",
@@ -348,7 +277,6 @@ static Optable optab0FBA[8]=
 0x06,	Ib,0,		"BTR%S	%i,%e",
 0x07,	Ib,0,		"BTC%S	%i,%e",
 };
-
 static Optable optab0F0F[256]=
 {
 0x0c,	0,0,		"PI2FW	%m,%M",
@@ -375,26 +303,22 @@ static Optable optab0F0F[256]=
 0xb7,	0,0,		"PMULHRW	%m,%M",
 0xbb,	0,0,		"PSWAPL	%m,%M",
 };
-
 static Optable optab0FC7[8]=
 {
 0x01,	0,0,		"CMPXCHG8B	%e",
 };
-
 static Optable optab660F71[8]=
 {
 0x02,	Ib,0,		"PSRLW	%i,%X",
 0x04,	Ib,0,		"PSRAW	%i,%X",
 0x06,	Ib,0,		"PSLLW	%i,%X",
 };
-
 static Optable optab660F72[8]=
 {
 0x02,	Ib,0,		"PSRLL	%i,%X",
 0x04,	Ib,0,		"PSRAL	%i,%X",
 0x06,	Ib,0,		"PSLLL	%i,%X",
 };
-
 static Optable optab660F73[8]=
 {
 0x02,	Ib,0,		"PSRLQ	%i,%X",
@@ -402,7 +326,6 @@ static Optable optab660F73[8]=
 0x06,	Ib,0,		"PSLLQ	%i,%X",
 0x07,	Ib,0,		"PSLLO	%i,%X",
 };
-
 static Optable optab660F[256]=
 {
 0x2B,	RM,0,		"MOVNTPD	%x,%e",
@@ -415,7 +338,7 @@ static Optable optab660F[256]=
 0x6C,	RM,0,		"PUNPCKLQDQ %x,%X",
 0x6D,	RM,0,		"PUNPCKHQDQ %x,%X",
 0x6E,	RM,0,		"MOV%S	%e,%X",
-0x6F,	RM,0,		"MOVO	%x,%X",		/* MOVDQA */
+0x6F,	RM,0,		"MOVO	%x,%X",
 0x70,	RM,Ib,		"PSHUFL	%i,%x,%X",
 0x71,	RMOP,0,		optab660F71,
 0x72,	RMOP,0,		optab660F72,
@@ -431,7 +354,6 @@ static Optable optab660F[256]=
 0xE7,	RM,0,		"MOVNTO	%X,%e",
 0xF7,	RM,0,		"MASKMOVOU	%x,%X",
 };
-
 static Optable optabF20F[256]=
 {
 0x10,	RM,0,		"MOVSD	%x,%X",
@@ -446,7 +368,6 @@ static Optable optabF20F[256]=
 0xD6,	RM,0,		"MOVQOZX	%M,%X",
 0xE6,	RM,0,		"CVTPD2PL	%x,%X",
 };
-
 static Optable optabF30F[256]=
 {
 0x10,	RM,0,		"MOVSS	%x,%X",
@@ -463,7 +384,6 @@ static Optable optabF30F[256]=
 0xD6,	RM,0,		"MOVQOZX	%m*,%X",
 0xE6,	RM,0,		"CVTPL2PD	%x,%X",
 };
-
 static Optable optab0F[256]=
 {
 0x00,	RMOP,0,		optab0F00,
@@ -476,14 +396,14 @@ static Optable optab0F[256]=
 0x08,	0,0,		"INVD",
 0x09,	0,0,		"WBINVD",
 0x0B,	0,0,		"UD2",
-0x0F,	RM,AUX,		optab0F0F,		/* 3DNow! */
+0x0F,	RM,AUX,		optab0F0F,
 0x10,	RM,0,		"MOVU%s	%x,%X",
 0x11,	RM,0,		"MOVU%s	%X,%x",
-0x12,	RM,0,		"MOV[H]L%s	%x,%X",	/* TO DO: H if source is XMM */
+0x12,	RM,0,		"MOV[H]L%s	%x,%X",
 0x13,	RM,0,		"MOVL%s	%X,%e",
 0x14,	RM,0,		"UNPCKL%s	%x,%X",
 0x15,	RM,0,		"UNPCKH%s	%x,%X",
-0x16,	RM,0,		"MOV[L]H%s	%x,%X",	/* TO DO: L if source is XMM */
+0x16,	RM,0,		"MOV[L]H%s	%x,%X",
 0x17,	RM,0,		"MOVH%s	%X,%x",
 0x20,	RMR,0,		"MOVL	%C,%e",
 0x21,	RMR,0,		"MOVL	%D,%e",
@@ -503,35 +423,35 @@ static Optable optab0F[256]=
 0x31,	0,0,		"RDTSC",
 0x32,	0,0,		"RDMSR",
 0x33,	0,0,		"RDPMC",
-0x42,	RM,0,		"CMOVC	%e,%r",		/* CF */
-0x43,	RM,0,		"CMOVNC	%e,%r",		/* ¬ CF */
-0x44,	RM,0,		"CMOVZ	%e,%r",		/* ZF */
-0x45,	RM,0,		"CMOVNZ	%e,%r",		/* ¬ ZF */
-0x46,	RM,0,		"CMOVBE	%e,%r",		/* CF ∨ ZF */
-0x47,	RM,0,		"CMOVA	%e,%r",		/* ¬CF ∧ ¬ZF */
-0x48,	RM,0,		"CMOVS	%e,%r",		/* SF */
-0x49,	RM,0,		"CMOVNS	%e,%r",		/* ¬ SF */
-0x4A,	RM,0,		"CMOVP	%e,%r",		/* PF */
-0x4B,	RM,0,		"CMOVNP	%e,%r",		/* ¬ PF */
-0x4C,	RM,0,		"CMOVLT	%e,%r",		/* LT ≡ OF ≠ SF */
-0x4D,	RM,0,		"CMOVGE	%e,%r",		/* GE ≡ ZF ∨ SF */
-0x4E,	RM,0,		"CMOVLE	%e,%r",		/* LE ≡ ZF ∨ LT */
-0x4F,	RM,0,		"CMOVGT	%e,%r",		/* GT ≡ ¬ZF ∧ GE */
-0x50,	RM,0,		"MOVMSK%s	%X,%r",	/* TO DO: check */
+0x42,	RM,0,		"CMOVC	%e,%r",
+0x43,	RM,0,		"CMOVNC	%e,%r",
+0x44,	RM,0,		"CMOVZ	%e,%r",
+0x45,	RM,0,		"CMOVNZ	%e,%r",
+0x46,	RM,0,		"CMOVBE	%e,%r",
+0x47,	RM,0,		"CMOVA	%e,%r",
+0x48,	RM,0,		"CMOVS	%e,%r",
+0x49,	RM,0,		"CMOVNS	%e,%r",
+0x4A,	RM,0,		"CMOVP	%e,%r",
+0x4B,	RM,0,		"CMOVNP	%e,%r",
+0x4C,	RM,0,		"CMOVLT	%e,%r",
+0x4D,	RM,0,		"CMOVGE	%e,%r",
+0x4E,	RM,0,		"CMOVLE	%e,%r",
+0x4F,	RM,0,		"CMOVGT	%e,%r",
+0x50,	RM,0,		"MOVMSK%s	%X,%r",
 0x51,	RM,0,		"SQRT%s	%x,%X",
 0x52,	RM,0,		"RSQRT%s	%x,%X",
 0x53,	RM,0,		"RCP%s	%x,%X",
 0x54,	RM,0,		"AND%s	%x,%X",
 0x55,	RM,0,		"ANDN%s	%x,%X",
-0x56,	RM,0,		"OR%s	%x,%X",		/* TO DO: S/D */
-0x57,	RM,0,		"XOR%s	%x,%X",		/* S/D */
-0x58,	RM,0,		"ADD%s	%x,%X",		/* S/P S/D */
+0x56,	RM,0,		"OR%s	%x,%X",
+0x57,	RM,0,		"XOR%s	%x,%X",
+0x58,	RM,0,		"ADD%s	%x,%X",
 0x59,	RM,0,		"MUL%s	%x,%X",
 0x5A,	RM,0,		"CVTPS2PD	%x,%X",
 0x5B,	RM,0,		"CVTPL2PS	%x,%X",
 0x5C,	RM,0,		"SUB%s	%x,%X",
 0x5D,	RM,0,		"MIN%s	%x,%X",
-0x5E,	RM,0,		"DIV%s	%x,%X",		/* TO DO: S/P S/D */
+0x5E,	RM,0,		"DIV%s	%x,%X",
 0x5F,	RM,0,		"MAX%s	%x,%X",
 0x60,	RM,0,		"PUNPCKLBW %m,%M",
 0x61,	RM,0,		"PUNPCKLWL %m,%M",
@@ -612,7 +532,6 @@ static Optable optab0F[256]=
 0xFC,	RM,0,		"PADDB %m,%M",
 0xFD,	RM,0,		"PADDW %m,%M",
 0xFE,	RM,0,		"PADDL %m,%M",
-
 0x80,	Iwds,0,		"JOS	%p",
 0x81,	Iwds,0,		"JOC	%p",
 0x82,	Iwds,0,		"JCS	%p",
@@ -671,7 +590,6 @@ static Optable optab0F[256]=
 0xbf,	RM,0,		"MOVWSX	%e,%R",
 0xc7,	RMOP,0,		optab0FC7,
 };
-
 static Optable optab80[8]=
 {
 0x00,	Ib,0,		"ADDB	%i,%e",
@@ -683,7 +601,6 @@ static Optable optab80[8]=
 0x06,	Ib,0,		"XORB	%i,%e",
 0x07,	Ib,0,		"CMPB	%e,%i",
 };
-
 static Optable optab81[8]=
 {
 0x00,	Iwd,0,		"ADD%S	%i,%e",
@@ -695,7 +612,6 @@ static Optable optab81[8]=
 0x06,	Iwd,0,		"XOR%S	%i,%e",
 0x07,	Iwd,0,		"CMP%S	%e,%i",
 };
-
 static Optable optab83[8]=
 {
 0x00,	Ibs,0,		"ADD%S	%i,%e",
@@ -707,7 +623,6 @@ static Optable optab83[8]=
 0x06,	Ibs,0,		"XOR%S	%i,%e",
 0x07,	Ibs,0,		"CMP%S	%e,%i",
 };
-
 static Optable optabC0[8] =
 {
 0x00,	Ib,0,		"ROLB	%i,%e",
@@ -718,7 +633,6 @@ static Optable optabC0[8] =
 0x05,	Ib,0,		"SHRB	%i,%e",
 0x07,	Ib,0,		"SARB	%i,%e",
 };
-
 static Optable optabC1[8] =
 {
 0x00,	Ib,0,		"ROL%S	%i,%e",
@@ -729,7 +643,6 @@ static Optable optabC1[8] =
 0x05,	Ib,0,		"SHR%S	%i,%e",
 0x07,	Ib,0,		"SAR%S	%i,%e",
 };
-
 static Optable optabD0[8] =
 {
 0x00,	0,0,		"ROLB	%e",
@@ -740,7 +653,6 @@ static Optable optabD0[8] =
 0x05,	0,0,		"SHRB	%e",
 0x07,	0,0,		"SARB	%e",
 };
-
 static Optable optabD1[8] =
 {
 0x00,	0,0,		"ROL%S	%e",
@@ -751,7 +663,6 @@ static Optable optabD1[8] =
 0x05,	0,0,		"SHR%S	%e",
 0x07,	0,0,		"SAR%S	%e",
 };
-
 static Optable optabD2[8] =
 {
 0x00,	0,0,		"ROLB	CL,%e",
@@ -762,7 +673,6 @@ static Optable optabD2[8] =
 0x05,	0,0,		"SHRB	CL,%e",
 0x07,	0,0,		"SARB	CL,%e",
 };
-
 static Optable optabD3[8] =
 {
 0x00,	0,0,		"ROL%S	CL,%e",
@@ -773,7 +683,6 @@ static Optable optabD3[8] =
 0x05,	0,0,		"SHR%S	CL,%e",
 0x07,	0,0,		"SAR%S	CL,%e",
 };
-
 static Optable optabD8[8+8] =
 {
 0x00,	0,0,		"FADDF	%e,F0",
@@ -793,14 +702,6 @@ static Optable optabD8[8+8] =
 0x0e,	0,0,		"FDIVD	%f,F0",
 0x0f,	0,0,		"FDIVRD	%f,F0",
 };
-/*
- *	optabD9 and optabDB use the following encoding: 
- *	if (0 <= modrm <= 2) instruction = optabDx[modrm&0x07];
- *	else instruction = optabDx[(modrm&0x3f)+8];
- *
- *	the instructions for MOD == 3, follow the 8 instructions
- *	for the other MOD values stored at the front of the table.
- */
 static Optable optabD9[64+8] =
 {
 0x00,	0,0,		"FMOVF	%e,F0",
@@ -810,7 +711,7 @@ static Optable optabD9[64+8] =
 0x05,	0,0,		"FLDCW	%e",
 0x06,	0,0,		"FSTENV%S %e",
 0x07,	0,0,		"FSTCW	%e",
-0x08,	0,0,		"FMOVD	F0,F0",		/* Mod R/M = 11xx xxxx*/
+0x08,	0,0,		"FMOVD	F0,F0",
 0x09,	0,0,		"FMOVD	F1,F0",
 0x0a,	0,0,		"FMOVD	F2,F0",
 0x0b,	0,0,		"FMOVD	F3,F0",
@@ -855,7 +756,6 @@ static Optable optabD9[64+8] =
 0x46,	0,0,		"FSIN",
 0x47,	0,0,		"FCOS",
 };
-
 static Optable optabDA[8+8] =
 {
 0x00,	0,0,		"FADDL	%e,F0",
@@ -868,7 +768,6 @@ static Optable optabDA[8+8] =
 0x07,	0,0,		"FDIVRL	%e,F0",
 0x0d,	R1,0,		"FUCOMPP",
 };
-
 static Optable optabDB[8+64] =
 {
 0x00,	0,0,		"FMOVL	%e,F0",
@@ -879,7 +778,6 @@ static Optable optabDB[8+64] =
 0x2a,	0,0,		"FCLEX",
 0x2b,	0,0,		"FINIT",
 };
-
 static Optable optabDC[8+8] =
 {
 0x00,	0,0,		"FADDD	%e,F0",
@@ -897,7 +795,6 @@ static Optable optabDC[8+8] =
 0x0e,	0,0,		"FDIVRD	F0,%f",
 0x0f,	0,0,		"FDIVD	F0,%f",
 };
-
 static Optable optabDD[8+8] =
 {
 0x00,	0,0,		"FMOVD	%e,F0",
@@ -912,7 +809,6 @@ static Optable optabDD[8+8] =
 0x0c,	0,0,		"FUCOMD	%f,F0",
 0x0d,	0,0,		"FUCOMDP %f,F0",
 };
-
 static Optable optabDE[8+8] =
 {
 0x00,	0,0,		"FADDW	%e,F0",
@@ -931,7 +827,6 @@ static Optable optabDE[8+8] =
 0x0e,	0,0,		"FDIVRDP F0,%f",
 0x0f,	0,0,		"FDIVDP	F0,%f",
 };
-
 static Optable optabDF[8+8] =
 {
 0x00,	0,0,		"FMOVW	%e,F0",
@@ -943,7 +838,6 @@ static Optable optabDF[8+8] =
 0x07,	0,0,		"FMOVLP	F0,%e",
 0x0c,	R0,0,		"FSTSW	%OAX",
 };
-
 static Optable optabF6[8] =
 {
 0x00,	Ib,0,		"TESTB	%i,%e",
@@ -954,7 +848,6 @@ static Optable optabF6[8] =
 0x06,	0,0,		"DIVB	AL,%e",
 0x07,	0,0,		"IDIVB	AL,%e",
 };
-
 static Optable optabF7[8] =
 {
 0x00,	Iwd,0,		"TEST%S	%i,%e",
@@ -965,13 +858,11 @@ static Optable optabF7[8] =
 0x06,	0,0,		"DIV%S	%OAX,%e",
 0x07,	0,0,		"IDIV%S	%OAX,%e",
 };
-
 static Optable optabFE[8] =
 {
 0x00,	0,0,		"INCB	%e",
 0x01,	0,0,		"DECB	%e",
 };
-
 static Optable optabFF[8] =
 {
 0x00,	0,0,		"INC%S	%e",
@@ -982,7 +873,6 @@ static Optable optabFF[8] =
 0x05,	JUMP,0,		"JMPF*	%e",
 0x06,	0,0,		"PUSHL	%e",
 };
-
 static Optable optable[256+1] =
 {
 0x00,	RMB,0,		"ADDB	%r,%e",
@@ -1136,8 +1026,8 @@ static Optable optable[256+1] =
 0x95,	0,0,		"XCHG	%OBP,%OAX",
 0x96,	0,0,		"XCHG	%OSI,%OAX",
 0x97,	0,0,		"XCHG	%ODI,%OAX",
-0x98,	0,0,		"%W",			/* miserable CBW or CWDE */
-0x99,	0,0,		"%w",			/* idiotic CWD or CDQ */
+0x98,	0,0,		"%W",
+0x99,	0,0,		"%w",
 0x9a,	PTR,0,		"CALL%S	%d",
 0x9b,	0,0,		"WAIT",
 0x9c,	0,0,		"PUSHF",
@@ -1184,8 +1074,8 @@ static Optable optable[256+1] =
 0xc5,	RM,0,		"LDS	%e,%r",
 0xc6,	RMB,Ib,		"MOVB	%i,%e",
 0xc7,	RM,Iwd,		"MOV%S	%i,%e",
-0xc8,	Iw2,Ib,		"ENTER	%i,%I",		/* loony ENTER */
-0xc9,	RET,0,		"LEAVE",		/* bizarre LEAVE */
+0xc8,	Iw2,Ib,		"ENTER	%i,%I",
+0xc9,	RET,0,		"LEAVE",
 0xca,	Iw,0,		"RETF	%i",
 0xcb,	RET,0,		"RETF",
 0xcc,	0,0,		"INT	3",
@@ -1240,1027 +1130,928 @@ static Optable optable[256+1] =
 0xff,	RMOP,0,		optabFF,
 0x100,	RM,0,		"MOVLQSX	%r,%e",
 };
-
 static struct {
-	Optable	*tab;
-	uint	nel;
+Optable	*tab;
+uint	nel;
 } optabtab[] = {
-	optab0F00, nelem(optab0F00),
-	optab0F01, nelem(optab0F01),
-	optab0F01F8, nelem(optab0F01F8),
-	optab0FAE, nelem(optab0FAE),
-	optab0FBA, nelem(optab0FBA),
-	optab0F0F, nelem(optab0F0F),
-	optab0FC7, nelem(optab0FC7),
-	optab660F71, nelem(optab660F71),
-	optab660F72, nelem(optab660F72),
-	optab660F73, nelem(optab660F73),
-	optab660F, nelem(optab660F),
-	optabF20F, nelem(optabF20F),
-	optabF30F, nelem(optabF30F),
-	optab0F, nelem(optab0F),
-	optab80, nelem(optab80),
-	optab81, nelem(optab81),
-	optab83, nelem(optab83),
-	optabC0, nelem(optabC0),
-	optabC1, nelem(optabC1),
-	optabD0, nelem(optabD0),
-	optabD1, nelem(optabD1),
-	optabD2, nelem(optabD2),
-	optabD3, nelem(optabD3),
-	optabD8, nelem(optabD8),
-	optabD9, nelem(optabD9),
-	optabDA, nelem(optabDA),
-	optabDB, nelem(optabDB),
-	optabDC, nelem(optabDC),
-	optabDD, nelem(optabDD),
-	optabDE, nelem(optabDE),
-	optabDF, nelem(optabDF),
-	optabF6, nelem(optabF6),
-	optabF7, nelem(optabF7),
-	optabFE, nelem(optabFE),
-	optabFF, nelem(optabFF),
-	optable, nelem(optable),
+optab0F00, nelem(optab0F00),
+optab0F01, nelem(optab0F01),
+optab0F01F8, nelem(optab0F01F8),
+optab0FAE, nelem(optab0FAE),
+optab0FBA, nelem(optab0FBA),
+optab0F0F, nelem(optab0F0F),
+optab0FC7, nelem(optab0FC7),
+optab660F71, nelem(optab660F71),
+optab660F72, nelem(optab660F72),
+optab660F73, nelem(optab660F73),
+optab660F, nelem(optab660F),
+optabF20F, nelem(optabF20F),
+optabF30F, nelem(optabF30F),
+optab0F, nelem(optab0F),
+optab80, nelem(optab80),
+optab81, nelem(optab81),
+optab83, nelem(optab83),
+optabC0, nelem(optabC0),
+optabC1, nelem(optabC1),
+optabD0, nelem(optabD0),
+optabD1, nelem(optabD1),
+optabD2, nelem(optabD2),
+optabD3, nelem(optabD3),
+optabD8, nelem(optabD8),
+optabD9, nelem(optabD9),
+optabDA, nelem(optabDA),
+optabDB, nelem(optabDB),
+optabDC, nelem(optabDC),
+optabDD, nelem(optabDD),
+optabDE, nelem(optabDE),
+optabDF, nelem(optabDF),
+optabF6, nelem(optabF6),
+optabF7, nelem(optabF7),
+optabFE, nelem(optabFE),
+optabFF, nelem(optabFF),
+optable, nelem(optable),
 };
-
-/*
- * compensate for Microsoft's ageing compilers
- */
 static void
 ordertab(Optable *tab, int nel)
 {
-	int i, x;
-	static Optable empty;
-
-	for(i = nel; --i >= 0;){
-		x = tab[i].x;
-		if(x != i){
-			tab[x] = tab[i];
-			tab[i] = empty;
-		}
-	}
+int i, x;
+static Optable empty;
+for(i = nel; --i >= 0;){
+x = tab[i].x;
+if(x != i){
+tab[x] = tab[i];
+tab[i] = empty;
 }
-
+}
+}
 static void
 soptoms(void)
 {
-	int i;
-	static int reordered;	/* assumes non-concurrent use */
-
-	if(reordered)
-		return;
-	reordered = 1;
-	for(i = 0; i < nelem(optabtab); i++)
-		ordertab(optabtab[i].tab, optabtab[i].nel);
+int i;
+static int reordered;
+if(reordered)
+return;
+reordered = 1;
+for(i = 0; i < nelem(optabtab); i++)
+ordertab(optabtab[i].tab, optabtab[i].nel);
 }
-
-/*
- *  get a byte of the instruction
- */
 static int
 igetc(Map *map, Instr *ip, uchar *c)
 {
-	if(ip->n+1 > sizeof(ip->mem)){
-		werrstr("instruction too long");
-		return -1;
-	}
-	if (get1(map, ip->addr+ip->n, c, 1) < 0) {
-		werrstr("can't read instruction: %r");
-		return -1;
-	}
-	ip->mem[ip->n++] = *c;
-	return 1;
+if(ip->n+1 > sizeof(ip->mem)){
+werrstr("instruction too long");
+return -1;
 }
-
-/*
- *  get two bytes of the instruction
- */
+if (get1(map, ip->addr+ip->n, c, 1) < 0) {
+werrstr("can't read instruction: %r");
+return -1;
+}
+ip->mem[ip->n++] = *c;
+return 1;
+}
 static int
 igets(Map *map, Instr *ip, ushort *sp)
 {
-	uchar c;
-	ushort s;
-
-	if (igetc(map, ip, &c) < 0)
-		return -1;
-	s = c;
-	if (igetc(map, ip, &c) < 0)
-		return -1;
-	s |= (c<<8);
-	*sp = s;
-	return 1;
+uchar c;
+ushort s;
+if (igetc(map, ip, &c) < 0)
+return -1;
+s = c;
+if (igetc(map, ip, &c) < 0)
+return -1;
+s |= (c<<8);
+*sp = s;
+return 1;
 }
-
-/*
- *  get 4 bytes of the instruction
- */
 static int
 igetl(Map *map, Instr *ip, ulong *lp)
 {
-	ushort s;
-	long	l;
-
-	if (igets(map, ip, &s) < 0)
-		return -1;
-	l = s;
-	if (igets(map, ip, &s) < 0)
-		return -1;
-	l |= (s<<16);
-	*lp = l;
-	return 1;
+ushort s;
+long	l;
+if (igets(map, ip, &s) < 0)
+return -1;
+l = s;
+if (igets(map, ip, &s) < 0)
+return -1;
+l |= (s<<16);
+*lp = l;
+return 1;
 }
-
-/*
- *  get 8 bytes of the instruction
- */
 static int
 igetq(Map *map, Instr *ip, vlong *qp)
 {
-	ulong	l;
-	uvlong q;
-
-	if (igetl(map, ip, &l) < 0)
-		return -1;
-	q = l;
-	if (igetl(map, ip, &l) < 0)
-		return -1;
-	q |= ((uvlong)l<<32);
-	*qp = q;
-	return 1;
+ulong	l;
+uvlong q;
+if (igetl(map, ip, &l) < 0)
+return -1;
+q = l;
+if (igetl(map, ip, &l) < 0)
+return -1;
+q |= ((uvlong)l<<32);
+*qp = q;
+return 1;
 }
-
 static int
 getdisp(Map *map, Instr *ip, int mod, int rm, int code, int pcrel)
 {
-	uchar c;
-	ushort s;
-
-	if (mod > 2)
-		return 1;
-	if (mod == 1) {
-		if (igetc(map, ip, &c) < 0)
-			return -1;
-		if (c&0x80)
-			ip->disp = c|0xffffff00;
-		else
-			ip->disp = c&0xff;
-	} else if (mod == 2 || rm == code) {
-		if (ip->asize == 'E') {
-			if (igetl(map, ip, &ip->disp) < 0)
-				return -1;
-			if (mod == 0)
-				ip->rip = pcrel;
-		} else {
-			if (igets(map, ip, &s) < 0)
-				return -1;
-			if (s&0x8000)
-				ip->disp = s|0xffff0000;
-			else
-				ip->disp = s;
-		}
-		if (mod == 0)
-			ip->base = -1;
-	}
-	return 1;
+uchar c;
+ushort s;
+if (mod > 2)
+return 1;
+if (mod == 1) {
+if (igetc(map, ip, &c) < 0)
+return -1;
+if (c&0x80)
+ip->disp = c|0xffffff00;
+else
+ip->disp = c&0xff;
+} else if (mod == 2 || rm == code) {
+if (ip->asize == 'E') {
+if (igetl(map, ip, &ip->disp) < 0)
+return -1;
+if (mod == 0)
+ip->rip = pcrel;
+} else {
+if (igets(map, ip, &s) < 0)
+return -1;
+if (s&0x8000)
+ip->disp = s|0xffff0000;
+else
+ip->disp = s;
 }
-
+if (mod == 0)
+ip->base = -1;
+}
+return 1;
+}
 static int
 modrm(Map *map, Instr *ip, uchar c)
 {
-	uchar rm, mod;
-
-	mod = (c>>6)&3;
-	rm = c&7;
-	ip->mod = mod;
-	ip->base = rm;
-	ip->reg = (c>>3)&7;
-	ip->rip = 0;
-	if (mod == 3)			/* register */
-		return 1;
-	if (ip->asize == 0) {		/* 16-bit mode */
-		switch(rm) {
-		case 0:
-			ip->base = BX; ip->index = SI;
-			break;
-		case 1:
-			ip->base = BX; ip->index = DI;
-			break;
-		case 2:
-			ip->base = BP; ip->index = SI;
-			break;
-		case 3:
-			ip->base = BP; ip->index = DI;
-			break;
-		case 4:
-			ip->base = SI;
-			break;
-		case 5:
-			ip->base = DI;
-			break;
-		case 6:
-			ip->base = BP;
-			break;
-		case 7:
-			ip->base = BX;
-			break;
-		default:
-			break;
-		}
-		return getdisp(map, ip, mod, rm, 6, 0);
-	}
-	if (rm == 4) {	/* scummy sib byte */
-		if (igetc(map, ip, &c) < 0)
-			return -1;
-		ip->ss = (c>>6)&0x03;
-		ip->index = (c>>3)&0x07;
-		if (ip->index == 4)
-			ip->index = -1;
-		ip->base = c&0x07;
-		return getdisp(map, ip, mod, ip->base, 5, 0);
-	}
-	return getdisp(map, ip, mod, rm, 5, ip->amd64);
+uchar rm, mod;
+mod = (c>>6)&3;
+rm = c&7;
+ip->mod = mod;
+ip->base = rm;
+ip->reg = (c>>3)&7;
+ip->rip = 0;
+if (mod == 3)
+return 1;
+if (ip->asize == 0) {
+switch(rm) {
+case 0:
+ip->base = BX; ip->index = SI;
+break;
+case 1:
+ip->base = BX; ip->index = DI;
+break;
+case 2:
+ip->base = BP; ip->index = SI;
+break;
+case 3:
+ip->base = BP; ip->index = DI;
+break;
+case 4:
+ip->base = SI;
+break;
+case 5:
+ip->base = DI;
+break;
+case 6:
+ip->base = BP;
+break;
+case 7:
+ip->base = BX;
+break;
+default:
+break;
 }
-
+return getdisp(map, ip, mod, rm, 6, 0);
+}
+if (rm == 4) {
+if (igetc(map, ip, &c) < 0)
+return -1;
+ip->ss = (c>>6)&0x03;
+ip->index = (c>>3)&0x07;
+if (ip->index == 4)
+ip->index = -1;
+ip->base = c&0x07;
+return getdisp(map, ip, mod, ip->base, 5, 0);
+}
+return getdisp(map, ip, mod, rm, 5, ip->amd64);
+}
 static Optable *
 mkinstr(Map *map, Instr *ip, uvlong pc)
 {
-	int i, n, norex;
-	uchar c;
-	ushort s;
-	Optable *op, *obase;
-	char buf[128];
-
-	soptoms();
-	memset(ip, 0, sizeof(*ip));
-	norex = 1;
-	ip->base = -1;
-	ip->index = -1;
-	if(asstype == AI8086)
-		ip->osize = 'W';
-	else {
-		ip->osize = 'L';
-		ip->asize = 'E';
-		ip->amd64 = asstype != AI386;
-		norex = 0;
-	}
-	ip->addr = pc;
-	if (igetc(map, ip, &c) < 0)
-		return 0;
-	obase = optable;
-newop:
-	if(ip->amd64 && !norex){
-		if(c >= 0x40 && c <= 0x4f) {
-			ip->rex = c;
-			if(igetc(map, ip, &c) < 0)
-				return 0;
-		}
-		if(c == 0x63){
-			op = &obase[0x100];	/* MOVLQSX */
-			goto hack;
-		}
-	}
-	op = &obase[c];
-hack:
-	if (op->proto == 0) {
-badop:
-		n = snprint(buf, sizeof(buf), "opcode: ??");
-		for (i = 0; i < ip->n && n < sizeof(buf)-3; i++, n+=2)
-			_hexify(buf+n, ip->mem[i], 1);
-		strcpy(buf+n, "??");
-		werrstr(buf);
-		return 0;
-	}
-	for(i = 0; i < 2 && op->operand[i]; i++) {
-		switch(op->operand[i]) {
-		case Ib:	/* 8-bit immediate - (no sign extension)*/
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			ip->imm = c&0xff;
-			ip->imm64 = ip->imm;
-			break;
-		case Jbs:	/* 8-bit jump immediate (sign extended) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (c&0x80)
-				ip->imm = c|0xffffff00;
-			else
-				ip->imm = c&0xff;
-			ip->imm64 = (long)ip->imm;
-			ip->jumptype = Jbs;
-			break;
-		case Ibs:	/* 8-bit immediate (sign extended) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (c&0x80)
-				if (ip->osize == 'L')
-					ip->imm = c|0xffffff00;
-				else
-					ip->imm = c|0xff00;
-			else
-				ip->imm = c&0xff;
-			ip->imm64 = (long)ip->imm;
-			break;
-		case Iw:	/* 16-bit immediate -> imm */
-			if (igets(map, ip, &s) < 0)
-				return 0;
-			ip->imm = s&0xffff;
-			ip->imm64 = ip->imm;
-			ip->jumptype = Iw;
-			break;
-		case Iw2:	/* 16-bit immediate -> in imm2*/
-			if (igets(map, ip, &s) < 0)
-				return 0;
-			ip->imm2 = s&0xffff;
-			break;
-		case Iwd:	/* Operand-sized immediate (no sign extension unless 64 bits)*/
-			if (ip->osize == 'L') {
-				if (igetl(map, ip, &ip->imm) < 0)
-					return 0;
-				ip->imm64 = ip->imm;
-				if(ip->rex&REXW && (ip->imm & (1<<31)) != 0)
-					ip->imm64 |= (vlong)~0 << 32;
-			} else {
-				if (igets(map, ip, &s)< 0)
-					return 0;
-				ip->imm = s&0xffff;
-				ip->imm64 = ip->imm;
-			}
-			break;
-		case Iwdq:	/* Operand-sized immediate, possibly big */
-			if (ip->osize == 'L') {
-				if (igetl(map, ip, &ip->imm) < 0)
-					return 0;
-				ip->imm64 = ip->imm;
-				if (ip->rex & REXW) {
-					ulong l;
-					if (igetl(map, ip, &l) < 0)
-						return 0;
-					ip->imm64 |= (uvlong)l << 32;
-				}
-			} else {
-				if (igets(map, ip, &s)< 0)
-					return 0;
-				ip->imm = s&0xffff;
-			}
-			break;
-		case Awd:	/* Address-sized immediate (no sign extension)*/
-			if (ip->asize == 'E') {
-				if (igetl(map, ip, &ip->imm) < 0)
-					return 0;
-				/* TO DO: REX */
-			} else {
-				if (igets(map, ip, &s)< 0)
-					return 0;
-				ip->imm = s&0xffff;
-			}
-			break;
-		case Iwds:	/* Operand-sized immediate (sign extended) */
-			if (ip->osize == 'L') {
-				if (igetl(map, ip, &ip->imm) < 0)
-					return 0;
-			} else {
-				if (igets(map, ip, &s)< 0)
-					return 0;
-				if (s&0x8000)
-					ip->imm = s|0xffff0000;
-				else
-					ip->imm = s&0xffff;
-			}
-			ip->jumptype = Iwds;
-			break;
-		case OA:	/* literal 0x0a byte */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (c != 0x0a)
-				goto badop;
-			break;
-		case R0:	/* base register must be R0 */
-			if (ip->base != 0)
-				goto badop;
-			break;
-		case R1:	/* base register must be R1 */
-			if (ip->base != 1)
-				goto badop;
-			break;
-		case RMB:	/* R/M field with byte register (/r)*/
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			ip->osize = 'B';
-			break;
-		case RM:	/* R/M field with register (/r) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			break;
-		case RMOPB:	/* R/M field with op code (/digit) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			c = ip->reg;		/* secondary op code */
-			obase = (Optable*)op->proto;
-			ip->osize = 'B';
-			goto newop;
-		case RMOP:	/* R/M field with op code (/digit) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			obase = (Optable*)op->proto;
-			if(ip->amd64 && obase == optab0F01 && c == 0xF8)
-				return optab0F01F8;
-			c = ip->reg;
-			goto newop;
-		case FRMOP:	/* FP R/M field with op code (/digit) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			if ((c&0xc0) == 0xc0)
-				c = ip->reg+8;		/* 16 entry table */
-			else
-				c = ip->reg;
-			obase = (Optable*)op->proto;
-			goto newop;
-		case FRMEX:	/* Extended FP R/M field with op code (/digit) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			if ((c&0xc0) == 0xc0)
-				c = (c&0x3f)+8;		/* 64-entry table */
-			else
-				c = ip->reg;
-			obase = (Optable*)op->proto;
-			goto newop;
-		case RMR:	/* R/M register only (mod = 11) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if ((c&0xc0) != 0xc0) {
-				werrstr("invalid R/M register: %x", c);
-				return 0;
-			}
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			break;
-		case RMM:	/* R/M register only (mod = 11) */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if ((c&0xc0) == 0xc0) {
-				werrstr("invalid R/M memory mode: %x", c);
-				return 0;
-			}
-			if (modrm(map, ip, c) < 0)
-				return 0;
-			break;
-		case PTR:	/* Seg:Displacement addr (ptr16:16 or ptr16:32) */
-			if (ip->osize == 'L') {
-				if (igetl(map, ip, &ip->disp) < 0)
-					return 0;
-			} else {
-				if (igets(map, ip, &s)< 0)
-					return 0;
-				ip->disp = s&0xffff;
-			}
-			if (igets(map, ip, (ushort*)&ip->seg) < 0)
-				return 0;
-			ip->jumptype = PTR;
-			break;
-		case AUXMM:	/* Multi-byte op code; prefix determines table selection */
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			obase = (Optable*)op->proto;
-			switch (ip->opre) {
-			case 0x66:	op = optab660F; break;
-			case 0xF2:	op = optabF20F; break;
-			case 0xF3:	op = optabF30F; break;
-			default:	op = nil; break;
-			}
-			if(op != nil && op[c].proto != nil)
-				obase = op;
-			norex = 1;	/* no more rex prefixes */
-			/* otherwise the optab entry captures it */
-			goto newop;
-		case AUX:	/* Multi-byte op code - Auxiliary table */
-			obase = (Optable*)op->proto;
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			goto newop;
-		case OPRE:	/* Instr Prefix or media op */
-			ip->opre = c;
-			/* fall through */
-		case PRE:	/* Instr Prefix */
-			ip->prefix = (char*)op->proto;
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (ip->opre && c == 0x0F)
-				ip->prefix = 0;
-			goto newop;
-		case SEG:	/* Segment Prefix */
-			ip->segment = (char*)op->proto;
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			goto newop;
-		case OPOVER:	/* Operand size override */
-			ip->opre = c;
-			ip->osize = 'W';
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			if (c == 0x0F)
-				ip->osize = 'L';
-			else if (ip->amd64 && (c&0xF0) == 0x40)
-				ip->osize = 'Q';
-			goto newop;
-		case ADDOVER:	/* Address size override */
-			ip->asize = 0;
-			if (igetc(map, ip, &c) < 0)
-				return 0;
-			goto newop;
-		case JUMP:	/* mark instruction as JUMP or RET */
-		case RET:
-			ip->jumptype = op->operand[i];
-			break;
-		default:
-			werrstr("bad operand type %d", op->operand[i]);
-			return 0;
-		}
-	}
-	return op;
+int i, n, norex;
+uchar c;
+ushort s;
+Optable *op, *obase;
+char buf[128];
+soptoms();
+memset(ip, 0, sizeof(*ip));
+norex = 1;
+ip->base = -1;
+ip->index = -1;
+if(asstype == AI8086)
+ip->osize = 'W';
+else {
+ip->osize = 'L';
+ip->asize = 'E';
+ip->amd64 = asstype != AI386;
+norex = 0;
 }
-
+ip->addr = pc;
+if (igetc(map, ip, &c) < 0)
+return 0;
+obase = optable;
+newop:
+if(ip->amd64 && !norex){
+if(c >= 0x40 && c <= 0x4f) {
+ip->rex = c;
+if(igetc(map, ip, &c) < 0)
+return 0;
+}
+if(c == 0x63){
+op = &obase[0x100];
+goto hack;
+}
+}
+op = &obase[c];
+hack:
+if (op->proto == 0) {
+badop:
+n = snprint(buf, sizeof(buf), "opcode: ??");
+for (i = 0; i < ip->n && n < sizeof(buf)-3; i++, n+=2)
+_hexify(buf+n, ip->mem[i], 1);
+strcpy(buf+n, "??");
+werrstr(buf);
+return 0;
+}
+for(i = 0; i < 2 && op->operand[i]; i++) {
+switch(op->operand[i]) {
+case Ib:
+if (igetc(map, ip, &c) < 0)
+return 0;
+ip->imm = c&0xff;
+ip->imm64 = ip->imm;
+break;
+case Jbs:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (c&0x80)
+ip->imm = c|0xffffff00;
+else
+ip->imm = c&0xff;
+ip->imm64 = (long)ip->imm;
+ip->jumptype = Jbs;
+break;
+case Ibs:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (c&0x80)
+if (ip->osize == 'L')
+ip->imm = c|0xffffff00;
+else
+ip->imm = c|0xff00;
+else
+ip->imm = c&0xff;
+ip->imm64 = (long)ip->imm;
+break;
+case Iw:
+if (igets(map, ip, &s) < 0)
+return 0;
+ip->imm = s&0xffff;
+ip->imm64 = ip->imm;
+ip->jumptype = Iw;
+break;
+case Iw2:
+if (igets(map, ip, &s) < 0)
+return 0;
+ip->imm2 = s&0xffff;
+break;
+case Iwd:
+if (ip->osize == 'L') {
+if (igetl(map, ip, &ip->imm) < 0)
+return 0;
+ip->imm64 = ip->imm;
+if(ip->rex&REXW && (ip->imm & (1<<31)) != 0)
+ip->imm64 |= (vlong)~0 << 32;
+} else {
+if (igets(map, ip, &s)< 0)
+return 0;
+ip->imm = s&0xffff;
+ip->imm64 = ip->imm;
+}
+break;
+case Iwdq:
+if (ip->osize == 'L') {
+if (igetl(map, ip, &ip->imm) < 0)
+return 0;
+ip->imm64 = ip->imm;
+if (ip->rex & REXW) {
+ulong l;
+if (igetl(map, ip, &l) < 0)
+return 0;
+ip->imm64 |= (uvlong)l << 32;
+}
+} else {
+if (igets(map, ip, &s)< 0)
+return 0;
+ip->imm = s&0xffff;
+}
+break;
+case Awd:
+if (ip->asize == 'E') {
+if (igetl(map, ip, &ip->imm) < 0)
+return 0;
+} else {
+if (igets(map, ip, &s)< 0)
+return 0;
+ip->imm = s&0xffff;
+}
+break;
+case Iwds:
+if (ip->osize == 'L') {
+if (igetl(map, ip, &ip->imm) < 0)
+return 0;
+} else {
+if (igets(map, ip, &s)< 0)
+return 0;
+if (s&0x8000)
+ip->imm = s|0xffff0000;
+else
+ip->imm = s&0xffff;
+}
+ip->jumptype = Iwds;
+break;
+case OA:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (c != 0x0a)
+goto badop;
+break;
+case R0:
+if (ip->base != 0)
+goto badop;
+break;
+case R1:
+if (ip->base != 1)
+goto badop;
+break;
+case RMB:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+ip->osize = 'B';
+break;
+case RM:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+break;
+case RMOPB:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+c = ip->reg;
+obase = (Optable*)op->proto;
+ip->osize = 'B';
+goto newop;
+case RMOP:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+obase = (Optable*)op->proto;
+if(ip->amd64 && obase == optab0F01 && c == 0xF8)
+return optab0F01F8;
+c = ip->reg;
+goto newop;
+case FRMOP:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+if ((c&0xc0) == 0xc0)
+c = ip->reg+8;
+else
+c = ip->reg;
+obase = (Optable*)op->proto;
+goto newop;
+case FRMEX:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (modrm(map, ip, c) < 0)
+return 0;
+if ((c&0xc0) == 0xc0)
+c = (c&0x3f)+8;
+else
+c = ip->reg;
+obase = (Optable*)op->proto;
+goto newop;
+case RMR:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if ((c&0xc0) != 0xc0) {
+werrstr("invalid R/M register: %x", c);
+return 0;
+}
+if (modrm(map, ip, c) < 0)
+return 0;
+break;
+case RMM:
+if (igetc(map, ip, &c) < 0)
+return 0;
+if ((c&0xc0) == 0xc0) {
+werrstr("invalid R/M memory mode: %x", c);
+return 0;
+}
+if (modrm(map, ip, c) < 0)
+return 0;
+break;
+case PTR:
+if (ip->osize == 'L') {
+if (igetl(map, ip, &ip->disp) < 0)
+return 0;
+} else {
+if (igets(map, ip, &s)< 0)
+return 0;
+ip->disp = s&0xffff;
+}
+if (igets(map, ip, (ushort*)&ip->seg) < 0)
+return 0;
+ip->jumptype = PTR;
+break;
+case AUXMM:
+if (igetc(map, ip, &c) < 0)
+return 0;
+obase = (Optable*)op->proto;
+switch (ip->opre) {
+case 0x66:	op = optab660F; break;
+case 0xF2:	op = optabF20F; break;
+case 0xF3:	op = optabF30F; break;
+default:	op = nil; break;
+}
+if(op != nil && op[c].proto != nil)
+obase = op;
+norex = 1;
+goto newop;
+case AUX:
+obase = (Optable*)op->proto;
+if (igetc(map, ip, &c) < 0)
+return 0;
+goto newop;
+case OPRE:
+ip->opre = c;
+case PRE:
+ip->prefix = (char*)op->proto;
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (ip->opre && c == 0x0F)
+ip->prefix = 0;
+goto newop;
+case SEG:
+ip->segment = (char*)op->proto;
+if (igetc(map, ip, &c) < 0)
+return 0;
+goto newop;
+case OPOVER:
+ip->opre = c;
+ip->osize = 'W';
+if (igetc(map, ip, &c) < 0)
+return 0;
+if (c == 0x0F)
+ip->osize = 'L';
+else if (ip->amd64 && (c&0xF0) == 0x40)
+ip->osize = 'Q';
+goto newop;
+case ADDOVER:
+ip->asize = 0;
+if (igetc(map, ip, &c) < 0)
+return 0;
+goto newop;
+case JUMP:
+case RET:
+ip->jumptype = op->operand[i];
+break;
+default:
+werrstr("bad operand type %d", op->operand[i]);
+return 0;
+}
+}
+return op;
+}
 #pragma	varargck	argpos	bprint		2
-
 static void
 bprint(Instr *ip, char *fmt, ...)
 {
-	va_list arg;
-
-	va_start(arg, fmt);
-	ip->curr = vseprint(ip->curr, ip->end, fmt, arg);
-	va_end(arg);
+va_list arg;
+va_start(arg, fmt);
+ip->curr = vseprint(ip->curr, ip->end, fmt, arg);
+va_end(arg);
 }
-
-/*
- *  if we want to call 16 bit regs AX,BX,CX,...
- *  and 32 bit regs EAX,EBX,ECX,... then
- *  change the defs of ANAME and ONAME to:
- *  #define	ANAME(ip)	((ip->asize == 'E' ? "E" : "")
- *  #define	ONAME(ip)	((ip)->osize == 'L' ? "E" : "")
- */
 #define	ANAME(ip)	""
 #define	ONAME(ip)	""
-
 static char *reg[] =  {
-	"AX",
-	"CX",
-	"DX",
-	"BX",
-	"SP",
-	"BP",
-	"SI",
-	"DI",
-
-	/* amd64 */
-	"R8",
-	"R9",
-	"R10",
-	"R11",
-	"R12",
-	"R13",
-	"R14",
-	"R15",
+"AX",
+"CX",
+"DX",
+"BX",
+"SP",
+"BP",
+"SI",
+"DI",
+"R8",
+"R9",
+"R10",
+"R11",
+"R12",
+"R13",
+"R14",
+"R15",
 };
-
 static char *breg[] = { "AL", "CL", "DL", "BL", "AH", "CH", "DH", "BH" };
 static char *breg64[] = { "AL", "CL", "DL", "BL", "SPB", "BPB", "SIB", "DIB",
-	"R8B", "R9B", "R10B", "R11B", "R12B", "R13B", "R14B", "R15B" };
+"R8B", "R9B", "R10B", "R11B", "R12B", "R13B", "R14B", "R15B" };
 static char *sreg[] = { "ES", "CS", "SS", "DS", "FS", "GS" };
-
 static void
 plocal(Instr *ip)
 {
-	int ret;
-	long offset;
-	Symbol s;
-	char *reg;
-
-	offset = ip->disp;
-	if (!findsym(ip->addr, CTEXT, &s) || !findlocal(&s, FRAMENAME, &s)) {
-		bprint(ip, "%lux(SP)", offset);
-		return;
-	}
-
-	if (s.value > ip->disp) {
-		ret = getauto(&s, s.value-ip->disp-mach->szaddr, CAUTO, &s);
-		reg = "(SP)";
-	} else {
-		offset -= s.value;
-		ret = getauto(&s, offset, CPARAM, &s);
-		reg = "(FP)";
-	}
-	if (ret)
-		bprint(ip, "%s+", s.name);
-	else
-		offset = ip->disp;
-	bprint(ip, "%lux%s", offset, reg);
+int ret;
+long offset;
+Symbol s;
+char *reg;
+offset = ip->disp;
+if (!findsym(ip->addr, CTEXT, &s) || !findlocal(&s, FRAMENAME, &s)) {
+bprint(ip, "%lux(SP)", offset);
+return;
 }
-
+if (s.value > ip->disp) {
+ret = getauto(&s, s.value-ip->disp-mach->szaddr, CAUTO, &s);
+reg = "(SP)";
+} else {
+offset -= s.value;
+ret = getauto(&s, offset, CPARAM, &s);
+reg = "(FP)";
+}
+if (ret)
+bprint(ip, "%s+", s.name);
+else
+offset = ip->disp;
+bprint(ip, "%lux%s", offset, reg);
+}
 static int
 isjmp(Instr *ip)
 {
-	switch(ip->jumptype){
-	case Iwds:
-	case Jbs:
-	case JUMP:
-		return 1;
-	default:
-		return 0;
-	}
+switch(ip->jumptype){
+case Iwds:
+case Jbs:
+case JUMP:
+return 1;
+default:
+return 0;
 }
-
-/*
- * This is too smart for its own good, but it really is nice
- * to have accurate translations when debugging, and it
- * helps us identify which code is different in binaries that
- * are changed on sources.
- */
+}
 static int
 issymref(Instr *ip, Symbol *s, long w, long val)
 {
-	Symbol next, tmp;
-	long isstring, size;
-
-	if (isjmp(ip))
-		return 1;
-	if (s->class==CTEXT && w==0)
-		return 1;
-	if (s->class==CDATA) {
-		/* use first bss symbol (or "end") rather than edata */
-		if (s->name[0]=='e' && strcmp(s->name, "edata") == 0){
-			if((s ->index >= 0 && globalsym(&tmp, s->index+1) && tmp.value==s->value)
-			|| (s->index > 0 && globalsym(&tmp, s->index-1) && tmp.value==s->value))
-				*s = tmp;
-		}
-		if (w == 0)
-			return 1;
-		for (next=*s; next.value==s->value; next=tmp)
-			if (!globalsym(&tmp, next.index+1))
-				break;
-		size = next.value - s->value;
-		if (w >= size)
-			return 0;
-		if (w > size-w)
-			w = size-w;
-		/* huge distances are usually wrong except in .string */
-		isstring = (s->name[0]=='.' && strcmp(s->name, ".string") == 0);
-		if (w > 8192 && !isstring)
-			return 0;
-		/* medium distances are tricky - look for constants */
-		/* near powers of two */
-		if ((val&(val-1)) == 0 || (val&(val+1)) == 0)
-			return 0;
-		return 1;
-	}
-	return 0;
+Symbol next, tmp;
+long isstring, size;
+if (isjmp(ip))
+return 1;
+if (s->class==CTEXT && w==0)
+return 1;
+if (s->class==CDATA) {
+if (s->name[0]=='e' && strcmp(s->name, "edata") == 0){
+if((s ->index >= 0 && globalsym(&tmp, s->index+1) && tmp.value==s->value)
+|| (s->index > 0 && globalsym(&tmp, s->index-1) && tmp.value==s->value))
+*s = tmp;
 }
-
+if (w == 0)
+return 1;
+for (next=*s; next.value==s->value; next=tmp)
+if (!globalsym(&tmp, next.index+1))
+break;
+size = next.value - s->value;
+if (w >= size)
+return 0;
+if (w > size-w)
+w = size-w;
+isstring = (s->name[0]=='.' && strcmp(s->name, ".string") == 0);
+if (w > 8192 && !isstring)
+return 0;
+if ((val&(val-1)) == 0 || (val&(val+1)) == 0)
+return 0;
+return 1;
+}
+return 0;
+}
 static void
 immediate(Instr *ip, vlong val)
 {
-	Symbol s;
-	long w;
-
-	if (findsym(val, CANY, &s)) {		/* TO DO */
-		w = val - s.value;
-		if (w < 0)
-			w = -w;
-		if (issymref(ip, &s, w, val)) {
-			if (w)
-				bprint(ip, "%s+%lux(SB)", s.name, w);
-			else
-				bprint(ip, "%s(SB)", s.name);
-			return;
-		}
-/*
-		if (s.class==CDATA && globalsym(&s, s.index+1)) {
-			w = s.value - val;
-			if (w < 0)
-				w = -w;
-			if (w < 4096) {
-				bprint(ip, "%s-%lux(SB)", s.name, w);
-				return;
-			}
-		}
-*/
-	}
-	if((ip->rex & REXW) == 0)
-		bprint(ip, "%lux", (long)val);
-	else
-		bprint(ip, "%llux", val);
+Symbol s;
+long w;
+if (findsym(val, CANY, &s)) {
+w = val - s.value;
+if (w < 0)
+w = -w;
+if (issymref(ip, &s, w, val)) {
+if (w)
+bprint(ip, "%s+%lux(SB)", s.name, w);
+else
+bprint(ip, "%s(SB)", s.name);
+return;
 }
-
+}
+if((ip->rex & REXW) == 0)
+bprint(ip, "%lux", (long)val);
+else
+bprint(ip, "%llux", val);
+}
 static void
 pea(Instr *ip)
 {
-	if (ip->mod == 3) {
-		if (ip->osize == 'B')
-			bprint(ip, (ip->rex & REXB? breg64: breg)[ip->base]);
-		else if(ip->rex & REXB)
-			bprint(ip, "%s%s", ANAME(ip), reg[ip->base+8]);
-		else
-			bprint(ip, "%s%s", ANAME(ip), reg[ip->base]);
-		return;
-	}
-	if (ip->segment)
-		bprint(ip, ip->segment);
-	if (ip->asize == 'E' && ip->base == SP)
-		plocal(ip);
-	else {
-		if (ip->base < 0)
-			immediate(ip, ip->disp);
-		else {
-			bprint(ip, "%lux", ip->disp);
-			if(ip->rip)
-				bprint(ip, "(RIP)");
-			bprint(ip,"(%s%s)", ANAME(ip), reg[ip->rex&REXB? ip->base+8: ip->base]);
-		}
-	}
-	if (ip->index >= 0)
-		bprint(ip,"(%s%s*%d)", ANAME(ip), reg[ip->rex&REXX? ip->index+8: ip->index], 1<<ip->ss);
+if (ip->mod == 3) {
+if (ip->osize == 'B')
+bprint(ip, (ip->rex & REXB? breg64: breg)[ip->base]);
+else if(ip->rex & REXB)
+bprint(ip, "%s%s", ANAME(ip), reg[ip->base+8]);
+else
+bprint(ip, "%s%s", ANAME(ip), reg[ip->base]);
+return;
 }
-
+if (ip->segment)
+bprint(ip, ip->segment);
+if (ip->asize == 'E' && ip->base == SP)
+plocal(ip);
+else {
+if (ip->base < 0)
+immediate(ip, ip->disp);
+else {
+bprint(ip, "%lux", ip->disp);
+if(ip->rip)
+bprint(ip, "(RIP)");
+bprint(ip,"(%s%s)", ANAME(ip), reg[ip->rex&REXB? ip->base+8: ip->base]);
+}
+}
+if (ip->index >= 0)
+bprint(ip,"(%s%s*%d)", ANAME(ip), reg[ip->rex&REXX? ip->index+8: ip->index], 1<<ip->ss);
+}
 static void
 prinstr(Instr *ip, char *fmt)
 {
-	vlong v;
-
-	if (ip->prefix)
-		bprint(ip, "%s ", ip->prefix);
-	for (; *fmt && ip->curr < ip->end; fmt++) {
-		if (*fmt != '%'){
-			*ip->curr++ = *fmt;
-			continue;
-		}
-		switch(*++fmt){
-		case '%':
-			*ip->curr++ = '%';
-			break;
-		case 'A':
-			bprint(ip, "%s", ANAME(ip));
-			break;
-		case 'C':
-			bprint(ip, "CR%d", ip->reg);
-			break;
-		case 'D':
-			if (ip->reg < 4 || ip->reg == 6 || ip->reg == 7)
-				bprint(ip, "DR%d",ip->reg);
-			else
-				bprint(ip, "?");
-			break;
-		case 'I':
-			bprint(ip, "$");
-			immediate(ip, ip->imm2);
-			break;
-		case 'O':
-			bprint(ip,"%s", ONAME(ip));
-			break;
-		case 'i':
-			bprint(ip, "$");
-			v = ip->imm;
-			if(ip->rex & REXW)
-				v = ip->imm64;
-			immediate(ip, v);
-			break;
-		case 'R':
-			bprint(ip, "%s%s", ONAME(ip), reg[ip->rex&REXR? ip->reg+8: ip->reg]);
-			break;
-		case 'S':
-			if(ip->osize == 'Q' || ip->osize == 'L' && ip->rex & REXW)
-				bprint(ip, "Q");
-			else
-				bprint(ip, "%c", ip->osize);
-			break;
-		case 's':
-			if(ip->opre == 0 || ip->opre == 0x66)
-				bprint(ip, "P");
-			else
-				bprint(ip, "S");
-			if(ip->opre == 0xf2 || ip->opre == 0x66)
-				bprint(ip, "D");
-			else
-				bprint(ip, "S");
-			break;
-		case 'T':
-			if (ip->reg == 6 || ip->reg == 7)
-				bprint(ip, "TR%d",ip->reg);
-			else
-				bprint(ip, "?");
-			break;
-		case 'W':
-			if (ip->osize == 'Q' || ip->osize == 'L' && ip->rex & REXW)
-				bprint(ip, "CDQE");
-			else if (ip->osize == 'L')
-				bprint(ip,"CWDE");
-			else
-				bprint(ip, "CBW");
-			break;
-		case 'd':
-			bprint(ip,"%ux:%lux",ip->seg,ip->disp);
-			break;
-		case 'm':
-			if (ip->mod == 3 && ip->osize != 'B') {
-				if(fmt[1] != '*'){
-					if(ip->opre != 0) {
-						bprint(ip, "X%d", ip->rex&REXB? ip->base+8: ip->base);
-						break;
-					}
-				} else
-					fmt++;
-				bprint(ip, "M%d", ip->base);
-				break;
-			}
-			pea(ip);
-			break;
-		case 'e':
-			pea(ip);
-			break;
-		case 'f':
-			bprint(ip, "F%d", ip->base);
-			break;
-		case 'g':
-			if (ip->reg < 6)
-				bprint(ip,"%s",sreg[ip->reg]);
-			else
-				bprint(ip,"?");
-			break;
-		case 'p':
-			/*
-			 * signed immediate in the ulong ip->imm.
-			 */
-			v = (long)ip->imm;
-			immediate(ip, v+ip->addr+ip->n);
-			break;
-		case 'r':
-			if (ip->osize == 'B')
-				bprint(ip,"%s", (ip->rex? breg64: breg)[ip->rex&REXR? ip->reg+8: ip->reg]);
-			else
-				bprint(ip, reg[ip->rex&REXR? ip->reg+8: ip->reg]);
-			break;
-		case 'w':
-			if (ip->osize == 'Q' || ip->rex & REXW)
-				bprint(ip, "CQO");
-			else if (ip->osize == 'L')
-				bprint(ip,"CDQ");
-			else
-				bprint(ip, "CWD");
-			break;
-		case 'M':
-			if(ip->opre != 0)
-				bprint(ip, "X%d", ip->rex&REXR? ip->reg+8: ip->reg);
-			else
-				bprint(ip, "M%d", ip->reg);
-			break;
-		case 'x':
-			if (ip->mod == 3 && ip->osize != 'B') {
-				bprint(ip, "X%d", ip->rex&REXB? ip->base+8: ip->base);
-				break;
-			}
-			pea(ip);
-			break;
-		case 'X':
-			bprint(ip, "X%d", ip->rex&REXR? ip->reg+8: ip->reg);
-			break;
-		default:
-			bprint(ip, "%%%c", *fmt);
-			break;
-		}
-	}
-	*ip->curr = 0;		/* there's always room for 1 byte */
+vlong v;
+if (ip->prefix)
+bprint(ip, "%s ", ip->prefix);
+for (; *fmt && ip->curr < ip->end; fmt++) {
+if (*fmt != '%'){
+*ip->curr++ = *fmt;
+continue;
 }
-
+switch(*++fmt){
+case '%':
+*ip->curr++ = '%';
+break;
+case 'A':
+bprint(ip, "%s", ANAME(ip));
+break;
+case 'C':
+bprint(ip, "CR%d", ip->reg);
+break;
+case 'D':
+if (ip->reg < 4 || ip->reg == 6 || ip->reg == 7)
+bprint(ip, "DR%d",ip->reg);
+else
+bprint(ip, "?");
+break;
+case 'I':
+bprint(ip, "$");
+immediate(ip, ip->imm2);
+break;
+case 'O':
+bprint(ip,"%s", ONAME(ip));
+break;
+case 'i':
+bprint(ip, "$");
+v = ip->imm;
+if(ip->rex & REXW)
+v = ip->imm64;
+immediate(ip, v);
+break;
+case 'R':
+bprint(ip, "%s%s", ONAME(ip), reg[ip->rex&REXR? ip->reg+8: ip->reg]);
+break;
+case 'S':
+if(ip->osize == 'Q' || ip->osize == 'L' && ip->rex & REXW)
+bprint(ip, "Q");
+else
+bprint(ip, "%c", ip->osize);
+break;
+case 's':
+if(ip->opre == 0 || ip->opre == 0x66)
+bprint(ip, "P");
+else
+bprint(ip, "S");
+if(ip->opre == 0xf2 || ip->opre == 0x66)
+bprint(ip, "D");
+else
+bprint(ip, "S");
+break;
+case 'T':
+if (ip->reg == 6 || ip->reg == 7)
+bprint(ip, "TR%d",ip->reg);
+else
+bprint(ip, "?");
+break;
+case 'W':
+if (ip->osize == 'Q' || ip->osize == 'L' && ip->rex & REXW)
+bprint(ip, "CDQE");
+else if (ip->osize == 'L')
+bprint(ip,"CWDE");
+else
+bprint(ip, "CBW");
+break;
+case 'd':
+bprint(ip,"%ux:%lux",ip->seg,ip->disp);
+break;
+case 'm':
+if (ip->mod == 3 && ip->osize != 'B') {
+if(fmt[1] != '*'){
+if(ip->opre != 0) {
+bprint(ip, "X%d", ip->rex&REXB? ip->base+8: ip->base);
+break;
+}
+} else
+fmt++;
+bprint(ip, "M%d", ip->base);
+break;
+}
+pea(ip);
+break;
+case 'e':
+pea(ip);
+break;
+case 'f':
+bprint(ip, "F%d", ip->base);
+break;
+case 'g':
+if (ip->reg < 6)
+bprint(ip,"%s",sreg[ip->reg]);
+else
+bprint(ip,"?");
+break;
+case 'p':
+v = (long)ip->imm;
+immediate(ip, v+ip->addr+ip->n);
+break;
+case 'r':
+if (ip->osize == 'B')
+bprint(ip,"%s", (ip->rex? breg64: breg)[ip->rex&REXR? ip->reg+8: ip->reg]);
+else
+bprint(ip, reg[ip->rex&REXR? ip->reg+8: ip->reg]);
+break;
+case 'w':
+if (ip->osize == 'Q' || ip->rex & REXW)
+bprint(ip, "CQO");
+else if (ip->osize == 'L')
+bprint(ip,"CDQ");
+else
+bprint(ip, "CWD");
+break;
+case 'M':
+if(ip->opre != 0)
+bprint(ip, "X%d", ip->rex&REXR? ip->reg+8: ip->reg);
+else
+bprint(ip, "M%d", ip->reg);
+break;
+case 'x':
+if (ip->mod == 3 && ip->osize != 'B') {
+bprint(ip, "X%d", ip->rex&REXB? ip->base+8: ip->base);
+break;
+}
+pea(ip);
+break;
+case 'X':
+bprint(ip, "X%d", ip->rex&REXR? ip->reg+8: ip->reg);
+break;
+default:
+bprint(ip, "%%%c", *fmt);
+break;
+}
+}
+*ip->curr = 0;
+}
 static int
 i386inst(Map *map, uvlong pc, char modifier, char *buf, int n)
 {
-	Instr instr;
-	Optable *op;
-
-	USED(modifier);
-	op = mkinstr(map, &instr, pc);
-	if (op == 0) {
-		errstr(buf, n);
-		return -1;
-	}
-	instr.curr = buf;
-	instr.end = buf+n-1;
-	prinstr(&instr, op->proto);
-	return instr.n;
+Instr instr;
+Optable *op;
+USED(modifier);
+op = mkinstr(map, &instr, pc);
+if (op == 0) {
+errstr(buf, n);
+return -1;
 }
-
+instr.curr = buf;
+instr.end = buf+n-1;
+prinstr(&instr, op->proto);
+return instr.n;
+}
 static int
 i386das(Map *map, uvlong pc, char *buf, int n)
 {
-	Instr instr;
-	int i;
-
-	if (mkinstr(map, &instr, pc) == 0) {
-		errstr(buf, n);
-		return -1;
-	}
-	for(i = 0; i < instr.n && n > 2; i++) {
-		_hexify(buf, instr.mem[i], 1);
-		buf += 2;
-		n -= 2;
-	}
-	*buf = 0;
-	return instr.n;
+Instr instr;
+int i;
+if (mkinstr(map, &instr, pc) == 0) {
+errstr(buf, n);
+return -1;
 }
-
+for(i = 0; i < instr.n && n > 2; i++) {
+_hexify(buf, instr.mem[i], 1);
+buf += 2;
+n -= 2;
+}
+*buf = 0;
+return instr.n;
+}
 static int
 i386instlen(Map *map, uvlong pc)
 {
-	Instr i;
-
-	if (mkinstr(map, &i, pc))
-		return i.n;
-	return -1;
+Instr i;
+if (mkinstr(map, &i, pc))
+return i.n;
+return -1;
 }
-
 static int
 i386foll(Map *map, uvlong pc, Rgetter rget, uvlong *foll)
 {
-	Instr i;
-	Optable *op;
-	ushort s;
-	uvlong l, addr;
-	vlong v;
-	int n;
-
-	op = mkinstr(map, &i, pc);
-	if (!op)
-		return -1;
-
-	n = 0;
-
-	switch(i.jumptype) {
-	case RET:		/* RETURN or LEAVE */
-	case Iw:		/* RETURN */
-		if (strcmp(op->proto, "LEAVE") == 0) {
-			if (geta(map, (*rget)(map, "BP"), &l) < 0)
-				return -1;
-		} else if (geta(map, (*rget)(map, mach->sp), &l) < 0)
-			return -1;
-		foll[0] = l;
-		return 1;
-	case Iwds:		/* pc relative JUMP or CALL*/
-	case Jbs:		/* pc relative JUMP or CALL */
-		v = (long)i.imm;
-		foll[0] = pc+v+i.n;
-		n = 1;
-		break;
-	case PTR:		/* seg:displacement JUMP or CALL */
-		foll[0] = (i.seg<<4)+i.disp;
-		return 1;
-	case JUMP:		/* JUMP or CALL EA */
-
-		if(i.mod == 3) {
-			foll[0] = (*rget)(map, reg[i.rex&REXB? i.base+8: i.base]);
-			return 1;
-		}
-			/* calculate the effective address */
-		addr = i.disp;
-		if (i.base >= 0) {
-			if (geta(map, (*rget)(map, reg[i.rex&REXB? i.base+8: i.base]), &l) < 0)
-				return -1;
-			addr += l;
-		}
-		if (i.index >= 0) {
-			if (geta(map, (*rget)(map, reg[i.rex&REXX? i.index+8: i.index]), &l) < 0)
-				return -1;
-			addr += l*(1<<i.ss);
-		}
-			/* now retrieve a seg:disp value at that address */
-		if (get2(map, addr, &s) < 0)			/* seg */
-			return -1;
-		foll[0] = s<<4;
-		addr += 2;
-		if (i.asize == 'L') {
-			if (geta(map, addr, &l) < 0)		/* disp32 */
-				return -1;
-			foll[0] += l;
-		} else {					/* disp16 */
-			if (get2(map, addr, &s) < 0)
-				return -1;
-			foll[0] += s;
-		}
-		return 1;
-	default:
-		break;
-	}		
-	if (strncmp(op->proto,"JMP", 3) == 0 || strncmp(op->proto,"CALL", 4) == 0)
-		return 1;
-	foll[n++] = pc+i.n;
-	return n;
+Instr i;
+Optable *op;
+ushort s;
+uvlong l, addr;
+vlong v;
+int n;
+op = mkinstr(map, &i, pc);
+if (!op)
+return -1;
+n = 0;
+switch(i.jumptype) {
+case RET:
+case Iw:
+if (strcmp(op->proto, "LEAVE") == 0) {
+if (geta(map, (*rget)(map, "BP"), &l) < 0)
+return -1;
+} else if (geta(map, (*rget)(map, mach->sp), &l) < 0)
+return -1;
+foll[0] = l;
+return 1;
+case Iwds:
+case Jbs:
+v = (long)i.imm;
+foll[0] = pc+v+i.n;
+n = 1;
+break;
+case PTR:
+foll[0] = (i.seg<<4)+i.disp;
+return 1;
+case JUMP:
+if(i.mod == 3) {
+foll[0] = (*rget)(map, reg[i.rex&REXB? i.base+8: i.base]);
+return 1;
+}
+addr = i.disp;
+if (i.base >= 0) {
+if (geta(map, (*rget)(map, reg[i.rex&REXB? i.base+8: i.base]), &l) < 0)
+return -1;
+addr += l;
+}
+if (i.index >= 0) {
+if (geta(map, (*rget)(map, reg[i.rex&REXX? i.index+8: i.index]), &l) < 0)
+return -1;
+addr += l*(1<<i.ss);
+}
+if (get2(map, addr, &s) < 0)
+return -1;
+foll[0] = s<<4;
+addr += 2;
+if (i.asize == 'L') {
+if (geta(map, addr, &l) < 0)
+return -1;
+foll[0] += l;
+} else {
+if (get2(map, addr, &s) < 0)
+return -1;
+foll[0] += s;
+}
+return 1;
+default:
+break;
+}
+if (strncmp(op->proto,"JMP", 3) == 0 || strncmp(op->proto,"CALL", 4) == 0)
+return 1;
+foll[n++] = pc+i.n;
+return n;
 }

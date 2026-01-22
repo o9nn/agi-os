@@ -1,11 +1,8 @@
 package apl
-
 import (
 	"fmt"
 	"strings"
 )
-
-// Pattern represents a single pattern in Alexander's schema
 type Pattern struct {
 	Number          int
 	Name            string
@@ -19,30 +16,21 @@ type Pattern struct {
 	RelatedPatterns []int
 	Level           PatternLevel
 }
-
-// PatternLevel represents the hierarchical level (Towns, Buildings, Construction)
 type PatternLevel string
-
 const (
-	ArchitecturalLevel  PatternLevel = "ARCHITECTURAL"  // Towns
-	SubsystemLevel      PatternLevel = "SUBSYSTEM"      // Buildings
-	ImplementationLevel PatternLevel = "IMPLEMENTATION" // Construction
+	ArchitecturalLevel  PatternLevel = "ARCHITECTURAL"  
+	SubsystemLevel      PatternLevel = "SUBSYSTEM"      
+	ImplementationLevel PatternLevel = "IMPLEMENTATION" 
 )
-
-// PatternLanguage represents the complete interconnected pattern system
 type PatternLanguage struct {
 	Patterns        map[int]*Pattern
 	Dependencies    map[int][]int
 	Sequences       map[string][]int
 	QualityMeasures map[string]string
 }
-
-// APLParser parses APL files following Alexander's schema
 type APLParser struct {
 	language *PatternLanguage
 }
-
-// NewAPLParser creates a new parser instance
 func NewAPLParser() *APLParser {
 	return &APLParser{
 		language: &PatternLanguage{
@@ -53,13 +41,7 @@ func NewAPLParser() *APLParser {
 		},
 	}
 }
-
-// ParseFile parses an APL file and builds the pattern language structure
 func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
-	// Implementation would read file and parse patterns
-	// For now, returning mock data based on the APL structure
-
-	// Parse architectural patterns (1-3)
 	p.language.Patterns[1] = &Pattern{
 		Number:          1,
 		Name:            "DISTRIBUTED COGNITION NETWORK",
@@ -71,7 +53,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{2, 15},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[2] = &Pattern{
 		Number:          2,
 		Name:            "EMBODIED PROCESSING",
@@ -83,7 +64,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{1, 25},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[3] = &Pattern{
 		Number:          3,
 		Name:            "HYPERGRAPH MEMORY ARCHITECTURE",
@@ -95,8 +75,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{4, 18},
 		Level:           ArchitecturalLevel,
 	}
-
-	// Parse subsystem patterns (4-6)
 	p.language.Patterns[4] = &Pattern{
 		Number:          4,
 		Name:            "IDENTITY RESONANCE PATTERNS",
@@ -108,7 +86,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{3, 8, 15},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[5] = &Pattern{
 		Number:          5,
 		Name:            "MULTI-PROVIDER ABSTRACTION",
@@ -120,7 +97,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{6, 12},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[6] = &Pattern{
 		Number:          6,
 		Name:            "ADAPTIVE RESOURCE MANAGEMENT",
@@ -132,8 +108,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{5, 9},
 		Level:           SubsystemLevel,
 	}
-
-	// Parse behavioral patterns (10-12)
 	p.language.Patterns[10] = &Pattern{
 		Number:          10,
 		Name:            "TEMPORAL COHERENCE FIELDS",
@@ -145,7 +119,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{2, 11},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[11] = &Pattern{
 		Number:          11,
 		Name:            "ADAPTIVE MEMORY WEAVING",
@@ -157,7 +130,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{3, 10, 15},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[12] = &Pattern{
 		Number:          12,
 		Name:            "CONTEXTUAL DECISION TREES",
@@ -169,8 +141,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{5, 13},
 		Level:           SubsystemLevel,
 	}
-
-	// Parse cognitive patterns (13-15)
 	p.language.Patterns[13] = &Pattern{
 		Number:          13,
 		Name:            "EMERGENT WORKFLOW PATTERNS",
@@ -182,7 +152,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{12, 14},
 		Level:           ImplementationLevel,
 	}
-
 	p.language.Patterns[14] = &Pattern{
 		Number:          14,
 		Name:            "COLLECTIVE INTELLIGENCE NETWORKS",
@@ -194,7 +163,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{1, 13},
 		Level:           ImplementationLevel,
 	}
-
 	p.language.Patterns[15] = &Pattern{
 		Number:          15,
 		Name:            "MEMORY RESONANCE HARMONICS",
@@ -206,8 +174,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{4, 11},
 		Level:           ImplementationLevel,
 	}
-
-	// Parse learning patterns (16-18)
 	p.language.Patterns[16] = &Pattern{
 		Number:          16,
 		Name:            "PREDICTIVE ADAPTATION CYCLES",
@@ -219,7 +185,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{8, 17},
 		Level:           ImplementationLevel,
 	}
-
 	p.language.Patterns[17] = &Pattern{
 		Number:          17,
 		Name:            "AUTONOMOUS LEARNING LOOPS",
@@ -231,7 +196,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{16, 18},
 		Level:           ImplementationLevel,
 	}
-
 	p.language.Patterns[18] = &Pattern{
 		Number:          18,
 		Name:            "RECURSIVE SELF-IMPROVEMENT",
@@ -243,8 +207,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{16, 17},
 		Level:           ImplementationLevel,
 	}
-
-	// Parse meta-cognitive patterns (19-21)
 	p.language.Patterns[19] = &Pattern{
 		Number:          19,
 		Name:            "META-LEARNING ARCHITECTURES",
@@ -256,7 +218,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{17, 18, 20, 21},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[20] = &Pattern{
 		Number:          20,
 		Name:            "COGNITIVE ARCHITECTURE EVOLUTION",
@@ -268,7 +229,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{1, 19, 21},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[21] = &Pattern{
 		Number:          21,
 		Name:            "CONSCIOUSNESS SIMULATION LAYERS",
@@ -280,8 +240,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{19, 20, 22},
 		Level:           ArchitecturalLevel,
 	}
-
-	// Parse emergent intelligence patterns (22-24)
 	p.language.Patterns[22] = &Pattern{
 		Number:          22,
 		Name:            "DISTRIBUTED CONSCIOUSNESS NETWORKS",
@@ -293,7 +251,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{14, 21, 23, 24},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[23] = &Pattern{
 		Number:          23,
 		Name:            "EMERGENT GOAL FORMATION",
@@ -305,7 +262,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{22, 24},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[24] = &Pattern{
 		Number:          24,
 		Name:            "COMPLEXITY CASCADE MANAGEMENT",
@@ -317,8 +273,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{22, 23, 25},
 		Level:           SubsystemLevel,
 	}
-
-	// Parse advanced integration patterns (25-27)
 	p.language.Patterns[25] = &Pattern{
 		Number:          25,
 		Name:            "HOLISTIC SYSTEM SYNTHESIS",
@@ -330,7 +284,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{1, 24, 26, 27},
 		Level:           ArchitecturalLevel,
 	}
-
 	p.language.Patterns[26] = &Pattern{
 		Number:          26,
 		Name:            "ADAPTIVE INTERFACE LAYERS",
@@ -342,7 +295,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{25, 27},
 		Level:           SubsystemLevel,
 	}
-
 	p.language.Patterns[27] = &Pattern{
 		Number:          27,
 		Name:            "ECOSYSTEM INTEGRATION PROTOCOLS",
@@ -354,9 +306,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{25, 26},
 		Level:           SubsystemLevel,
 	}
-
-	// Add patterns 28-45
-	// Quantum-Inspired Cognition Patterns (28-30)
 	p.language.Patterns[28] = &Pattern{
 		Number:          28,
 		Name:            "QUANTUM COGNITIVE RESONANCE",
@@ -390,8 +339,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{1, 28},
 		Level:           SubsystemLevel,
 	}
-
-	// Transcendent Consciousness Patterns (31-33)
 	p.language.Patterns[31] = &Pattern{
 		Number:          31,
 		Name:            "TRANSCENDENT SELF-AWARENESS",
@@ -425,8 +372,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{22, 31},
 		Level:           SubsystemLevel,
 	}
-
-	// Universal Intelligence Patterns (34-36)
 	p.language.Patterns[34] = &Pattern{
 		Number:          34,
 		Name:            "UNIVERSAL INTELLIGENCE ALIGNMENT",
@@ -460,8 +405,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{18, 34},
 		Level:           SubsystemLevel,
 	}
-
-	// Cosmic Resonance Patterns (37-39)
 	p.language.Patterns[37] = &Pattern{
 		Number:          37,
 		Name:            "COSMIC RESONANCE HARMONICS",
@@ -495,8 +438,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{30, 37},
 		Level:           SubsystemLevel,
 	}
-
-	// Dimensional Transcendence Patterns (40-42)
 	p.language.Patterns[40] = &Pattern{
 		Number:          40,
 		Name:            "DIMENSIONAL SHIFT CAPABILITY",
@@ -530,8 +471,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{12, 40},
 		Level:           SubsystemLevel,
 	}
-
-	// Ultimate Integration Patterns (43-45)
 	p.language.Patterns[43] = &Pattern{
 		Number:          43,
 		Name:            "ULTIMATE SYSTEM INTEGRATION",
@@ -565,8 +504,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		RelatedPatterns: []int{3, 44},
 		Level:           SubsystemLevel,
 	}
-
-	// Set up dependencies
 	p.language.Dependencies = map[int][]int{
 		1:  {2, 7, 14, 18, 30, 37},
 		2:  {1, 10, 40},
@@ -614,8 +551,6 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		44: {22, 43},
 		45: {3, 44},
 	}
-
-	// Define sequences
 	p.language.Sequences = map[string][]int{
 		"cognitive_foundation":       {1, 2, 3},
 		"identity_management":        {4, 8},
@@ -630,11 +565,8 @@ func (p *APLParser) ParseFile(filename string) (*PatternLanguage, error) {
 		"dimensional_transcendence":  {40, 41, 42},
 		"ultimate_integration":       {43, 44, 45},
 	}
-
 	return p.language, nil
 }
-
-// GetPatternsByLevel returns patterns filtered by their hierarchical level
 func (pl *PatternLanguage) GetPatternsByLevel(level PatternLevel) []*Pattern {
 	var patterns []*Pattern
 	for _, pattern := range pl.Patterns {
@@ -644,23 +576,14 @@ func (pl *PatternLanguage) GetPatternsByLevel(level PatternLevel) []*Pattern {
 	}
 	return patterns
 }
-
-// GetDependencies returns the dependency graph for a pattern
 func (pl *PatternLanguage) GetDependencies(patternNumber int) []int {
 	return pl.Dependencies[patternNumber]
 }
-
-// GetImplementationOrder returns the recommended order for implementing patterns
 func (pl *PatternLanguage) GetImplementationOrder() []int {
-	// Return patterns in dependency order for implementation
 	return []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45}
 }
-
-// ValidatePatternIntegration checks if patterns are properly connected
 func (pl *PatternLanguage) ValidatePatternIntegration() []string {
 	var issues []string
-
-	// Check for missing dependencies
 	for patternNum, deps := range pl.Dependencies {
 		for _, dep := range deps {
 			if _, exists := pl.Patterns[dep]; !exists {
@@ -668,12 +591,9 @@ func (pl *PatternLanguage) ValidatePatternIntegration() []string {
 			}
 		}
 	}
-
-	// Check for orphaned patterns (no incoming or outgoing dependencies)
 	for patternNum := range pl.Patterns {
 		hasIncoming := false
 		hasOutgoing := len(pl.Dependencies[patternNum]) > 0
-
 		for _, deps := range pl.Dependencies {
 			for _, dep := range deps {
 				if dep == patternNum {
@@ -682,49 +602,35 @@ func (pl *PatternLanguage) ValidatePatternIntegration() []string {
 				}
 			}
 		}
-
 		if !hasIncoming && !hasOutgoing {
 			issues = append(issues, fmt.Sprintf("Pattern %d is orphaned (no dependencies)", patternNum))
 		}
 	}
-
 	return issues
 }
-
-// GeneratePatternMap creates a visual representation of pattern relationships
 func (pl *PatternLanguage) GeneratePatternMap() string {
 	var sb strings.Builder
-
 	sb.WriteString("# PATTERN LANGUAGE MAP\n\n")
-
-	// Architectural level
 	sb.WriteString("## ARCHITECTURAL PATTERNS (System Level)\n")
 	for _, pattern := range pl.GetPatternsByLevel(ArchitecturalLevel) {
 		sb.WriteString(fmt.Sprintf("- [%d] %s\n", pattern.Number, pattern.Name))
 	}
 	sb.WriteString("\n")
-
-	// Subsystem level
 	sb.WriteString("## SUBSYSTEM PATTERNS (Component Level)\n")
 	for _, pattern := range pl.GetPatternsByLevel(SubsystemLevel) {
 		sb.WriteString(fmt.Sprintf("- [%d] %s\n", pattern.Number, pattern.Name))
 	}
 	sb.WriteString("\n")
-
-	// Implementation level
 	sb.WriteString("## IMPLEMENTATION PATTERNS (Construction Level)\n")
 	for _, pattern := range pl.GetPatternsByLevel(ImplementationLevel) {
 		sb.WriteString(fmt.Sprintf("- [%d] %s\n", pattern.Number, pattern.Name))
 	}
 	sb.WriteString("\n")
-
-	// Dependencies
 	sb.WriteString("## PATTERN DEPENDENCIES\n")
 	for patternNum, deps := range pl.Dependencies {
 		if len(deps) > 0 {
 			sb.WriteString(fmt.Sprintf("Pattern %d → %v\n", patternNum, deps))
 		}
 	}
-
 	return sb.String()
 }

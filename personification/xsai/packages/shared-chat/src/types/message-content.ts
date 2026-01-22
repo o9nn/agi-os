@@ -5,10 +5,7 @@ export interface AudioContentPart {
   }
   type: 'input_audio'
 }
-
-/** @internal */
 export type CommonContentPart = AudioContentPart | FileContentPart | ImageContentPart | TextContentPart
-
 export interface FileContentPart {
   file: {
     file_data?: string
@@ -17,7 +14,6 @@ export interface FileContentPart {
   }
   type: 'file'
 }
-
 export interface ImageContentPart {
   image_url: {
     detail?: 'auto' | 'high' | 'low'
@@ -25,12 +21,10 @@ export interface ImageContentPart {
   }
   type: 'image_url'
 }
-
 export interface RefusalContentPart {
   refusal: string
   type: 'refusal'
 }
-
 export interface TextContentPart {
   text: string
   type: 'text'

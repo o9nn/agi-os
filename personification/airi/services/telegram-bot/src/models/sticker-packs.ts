@@ -1,8 +1,6 @@
 import { desc } from 'drizzle-orm'
-
 import { useDrizzle } from '../db'
 import { stickerPacksTable } from '../db/schema'
-
 export async function recordStickerPack(platformId: string, name: string, platform = 'telegram') {
   await useDrizzle()
     .insert(stickerPacksTable)
@@ -13,7 +11,6 @@ export async function recordStickerPack(platformId: string, name: string, platfo
       description: '',
     })
 }
-
 export async function listStickerPacks() {
   return await useDrizzle()
     .select()

@@ -1,27 +1,21 @@
 package format
-
 import (
 	"fmt"
 	"math"
 )
-
 const (
 	Byte = 1
-
 	KiloByte = Byte * 1000
 	MegaByte = KiloByte * 1000
 	GigaByte = MegaByte * 1000
 	TeraByte = GigaByte * 1000
-
 	KibiByte = Byte * 1024
 	MebiByte = KibiByte * 1024
 	GibiByte = MebiByte * 1024
 )
-
 func HumanBytes(b int64) string {
 	var value float64
 	var unit string
-
 	switch {
 	case b >= TeraByte:
 		value = float64(b) / TeraByte
@@ -38,7 +32,6 @@ func HumanBytes(b int64) string {
 	default:
 		return fmt.Sprintf("%d B", b)
 	}
-
 	switch {
 	case value >= 10:
 		return fmt.Sprintf("%d %s", int(value), unit)
@@ -48,7 +41,6 @@ func HumanBytes(b int64) string {
 		return fmt.Sprintf("%d %s", int(value), unit)
 	}
 }
-
 func HumanBytes2(b uint64) string {
 	switch {
 	case b >= GibiByte:

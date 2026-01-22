@@ -1,10 +1,7 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-// import starlightAutoSidebar from 'starlight-auto-sidebar'
 import starlightSidebarTopics from 'starlight-sidebar-topics'
 import starlightThemeNova from 'starlight-theme-nova'
-
-// https://astro.build/config
 export default defineConfig({
   base: '/docs',
   integrations: [
@@ -18,11 +15,9 @@ export default defineConfig({
       favicon: '/favicon.png',
       logo: {
         alt: '@moeru-ai/chat',
-        // replacesTitle: true,
         src: './public/favicon.png',
       },
       plugins: [
-        // starlightAutoSidebar(),
         starlightThemeNova({
           nav: [
             {

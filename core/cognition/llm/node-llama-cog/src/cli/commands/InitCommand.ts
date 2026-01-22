@@ -21,14 +21,12 @@ import {getReadablePath} from "../utils/getReadablePath.js";
 import {createModelDownloader} from "../../utils/createModelDownloader.js";
 import {withCliCommandDescriptionDocsUrl} from "../utils/withCliCommandDescriptionDocsUrl.js";
 import {resolveModelDestination} from "../../utils/resolveModelDestination.js";
-
 type InitCommand = {
     name?: string,
     template?: string,
     model?: string,
     gpu?: BuildGpu | "auto"
 };
-
 export const InitCommand: CommandModule<object, InitCommand> = {
     command: "init [name]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -52,13 +50,10 @@ export const InitCommand: CommandModule<object, InitCommand> = {
             })
             .option("gpu", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return undefined;
-
                     return parseNodeLlamaCppGpuOption(value);
                 },
                 defaultDescription: "Uses the latest local build, and fallbacks to \"auto\"",
@@ -67,7 +62,6 @@ export const InitCommand: CommandModule<object, InitCommand> = {
     },
     handler: InitCommandHandler
 };
-
 export const CreateCliCommand: CommandModule<object, InitCommand> = {
     command: "$0",
     describe: withCliCommandDescriptionDocsUrl(
@@ -77,7 +71,6 @@ export const CreateCliCommand: CommandModule<object, InitCommand> = {
     builder: InitCommand.builder,
     handler: InitCommandHandler
 };
-
 export async function InitCommandHandler({name, template, model, gpu}: InitCommand) {
     const currentDirectory = path.resolve(process.cwd());
     const projectName = (name != null && validateNpmPackageName(name ?? "").validForNewPackages)
@@ -88,7 +81,6 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
             ? projectTemplates.find((item) => item.name === template)
             : undefined
     ) ?? await askForTemplate();
-
     async function resolveModelUri() {
         if (model != null && model !== "") {
             try {
@@ -98,10 +90,8 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
                 else if (resolvedModelDestination.type === "url")
                     return resolvedModelDestination.url;
             } catch (err) {
-                // do nothing
             }
         }
-
         const llama = gpu == null
             ? await getLlama("lastBuild", {
                 logLevel: LlamaLogLevel.error
@@ -110,50 +100,40 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
                 gpu,
                 logLevel: LlamaLogLevel.error
             });
-
         return await interactivelyAskForModel({
             llama,
             allowLocalModels: false,
             downloadIntent: false
         });
     }
-
     const modelUri = await resolveModelUri();
-
     const targetDirectory = path.join(currentDirectory, projectName);
     const readableTargetDirectoryPath = getReadablePath(targetDirectory);
-
     await withOra({
         loading: `Scaffolding a ${chalk.yellow(selectedTemplateOption.title)} project to ${chalk.yellow(readableTargetDirectoryPath)}`,
         success: `Scaffolded a ${chalk.yellow(selectedTemplateOption.title)} project to ${chalk.yellow(readableTargetDirectoryPath)}`,
         fail: `Failed to scaffold a ${chalk.yellow(selectedTemplateOption.title)} project to ${chalk.yellow(readableTargetDirectoryPath)}`
     }, async () => {
         const startTime = Date.now();
-        const minScaffoldTime = 1000 * 2; // ensure the IDE has enough time to refresh and show some progress
+        const minScaffoldTime = 1000 * 2; 
         const template = await loadTemplate(selectedTemplateOption);
-
         await fs.ensureDir(targetDirectory);
-
         async function resolveModelInfo() {
             const resolvedModelDestination = resolveModelDestination(modelUri);
-
             if (resolvedModelDestination.type === "uri")
                 return {
                     modelUriOrUrl: resolvedModelDestination.uri,
                     modelUriOrFilename: resolvedModelDestination.uri,
                     cancelDownloader: async () => void 0
                 };
-
             if (resolvedModelDestination.type === "file")
                 throw new Error("Unexpected file model destination");
-
             const modelDownloader = await createModelDownloader({
                 modelUri: resolvedModelDestination.url,
                 showCliProgress: false,
                 deleteTempFileOnCancel: false
             });
             const modelEntrypointFilename = modelDownloader.entrypointFilename;
-
             return {
                 modelUriOrUrl: resolvedModelDestination.url,
                 modelUriOrFilename: modelEntrypointFilename,
@@ -161,14 +141,11 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
                     try {
                         await modelDownloader.cancel();
                     } catch (err) {
-                        // do nothing
                     }
                 }
             };
         }
-
         const {modelUriOrFilename, modelUriOrUrl, cancelDownloader} = await resolveModelInfo();
-
         await scaffoldProjectTemplate({
             template,
             directoryPath: targetDirectory,
@@ -179,12 +156,9 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
                 [ProjectTemplateParameter.CurrentModuleVersion]: await getModuleVersion()
             }
         });
-
         await cancelDownloader();
-
         await new Promise((resolve) => setTimeout(resolve, Math.max(0, minScaffoldTime - (Date.now() - startTime))));
     });
-
     console.info(chalk.green("Done."));
     console.info();
     console.info("Now run these commands:");
@@ -196,18 +170,15 @@ export async function InitCommandHandler({name, template, model, gpu}: InitComma
     console.info(chalk.gray("Note: running \"npm install\" may take a little while since it also downloads the model you selected"));
     process.exit(0);
 }
-
 async function askForTemplate() {
     const selectedTemplateOption = await basicChooseFromListConsoleInteraction({
         title: chalk.bold("Select a template:"),
         footer(item) {
             if (item.description == null)
                 return undefined;
-
             const leftPad = 3;
             const maxWidth = Math.max(1, process.stdout.columns - 2 - leftPad);
             const lines = splitAnsiToLines(item.description, maxWidth);
-
             return " \n" +
                 " ".repeat(leftPad) + chalk.bold.gray("Template description") + "\n" +
                 lines.map((line) => (" ".repeat(leftPad) + line)).join("\n");
@@ -226,18 +197,14 @@ async function askForTemplate() {
         renderSummaryOnExit(item) {
             if (item == null)
                 return "";
-
             return logSymbols.success + " Selected template " + chalk.blue(item.title);
         },
         exitOnCtrlC: true
     });
-
     if (selectedTemplateOption == null)
         throw new Error("No template selected");
-
     return selectedTemplateOption;
 }
-
 async function askForProjectName(currentDirectory: string) {
     console.info();
     const projectName = await consolePromptQuestion(chalk.bold("Enter a project name:") + chalk.dim(" (node-llama-cpp-project) "), {
@@ -245,43 +212,31 @@ async function askForProjectName(currentDirectory: string) {
         exitOnCtrlC: true,
         async validate(input) {
             const {validForNewPackages, errors} = validateNpmPackageName(input);
-
             if (!validForNewPackages)
                 return (errors ?? ["The given project name cannot be used in a package.json file"]).join("\n");
-
             if (await fs.pathExists(path.join(currentDirectory, input)))
                 return "A directory with the given project name already exists";
-
             return null;
         },
         renderSummaryOnExit(item) {
             if (item == null)
                 return "";
-
             return logSymbols.success + " Entered project name " + chalk.blue(item);
         }
     });
-
     if (projectName == null)
         throw new Error("No project name entered");
-
     return projectName;
 }
-
 function renderSelectableItem(text: string, focused: boolean) {
     if (focused)
         return " " + chalk.cyan(arrowChar) + " " + chalk.cyan(text);
-
     return " * " + text;
 }
-
 async function loadTemplate(templateOption: ProjectTemplateOption) {
     const templateFilePath = path.join(packedProjectTemplatesDirectory, `${templateOption.name}.json`);
-
     if (!(await fs.pathExists(templateFilePath)))
         throw new Error(`Template file was not found for template "${templateOption.title}" ("${templateOption.name}")`);
-
     const template: ProjectTemplate = await fs.readJSON(templateFilePath);
-
     return template;
 }

@@ -1,30 +1,20 @@
-/*
- * External varibles - most are in glob.c.
- */
-
-extern char	**argv;			/* global so everyone can use them */
+extern char	**argv;
 extern int	argc;
-
-extern int	x_stat;			/* program exit status */
-extern int	debug;			/* debug flag */
-extern int	ignore;			/* what we do with FATAL errors */
-
-extern long	lineno;			/* line number */
-extern long	position;		/* byte position */
-extern char	*prog_name;		/* and program name - for errors */
-extern char	*temp_file;		/* temporary file - for some programs */
-extern char	*fontencoding;		/* text font encoding scheme */
-
-extern int	dobbox;			/* enable BoundingBox stuff if TRUE */
-extern double	pageheight;		/* only for BoundingBox calculations! */
+extern int	x_stat;
+extern int	debug;
+extern int	ignore;
+extern long	lineno;
+extern long	position;
+extern char	*prog_name;
+extern char	*temp_file;
+extern char	*fontencoding;
+extern int	dobbox;
+extern double	pageheight;
 extern double	pagewidth;
-
-extern int	reading;		/* input */
-extern int	writing;		/* and output encoding */
-
-extern char	*optarg;		/* for getopt() */
+extern int	reading;
+extern int	writing;
+extern char	*optarg;
 extern int	optind;
-
 extern int	cat(char *);
 extern void	error(int, char *, ...);
 extern int	in_olist(int);

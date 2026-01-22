@@ -1,4 +1,3 @@
-
 window.addEventListener('DOMContentLoaded', async event => {
   const r = await fetch("../pagefind/locales.json");
   const translations = await r.json();

@@ -1,5 +1,4 @@
 package parser
-
 import (
 	"os"
 	"os/user"
@@ -7,7 +6,6 @@ import (
 	"runtime"
 	"testing"
 )
-
 func TestExpandPath(t *testing.T) {
 	mockCurrentUser := func() (*user.User, error) {
 		return &user.User{
@@ -20,7 +18,6 @@ func TestExpandPath(t *testing.T) {
 			}(),
 		}, nil
 	}
-
 	mockLookupUser := func(username string) (*user.User, error) {
 		fakeUsers := map[string]string{
 			"testuser": func() string {
@@ -36,7 +33,6 @@ func TestExpandPath(t *testing.T) {
 				return "/home/anotheruser"
 			}(),
 		}
-
 		if homeDir, ok := fakeUsers[username]; ok {
 			return &user.User{
 				Username: username,
@@ -45,17 +41,14 @@ func TestExpandPath(t *testing.T) {
 		}
 		return nil, os.ErrNotExist
 	}
-
 	pwd, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	t.Run("unix tests", func(t *testing.T) {
 		if runtime.GOOS == "windows" {
 			return
 		}
-
 		tests := []struct {
 			path        string
 			relativeDir string
@@ -73,24 +66,20 @@ func TestExpandPath(t *testing.T) {
 			{".", "", pwd, false},
 			{"somefile", "somedir", filepath.Join(pwd, "somedir", "somefile"), false},
 		}
-
 		for _, test := range tests {
 			result, err := expandPathImpl(test.path, test.relativeDir, mockCurrentUser, mockLookupUser)
 			if (err != nil) != test.shouldErr {
 				t.Errorf("expandPathImpl(%q) returned error: %v, expected error: %v", test.path, err != nil, test.shouldErr)
 			}
-
 			if result != test.expected && !test.shouldErr {
 				t.Errorf("expandPathImpl(%q) = %q, want %q", test.path, result, test.expected)
 			}
 		}
 	})
-
 	t.Run("windows tests", func(t *testing.T) {
 		if runtime.GOOS != "windows" {
 			return
 		}
-
 		tests := []struct {
 			path        string
 			relativeDir string
@@ -108,13 +97,11 @@ func TestExpandPath(t *testing.T) {
 			{".", "", pwd, false},
 			{"somefile", "somedir", filepath.Join(pwd, "somedir", "somefile"), false},
 		}
-
 		for _, test := range tests {
 			result, err := expandPathImpl(test.path, test.relativeDir, mockCurrentUser, mockLookupUser)
 			if (err != nil) != test.shouldErr {
 				t.Errorf("expandPathImpl(%q) returned error: %v, expected error: %v", test.path, err != nil, test.shouldErr)
 			}
-
 			if result != test.expected && !test.shouldErr {
 				t.Errorf("expandPathImpl(%q) = %q, want %q", test.path, result, test.expected)
 			}

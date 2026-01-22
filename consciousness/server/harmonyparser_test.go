@@ -1,11 +1,9 @@
 package server
-
 import (
 	"fmt"
 	"reflect"
 	"testing"
 )
-
 func TestHeaderParsing(t *testing.T) {
 	tests := []struct {
 		in, wantRole, wantChannel, wantRecipient string
@@ -28,42 +26,36 @@ func TestHeaderParsing(t *testing.T) {
 			wantChannel:   "analysis",
 			wantRecipient: "functions.get_weather",
 		},
-		// special case where the role is replaced by the recipient (matches reference code)
 		{
 			in:            "to=functions.get_weather<|channel|>analysis",
 			wantRole:      "tool",
 			wantChannel:   "analysis",
 			wantRecipient: "functions.get_weather",
 		},
-		// extra token after the recipient is ignored
 		{
 			in:            "assistant to=functions.get_weather abc<|channel|>analysis",
 			wantRole:      "assistant",
 			wantChannel:   "analysis",
 			wantRecipient: "functions.get_weather",
 		},
-		// with constrain tag, recipient after channel tag
 		{
 			in:            "assistant<|channel|>commentary to=functions.get_weather <|constrain|>json",
 			wantRole:      "assistant",
 			wantChannel:   "commentary",
 			wantRecipient: "functions.get_weather",
 		},
-		// with constrain tag, recipient before channel tag
 		{
 			in:            "assistant to=functions.get_weather<|channel|>commentary <|constrain|>json",
 			wantRole:      "assistant",
 			wantChannel:   "commentary",
 			wantRecipient: "functions.get_weather",
 		},
-		// constrain tag without space
 		{
 			in:            "assistant<|channel|>commentary to=functions.get_weather<|constrain|>json",
 			wantRole:      "assistant",
 			wantChannel:   "commentary",
 			wantRecipient: "functions.get_weather",
 		},
-		// constrain tag without space, different order
 		{
 			in:            "assistant to=functions.get_weather<|channel|>commentary<|constrain|>json",
 			wantRole:      "assistant",
@@ -78,7 +70,6 @@ func TestHeaderParsing(t *testing.T) {
 			HeaderEndTag:    "<|message|>",
 		}
 		header := parser.parseHeader(tt.in)
-
 		if header.Role != tt.wantRole {
 			t.Errorf("case %d: got role \"%s\", want \"%s\"", i, header.Role, tt.wantRole)
 		}
@@ -90,7 +81,6 @@ func TestHeaderParsing(t *testing.T) {
 		}
 	}
 }
-
 func TestHarmonyParserHeaderEvent(t *testing.T) {
 	tests := []struct {
 		in, wantRole, wantChannel, wantRecipient string
@@ -135,9 +125,7 @@ func TestHarmonyParserHeaderEvent(t *testing.T) {
 		if len(gotEvents) == 0 {
 			t.Errorf("case %d: got no events, want at least one", i)
 		}
-
 		var firstHeaderEvent *HarmonyEventHeaderComplete
-		// print events
 		for _, event := range gotEvents {
 			fmt.Printf("event: %+v\n", event)
 		}
@@ -147,7 +135,6 @@ func TestHarmonyParserHeaderEvent(t *testing.T) {
 				break
 			}
 		}
-
 		if firstHeaderEvent == nil {
 			t.Errorf("case %d: got no header complete event, want one", i)
 			continue
@@ -158,7 +145,6 @@ func TestHarmonyParserHeaderEvent(t *testing.T) {
 		}
 	}
 }
-
 func TestHarmonyParserNonStreaming(t *testing.T) {
 	tests := []struct {
 		in            string
@@ -234,13 +220,11 @@ func TestHarmonyParserNonStreaming(t *testing.T) {
 		}
 	}
 }
-
 func TestHarmonyParserStreaming(t *testing.T) {
 	type step struct {
 		input      string
 		wantEvents []HarmonyEvent
 	}
-
 	cases := []struct {
 		desc          string
 		implicitStart bool
@@ -446,7 +430,6 @@ func TestHarmonyParserStreaming(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tc := range cases {
 		t.Run(tc.desc, func(t *testing.T) {
 			parser := HarmonyParser{
@@ -457,7 +440,6 @@ func TestHarmonyParserStreaming(t *testing.T) {
 			if tc.implicitStart {
 				parser.AddImplicitStart()
 			}
-
 			for i, step := range tc.steps {
 				gotEvents := parser.AddContent(step.input)
 				if !reflect.DeepEqual(gotEvents, step.wantEvents) {

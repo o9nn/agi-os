@@ -1,24 +1,14 @@
 #pragma	src	"/sys/src/libg"
 #pragma	lib	"libg.a"
-
-enum	/* constants for I/O to devgraphics */
-{
-	Tilehdr = 40,
-	Tilesize = 8000
-};
-
-/*
- *  you may think it's a blit, but it's gnot
- */
 enum
 {
-	EMAXMSG = 128+8192,	/* size of 9p header+data */
+Tilehdr = 40,
+Tilesize = 8000
 };
-
-/*
- * Types
- */
-
+enum
+{
+EMAXMSG = 128+8192,
+};
 typedef struct	Bitmap		Bitmap;
 typedef struct	Display	Display;
 typedef struct	Point		Point;
@@ -38,245 +28,187 @@ typedef struct	Ebuf		Ebuf;
 typedef struct	RGB		RGB;
 typedef struct	Linedesc	Linedesc;
 typedef struct	DRefret	DRefret;
-
 struct DRefret
 {
-	int		n;	/* number of bytes */
-	int		dy;	/* number of lines */
-	uchar	*dp;	/* pointer to data */
+int		n;
+int		dy;
+uchar	*dp;
 };
-
 struct	Point
 {
-	int	x;
-	int	y;
+int	x;
+int	y;
 };
-
 struct Rectangle
 {
-	Point min;
-	Point max;
+Point min;
+Point max;
 };
-
 typedef	DRefret DRefresh(Display*, int, Rectangle, uchar*, uchar*, int);
-
 struct	Bitmap
 {
-	Rectangle		r;		/* rectangle in data area, local coords */
-	Rectangle 	clipr;		/* clipping region */
-	int			ldepth;	/* log base 2 of number of bits per pixel */
-	ulong		*base;	/* pointer to start of data */
-	int			zero;		/* base+zero=&word containing (0,0) */
-	ulong		width;	/* width in words of total data area */
-	Display		*display;	/* if present */
+Rectangle		r;
+Rectangle 	clipr;
+int			ldepth;
+ulong		*base;
+int			zero;
+ulong		width;
+Display		*display;
 };
-
 struct	Display
 {
-	uchar		*data;	/* transfer buffer */
-	Rectangle		r;
-	int			ldepth;
-	Rectangle		bb;		/* bounding box of changes */
-	int			waste;	/* unused part of bb */
-	Rectangle		bound;	/* memory for boundin/boundout */
-	Bitmap		*image;	/* owner */
-	int			id;
-	int			fd;
-	int			ctlfd;
-	int			local;
-	int			bytewidth;
-	void			*drdata1;	/* storage for drefresh() */
-	void			*drdata2;	/* storage for drefresh() */
-	DRefresh		*drefresh;
+uchar		*data;
+Rectangle		r;
+int			ldepth;
+Rectangle		bb;
+int			waste;
+Rectangle		bound;
+Bitmap		*image;
+int			id;
+int			fd;
+int			ctlfd;
+int			local;
+int			bytewidth;
+void			*drdata1;
+void			*drdata2;
+DRefresh		*drefresh;
 };
-
-
 struct	Mouse
 {
-	int	buttons;	/* bit array: LMR=124 */
-	Point	xy;
-	ulong	msec;
+int	buttons;
+Point	xy;
+ulong	msec;
 };
-
 struct	Cursor
 {
-	Point	offset;
-	uchar	clr[2*16];
-	uchar	set[2*16];
+Point	offset;
+uchar	clr[2*16];
+uchar	set[2*16];
 };
-
 struct Menu
 {
-	char	**item;
-	char	*(*gen)(int);
-	int	lasthit;
+char	**item;
+char	*(*gen)(int);
+int	lasthit;
 };
-
 struct Linedesc
 {
-	int	x0;
-	int	y0;
-	char	xmajor;
-	char	slopeneg;
-	long	dminor;
-	long	dmajor;
+int	x0;
+int	y0;
+char	xmajor;
+char	slopeneg;
+long	dminor;
+long	dmajor;
 };
-
-/*
- * Subfonts
- *
- * given char c, Subfont *f, Fontchar *i, and Point p, one says
- *	i = f->info+c;
- *	bitblt(b, Pt(p.x+i->left,p.y+i->top),
- *		bitmap, Rect(i->x,i->top,(i+1)->x,i->bottom),
- *		fc);
- *	p.x += i->width;
- * where bitmap b is the repository of the images.
- *
- */
-
 struct	Fontchar
 {
-	short	x;		/* left edge of bits */
-	uchar	top;		/* first non-zero scan-line */
-	uchar	bottom;		/* last non-zero scan-line + 1 */
-	char	left;		/* offset of baseline */
-	uchar	width;		/* width of baseline */
+short	x;
+uchar	top;
+uchar	bottom;
+char	left;
+uchar	width;
 };
-
 struct	Subfont
 {
-	short	n;		/* number of chars in font */
-	uchar	height;		/* height of bitmap */
-	char	ascent;		/* top of bitmap to baseline */
-	Fontchar *info;		/* n+1 character descriptors */
-	Bitmap	*bits;		/* of font */
+short	n;
+uchar	height;
+char	ascent;
+Fontchar *info;
+Bitmap	*bits;
 };
-
 enum
 {
-	/* starting values */
-	LOG2NFCACHE =	6,
-	NFCACHE =	(1<<LOG2NFCACHE),	/* #chars cached */
-	NFLOOK =	5,			/* #chars to scan in cache */
-	NFSUBF =	2,			/* #subfonts to cache */
-	/* max value */
-	MAXFCACHE =	2048+NFLOOK,		/* generous upper limit */
-	MAXSUBF =	50,			/* generous upper limit */
-	/* deltas */
-	DSUBF = 	4,
-	/* expiry ages */
-	SUBFAGE	=	10000,
-	CACHEAGE =	10000,
+LOG2NFCACHE =	6,
+NFCACHE =	(1<<LOG2NFCACHE),
+NFLOOK =	5,
+NFSUBF =	2,
+MAXFCACHE =	2048+NFLOOK,
+MAXSUBF =	50,
+DSUBF = 	4,
+SUBFAGE	=	10000,
+CACHEAGE =	10000,
 };
-
 struct Cachefont
 {
-	Rune	min;	/* lowest rune value to be taken from subfont */
-	Rune	max;	/* highest rune value+1 to be taken from subfont */
-	int	offset;	/* position in subfont of character at min */
-	int	abs;	/* name has been made absolute */
-	char	*name;
+Rune	min;
+Rune	max;
+int	offset;
+int	abs;
+char	*name;
 };
-
 struct Cacheinfo
 {
-	Rune		value;	/* value of character at this slot in cache */
-	ushort		age;
-	ulong		xright;	/* right edge of bits */
-	Fontchar;
+Rune		value;
+ushort		age;
+ulong		xright;
+Fontchar;
 };
-
 struct Cachesubf
 {
-	ulong		age;	/* for replacement */
-	Cachefont	*cf;	/* font info that owns us */
-	Subfont		*f;	/* attached subfont */
+ulong		age;
+Cachefont	*cf;
+Subfont		*f;
 };
-
 struct Font
 {
-	char		*name;
-	short		height;	/* max height of bitmap, interline spacing */
-	short		ascent;	/* top of bitmap to baseline */
-	int			maxldepth;	/* over all loaded subfonts */
-	short		width;	/* widest so far; used in caching only */	
-	short		ldepth;	/* of images */
-	short		nsub;	/* number of subfonts */
-	ulong		age;	/* increasing counter; used for LRU */
-	int		ncache;	/* size of cache */
-	int		nsubf;	/* size of subfont list */
-	Cacheinfo	*cache;
-	Cachesubf	*subf;
-	Cachefont	**sub;	/* as read from file */
-	Bitmap	*cacheimage;
+char		*name;
+short		height;
+short		ascent;
+int			maxldepth;
+short		width;
+short		ldepth;
+short		nsub;
+ulong		age;
+int		ncache;
+int		nsubf;
+Cacheinfo	*cache;
+Cachesubf	*subf;
+Cachefont	**sub;
+Bitmap	*cacheimage;
 };
-
 struct	Event
 {
-	int	kbdc;
-	Mouse	mouse;
-	int	n;		/* number of characters in mesage */
-	uchar	data[EMAXMSG];	/* message from an arbitrary file descriptor */
+int	kbdc;
+Mouse	mouse;
+int	n;
+uchar	data[EMAXMSG];
 };
-
 struct Slave{
-	int	pid;
-	Ebuf	*head;		/* queue of messages for this descriptor */
-	Ebuf	*tail;
+int	pid;
+Ebuf	*head;
+Ebuf	*tail;
 };
-
 struct Ebuf{
-	Ebuf	*next;
-	int	n;		/* number of bytes in buf */
-	uchar	buf[EMAXMSG];
+Ebuf	*next;
+int	n;
+uchar	buf[EMAXMSG];
 };
-
 struct RGB
 {
-	ulong	red;
-	ulong	green;
-	ulong	blue;
+ulong	red;
+ulong	green;
+ulong	blue;
 };
-
-/*
- * Codes for bitblt etc.
- *
- *	       D
- *	     0   1
- *         ---------
- *	 0 | 1 | 2 |
- *     S   |---|---|
- * 	 1 | 4 | 8 |
- *         ---------
- *
- *	Usually used as D|S; DorS is so tracebacks are readable.
- */
 typedef
 enum	Fcode
 {
-	Zero		= 0x0,
-	DnorS		= 0x1,
-	DandnotS	= 0x2,
-	notS		= 0x3,
-	notDandS	= 0x4,
-	notD		= 0x5,
-	DxorS		= 0x6,
-	DnandS		= 0x7,
-	DandS		= 0x8,
-	DxnorS		= 0x9,
-	D		= 0xA,
-	DornotS		= 0xB,
-	S		= 0xC,
-	notDorS		= 0xD,
-	DorS		= 0xE,
-	F		= 0xF,
+Zero		= 0x0,
+DnorS		= 0x1,
+DandnotS	= 0x2,
+notS		= 0x3,
+notDandS	= 0x4,
+notD		= 0x5,
+DxorS		= 0x6,
+DnandS		= 0x7,
+DandS		= 0x8,
+DxnorS		= 0x9,
+D		= 0xA,
+DornotS		= 0xB,
+S		= 0xC,
+notDorS		= 0xD,
+DorS		= 0xE,
+F		= 0xF,
 } Fcode;
-
-/*
- * Miscellany
- */
-
 extern Point	 add(Point, Point), sub(Point, Point);
 extern Point	 mul(Point, int), div(Point, int);
 extern Rectangle rsubp(Rectangle, Point), raddp(Rectangle, Point), inset(Rectangle, int);
@@ -326,7 +258,6 @@ extern void	 wrcolmap(Bitmap*, RGB*);
 extern void	 rdcolmap(Bitmap*, RGB*);
 extern Subfont*	 rdsubfontfile(int, Bitmap*);
 extern void	_unpackinfo(Fontchar*, uchar*, int);
-
 extern int	 ptinrect(Point, Rectangle), rectinrect(Rectangle, Rectangle);
 extern int	 rectXrect(Rectangle, Rectangle);
 extern int	 eqpt(Point, Point), eqrect(Rectangle, Rectangle);
@@ -339,7 +270,6 @@ extern void	 bexit(void);
 extern int	 _clipline(Rectangle, Point*, Point*, Linedesc*);
 extern int	 clipline(Rectangle, Point*, Point*);
 extern int	 clipr(Bitmap*, Rectangle);
-
 extern void	 einit(ulong);
 extern ulong	 estart(ulong, int, int);
 extern ulong	 etimer(ulong, int);
@@ -351,42 +281,33 @@ extern int	 ekbd(void);
 extern int	 ecanread(ulong);
 extern int	 ecanmouse(void);
 extern int	 ecankbd(void);
-extern void	 ereshaped(Rectangle);	/* supplied by user */
+extern void	 ereshaped(Rectangle);
 extern int	 menuhit(int, Mouse*, Menu*);
 extern Rectangle getrect(int, Mouse*);
 extern ulong	 rgbpix(Bitmap*, RGB);
 extern int	_gminor(long, Linedesc*);
-
 enum{
-	Emouse		= 1,
-	Ekeyboard	= 2,
+Emouse		= 1,
+Ekeyboard	= 2,
 };
-
 enum
 {
-	MAXSLAVE = 32,
+MAXSLAVE = 32,
 };
-
 #define	Pt(x, y)		((Point){(x), (y)})
 #define	Rect(x1, y1, x2, y2)	((Rectangle){Pt(x1, y1), Pt(x2, y2)})
 #define	Rpt(p1, p2)		((Rectangle){(p1), (p2)})
-
-
 #define	Dx(r)	((r).max.x-(r).min.x)
 #define	Dy(r)	((r).max.y-(r).min.y)
-
 extern	Bitmap	screen;
 extern	Font	*font;
 extern	uchar	_btmp[8192];
-
 extern	int	_mousefd;
 extern	int	_cursorfd;
-
 #define	BGSHORT(p)		(((p)[0]<<0) | ((p)[1]<<8))
 #define	BGLONG(p)		((BGSHORT(p)<<0) | (BGSHORT(p+2)<<16))
 #define	BPSHORT(p, v)		((p)[0]=(v), (p)[1]=((v)>>8))
 #define	BPLONG(p, v)		(BPSHORT(p, (v)), BPSHORT(p+2, (v)>>16))
-
 ulong	*wordaddr(Bitmap*, Point);
 uchar	*byteaddr(Bitmap*, Point);
 int		dfree(Display*);
@@ -410,9 +331,5 @@ void		_bltinit(void);
 Bitmap*	battach(Bitmap*, int, int);
 int		readmouse(Mouse*);
 int		atomouse(Mouse*, char*, int);
-
-/*
- * Refresh functions
- */
 DRefresh	drtexture;
 DRefresh	drbackstore;

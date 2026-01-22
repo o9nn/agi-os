@@ -1,15 +1,12 @@
 package format
-
 import (
 	"testing"
 )
-
 func TestHumanNumber(t *testing.T) {
 	type testCase struct {
 		input    uint64
 		expected string
 	}
-
 	testCases := []testCase{
 		{0, "0"},
 		{999, "999"},
@@ -24,7 +21,6 @@ func TestHumanNumber(t *testing.T) {
 		{2850000000, "2.9B"},
 		{1000000000000, "1000B"},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.expected, func(t *testing.T) {
 			result := HumanNumber(tc.input)

@@ -1,24 +1,13 @@
-/*
- * dofmt -- format to a buffer
- * the number of characters formatted is returned,
- * or -1 if there was an error.
- * if the buffer is ever filled, flush is called.
- * it should reset the buffer and return whether formatting should continue.
- */
-
 typedef int (*Fmts)(Fmt*);
-
 typedef struct Quoteinfo Quoteinfo;
 struct Quoteinfo
 {
-	int	quoted;		/* if set, string must be quoted */
-	int	nrunesin;	/* number of input runes that can be accepted */
-	int	nbytesin;	/* number of input bytes that can be accepted */
-	int	nrunesout;	/* number of runes that will be generated */
-	int	nbytesout;	/* number of bytes that will be generated */
+int	quoted;
+int	nrunesin;
+int	nbytesin;
+int	nrunesout;
+int	nbytesout;
 };
-
-/* Edit .+1,/^$/ |cfn |grep -v static | grep __ */
 double       __Inf(int sign);
 double       __NaN(void);
 int          __badfmt(Fmt *f);
@@ -48,50 +37,46 @@ int          __runefmt(Fmt *f);
 int          __runeneedsquotes(Rune *r, int *quotelenp);
 int          __runesfmt(Fmt *f);
 int          __strfmt(Fmt *f);
-
 #define FMTCHAR(f, t, s, c)\
-	do{\
-	if(t + 1 > (char*)s){\
-		t = __fmtflush(f, t, 1);\
-		if(t != nil)\
-			s = f->stop;\
-		else\
-			return -1;\
-	}\
-	*t++ = c;\
-	}while(0)
-
+do{\
+if(t + 1 > (char*)s){\
+t = __fmtflush(f, t, 1);\
+if(t != nil)\
+s = f->stop;\
+else\
+return -1;\
+}\
+*t++ = c;\
+}while(0)
 #define FMTRCHAR(f, t, s, c)\
-	do{\
-	if(t + 1 > (Rune*)s){\
-		t = __fmtflush(f, t, sizeof(Rune));\
-		if(t != nil)\
-			s = f->stop;\
-		else\
-			return -1;\
-	}\
-	*t++ = c;\
-	}while(0)
-
+do{\
+if(t + 1 > (Rune*)s){\
+t = __fmtflush(f, t, sizeof(Rune));\
+if(t != nil)\
+s = f->stop;\
+else\
+return -1;\
+}\
+*t++ = c;\
+}while(0)
 #define FMTRUNE(f, t, s, r)\
-	do{\
-	Rune _rune;\
-	int _runelen;\
-	if(t + UTFmax > (char*)s && t + (_runelen = runelen(r)) > (char*)s){\
-		t = __fmtflush(f, t, _runelen);\
-		if(t != nil)\
-			s = f->stop;\
-		else\
-			return -1;\
-	}\
-	if(r < Runeself)\
-		*t++ = r;\
-	else{\
-		_rune = r;\
-		t += runetochar(t, &_rune);\
-	}\
-	}while(0)
-
+do{\
+Rune _rune;\
+int _runelen;\
+if(t + UTFmax > (char*)s && t + (_runelen = runelen(r)) > (char*)s){\
+t = __fmtflush(f, t, _runelen);\
+if(t != nil)\
+s = f->stop;\
+else\
+return -1;\
+}\
+if(r < Runeself)\
+*t++ = r;\
+else{\
+_rune = r;\
+t += runetochar(t, &_rune);\
+}\
+}while(0)
 #ifdef va_copy
 #	define VA_COPY(a,b) va_copy(a,b)
 #	define VA_END(a) va_end(a)
@@ -99,5 +84,4 @@ int          __strfmt(Fmt *f);
 #	define VA_COPY(a,b) (a) = (b)
 #	define VA_END(a)
 #endif
-
 #define PLAN9PORT

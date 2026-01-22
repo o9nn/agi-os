@@ -1,6 +1,5 @@
 #ifndef NFS_NFS_SPEC_H
 #define NFS_NFS_SPEC_H
-
 #define NFS_PORT 2049
 #define NFS_MAXDATA 8192
 #define NFS_MAXPATHLEN 1024
@@ -22,92 +21,78 @@
 #define NFSMODE_LNK 0120000
 #define NFSMODE_SOCK 0140000
 #define NFSMODE_FIFO 0010000
-
 enum nfsstat {
-	NFS_OK = 0,
-	NFSERR_PERM = 1,
-	NFSERR_NOENT = 2,
-	NFSERR_IO = 5,
-	NFSERR_NXIO = 6,
-	NFSERR_ACCES = 13,
-	NFSERR_EXIST = 17,
-	NFSERR_XDEV = 18,	/* v3 only */
-	NFSERR_NODEV = 19,
-	NFSERR_NOTDIR = 20,
-	NFSERR_ISDIR = 21,
-	NFSERR_INVAL = 22,	/* v3 only */
-	NFSERR_FBIG = 27,
-	NFSERR_NOSPC = 28,
-	NFSERR_ROFS = 30,
-	NFSERR_MLINK = 31,	/* v3 only */
-	NFSERR_NAMETOOLONG = 63,
-	NFSERR_NOTEMPTY = 66,
-	NFSERR_DQUOT = 69,
-	NFSERR_STALE = 70,
-	NFSERR_REMOTE = 71,	/* v3 only */
-	NFSERR_WFLUSH = 99,	/* v2 only */
-	NFSERR_BADHANDLE = 10001, /* v3 only */
-	NFSERR_NOT_SYNC = 10002, /* v3 only */
-	NFSERR_BAD_COOKIE = 10003, /* v3 only */
-	NFSERR_NOTSUPP = 10004,	/* v3 only */
-	NFSERR_TOOSMALL = 10005, /* v3 only */
-	NFSERR_SERVERFAULT = 10006, /* v3 only */
-	NFSERR_BADTYPE = 10007,	/* v3 only */
-	NFSERR_JUKEBOX = 10008,	/* v3 only */
+NFS_OK = 0,
+NFSERR_PERM = 1,
+NFSERR_NOENT = 2,
+NFSERR_IO = 5,
+NFSERR_NXIO = 6,
+NFSERR_ACCES = 13,
+NFSERR_EXIST = 17,
+NFSERR_XDEV = 18,
+NFSERR_NODEV = 19,
+NFSERR_NOTDIR = 20,
+NFSERR_ISDIR = 21,
+NFSERR_INVAL = 22,
+NFSERR_FBIG = 27,
+NFSERR_NOSPC = 28,
+NFSERR_ROFS = 30,
+NFSERR_MLINK = 31,
+NFSERR_NAMETOOLONG = 63,
+NFSERR_NOTEMPTY = 66,
+NFSERR_DQUOT = 69,
+NFSERR_STALE = 70,
+NFSERR_REMOTE = 71,
+NFSERR_WFLUSH = 99,
+NFSERR_BADHANDLE = 10001,
+NFSERR_NOT_SYNC = 10002,
+NFSERR_BAD_COOKIE = 10003,
+NFSERR_NOTSUPP = 10004,
+NFSERR_TOOSMALL = 10005,
+NFSERR_SERVERFAULT = 10006,
+NFSERR_BADTYPE = 10007,
+NFSERR_JUKEBOX = 10008,
 #define NFSERR_TRYLATER NFSERR_JUKEBOX
 };
-
-
 enum ftype {
-	NF2NON = 0,		/* v2 only */
-	NFREG = 1,
-	NFDIR = 2,
-	NFBLK = 3,
-	NFCHR = 4,
-	NFLNK = 5,
-	NFSOCK = 6,
-	NF3FIFO = 7,		/* v3 only */
-#define NF2BAD NF3FIFO		/* v2 only */
-	NF2FIFO = 8,		/* v2 only */
+NF2NON = 0,
+NFREG = 1,
+NFDIR = 2,
+NFBLK = 3,
+NFCHR = 4,
+NFLNK = 5,
+NFSOCK = 6,
+NF3FIFO = 7,
+#define NF2BAD NF3FIFO
+NF2FIFO = 8,
 };
-
-/* Ways to set the time in setattr structures */
-enum sattr_time_how 
+enum sattr_time_how
 {
-  DONT_CHANGE = 0,
-  SET_TO_SERVER_TIME = 1,
-  SET_TO_CLIENT_TIME = 2,
+DONT_CHANGE = 0,
+SET_TO_SERVER_TIME = 1,
+SET_TO_CLIENT_TIME = 2,
 };
-
-/* Construction of ACCESS arg to NFS3PROC_ACCESS. */
 #define ACCESS3_READ     0x01
 #define ACCESS3_LOOKUP   0x02
 #define ACCESS3_MODIFY   0x04
 #define ACCESS3_EXTEND   0x08
 #define ACCESS3_DELETE   0x10
 #define ACCESS3_EXECUTE  0x20
-
-/* STABLE arg to NFS3PROC_READ */
 enum stable_how {
-  UNSTABLE = 0,
-  DATA_SYNC = 1,
-  FILE_SYNC = 2,
+UNSTABLE = 0,
+DATA_SYNC = 1,
+FILE_SYNC = 2,
 };
-
-/* MODE arg to NFS3PROC_CREATE */
-enum createmode 
+enum createmode
 {
-  UNCHECKED = 0,
-  GUARDED = 1,
-  EXCLUSIVE = 2,
+UNCHECKED = 0,
+GUARDED = 1,
+EXCLUSIVE = 2,
 };
-
 #define NFS_PROGRAM ((u_long)100003)
 #define NFS_VERSION ((u_long)2)
-
 #define NFS_PROTOCOL_FUNC(proc,vers) \
-	(vers == 2 ? NFS2PROC_ ## proc : NFS3PROC_ ## proc)
-
+(vers == 2 ? NFS2PROC_ ## proc : NFS3PROC_ ## proc)
 #define NFSPROC_NULL(v) NFS_PROTOCOL_FUNC (NULL,v)
 #define NFSPROC_GETATTR(v) NFS_PROTOCOL_FUNC (GETATTR, v)
 #define NFSPROC_SETATTR(v) NFS_PROTOCOL_FUNC (SETATTR, v)
@@ -123,8 +108,6 @@ enum createmode
 #define NFSPROC_MKDIR(v) NFS_PROTOCOL_FUNC (MKDIR, v)
 #define NFSPROC_RMDIR(v) NFS_PROTOCOL_FUNC (RMDIR, v)
 #define NFSPROC_READDIR(v) NFS_PROTOCOL_FUNC (READDIR, v)
-
-/* Values for each protocol */
 #define NFS2PROC_NULL 0
 #define NFS2PROC_GETATTR 1
 #define NFS2PROC_SETATTR 2
@@ -143,7 +126,6 @@ enum createmode
 #define NFS2PROC_RMDIR 15
 #define NFS2PROC_READDIR 16
 #define NFS2PROC_STATFS 17
-
 #define NFS3PROC_NULL 0
 #define NFS3PROC_GETATTR 1
 #define NFS3PROC_SETATTR 2
@@ -166,5 +148,4 @@ enum createmode
 #define NFS3PROC_FSINFO 19
 #define NFS3PROC_PATHCONF 20
 #define NFS3PROC_COMMIT 21
-
-#endif /* NFS_NFS_SPEC_H */
+#endif

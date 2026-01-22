@@ -4,23 +4,19 @@
 #include "dat.h"
 #include "fns.h"
 #include "io.h"
-
 int
 havetimer(void)
 {
-	return 0;
+return 0;
 }
-
 void
 timeradd(Timer *)
 {
 }
-
 void
 timerdel(Timer *)
 {
 }
-
 void
 clockintrsched(void)
 {

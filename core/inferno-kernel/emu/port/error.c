@@ -53,7 +53,6 @@ char Esfnotcached[] = "subfont not cached";
 char Esoverlap[] = "segments overlap";
 char Emouseset[] = "mouse type already set";
 char Eshort[] = "i/o count too small";
-/* char Enobitstore[] = "out of screen memory"; */
 char Egreg[] = "jim'll fix it";
 char Ebadspec[] = "bad attach specifier";
 char Estopped[] = "thread must be stopped";

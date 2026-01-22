@@ -17,12 +17,6 @@ for (let i = 1; i < EYE_SACCADE_INT_P.length; i++) {
   curr[0] += prev[0]
   curr[1] = prev[1] + EYE_SACCADE_INT_STEP
 }
-
-/**
- * This is a simple function to generate a random interval between eye saccades.
- *
- * @returns Interval in milliseconds
- */
 export function randomSaccadeInterval(): number {
   const r = Math.random()
   for (let i = 0; i < EYE_SACCADE_INT_P.length; i++) {

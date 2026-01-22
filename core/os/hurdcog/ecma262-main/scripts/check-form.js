@@ -1,24 +1,17 @@
 #!/usr/bin/env node
-
 const { execSync } = require('child_process');
-
-// web URL: `https://docs.google.com/spreadsheets/d/${sheetID}/edit`
 const sheetID = '1if5bU0aV5MJ27GGKnRzyAozeKP-ILXYl5r3dzvkGFmg';
-
 const {
-	GOOGLE_API_KEY: key, // TC39 API key for google sheets
+	GOOGLE_API_KEY: key, 
 	GH_TOKEN
 } = process.env;
-
 if (!GH_TOKEN) {
 	throw 'GH_TOKEN env var required';
 }
 if (!key) {
 	throw 'GOOGLE_API_KEY env var required';
 }
-
 const sheetData = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1!A2:A?key=${key}`;
-
 const { values, positionals } = require('util').parseArgs({
 	allowPositionals: true,
 	strict: true,
@@ -27,22 +20,15 @@ if (positionals.length < 1 || positionals.length > 2) {
 	throw 'usage: node check-form.js <slug> [ref]';
 }
 const [slug, ref = 'HEAD'] = positionals;
-
 console.debug({ slug, ref });
-
 if (!slug || !ref) {
 	throw 'args required: slug, ref';
 }
-
 const sha = String(execSync(`git rev-parse ${ref}`)).trim();
-
 const request = async (url, method = 'GET', postData) => {
-	// adapted from https://medium.com/@gevorggalstyan/how-to-promisify-node-js-http-https-requests-76a5a58ed90c
 	const lib = url.startsWith('https://') ? require('https') : require('http');
-
 	const [h, path] = url.split('://')[1].split('/');
 	const [host, port] = h.split(':');
-
 	const params = {
 		host,
 		port: port || url.startsWith('https://') ? 443 : 80,
@@ -52,36 +38,26 @@ const request = async (url, method = 'GET', postData) => {
 			'User-Agent': 'curl/7.54.0'
 		}
 	};
-
 	return new Promise((resolve, reject) => {
 		const req = lib.request(url, params, res => {
 			if (res.statusCode < 200 || res.statusCode >= 300) {
 				return reject(new Error(`Status Code: ${res.statusCode}; ${url}`));
 			}
-
 			const data = [];
-
 			res.on('data', chunk => {
 				data.push(chunk);
 			});
-
 			res.on('end', () => resolve(String(Buffer.concat(data))));
 		});
-
 		req.on('error', reject);
-
 		if (postData) {
 			req.write(postData);
 		}
-
 		req.end();
 	});
 };
-
-const initial = '11db17a21add028b8d12930a8b047af1df2d3194'; // git rev-list --max-parents=0 HEAD
-
+const initial = '11db17a21add028b8d12930a8b047af1df2d3194'; 
 const perPage = 100;
-
 const legacyCommitsWithUnknownAuthors = new Set([
 	'6e2f689b1bcecaf59f5e7c76e544443ffe4ed299',
 	'a103b287cd19bdc51c7a3d8d7c1431b1506a74e2',
@@ -102,20 +78,18 @@ const legacyCommitsWithUnknownAuthors = new Set([
 	'cdf5865b7da09cce276581f134349e24d2b6c199',
 	'b7d01876c19751e4c75d9910ce4fb2e0d1dc45fa',
 	'cc46cc38b9374d13f958cc6992daaec73d5fbecd',
-	'f424bf075fe582ed8acc36e8a420ee713a21561a', // https://github.com/tc39/ecma262/pull/3142
-	'bea8d0d682fcf2be2a29564bd2ae66ab9dcce21c', // https://github.com/tc39/ecma262/pull/612, user deleted their github
-	'329069469609d8f05ad64c328e2295c171050ce4', // https://github.com/tc39/ecma262/pull/3249, commit email doesn't point to the github user
-	'57f427b18bf7e629565ac2fcf2392ba7b7d0d8fb', // https://github.com/tc39/ecma262/pull/3127, user account deactivated
-	'aada40840dc152d4759b0e3353542e971db08ee7', // tutizaraz (signed) renamed their account to riwom -> dbarabashh
-	'57f427b18bf7e629565ac2fcf2392ba7b7d0d8fb', // https://github.com/tc39/ecma262/pull/3377, bojavou has not signed the form
-	'f55b180957aa626ef8f87311e2e3b469dff0bf17', // rbuckton, microsoft email detached
-	'fc03120c4abd8883b424a3864040f9101c022c24', // rbuckton, microsoft email detached
-	'0209d8571b41e1c7dd18befd2ba45312680d6fcd', // rbuckton, microsoft email detached
-	'51e28c71cea1c73e3f22a007a058ebbf5ebc06aa', // rbuckton, microsoft email detached
-	'aab1ea3bd4d03c85d6f4a91503b4169346ab7271', // rbuckton, microsoft email detached
-
+	'f424bf075fe582ed8acc36e8a420ee713a21561a', 
+	'bea8d0d682fcf2be2a29564bd2ae66ab9dcce21c', 
+	'329069469609d8f05ad64c328e2295c171050ce4', 
+	'57f427b18bf7e629565ac2fcf2392ba7b7d0d8fb', 
+	'aada40840dc152d4759b0e3353542e971db08ee7', 
+	'57f427b18bf7e629565ac2fcf2392ba7b7d0d8fb', 
+	'f55b180957aa626ef8f87311e2e3b469dff0bf17', 
+	'fc03120c4abd8883b424a3864040f9101c022c24', 
+	'0209d8571b41e1c7dd18befd2ba45312680d6fcd', 
+	'51e28c71cea1c73e3f22a007a058ebbf5ebc06aa', 
+	'aab1ea3bd4d03c85d6f4a91503b4169346ab7271', 
 ]);
-
 function getAuthorFromCommit(commitObj) {
 	if (!commitObj) {
 		return false;
@@ -126,7 +100,6 @@ function getAuthorFromCommit(commitObj) {
 	}
 	return author.login;
 }
-
 async function getAllCommits(page = 1) {
 	const commitsURL = `https://api.github.com/repos/${slug}/commits?anon=1&per_page=${perPage}&page=${page}&sha=${sha}`;
 	const commits = await request(commitsURL).then((json) => JSON.parse(json));
@@ -135,7 +108,6 @@ async function getAllCommits(page = 1) {
 		commits.length < perPage ? [] : await getAllCommits(page + 1),
 	))];
 }
-
 const authors = getAllCommits().then((authors) => {
 	const knowns = authors.filter(x => typeof x === 'string');
 	const unknowns = authors.filter(x => typeof x === 'symbol' && !legacyCommitsWithUnknownAuthors.has(x.description));
@@ -151,9 +123,7 @@ const authors = getAllCommits().then((authors) => {
 	}
 	return knowns;
 });
-
 const teamURL = (team) => `https://api.github.com/orgs/tc39/teams/${team}`;
-
 function getMembers(teamID, page = 1) {
 	const memberURL = `https://api.github.com/teams/${teamID}/members?per_page=100&page=${page}`;
 	const data = request(memberURL).then((json) => JSON.parse(json));
@@ -166,12 +136,10 @@ function getMembers(teamID, page = 1) {
 		});
 	});
 }
-
 const aliases = new Map([
 	['bmeck', 'bfarias-godaddy'],
 	['PeterJensen', 'P-Jensen'].map(x => x.toLowerCase()),
 ]);
-
 function handler(kind) {
 	return (data) => {
 		const names = new Set(data.map(x => x.login.toLowerCase()));
@@ -184,15 +152,12 @@ function handler(kind) {
 		return names;
 	}
 }
-
 const delegates = request(teamURL('delegates')).then((json) => JSON.parse(json)).then(data => {
 	return getMembers(data.id);
 }).then(handler('delegates'));
-
 const emeriti = request(teamURL('emeriti')).then((json) => JSON.parse(json)).then(data => {
 	return getMembers(data.id);
 }).then(handler('emeriti'));
-
 const usernames = request(sheetData).then((json) => JSON.parse(json)).then(data => {
 	if (!Array.isArray(data.values)) {
 		throw 'invalid data';
@@ -200,27 +165,24 @@ const usernames = request(sheetData).then((json) => JSON.parse(json)).then(data 
 	const usernames = new Set(
 		data.values
 			.flat(1)
-			.map(x => x.replace(/^(https?:\/\/)?github\.com\//, '').replace(/^@/, '').toLowerCase())
+			.map(x => x.replace(/^(https?:\/\/)?github\.com\
 			.filter(x => /^[a-z0-9_-]{1,39}$/gi.test(x))
 			.sort((a, b) => a.localeCompare(b))
 	);
 	console.log(`Found ${usernames.size} usernames: ` + [...usernames].join(',') + '\n');
 	return usernames;
 });
-
 const exceptions = new Set([
-	'leebyron', // former FB delegate
-	'marjaholtta', // Google employee
+	'leebyron', 
+	'marjaholtta', 
 	'rossberg',
 	'arv',
-	'sideshowbarker', // Mozilla employee
+	'sideshowbarker', 
 	'jswalden',
 	'GeorgNeis',
-	'natashenka', // Google employee
-	'IgorMinar', // former Google employee
+	'natashenka', 
+	'IgorMinar', 
 ].map(x => x.toLowerCase()));
-
-// TODO: remove these as they sign the form
 const legacy = new Set([
 	'pacokwon',
 	'himsngh',
@@ -256,7 +218,6 @@ const legacy = new Set([
 	'jsreeram',
 	'antony-jeong',
 ].map(x => x.toLowerCase()));
-
 Promise.all([usernames, authors, delegates, emeriti]).then(([usernames, authors, delegates, emeriti]) => {
 	let legacyCount = legacy.size;
 	const missing = authors.filter(author => {

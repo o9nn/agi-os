@@ -1,16 +1,10 @@
-/* utility functions for `patch' */
-
-/* $Id: util.h,v 1.15 1997/07/16 12:26:36 eggert Exp $ */
-
 int ok_to_reverse PARAMS ((char const *, ...)) __attribute__ ((format (printf, 1, 2)));
 void ask PARAMS ((char const *, ...)) __attribute__ ((format (printf, 1, 2)));
 void say PARAMS ((char const *, ...)) __attribute__ ((format (printf, 1, 2)));
-
 void fatal PARAMS ((char const *, ...))
-	__attribute__ ((noreturn, format (printf, 1, 2)));
+__attribute__ ((noreturn, format (printf, 1, 2)));
 void pfatal PARAMS ((char const *, ...))
-	__attribute__ ((noreturn, format (printf, 1, 2)));
-
+__attribute__ ((noreturn, format (printf, 1, 2)));
 char *fetchname PARAMS ((char *, int, time_t *));
 char *savebuf PARAMS ((char const *, size_t));
 char *savestr PARAMS ((char const *));

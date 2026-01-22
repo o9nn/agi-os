@@ -1,13 +1,8 @@
-/**
- * Created by tsadik on 11/8/17.
- */
 import { Injectable } from '@angular/core';
 import {Link} from "../models/link";
 import {Graph} from "../models/graph";
 import {Node} from "../models/node";
-
 declare var d3:any;
-
 @Injectable()
 export class VisualizerService {
   nodes:Node[] = [];
@@ -143,7 +138,6 @@ export class VisualizerService {
           }
         }
       }
-
     }
   }
 }

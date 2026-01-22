@@ -1,49 +1,13 @@
-/* 
- * Mach Operating System
- * Copyright (c) 1991,1990 Carnegie Mellon University
- * All Rights Reserved.
- * 
- * Permission to use, copy, modify and distribute this software and its
- * documentation is hereby granted, provided that both the copyright
- * notice and this permission notice appear in all copies of the
- * software, derivative works or modified versions, and any portions
- * thereof, and that both notices appear in supporting documentation.
- * 
- * CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
- * CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
- * ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
- * 
- * Carnegie Mellon requests users of this software to return to
- * 
- *  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
- *  School of Computer Science
- *  Carnegie Mellon University
- *  Pittsburgh PA 15213-3890
- * 
- * any improvements or extensions that they make and grant Carnegie Mellon
- * the rights to redistribute these changes.
- */
-/*
- *	Author: David B. Golub, Carnegie Mellon University
- *	Date:	7/90
- */
-/*
- * Lexical analyzer.
- */
-
 #ifndef _DDB_DB_LEX_H_
 #define _DDB_DB_LEX_H_
-
-#define	TOK_STRING_SIZE		64 
+#define	TOK_STRING_SIZE		64
 #define DB_LEX_LINE_SIZE	256
-
 struct db_lex_context {
-	int  l_char;		/* peek char */
-	int  l_token;		/* peek token */
-	char *l_ptr;		/* line pointer */
-	char *l_eptr;		/* line end pointer */
+int  l_char;
+int  l_token;
+char *l_ptr;
+char *l_eptr;
 };
-
 extern int	db_lex(void);
 extern int	db_read_line(const char *rep_str);
 extern void	db_flush_line(void);
@@ -56,11 +20,9 @@ extern void	db_switch_input(char *, int);
 extern void	db_save_lex_context(struct db_lex_context *);
 extern void	db_restore_lex_context(const struct db_lex_context *);
 extern void	db_skip_to_eol(void);
-
 extern db_expr_t db_tok_number;
 extern char	db_tok_string[TOK_STRING_SIZE];
 extern db_expr_t db_radix;
-
 #define	tEOF		(-1)
 #define	tEOL		1
 #define	tNUMBER		2
@@ -95,5 +57,4 @@ extern db_expr_t db_radix;
 #define tLOG_OR		31
 #define tSTRING		32
 #define tQUESTION	33
-
-#endif /* _DDB_DB_LEX_H_ */
+#endif

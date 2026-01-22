@@ -19,9 +19,7 @@ import {GbnfRef} from "../terminals/GbnfRef.js";
 import {getGbnfJsonTerminalForLiteral} from "./getGbnfJsonTerminalForLiteral.js";
 import {GbnfJsonScopeState} from "./GbnfJsonScopeState.js";
 import {joinDefs} from "./defsScope.js";
-
 const maxNestingScope = 512;
-
 export function getGbnfJsonTerminalForGbnfJsonSchema(
     schema: GbnfJsonSchema,
     grammarGenerator: GbnfGrammarGenerator,
@@ -30,11 +28,9 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
 ): GbnfTerminal {
     if (scopeState.currentNestingScope >= maxNestingScope)
         throw new Error("Maximum nesting scope exceeded. Ensure that your schema does not have circular references or excessive nesting.");
-
     if (isGbnfJsonRefSchema(schema)) {
         const currentDefs = joinDefs(defs, schema.$defs);
         grammarGenerator.registerDefs(currentDefs);
-
         const ref = schema?.$ref;
         const referencePrefix = "#/$defs/";
         if (ref == null || !ref.startsWith(referencePrefix)) {
@@ -45,7 +41,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
             );
             return new GbnfAnyJson(scopeState);
         }
-
         const defName = ref.slice(referencePrefix.length);
         const def = currentDefs[defName];
         if (def == null) {
@@ -56,11 +51,9 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
             );
             return new GbnfAnyJson(scopeState);
         }
-
         return new GbnfRef({
             getValueTerminal() {
                 const scopeDefs = grammarGenerator.defScopeDefs.get([defName, def]);
-
                 return getGbnfJsonTerminalForGbnfJsonSchema(
                     def,
                     grammarGenerator,
@@ -77,7 +70,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
     } else if (isGbnfJsonOneOfSchema(schema)) {
         const currentDefs = joinDefs(defs, schema.$defs);
         grammarGenerator.registerDefs(currentDefs);
-
         const values = schema.oneOf
             .map((altSchema) => (
                 getGbnfJsonTerminalForGbnfJsonSchema(
@@ -87,7 +79,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
                     currentDefs
                 )
             ));
-
         return new GbnfOr(values);
     } else if (isGbnfJsonConstSchema(schema)) {
         return getGbnfJsonTerminalForLiteral(schema.const);
@@ -97,7 +88,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
         const propertiesEntries = Object.entries(schema.properties ?? {});
         const currentDefs = joinDefs(defs, schema.$defs);
         grammarGenerator.registerDefs(currentDefs);
-
         let maxProperties = schema.maxProperties;
         if (schema.properties != null && maxProperties != null && maxProperties < propertiesEntries.length) {
             console.warn(
@@ -108,7 +98,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
             );
             maxProperties = propertiesEntries.length;
         }
-
         return new GbnfObjectMap({
             fields: propertiesEntries.map(([propName, propSchema]) => {
                 return {
@@ -139,7 +128,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
     } else if (isGbnfJsonArraySchema(schema)) {
         const currentDefs = joinDefs(defs, schema.$defs);
         grammarGenerator.registerDefs(currentDefs);
-
         let maxItems = schema.maxItems;
         if (schema.prefixItems != null && maxItems != null && maxItems < schema.prefixItems.length) {
             console.warn(
@@ -149,7 +137,6 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
             );
             maxItems = schema.prefixItems.length;
         }
-
         return new GbnfArray({
             items: schema.items == null
                 ? undefined
@@ -174,33 +161,24 @@ export function getGbnfJsonTerminalForGbnfJsonSchema(
             );
             maxLength = minLength;
         }
-
         return new GbnfString({
             minLength,
             maxLength
         });
     } else if (isGbnfJsonFormatStringSchema(schema))
         return new GbnfFormatString(schema.format);
-
     const terminals: GbnfTerminal[] = [];
-
     if (isGbnfJsonBasicSchemaIncludesType(schema, "string"))
         terminals.push(new GbnfString());
-
     if (isGbnfJsonBasicSchemaIncludesType(schema, "number"))
         terminals.push(new GbnfNumber({allowFractional: true}));
-
     if (isGbnfJsonBasicSchemaIncludesType(schema, "integer"))
         terminals.push(new GbnfNumber({allowFractional: false}));
-
     if (isGbnfJsonBasicSchemaIncludesType(schema, "boolean"))
         terminals.push(new GbnfBoolean());
-
     if (isGbnfJsonBasicSchemaIncludesType(schema, "null"))
         terminals.push(new GbnfNull());
-
     if (terminals.length === 0)
         terminals.push(new GbnfNull());
-
     return new GbnfOr(terminals);
 }

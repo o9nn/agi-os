@@ -1,5 +1,4 @@
 import { stat } from 'node:fs/promises'
-
 export async function exists(path: string): Promise<boolean> {
   try {
     await stat(path)
@@ -8,11 +7,9 @@ export async function exists(path: string): Promise<boolean> {
   catch (error) {
     if (isENOENTError(error))
       return false
-
     throw error
   }
 }
-
 export function isENOENTError(error: unknown): boolean {
   if (!(error instanceof Error))
     return false
@@ -20,6 +17,5 @@ export function isENOENTError(error: unknown): boolean {
     return false
   if (error.code !== 'ENOENT')
     return false
-
   return true
 }

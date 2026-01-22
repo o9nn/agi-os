@@ -2,7 +2,6 @@ import { BrowserWindow, Menu, shell } from 'electron'
 import { join } from 'path'
 import { stat } from 'fs/promises'
 import { platform } from 'os'
-
 import { appIcon, htmlDistDir } from '../application-constants.js'
 import { getLogger } from '../../../shared/logger.js'
 import { appWindowTitle } from '../../../shared/constants.js'
@@ -16,9 +15,7 @@ import {
 } from '../menu.js'
 import { initMinWinDimensionHandling } from './helpers.js'
 import { setContentProtection } from '../content-protection.js'
-
 const log = getLogger('main/help')
-
 async function getHelpFileForLang(locale: string) {
   const contentFilePath = join(htmlDistDir(), `help/${locale}/help.html`)
   try {
@@ -34,9 +31,7 @@ async function getHelpFileForLang(locale: string) {
     return join(htmlDistDir(), `help/en/help.html`)
   }
 }
-
 let win: BrowserWindow | null = null
-
 export async function openHelpWindow(locale: string, anchor?: string) {
   if (win) {
     win.focus()
@@ -49,7 +44,6 @@ export async function openHelpWindow(locale: string, anchor?: string) {
     }
     return
   }
-
   log.debug('open help', locale)
   const defaults = {
     bounds: {
@@ -62,13 +56,11 @@ export async function openHelpWindow(locale: string, anchor?: string) {
   }
   const help_window = (win = new BrowserWindow({
     backgroundColor: '#282828',
-    darkTheme: true, // Forces dark theme (GTK+3)
-
+    darkTheme: true, 
     icon: appIcon(),
     show: false,
     title: appWindowTitle + ' - ' + tx('menu_help'),
-    useContentSize: true, // Specify web page size without OS chrome
-
+    useContentSize: true, 
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
@@ -76,21 +68,15 @@ export async function openHelpWindow(locale: string, anchor?: string) {
     },
     alwaysOnTop: main_window?.isAlwaysOnTop(),
   }))
-
   setContentProtection(help_window)
-
   const removeScreenChangeListeners = initMinWinDimensionHandling(
     help_window,
     defaults.minWidth,
     defaults.minHeight
   )
-
   const url = await getHelpFileForLang(locale)
-
   log.debug(url)
-
   win.loadFile(url)
-
   win.once('ready-to-show', async () => {
     if (anchor) {
       await help_window.webContents.executeJavaScript(`
@@ -101,23 +87,18 @@ export async function openHelpWindow(locale: string, anchor?: string) {
     }
     help_window.show()
   })
-
   if (win.setSheetOffset) {
     win.setSheetOffset(defaults.headerHeight)
   }
-
   win.webContents.on('will-navigate', (_ev, url) => {
     log.debug('open ', url)
     shell.openExternal(url)
   })
-
   win.on('close', _e => {
     win = null
     removeScreenChangeListeners()
   })
-
   win.setMenu(Menu.buildFromTemplate([{ role: 'viewMenu' }]))
-
   win.webContents.executeJavaScript(`
     const body = document.getElementsByTagName('body')[0];
     const back_btn = document.createElement('button');
@@ -126,17 +107,11 @@ export async function openHelpWindow(locale: string, anchor?: string) {
     back_btn.innerText = '↑ ${tx('menu_scroll_to_top')}';
     body.append(back_btn);
   `)
-
-  // help does not need web permissions so deny all
   win.webContents.session.setPermissionCheckHandler((_wc, _permission) => false)
   win.webContents.session.setPermissionRequestHandler(
     (_wc, _permission, callback) => callback(false)
   )
-
   const isMac = platform() === 'darwin'
-
-  // copied and adapted from webxdc menu
-  // TODO: would make sense to refactor these menus at some point
   const makeMenu = () => {
     return Menu.buildFromTemplate([
       ...(isMac ? [getAppMenu(help_window)] : []),
@@ -170,7 +145,6 @@ export async function openHelpWindow(locale: string, anchor?: string) {
               if (isMac) {
                 win?.setMenu(makeMenu())
               } else {
-                // change to window menu
                 Menu.setApplicationMenu(makeMenu())
               }
             },
@@ -181,20 +155,16 @@ export async function openHelpWindow(locale: string, anchor?: string) {
       getHelpMenu(isMac),
     ])
   }
-
   if (!isMac) {
     win.setMenu(makeMenu())
   }
-
   win.on('focus', () => {
     if (isMac) {
-      // change to help menu
       Menu.setApplicationMenu(makeMenu())
     }
   })
   win.on('blur', () => {
     if (isMac) {
-      // change back to main-window menu
       refreshTitleMenu()
     }
   })

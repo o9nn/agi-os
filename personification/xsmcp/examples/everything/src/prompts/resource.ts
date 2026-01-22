@@ -1,8 +1,6 @@
 import { definePrompt } from '@xsmcp/server-shared'
 import { description, object, pipe, string } from 'valibot'
-
 import { resources } from '../resources'
-
 export const resource = definePrompt({
   description: 'A prompt that includes an embedded resource reference',
   execute: async ({ resourceId }) => [

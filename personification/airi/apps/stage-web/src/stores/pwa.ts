@@ -4,12 +4,10 @@ import { nanoid } from 'nanoid'
 import { defineStore } from 'pinia'
 import { h, markRaw, onMounted, ref } from 'vue'
 import { toast } from 'vue-sonner'
-
 export const usePWAStore = defineStore('pwa', () => {
   const updateReadyHooks = ref<(() => void)[]>([])
   const breakpoints = useBreakpoints(breakpointsTailwind)
   const isMobile = breakpoints.smaller('md')
-
   onMounted(async () => {
     if (import.meta.env.SSR) {
       return
@@ -17,9 +15,7 @@ export const usePWAStore = defineStore('pwa', () => {
     if (import.meta.env.VITE_APP_TARGET_HUGGINGFACE_SPACE) {
       return
     }
-
     const { registerSW } = await import('../modules/pwa')
-
     const updateSW = registerSW({
       onNeedRefresh: () => {
         const id = nanoid()
@@ -30,7 +26,6 @@ export const usePWAStore = defineStore('pwa', () => {
         })
       },
     })
-
     updateReadyHooks.value.push(updateSW)
   })
 })

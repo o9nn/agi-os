@@ -1,10 +1,8 @@
 package blob
-
 import (
 	"encoding/json"
 	"testing"
 )
-
 func TestParseDigest(t *testing.T) {
 	cases := []struct {
 		in    string
@@ -12,25 +10,16 @@ func TestParseDigest(t *testing.T) {
 	}{
 		{"sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", true},
 		{"sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", true},
-
-		// too short
 		{"sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde", false},
 		{"sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde", false},
-
-		// too long
 		{"sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0", false},
 		{"sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0", false},
-
-		// invalid prefix
 		{"sha255-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", false},
 		{"sha255:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", false},
 		{"sha256!0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", false},
-
-		// invalid hex
 		{"sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", false},
 		{"sha256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", false},
 	}
-
 	for _, tt := range cases {
 		got, err := ParseDigest(tt.in)
 		if tt.valid && err != nil {
@@ -42,7 +31,6 @@ func TestParseDigest(t *testing.T) {
 		}
 	}
 }
-
 func TestDigestMarshalText(t *testing.T) {
 	const s = `"sha256-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"`
 	var d Digest

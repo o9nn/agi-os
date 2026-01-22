@@ -1,8 +1,6 @@
 import {describe, expect, test, expectTypeOf} from "vitest";
 import {jsonDumps, LlamaJsonSchemaGrammar} from "../../../src/index.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
-
 describe("grammar for JSON schema", () => {
     test("object", async () => {
         const llama = await getTestLlama();
@@ -104,7 +102,6 @@ describe("grammar for JSON schema", () => {
             "feelingOverall": "good",
             "verbsInMessage": ["Hello", "world"]
         };
-
         expect(grammar.grammar).toMatchInlineSnapshot(`
           "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? rule0 comma-whitespace-b-1-4-rule "\\"numberOfWordsInMessage\\"" ":" [ ]? integer-number-rule comma-whitespace-b-1-4-rule "\\"feelingGoodPercentage\\"" ":" [ ]? fractional-number-rule comma-whitespace-b-1-4-rule "\\"feelingGood\\"" ":" [ ]? boolean-rule comma-whitespace-b-1-4-rule "\\"feelingOverall\\"" ":" [ ]? rule1 comma-whitespace-b-1-4-rule "\\"verbsInMessage\\"" ":" [ ]? rule2 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
           string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -124,23 +121,18 @@ describe("grammar for JSON schema", () => {
           rule2 ::= "[" whitespace-b-2-4-rule ( string-rule ( comma-whitespace-b-2-4-rule string-rule )* )? whitespace-b-1-4-rule "]"
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `);
-
         const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
         expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
         expect(parsedValue).toEqual(exampleValidValue);
         expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
         const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
-
         expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
         expect(parsedValue2).toEqual(exampleValidValue2);
         expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue));
             expect.unreachable("Parsing should have failed");
@@ -148,7 +140,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"number\"]");
             expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue2));
             expect.unreachable("Parsing should have failed");
@@ -156,7 +147,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot('[Error: Expected one of ["good", "bad"] but got "average"]');
             expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue3));
             expect.unreachable("Parsing should have failed");
@@ -164,7 +154,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"boolean\"]");
             expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue4));
             expect.unreachable("Parsing should have failed");
@@ -172,7 +161,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"object\"]");
             expect(testGrammar(grammar, exampleInvalidValue4)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue5));
             expect.unreachable("Parsing should have failed");
@@ -180,7 +168,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"null\"]");
             expect(testGrammar(grammar, exampleInvalidValue5)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue6));
             expect.unreachable("Parsing should have failed");
@@ -189,7 +176,6 @@ describe("grammar for JSON schema", () => {
             expect(testGrammar(grammar, exampleInvalidValue6)).to.eql(false);
         }
     });
-
     test("array", async () => {
         const llama = await getTestLlama();
         const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -214,14 +200,12 @@ describe("grammar for JSON schema", () => {
             "message": "Hello, world!"
         }];
         const exampleValidValue2 = ["Hello, world!"];
-
         const exampleInvalidValue = [{
             "message": "Hello, world!"
         }, 10];
         const exampleInvalidValue2 = {
             "message": "Hello, world!"
         };
-
         expect(grammar.grammar).toMatchInlineSnapshot(`
           "root ::= "[" whitespace-b-1-4-rule ( rule1 ( comma-whitespace-b-1-4-rule rule1 )* )? whitespace-b-0-4-rule "]" "\\n\\n\\n\\n" [\\n]*
           string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -233,23 +217,18 @@ describe("grammar for JSON schema", () => {
           comma-whitespace-b-1-4-rule ::= "," ([\\n] ("    " | "\\t") | [ ]?)
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `);
-
         const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
         expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
         expect(parsedValue).toEqual(exampleValidValue);
         expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
         const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
-
         expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
         expect(parsedValue2).toEqual(exampleValidValue2);
         expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue));
             expect.unreachable("Parsing should have failed");
@@ -257,7 +236,6 @@ describe("grammar for JSON schema", () => {
             expect(err).toMatchInlineSnapshot("[Error: Expected one of 2 schemas but got 10]");
             expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
         }
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue2));
             expect.unreachable("Parsing should have failed");
@@ -266,7 +244,6 @@ describe("grammar for JSON schema", () => {
             expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
         }
     });
-
     test("const", async () => {
         const llama = await getTestLlama();
         const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -322,7 +299,6 @@ describe("grammar for JSON schema", () => {
             "withNewLine": "Hooray!\nYes!\t/\\and\"and\'",
             "withQuotes": 'The message is "Hi!".'
         };
-
         expect(grammar.grammar).toMatchInlineSnapshot(`
           "root ::= "{" whitespace-b-1-4-rule "\\"onlyPositiveText\\"" ":" [ ]? "true" comma-whitespace-b-1-4-rule "\\"onlyNegativeText\\"" ":" [ ]? "false" comma-whitespace-b-1-4-rule "\\"onlyVibe\\"" ":" [ ]? val0 comma-whitespace-b-1-4-rule "\\"onlyNumber\\"" ":" [ ]? "10" comma-whitespace-b-1-4-rule "\\"worstThing\\"" ":" [ ]? null-rule comma-whitespace-b-1-4-rule "\\"withNewLine\\"" ":" [ ]? val1 comma-whitespace-b-1-4-rule "\\"withQuotes\\"" ":" [ ]? val2 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
           comma-whitespace-b-1-4-rule ::= "," ([\\n] ("    " | "\\t") | [ ]?)
@@ -333,15 +309,12 @@ describe("grammar for JSON schema", () => {
           whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `);
-
         const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
         expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
         expect(parsedValue).toEqual(exampleValidValue);
         expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue));
             expect.unreachable("Parsing should have failed");
@@ -350,7 +323,6 @@ describe("grammar for JSON schema", () => {
             expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
         }
     });
-
     test("missing keys", async () => {
         const llama = await getTestLlama();
         const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -400,13 +372,11 @@ describe("grammar for JSON schema", () => {
         const exampleInvalidValue = {
             "onlyPositiveText": true,
             "onlyNegativeText": false,
-            // "onlyVibe": "good",
             "onlyNumber": 10,
             "worstThing": null,
             "withNewLine": "Hooray!\nYes!\t/\\",
             "withQuotes": 'The message is "Hi!".'
         };
-
         expect(grammar.grammar).toMatchInlineSnapshot(`
           "root ::= "{" whitespace-b-1-4-rule "\\"onlyPositiveText\\"" ":" [ ]? "true" comma-whitespace-b-1-4-rule "\\"onlyNegativeText\\"" ":" [ ]? "false" comma-whitespace-b-1-4-rule "\\"onlyVibe\\"" ":" [ ]? val0 comma-whitespace-b-1-4-rule "\\"onlyNumber\\"" ":" [ ]? "10" comma-whitespace-b-1-4-rule "\\"worstThing\\"" ":" [ ]? null-rule comma-whitespace-b-1-4-rule "\\"withNewLine\\"" ":" [ ]? val1 comma-whitespace-b-1-4-rule "\\"withQuotes\\"" ":" [ ]? val2 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
           comma-whitespace-b-1-4-rule ::= "," ([\\n] ("    " | "\\t") | [ ]?)
@@ -417,15 +387,12 @@ describe("grammar for JSON schema", () => {
           whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `);
-
         const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
         expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
         expect(parsedValue).toEqual(exampleValidValue);
         expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue));
             expect.unreachable("Parsing should have failed");
@@ -434,7 +401,6 @@ describe("grammar for JSON schema", () => {
             expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
         }
     });
-
     test("unexpected keys", async () => {
         const llama = await getTestLlama();
         const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -485,13 +451,12 @@ describe("grammar for JSON schema", () => {
             "onlyPositiveText": true,
             "onlyNegativeText": false,
             "onlyVibe": "good",
-            "onlyFeeling": "good", // unexpected key
+            "onlyFeeling": "good", 
             "onlyNumber": 10,
             "worstThing": null,
             "withNewLine": "Hooray!\nYes!\t/\\",
             "withQuotes": 'The message is "Hi!".'
         };
-
         expect(grammar.grammar).toMatchInlineSnapshot(`
           "root ::= "{" whitespace-b-1-4-rule "\\"onlyPositiveText\\"" ":" [ ]? "true" comma-whitespace-b-1-4-rule "\\"onlyNegativeText\\"" ":" [ ]? "false" comma-whitespace-b-1-4-rule "\\"onlyVibe\\"" ":" [ ]? val0 comma-whitespace-b-1-4-rule "\\"onlyNumber\\"" ":" [ ]? "10" comma-whitespace-b-1-4-rule "\\"worstThing\\"" ":" [ ]? null-rule comma-whitespace-b-1-4-rule "\\"withNewLine\\"" ":" [ ]? val1 comma-whitespace-b-1-4-rule "\\"withQuotes\\"" ":" [ ]? val2 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
           comma-whitespace-b-1-4-rule ::= "," ([\\n] ("    " | "\\t") | [ ]?)
@@ -502,15 +467,12 @@ describe("grammar for JSON schema", () => {
           whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `);
-
         const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
         expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
         expect(parsedValue).toEqual(exampleValidValue);
         expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
         expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
         try {
             grammar.parse(JSON.stringify(exampleInvalidValue));
             expect.unreachable("Parsing should have failed");
@@ -519,7 +481,6 @@ describe("grammar for JSON schema", () => {
             expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
         }
     });
-
     describe("array options", () => {
         test("no type", async () => {
             const llama = await getTestLlama();
@@ -539,7 +500,6 @@ describe("grammar for JSON schema", () => {
                 "simple": any[],
                 "withMinItems": [any, any, ...any[]]
             };
-
             const exampleValidValue = {
                 "simple": [],
                 "withMinItems": [1, true]
@@ -548,7 +508,6 @@ describe("grammar for JSON schema", () => {
                 "simple": [false],
                 "withMinItems": [1, null, "text"]
             };
-
             const exampleInvalidValue = {
                 "simple": "not an array",
                 "withMinItems": [1, true]
@@ -561,7 +520,6 @@ describe("grammar for JSON schema", () => {
                 "simple": [],
                 "withMinItems": []
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"simple\\"" ":" [ ]? rule5 comma-whitespace-b-1-4-rule "\\"withMinItems\\"" ":" [ ]? rule6 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -586,21 +544,18 @@ describe("grammar for JSON schema", () => {
               rule5 ::= "[" whitespace-b-2-4-rule ( any-json-0-4-rule ( comma-whitespace-b-2-4-rule any-json-0-4-rule )* )? whitespace-b-1-4-rule "]"
               rule6 ::= "[" whitespace-b-2-4-rule any-json-0-4-rule ( comma-whitespace-b-2-4-rule any-json-0-4-rule ){1,} whitespace-b-1-4-rule "]""
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -608,7 +563,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Expected an array but got "string"]');
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -616,7 +570,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 2 items but got 1]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -625,7 +578,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("string items", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -676,7 +628,6 @@ describe("grammar for JSON schema", () => {
                 "withMinAndMaxItems": [string, string, ...any[]],
                 "withEqualMinAndMaxItems": [string, string, string]
             };
-
             const exampleValidValue = {
                 "simple": [],
                 "withMinItems": ["1", "2"],
@@ -691,7 +642,6 @@ describe("grammar for JSON schema", () => {
                 "withMinAndMaxItems": ["1", "2"],
                 "withEqualMinAndMaxItems": ["1", "2", "3"]
             };
-
             const exampleInvalidValue = {
                 "simple": [],
                 "withMinItems": ["1", 2],
@@ -713,7 +663,6 @@ describe("grammar for JSON schema", () => {
                 "withMinAndMaxItems": ["1", "2"],
                 "withEqualMinAndMaxItems": ["1", 3]
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"simple\\"" ":" [ ]? rule0 comma-whitespace-b-1-4-rule "\\"withMinItems\\"" ":" [ ]? rule1 comma-whitespace-b-1-4-rule "\\"withMaxItems\\"" ":" [ ]? rule2 comma-whitespace-b-1-4-rule "\\"withMinAndMaxItems\\"" ":" [ ]? rule3 comma-whitespace-b-1-4-rule "\\"withEqualMinAndMaxItems\\"" ":" [ ]? rule4 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -729,21 +678,18 @@ describe("grammar for JSON schema", () => {
               rule4 ::= "[" whitespace-b-2-4-rule string-rule ( comma-whitespace-b-2-4-rule string-rule ){2} whitespace-b-1-4-rule "]"
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -751,7 +697,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"number\"]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -759,7 +704,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 2 items but got 1]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -768,7 +712,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
         });
-
         test("with prefix items", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -900,7 +843,6 @@ describe("grammar for JSON schema", () => {
                 withAdditionalItemsAndMinAndMax: [string, boolean, number, null, {message: string}, string[], "1" | -6, "1" | -6, ...("1" | -6)[]],
                 withAdditionalItemsAndMinAndMaxEquals: [string, boolean, number, null, {message: string}, string[], "1" | -6, "1" | -6, "1" | -6, "1" | -6]
             };
-
             const exampleValidValue = {
                 simple: ["text", true, 10, null, {message: "Hello"}, ["1"]],
                 withAdditionalItems: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6],
@@ -921,7 +863,6 @@ describe("grammar for JSON schema", () => {
                 withAdditionalItemsAndMinAndMax: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6, "1", -6],
                 withAdditionalItemsAndMinAndMaxEquals: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6, "1", -6]
             };
-
             const exampleInvalidValue = {
                 simple: ["text", true, 10, null, {message: "Hello"}, ["1"]],
                 withAdditionalItems: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6, "extra"],
@@ -952,7 +893,6 @@ describe("grammar for JSON schema", () => {
                 withAdditionalItemsAndMinAndMax: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6, "1", -6],
                 withAdditionalItemsAndMinAndMaxEquals: ["text", true, 10, null, {message: "Hello"}, ["1"], "1", -6, "1", -6]
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"simple\\"" ":" [ ]? rule7 comma-whitespace-b-1-4-rule "\\"withAdditionalItems\\"" ":" [ ]? rule9 comma-whitespace-b-1-4-rule "\\"withAdditionalItemsAndMin\\"" ":" [ ]? rule11 comma-whitespace-b-1-4-rule "\\"withAdditionalItemsAndMax\\"" ":" [ ]? rule12 comma-whitespace-b-1-4-rule "\\"withMaxSizeOfPrefixItems\\"" ":" [ ]? rule13 comma-whitespace-b-1-4-rule "\\"withAdditionalItemsAndMaxSizeOfPrefixItems\\"" ":" [ ]? rule13 comma-whitespace-b-1-4-rule "\\"withAdditionalItemsAndMinAndMax\\"" ":" [ ]? rule14 comma-whitespace-b-1-4-rule "\\"withAdditionalItemsAndMinAndMaxEquals\\"" ":" [ ]? rule15 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -990,21 +930,18 @@ describe("grammar for JSON schema", () => {
               rule14 ::= "[" whitespace-b-2-4-rule string-rule comma-whitespace-b-2-4-rule boolean-rule comma-whitespace-b-2-4-rule fractional-number-rule comma-whitespace-b-2-4-rule null-rule comma-whitespace-b-2-4-rule rule0 comma-whitespace-b-2-4-rule rule1 ( comma-whitespace-b-2-4-rule rule8 ){2,4} whitespace-b-1-4-rule "]"
               rule15 ::= "[" whitespace-b-2-4-rule string-rule comma-whitespace-b-2-4-rule boolean-rule comma-whitespace-b-2-4-rule fractional-number-rule comma-whitespace-b-2-4-rule null-rule comma-whitespace-b-2-4-rule rule0 comma-whitespace-b-2-4-rule rule1 ( comma-whitespace-b-2-4-rule rule8 ){4} whitespace-b-1-4-rule "]""
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1012,7 +949,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Expected one of ["1", -6] but got "extra"]');
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1020,7 +956,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Expected one of ["1", -600] but got "extra"]');
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1030,7 +965,6 @@ describe("grammar for JSON schema", () => {
             }
         });
     });
-
     describe("object options", () => {
         test("additionalProperties", async () => {
             const llama = await getTestLlama();
@@ -1054,7 +988,6 @@ describe("grammar for JSON schema", () => {
             } & {
                 [key: string]: boolean
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10
@@ -1065,7 +998,6 @@ describe("grammar for JSON schema", () => {
                 extra1: true,
                 extra2: false
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: false
@@ -1081,7 +1013,6 @@ describe("grammar for JSON schema", () => {
                 extra1: true,
                 extra2: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule ( comma-whitespace-b-1-4-rule rule0 )* whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1093,21 +1024,18 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1115,7 +1043,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Expected type "number" but got "boolean"]');
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1123,7 +1050,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Expected type "boolean" but got "number"]');
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1132,7 +1058,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("minProperties", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1156,7 +1081,6 @@ describe("grammar for JSON schema", () => {
             } & {
                 [key: string]: boolean
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1170,7 +1094,6 @@ describe("grammar for JSON schema", () => {
                 extra2: false,
                 extra3: false
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: 10
@@ -1185,7 +1108,6 @@ describe("grammar for JSON schema", () => {
                 percentage: 11,
                 extra1: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule comma-whitespace-b-1-4-rule rule0 ( comma-whitespace-b-1-4-rule rule0 ){1,} whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1197,21 +1119,18 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1219,7 +1138,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 4 properties but got 2]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1227,7 +1145,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 4 properties but got 3]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1236,7 +1153,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("maxProperties", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1260,7 +1176,6 @@ describe("grammar for JSON schema", () => {
             } & {
                 [key: string]: boolean
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1272,7 +1187,6 @@ describe("grammar for JSON schema", () => {
                 extra1: true,
                 extra2: false
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1296,7 +1210,6 @@ describe("grammar for JSON schema", () => {
                 extra3: false,
                 extra4: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule ( comma-whitespace-b-1-4-rule rule0 ){0,2} whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1308,21 +1221,18 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1330,7 +1240,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 properties but got 5]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1338,7 +1247,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 properties but got 6]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1347,7 +1255,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("minProperties and maxProperties", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1372,7 +1279,6 @@ describe("grammar for JSON schema", () => {
             } & {
                 [key: string]: boolean
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1384,7 +1290,6 @@ describe("grammar for JSON schema", () => {
                 extra1: true,
                 extra2: false
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: 10
@@ -1403,7 +1308,6 @@ describe("grammar for JSON schema", () => {
                 extra2: false,
                 extra3: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule comma-whitespace-b-1-4-rule rule0 ( comma-whitespace-b-1-4-rule rule0 )? whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1415,21 +1319,18 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1437,7 +1338,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 3 properties but got 2]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1445,7 +1345,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 properties but got 5]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1454,7 +1353,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("minProperties without type", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1476,7 +1374,6 @@ describe("grammar for JSON schema", () => {
             } & {
                 [key: string]: any
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1490,7 +1387,6 @@ describe("grammar for JSON schema", () => {
                 extra2: "hi",
                 extra3: 6
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: 10
@@ -1505,7 +1401,6 @@ describe("grammar for JSON schema", () => {
                 percentage: 11,
                 extra1: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule comma-whitespace-b-1-4-rule rule5 ( comma-whitespace-b-1-4-rule rule5 ){1,} whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1529,21 +1424,18 @@ describe("grammar for JSON schema", () => {
               rule5 ::= string-rule ":" [ ]? any-json-1-4-rule
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1551,7 +1443,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 4 properties but got 2]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1559,7 +1450,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 4 properties but got 3]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1568,7 +1458,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("minProperties without setting additionalProperties", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1587,7 +1476,6 @@ describe("grammar for JSON schema", () => {
                 message: string,
                 percentage: number
             };
-
             const exampleValidValue = {
                 message: "Hello",
                 percentage: 10
@@ -1596,7 +1484,6 @@ describe("grammar for JSON schema", () => {
                 message: "Hi",
                 percentage: 11
             };
-
             const exampleInvalidValue = {
                 message: "Hello",
                 percentage: 10,
@@ -1613,7 +1500,6 @@ describe("grammar for JSON schema", () => {
                 percentage: 11,
                 extra1: 10
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"percentage\\"" ":" [ ]? fractional-number-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1623,21 +1509,18 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1645,7 +1528,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Unexpected keys: "extra1", "extra2"]');
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1653,7 +1535,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot('[Error: Unexpected keys: "extra1"]');
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1663,7 +1544,6 @@ describe("grammar for JSON schema", () => {
             }
         });
     });
-
     describe("string options", () => {
         test("minLength", async () => {
             const llama = await getTestLlama();
@@ -1679,7 +1559,6 @@ describe("grammar for JSON schema", () => {
             type schemaType = {
                 text: string
             };
-
             const exampleValidValue = {
                 text: "12"
             };
@@ -1689,7 +1568,6 @@ describe("grammar for JSON schema", () => {
             const exampleValidValue3 = {
                 text: "1234"
             };
-
             const exampleInvalidValue = {
                 text: "1"
             };
@@ -1699,7 +1577,6 @@ describe("grammar for JSON schema", () => {
             const exampleInvalidValue3 = {
                 text: "\n"
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-2-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1707,28 +1584,24 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
             expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
             expect(parsedValue3).toEqual(exampleValidValue3);
             expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1736,7 +1609,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 2 characters but got 1]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1744,7 +1616,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 2 characters but got 0]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1753,7 +1624,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("maxLength", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1768,7 +1638,6 @@ describe("grammar for JSON schema", () => {
             type schemaType = {
                 text: string
             };
-
             const exampleValidValue = {
                 text: "12"
             };
@@ -1778,7 +1647,6 @@ describe("grammar for JSON schema", () => {
             const exampleValidValue3 = {
                 text: "1234"
             };
-
             const exampleInvalidValue = {
                 text: "12345"
             };
@@ -1788,7 +1656,6 @@ describe("grammar for JSON schema", () => {
             const exampleInvalidValue3 = {
                 text: "12 45"
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-0-4-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1796,28 +1663,24 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
             expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
             expect(parsedValue3).toEqual(exampleValidValue3);
             expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1825,7 +1688,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 characters but got 5]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1833,7 +1695,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 characters but got 5]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1842,7 +1703,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         test("minLength and maxLength", async () => {
             const llama = await getTestLlama();
             const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -1858,7 +1718,6 @@ describe("grammar for JSON schema", () => {
             type schemaType = {
                 text: string
             };
-
             const exampleValidValue = {
                 text: "12"
             };
@@ -1868,7 +1727,6 @@ describe("grammar for JSON schema", () => {
             const exampleValidValue3 = {
                 text: "1234"
             };
-
             const exampleInvalidValue = {
                 text: "1"
             };
@@ -1878,7 +1736,6 @@ describe("grammar for JSON schema", () => {
             const exampleInvalidValue3 = {
                 text: "123456"
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-2-4-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -1886,28 +1743,24 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
             expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
             expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
             expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
             expect(parsedValue3).toEqual(exampleValidValue3);
             expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -1915,7 +1768,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at least 2 characters but got 1]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -1923,7 +1775,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected at most 4 characters but got 5]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -1932,7 +1783,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
         });
-
         describe("formats", () => {
             test("date", async () => {
                 const llama = await getTestLlama();
@@ -1948,7 +1798,6 @@ describe("grammar for JSON schema", () => {
                 type schemaType = {
                     text: string
                 };
-
                 const exampleValidValue = {
                     text: "2024-12-01"
                 };
@@ -1958,7 +1807,6 @@ describe("grammar for JSON schema", () => {
                 const exampleValidValue3 = {
                     text: "2020-10-20"
                 };
-
                 const exampleInvalidValue = {
                     text: "2024-12-32"
                 };
@@ -1968,35 +1816,30 @@ describe("grammar for JSON schema", () => {
                 const exampleInvalidValue3 = {
                     text: "2024-00-20"
                 };
-
                 expect(grammar.grammar).toMatchInlineSnapshot(`
                   "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-format-date-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
                   string-format-date-rule ::= "\\"" [0-9]{4} "-" ("0" [1-9] | "1" [012]) "-" ("0" [1-9] | [12] [0-9] | "3" [01]) "\\""
                   whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
                   whitespace-b-0-4-rule ::= [\\n] | [ ]?"
                 `);
-
                 const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
                 expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
                 expect(parsedValue).toEqual(exampleValidValue);
                 expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
                 const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
                 expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
                 expect(parsedValue2).toEqual(exampleValidValue2);
                 expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
                 const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
                 expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
                 expect(parsedValue3).toEqual(exampleValidValue3);
                 expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue));
                     expect.unreachable("Parsing should have failed");
@@ -2004,7 +1847,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid date string but got "2024-12-32"]');
                     expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue2));
                     expect.unreachable("Parsing should have failed");
@@ -2012,7 +1854,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid date string but got "2024-13-20"]');
                     expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue3));
                     expect.unreachable("Parsing should have failed");
@@ -2021,7 +1862,6 @@ describe("grammar for JSON schema", () => {
                     expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
                 }
             });
-
             test("time", async () => {
                 const llama = await getTestLlama();
                 const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -2036,7 +1876,6 @@ describe("grammar for JSON schema", () => {
                 type schemaType = {
                     text: string
                 };
-
                 const exampleValidValue = {
                     text: "02:00:00.010Z"
                 };
@@ -2049,7 +1888,6 @@ describe("grammar for JSON schema", () => {
                 const exampleValidValue4 = {
                     text: "12:00:00.001+01:00"
                 };
-
                 const exampleInvalidValue = {
                     text: "12:00:00.000"
                 };
@@ -2062,42 +1900,36 @@ describe("grammar for JSON schema", () => {
                 const exampleInvalidValue4 = {
                     text: "22:60:00Z"
                 };
-
                 expect(grammar.grammar).toMatchInlineSnapshot(`
                   "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-format-time-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
                   string-format-time-rule ::= "\\"" ([01] [0-9] | "2" [0-3]) ":" [0-5] [0-9] ":" [0-5] [0-9] ( "." [0-9]{3} )? ("Z" | ("+" | "-") ([01] [0-9] | "2" [0-3]) ":" [0-5] [0-9]) "\\""
                   whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
                   whitespace-b-0-4-rule ::= [\\n] | [ ]?"
                 `);
-
                 const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
                 expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
                 expect(parsedValue).toEqual(exampleValidValue);
                 expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
                 const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
                 expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
                 expect(parsedValue2).toEqual(exampleValidValue2);
                 expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
                 const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
                 expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
                 expect(parsedValue3).toEqual(exampleValidValue3);
                 expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
                 const parsedValue4 = grammar.parse(JSON.stringify(exampleValidValue4));
                 expectTypeOf(parsedValue4).toMatchTypeOf<schemaType>();
                 expect(parsedValue4).toEqual(exampleValidValue4);
                 expect(testGrammar(grammar, exampleValidValue4)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue4, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue4, "dumps")).to.eql(true);
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue));
                     expect.unreachable("Parsing should have failed");
@@ -2105,7 +1937,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid time string but got "12:00:00.000"]');
                     expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue2));
                     expect.unreachable("Parsing should have failed");
@@ -2113,7 +1944,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid time string but got "12:00:00"]');
                     expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue3));
                     expect.unreachable("Parsing should have failed");
@@ -2121,7 +1951,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid time string but got "24:00:00Z"]');
                     expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue4));
                     expect.unreachable("Parsing should have failed");
@@ -2130,7 +1959,6 @@ describe("grammar for JSON schema", () => {
                     expect(testGrammar(grammar, exampleInvalidValue4)).to.eql(false);
                 }
             });
-
             test("date-time", async () => {
                 const llama = await getTestLlama();
                 const grammar = new LlamaJsonSchemaGrammar(llama, {
@@ -2145,7 +1973,6 @@ describe("grammar for JSON schema", () => {
                 type schemaType = {
                     text: string
                 };
-
                 const exampleValidValue = {
                     text: "2024-12-01T02:00:00.010Z"
                 };
@@ -2158,7 +1985,6 @@ describe("grammar for JSON schema", () => {
                 const exampleValidValue4 = {
                     text: "2020-10-20T12:00:00.001+01:00"
                 };
-
                 const exampleInvalidValue = {
                     text: "2024-12-01T12:00:00.000"
                 };
@@ -2171,42 +1997,36 @@ describe("grammar for JSON schema", () => {
                 const exampleInvalidValue4 = {
                     text: "2024-00-20T22:00:00+01:00"
                 };
-
                 expect(grammar.grammar).toMatchInlineSnapshot(`
                   "root ::= "{" whitespace-b-1-4-rule "\\"text\\"" ":" [ ]? string-format-date-time-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
                   string-format-date-time-rule ::= "\\"" [0-9]{4} "-" ("0" [1-9] | "1" [012]) "-" ("0" [1-9] | [12] [0-9] | "3" [01]) "T" ([01] [0-9] | "2" [0-3]) ":" [0-5] [0-9] ":" [0-5] [0-9] ( "." [0-9]{3} )? ("Z" | ("+" | "-") ([01] [0-9] | "2" [0-3]) ":" [0-5] [0-9]) "\\""
                   whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
                   whitespace-b-0-4-rule ::= [\\n] | [ ]?"
                 `);
-
                 const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
                 expectTypeOf(parsedValue).toMatchTypeOf<schemaType>();
                 expect(parsedValue).toEqual(exampleValidValue);
                 expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
                 const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
                 expectTypeOf(parsedValue2).toMatchTypeOf<schemaType>();
                 expect(parsedValue2).toEqual(exampleValidValue2);
                 expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
                 const parsedValue3 = grammar.parse(JSON.stringify(exampleValidValue3));
                 expectTypeOf(parsedValue3).toMatchTypeOf<schemaType>();
                 expect(parsedValue3).toEqual(exampleValidValue3);
                 expect(testGrammar(grammar, exampleValidValue3)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue3, "dumps")).to.eql(true);
-
                 const parsedValue4 = grammar.parse(JSON.stringify(exampleValidValue4));
                 expectTypeOf(parsedValue4).toMatchTypeOf<schemaType>();
                 expect(parsedValue4).toEqual(exampleValidValue4);
                 expect(testGrammar(grammar, exampleValidValue4)).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue4, "pretty")).to.eql(true);
                 expect(testGrammar(grammar, exampleValidValue4, "dumps")).to.eql(true);
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue));
                     expect.unreachable("Parsing should have failed");
@@ -2214,7 +2034,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid date-time string but got "2024-12-01T12:00:00.000"]');
                     expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue2));
                     expect.unreachable("Parsing should have failed");
@@ -2222,7 +2041,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid date-time string but got "2024-12-32T02:00:00.010Z"]');
                     expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue3));
                     expect.unreachable("Parsing should have failed");
@@ -2230,7 +2048,6 @@ describe("grammar for JSON schema", () => {
                     expect(err).toMatchInlineSnapshot('[Error: Expected a valid date-time string but got "2000-01-01T24:00:00Z"]');
                     expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
                 }
-
                 try {
                     grammar.parse(JSON.stringify(exampleInvalidValue4));
                     expect.unreachable("Parsing should have failed");
@@ -2241,7 +2058,6 @@ describe("grammar for JSON schema", () => {
             });
         });
     });
-
     describe("definitions and $ref", () => {
         test("simple", async () => {
             const llama = await getTestLlama();
@@ -2371,7 +2187,6 @@ describe("grammar for JSON schema", () => {
                 "feelingOverall": "good",
                 "verbsInMessage": ["Hello", "world"]
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? rule0 comma-whitespace-b-1-4-rule "\\"numberOfWordsInMessage\\"" ":" [ ]? integer-number-rule comma-whitespace-b-1-4-rule "\\"feelingGoodPercentage\\"" ":" [ ]? fractional-number-rule comma-whitespace-b-1-4-rule "\\"feelingGood\\"" ":" [ ]? rule1 comma-whitespace-b-1-4-rule "\\"feelingOverall\\"" ":" [ ]? rule1 comma-whitespace-b-1-4-rule "\\"verbsInMessage\\"" ":" [ ]? rule2 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -2390,23 +2205,18 @@ describe("grammar for JSON schema", () => {
               rule2 ::= "[" whitespace-b-2-4-rule ( string-rule ( comma-whitespace-b-2-4-rule string-rule )* )? whitespace-b-1-4-rule "]"
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
             expectTypeOf(parsedValue).toMatchObjectType<schemaType>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
-
             expectTypeOf(parsedValue2).toMatchObjectType<schemaType>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -2414,7 +2224,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"number\"]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -2422,7 +2231,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 2 schemas but got \"average\"]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -2430,7 +2238,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"boolean\"]");
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue4));
                 expect.unreachable("Parsing should have failed");
@@ -2438,7 +2245,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"object\"]");
                 expect(testGrammar(grammar, exampleInvalidValue4)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue5));
                 expect.unreachable("Parsing should have failed");
@@ -2446,7 +2252,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected type \"string\" but got \"null\"]");
                 expect(testGrammar(grammar, exampleInvalidValue5)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue6));
                 expect.unreachable("Parsing should have failed");
@@ -2455,7 +2260,6 @@ describe("grammar for JSON schema", () => {
                 expect(testGrammar(grammar, exampleInvalidValue6)).to.eql(false);
             }
         });
-
         test("recursive references", async () => {
             const llama = await getTestLlama();
             const grammar = await llama.createGrammarForJsonSchema({
@@ -2569,7 +2373,6 @@ describe("grammar for JSON schema", () => {
                     "message": "Hello, world!"
                 }
             };
-
             expect(grammar.grammar).toMatchInlineSnapshot(`
               "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? def0 whitespace-b-0-4-rule "}" "\\n\\n\\n\\n" [\\n]*
               string-char-rule ::= [^"\\\\\\x7F\\x00-\\x1F] | "\\\\" ["\\\\/bfnrt] | "\\\\u" [0-9a-fA-F]{4}
@@ -2587,23 +2390,17 @@ describe("grammar for JSON schema", () => {
               whitespace-b-1-4-rule ::= [\\n] ("    " | "\\t") | [ ]?
               whitespace-b-0-4-rule ::= [\\n] | [ ]?"
             `);
-
             const parsedValue = grammar.parse(JSON.stringify(exampleValidValue));
-
             expectTypeOf<ExpectTypesMatch<typeof parsedValue, schemaType>>().toExtend<true>();
             expect(parsedValue).toEqual(exampleValidValue);
             expect(testGrammar(grammar, exampleValidValue)).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue, "dumps")).to.eql(true);
-
             const parsedValue2 = grammar.parse(JSON.stringify(exampleValidValue2));
-
             expectTypeOf<ExpectTypesMatch<typeof parsedValue2, schemaType>>().toExtend<true>();
             expect(parsedValue2).toEqual(exampleValidValue2);
             expect(testGrammar(grammar, exampleValidValue2)).to.eql(true);
-            // expect(testGrammar(grammar, exampleValidValue2, "pretty")).to.eql(true);
             expect(testGrammar(grammar, exampleValidValue2, "dumps")).to.eql(true);
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue));
                 expect.unreachable("Parsing should have failed");
@@ -2611,7 +2408,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 3 schemas but got false]");
                 expect(testGrammar(grammar, exampleInvalidValue)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue2));
                 expect.unreachable("Parsing should have failed");
@@ -2619,7 +2415,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 3 schemas but got {\"feel\":\"ok\",\"message\":\"Hello, world!\"}]");
                 expect(testGrammar(grammar, exampleInvalidValue2)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue3));
                 expect.unreachable("Parsing should have failed");
@@ -2627,7 +2422,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 3 schemas but got {\"feel\":\"good\",\"message\":{\"feel\":\"bad\",\"message\":true}}]");
                 expect(testGrammar(grammar, exampleInvalidValue3)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue4));
                 expect.unreachable("Parsing should have failed");
@@ -2635,7 +2429,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 3 schemas but got {\"feel\":\"good\",\"message\":{\"feel\":\"bad\",\"message\":{}}}]");
                 expect(testGrammar(grammar, exampleInvalidValue4)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue5));
                 expect.unreachable("Parsing should have failed");
@@ -2643,7 +2436,6 @@ describe("grammar for JSON schema", () => {
                 expect(err).toMatchInlineSnapshot("[Error: Expected one of 3 schemas but got {\"feel\":\"good\",\"message\":{\"feel\":\"bad\",\"message\":{\"feel\":\"good\",\"message\":{\"feel\":\"bad\",\"message\":null}}}}]");
                 expect(testGrammar(grammar, exampleInvalidValue5)).to.eql(false);
             }
-
             try {
                 grammar.parse(JSON.stringify(exampleInvalidValue6));
                 expect.unreachable("Parsing should have failed");
@@ -2654,16 +2446,13 @@ describe("grammar for JSON schema", () => {
         });
     });
 });
-
 function testGrammar(grammar: LlamaJsonSchemaGrammar<any>, object: any, formattingType: false | "dumps" | "pretty" = false) {
     if (formattingType === "pretty")
         return grammar._testText(JSON.stringify(object, undefined, 4) + "\n".repeat(4));
     else if (formattingType === "dumps")
         return grammar._testText(jsonDumps(object) + "\n".repeat(4));
-
     return grammar._testText(JSON.stringify(object) + "\n".repeat(4));
 }
-
 type ExpectTypesMatch<T1, T2> = T1 extends T2
     ? T2 extends T1
         ? true

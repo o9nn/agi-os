@@ -540,7 +540,6 @@
           I(r.charCodeAt(l + 2)) &&
           I(r.charCodeAt(l + 3)) &&
           !I(r.charCodeAt(l + 4));
-
         ) {
           if (a > 2)
             return i(
@@ -570,7 +569,6 @@
                 !$(r.charCodeAt(l + 4)) &&
                 ((t.region = s.slice(l + 1, l + 4)), (l += 4)));
         r.charCodeAt(l) === 45;
-
       ) {
         let a = l + 1,
           o = a
@@ -592,7 +590,6 @@
           r.charCodeAt(l + 2) !== 45 ||
           !Z(r.charCodeAt(l + 3))
         );
-
       ) {
         let a = l + 2,
           o = 0
@@ -601,7 +598,6 @@
           r.charCodeAt(a) === 45 &&
           Z(r.charCodeAt(a + 1)) &&
           Z(r.charCodeAt(a + 2));
-
         ) {
           const f = a + 1
           for (a = f + 2, o++; Z(r.charCodeAt(a)); ) {

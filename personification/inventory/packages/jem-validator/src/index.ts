@@ -5,10 +5,8 @@ import { readableStreamToAsyncIterator } from '@moeru/std'
 import * as providers from '@xsai-ext/providers-cloud'
 import { generateText, streamText, tool } from 'xsai'
 import { z } from 'zod'
-
 async function checkTextGeneration(chat: CommonRequestOptions, modelId: string) {
   console.log(`${modelId} - Text Generation:`)
-
   const generateTextResponse = await generateText({
     ...chat,
     messages: [
@@ -22,14 +20,11 @@ async function checkTextGeneration(chat: CommonRequestOptions, modelId: string) 
       },
     ],
   })
-
   console.log(generateTextResponse.text)
   console.log('='.repeat(50))
 }
-
 async function checkStreamGeneration(chat: CommonRequestOptions, modelId: string) {
   console.log(`${modelId} - Stream Generation:`)
-
   const stream = await streamText({
     ...chat,
     messages: [
@@ -39,19 +34,15 @@ async function checkStreamGeneration(chat: CommonRequestOptions, modelId: string
       },
     ],
   })
-
   const chunks: string[] = []
   for await (const chunk of readableStreamToAsyncIterator(stream.textStream, async it => it.toString())) {
     chunks.push(chunk)
   }
-
   console.log(chunks)
   console.log('='.repeat(50))
 }
-
 async function checkToolCallGeneration(chat: CommonRequestOptions, modelId: string) {
   console.log(`${modelId} - Tool Call Generation:`)
-
   const toolCallResponse = await generateText({
     ...chat,
     messages: [
@@ -78,11 +69,9 @@ async function checkToolCallGeneration(chat: CommonRequestOptions, modelId: stri
       }),
     ],
   })
-
   console.log(toolCallResponse.text)
   console.log('='.repeat(50))
 }
-
 async function main() {
   if (!env.OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY is not set')
@@ -96,12 +85,10 @@ async function main() {
   if (!env.GOOGLE_API_KEY) {
     throw new Error('GOOGLE_API_KEY is not set')
   }
-
   const openai = providers.createOpenAI(env.OPENAI_API_KEY)
   const minimax = providers.createMinimax(env.MINIMAX_API_KEY)
   const minimaxi = providers.createMinimaxi(env.MINIMAXI_API_KEY)
   const google = providers.createGoogleGenerativeAI(env.GOOGLE_API_KEY)
-
   for (const model of models) {
     let chat: CommonRequestOptions | undefined
     switch (model.provider) {
@@ -118,15 +105,12 @@ async function main() {
         chat = google.chat(model.modelId)
         break
     }
-
     if (!chat) {
       throw new Error(`Unsupported provider: ${model.provider}`)
     }
-
     for (const modality of model.outputModalities) {
       switch (modality) {
         case 'audio':
-          // await checkAudioGeneration(chat, model.modelId) TODO: Audio check
           break
         case 'text':
           await checkTextGeneration(chat, model.modelId)
@@ -135,7 +119,6 @@ async function main() {
           throw new Error(`Unsupported modality: ${modality}`)
       }
     }
-
     for (const capability of model.capabilities) {
       switch (capability) {
         case 'streaming':
@@ -150,7 +133,6 @@ async function main() {
     }
   }
 }
-
 main().catch((error) => {
   console.error(error)
   exit(1)

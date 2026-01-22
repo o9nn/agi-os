@@ -1,6 +1,6 @@
 #!/dis/sh
 load std
-if {~ $#* 0} {
+if {~ $
 	echo usage: runns path0 path1 ... pathn
 	raise usage
 }

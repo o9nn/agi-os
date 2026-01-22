@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 set -e
-
-# @describe Send SMS or Twilio Messaging Channels messages using Twilio API.
-# @option --to-number! The recipient's phone number. Prefix with 'whatsapp:' for WhatsApp messages, e.g. whatsapp:+1234567890
-# @option --message! The content of the message to be sent
-
-# @env TWILIO_ACCOUNT_SID! The twilio account sid
-# @env TWILIO_AUTH_TOKEN! The twilio auth token
-# @env TWILIO_FROM_NUMBER! The twilio from number
-# @env LLM_OUTPUT=/dev/stdout The output path
-
 main() {
     from_number="$TWILIO_FROM_NUMBER"
     to_number="$argc_to_number"
@@ -37,10 +27,8 @@ main() {
         _die "error: $body"
     fi
 }
-
 _die() {
     echo "$*" >&2
     exit 1
 }
-
 eval "$(argc --argc-eval "$0" "$@")"

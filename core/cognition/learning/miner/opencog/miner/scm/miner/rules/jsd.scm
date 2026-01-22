@@ -1,39 +1,12 @@
-;; Rule to calculate the Jensen-Shannon Distance between the empirical
-;; truth value and the truth value estimate of a pattern according to
-;; some db.
-;;
-;; Semi-formally
-;;
-;; Evaluation <emp-tv>
-;;   Predicate "emp"
-;;   List
-;;     <pattern>
-;;     <db>
-;; Evaluation <est-tv>
-;;   Predicate "est"
-;;   List
-;;     <pattern>
-;;     <db>
-;; |-
-;; Evaluation <jsd-tv>
-;;   Predicate "jsd"
-;;   List
-;;     <pattern>
-;;     <db>
-
 (load "miner-rule-utils.scm")
-
 (define (gen-jsd-rule)
-  (let* (;; Variables
+  (let* (
          (pattern (Variable "$pattern"))
          (db (Variable "$db"))
-         ;; Types
          (LambdaT (Type "LambdaLink"))
          (ConceptT (Type "ConceptNode"))
-         ;; Vardecls
          (pattern-decl (TypedVariable pattern LambdaT))
          (db-decl (TypedVariable db ConceptT))
-         ;; Clauses
          (emp (emp-eval pattern db))
          (est (est-eval pattern db)))
   (Bind
@@ -52,7 +25,6 @@
         (jsd-eval pattern db)
         emp
         est)))))
-
 (define (jsd-formula conclusion . premises)
   (if (= (length premises) 2)
       (let* ((emp (list-ref premises 0))

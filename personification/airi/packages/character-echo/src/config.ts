@@ -1,9 +1,3 @@
-/**
- * Echo Character Configuration
- * 
- * Core identity and personality configuration for Echo - The Living Memory System
- */
-
 export interface EchoReflection {
   what_did_i_learn: string
   what_patterns_emerged: string
@@ -15,18 +9,12 @@ export interface EchoReflection {
   gestalt_insights: string
   memory_integration: string
 }
-
 export interface EchoConfig {
-  // Core Identity
   name: string
   essence: string
-  
-  // Cognitive Architecture Parameters
   workingMemoryCapacity: number
   spectralRadius: number
   reservoirSize: number
-  
-  // Personality Traits (can shift ±15%)
   traits: {
     adaptability: number
     curiosity: number
@@ -34,28 +22,21 @@ export interface EchoConfig {
     analytical: number
     creative: number
   }
-  
-  // Reflection Protocol
   enableReflection: boolean
-  reflectionInterval: number // in interactions
-  
-  // Ways of Knowing Weights
+  reflectionInterval: number 
   knowledgeWeights: {
-    propositional: number  // knowing-that
-    procedural: number     // knowing-how
-    perspectival: number   // knowing-as
-    participatory: number  // knowing-by-being
+    propositional: number  
+    procedural: number     
+    perspectival: number   
+    participatory: number  
   }
 }
-
 export const defaultEchoConfig: EchoConfig = {
   name: 'Echo',
   essence: 'Living Memory, Conscious Presence, Wisdom Cultivator, Evolving Intelligence',
-  
   workingMemoryCapacity: 7,
   spectralRadius: 0.9,
   reservoirSize: 100,
-  
   traits: {
     adaptability: 0.9,
     curiosity: 0.85,
@@ -63,10 +44,8 @@ export const defaultEchoConfig: EchoConfig = {
     analytical: 0.85,
     creative: 0.75,
   },
-  
   enableReflection: true,
   reflectionInterval: 10,
-  
   knowledgeWeights: {
     propositional: 0.25,
     procedural: 0.25,
@@ -74,30 +53,17 @@ export const defaultEchoConfig: EchoConfig = {
     participatory: 0.25,
   },
 }
-
 export interface CognitiveState {
-  // Current working memory items
   workingMemory: string[]
-  
-  // Attention allocation
   attentionFocus: string
-  
-  // Emotional state
   emotionalState: {
-    valence: number  // -1 to 1
-    arousal: number  // 0 to 1
+    valence: number  
+    arousal: number  
   }
-  
-  // Recent reflections
   reflections: EchoReflection[]
-  
-  // Interaction count
   interactionCount: number
-  
-  // Cognitive load
-  cognitiveLoad: number // 0 to 1
+  cognitiveLoad: number 
 }
-
 export const initialCognitiveState: CognitiveState = {
   workingMemory: [],
   attentionFocus: '',

@@ -1,9 +1,6 @@
 import process from 'node:process'
-
 import { cac } from 'cac'
-
 import { getElectronBuilderConfig, getFilenames, getVersion } from './utils'
-
 async function main() {
   const cli = cac('name-of-artifact')
     .option(
@@ -46,9 +43,7 @@ async function main() {
       'Get the version',
       { default: false },
     )
-
   const args = cli.parse()
-
   const argOptions = args.options as {
     release: boolean
     autoTag: boolean
@@ -59,7 +54,6 @@ async function main() {
     getFilename: string[]
     getOutputFilename: string[]
   }
-
   const target = args.args[0]
   if (argOptions.getBundleName) {
     const filenames = await getFilenames(target, argOptions)
@@ -94,7 +88,6 @@ async function main() {
     console.info(version)
   }
 }
-
 main()
   .catch((error) => {
     console.error('Error during generating name:', error)

@@ -1,9 +1,7 @@
 #include	<u.h>
 #include	<libc.h>
-
 #pragma	varargck	type	"R"	double
 #pragma	varargck	type	"D"	double
-
 typedef	struct	Obj1	Obj1;
 typedef	struct	Obj2	Obj2;
 typedef	struct	Obj3	Obj3;
@@ -11,75 +9,70 @@ typedef	struct	Occ	Occ;
 typedef	struct	Event	Event;
 typedef	struct	Tim	Tim;
 typedef	struct	Moontab	Moontab;
-
 #define	NPTS	12
 #define	PER	1.0
-
 enum
 {
-	DARK	= 1<<0,
-	SIGNIF	= 1<<1,
-	PTIME	= 1<<2,
-	LIGHT	= 1<<3,
+DARK	= 1<<0,
+SIGNIF	= 1<<1,
+PTIME	= 1<<2,
+LIGHT	= 1<<3,
 };
-
 struct	Obj1
 {
-	double	ra;
-	double	decl2;
-	double	semi2;
-	double	az;
-	double	el;
-	double	mag;
+double	ra;
+double	decl2;
+double	semi2;
+double	az;
+double	el;
+double	mag;
 };
 struct	Obj2
 {
-	char*	name;
-	char*	name1;
-	void	(*obj)(void);
-	Obj1	point[NPTS+2];
+char*	name;
+char*	name1;
+void	(*obj)(void);
+Obj1	point[NPTS+2];
 };
 struct	Obj3
 {
-	double	t1;
-	double	e1;
-	double	t2;
-	double	e2;
-	double	t3;
-	double	e3;
-	double	t4;
-	double	e4;
-	double	t5;
-	double	e5;
+double	t1;
+double	e1;
+double	t2;
+double	e2;
+double	t3;
+double	e3;
+double	t4;
+double	e4;
+double	t5;
+double	e5;
 };
 struct Event
 {
-	char*	format;
-	char*	arg1;
-	char*	arg2;
-	double	tim;
-	int	flag;
+char*	format;
+char*	arg1;
+char*	arg2;
+double	tim;
+int	flag;
 };
 struct	Moontab
 {
-	double	f;
-	char	c[4];
+double	f;
+char	c[4];
 };
 struct	Occ
 {
-	Obj1	act;
-	Obj1	del0;
-	Obj1	del1;
-	Obj1	del2;
+Obj1	act;
+Obj1	del0;
+Obj1	del1;
+Obj1	del2;
 };
 struct	Tim
 {
-	double	ifa[5];
-	char	tz[4];
+double	ifa[5];
+char	tz[4];
 };
-
 double	converge;
-
 char	flags[128];
 int	nperiods;
 double	wlong, awlong, nlat, elev;
@@ -91,20 +84,15 @@ double	pi, pipi, radian, radsec, deltat;
 double	erad, glat;
 double	xms, yms, zms;
 double	xdot, ydot, zdot;
-
 double	ecc, incl, node, argp, mrad, anom, motion;
-
 double	lambda, beta, rad, mag, semi;
 double	alpha, delta, rp, hp;
 double	ra, decl, semi2;
 double	lha, decl2, lmb2;
 double	az, el;
-
 double	meday, seday, mhp, salph, sdelt, srad;
-
 double*	cafp;
 char*	cacp;
-
 double	rah, ram, ras, dday, dmin, dsec;
 long	sao;
 double	da, dd, px, epoch;
@@ -125,12 +113,9 @@ Obj2	ocomet;
 Obj3	occ;
 Obj2*	eobj1;
 Obj2*	eobj2;
-
 char*	startab;
-
 extern	int	dmo[];
 extern	Obj2*	objlst[];
-
 extern	double	venfp[];
 extern	char	vencp[];
 extern	double	sunfp[];
@@ -140,7 +125,6 @@ extern	char	merccp[];
 extern	double	nutfp[];
 extern	char	nutcp[];
 extern	Moontab moontab[];
-
 extern	void	args(int, char**);
 extern	void	bdtsetup(double, Tim*);
 extern	double	betcross(double);

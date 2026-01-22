@@ -1,11 +1,8 @@
 import {describe, expect, test} from "vitest";
 import {ChatHistoryItem, defineChatSessionFunction, HarmonyChatWrapper} from "../../../src/index.js";
 import {defaultChatSystemPrompt} from "../../../src/config.js";
-
-
 describe("HarmonyChatWrapper", () => {
     const todayDate = new Date("2025-08-05T00:00:00Z");
-
     const conversationHistory: ChatHistoryItem[] = [{
         type: "system",
         text: defaultChatSystemPrompt
@@ -44,7 +41,6 @@ describe("HarmonyChatWrapper", () => {
             "I'm good, how are you?"
         ]
     }];
-
     const functions = {
         getRandomNumber: defineChatSessionFunction({
             description: "Get a random number",
@@ -167,7 +163,6 @@ describe("HarmonyChatWrapper", () => {
                 }
             },
             handler(params) {
-
             }
         })
     };
@@ -209,24 +204,19 @@ describe("HarmonyChatWrapper", () => {
             "The total result of rolling the dice twice is 3 + 4 = 7."
         ]
     }];
-
     test("should generate valid context text", () => {
         const chatWrapper = new HarmonyChatWrapper({todayDate, keepOnlyLastThought: false});
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|start|>system<|message|>"),
             "You are ChatGPT, a large language model trained by OpenAI.
           Knowledge cutoff: 2024-06
           Current date: 2025-08-05
-
           Reasoning: medium
-
           # Valid channels: analysis, commentary, final. Channel must be included for every message.",
             new SpecialTokensText("<|end|><|start|>developer<|message|>"),
             "# Instruction
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("<|end|><|start|>user<|message|>"),
@@ -245,71 +235,40 @@ describe("HarmonyChatWrapper", () => {
             "I'm good, how are you?",
           ])
         `);
-
         const chatWrapper2 = new HarmonyChatWrapper({todayDate});
         const {contextText: contextText2} = chatWrapper2.generateContextState({
             chatHistory: conversationHistory2,
             availableFunctions: functions
         });
-
         expect(contextText2).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|start|>system<|message|>"),
             "You are ChatGPT, a large language model trained by OpenAI.
           Knowledge cutoff: 2024-06
           Current date: 2025-08-05
-
           Reasoning: medium
-
           # Valid channels: analysis, commentary, final. Channel must be included for every message.
           Calls to these tools must go to the commentary channel: 'functions'.",
             new SpecialTokensText("<|end|><|start|>developer<|message|>"),
             "# Instructions
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           # Tools
-
           ## functions
-
           namespace functions {
-
-          // Get a random number
           type getRandomNumber = (_: {min: number, max: number}) => any;
-
-          // Send a notification to the owner, and create sub notifications
-          type notifyOwner = (_: /* Type: notification */ {message: string, subNotifications: (/* notification type */ any)[]}) => any;
-
-          // Send a notification to the owner, and create sub notifications
-          type notifyOwner2 = (_: /* Type: notification */ {
-          // Notification message
+          type notifyOwner = (_:  {message: string, subNotifications: ( any)[]}) => any;
+          type notifyOwner2 = (_:  {
           message: string,
-
-          // Sub notifications
-          subNotifications: (/* notification type */ any)[]
+          subNotifications: ( any)[]
           }) => any;
-
-          // Some function
           type func1 = (_: {
-          // Some message
-          // minimum length: 3, maximum length: 10
           message: string,
-
-          // Some words
-          // maximum items: 5
           words: [string, string, ...string[]],
-
-          // Some headers
-          // minimum number of properties: 4, maximum number of properties: 12
           headers: {[key: string]: string},
-
-          // Some mappings
-          // minimum number of properties: 4, maximum number of properties: 12
           mappings: {a: boolean, b: number, c: string | null} & {[key: string]: string}
           }) => any;
-
-          } // namespace functions",
+          } 
             new SpecialTokensText("<|end|><|start|>user<|message|>"),
             "Hi there!",
             new SpecialTokensText("<|end|><|start|>assistant<|channel|>final<|message|>"),
@@ -336,7 +295,6 @@ describe("HarmonyChatWrapper", () => {
             "The total result of rolling the dice twice is 3 + 4 = 7.",
           ])
         `);
-
         const chatWrapper3 = new HarmonyChatWrapper({todayDate});
         const {contextText: contextText3} = chatWrapper3.generateContextState({chatHistory: conversationHistory});
         const {contextText: contextText3WithOpenModelResponse} = chatWrapper3.generateContextState({
@@ -348,20 +306,16 @@ describe("HarmonyChatWrapper", () => {
                 }
             ]
         });
-
         expect(contextText3).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|start|>system<|message|>"),
             "You are ChatGPT, a large language model trained by OpenAI.
           Knowledge cutoff: 2024-06
           Current date: 2025-08-05
-
           Reasoning: medium
-
           # Valid channels: analysis, commentary, final. Channel must be included for every message.",
             new SpecialTokensText("<|end|><|start|>developer<|message|>"),
             "# Instruction
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("<|end|><|start|>user<|message|>"),
@@ -378,20 +332,16 @@ describe("HarmonyChatWrapper", () => {
             "I'm good, how are you?",
           ])
         `);
-
         expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|start|>system<|message|>"),
             "You are ChatGPT, a large language model trained by OpenAI.
           Knowledge cutoff: 2024-06
           Current date: 2025-08-05
-
           Reasoning: medium
-
           # Valid channels: analysis, commentary, final. Channel must be included for every message.",
             new SpecialTokensText("<|end|><|start|>developer<|message|>"),
             "# Instruction
-
           You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.",
             new SpecialTokensText("<|end|><|start|>user<|message|>"),

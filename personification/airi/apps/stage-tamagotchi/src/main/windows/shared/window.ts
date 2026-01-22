@@ -1,7 +1,5 @@
 import type { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
-
 import { isMacOS } from 'std-env'
-
 export function toggleWindowShow(window?: BrowserWindow | null): void {
   if (!window) {
     return
@@ -9,15 +7,12 @@ export function toggleWindowShow(window?: BrowserWindow | null): void {
   if (window.isDestroyed()) {
     return
   }
-
   if (window?.isMinimized()) {
     window?.restore()
   }
-
   window?.show()
   window?.focus()
 }
-
 export function transparentWindowConfig(): BrowserWindowConstructorOptions {
   return {
     frame: false,
@@ -26,14 +21,12 @@ export function transparentWindowConfig(): BrowserWindowConstructorOptions {
     hasShadow: false,
   }
 }
-
 export function blurryWindowConfig(): BrowserWindowConstructorOptions {
   return {
     vibrancy: 'under-window',
     backgroundMaterial: 'acrylic',
   }
 }
-
 export function spotlightLikeWindowConfig(): BrowserWindowConstructorOptions {
   return {
     ...blurryWindowConfig(),

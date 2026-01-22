@@ -1,11 +1,8 @@
 import { openAsBlob } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-
 import { streamTranscription } from '../src'
-
 describe('@xsai/stream-transcription', () => {
   const expectText = 'Hello, I am your AI assistant. Just let me know how I can help bring your ideas to life.'
-
   it('basic', async () => {
     const { text } = streamTranscription({
       apiKey: 'a',
@@ -14,7 +11,6 @@ describe('@xsai/stream-transcription', () => {
       fileName: 'basic.wav',
       model: 'gpt-4o-transcribe',
     })
-
     const transcript = await text
     expect(transcript).toBe(expectText)
   })

@@ -1,11 +1,8 @@
 import { openAsBlob } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-
 import { generateTranscription } from '../src'
-
 describe('@xsai/generate-transcription', () => {
   const expectText = 'Hello, I am your AI assistant. Just let me know how I can help bring your ideas to life.'
-
   it('json', async () => {
     const { text } = await generateTranscription({
       apiKey: 'a',
@@ -15,10 +12,8 @@ describe('@xsai/generate-transcription', () => {
       language: 'en',
       model: 'deepdml/faster-whisper-large-v3-turbo-ct2',
     })
-
     expect(text).toBe(expectText)
   })
-
   it('verbose_json + segment', async () => {
     const { duration, language, segments, text } = await generateTranscription({
       apiKey: 'a',
@@ -29,13 +24,11 @@ describe('@xsai/generate-transcription', () => {
       model: 'deepdml/faster-whisper-large-v3-turbo-ct2',
       responseFormat: 'verbose_json',
     })
-
     expect(duration).toBe(5.472)
     expect(language).toBe('en')
     expect(text).toBe(expectText)
     expect(segments).toMatchSnapshot()
   })
-
   it('verbose_json + word', async () => {
     const { duration, language, text, words } = await generateTranscription({
       apiKey: 'a',
@@ -47,7 +40,6 @@ describe('@xsai/generate-transcription', () => {
       responseFormat: 'verbose_json',
       timestampGranularities: 'word',
     })
-
     expect(duration).toBe(5.472)
     expect(language).toBe('en')
     expect(text).toBe(expectText)

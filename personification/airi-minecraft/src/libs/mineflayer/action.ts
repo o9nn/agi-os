@@ -1,8 +1,6 @@
 import type { z } from 'zod'
 import type { Mineflayer } from './core'
-
 type ActionResult = string | Promise<string>
-
 export interface Action {
   readonly name: string
   readonly description: string

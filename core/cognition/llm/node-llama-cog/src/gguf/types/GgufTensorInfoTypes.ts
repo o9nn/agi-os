@@ -3,23 +3,9 @@ export type GgufTensorInfo = {
     readonly dimensions: readonly (number | bigint)[],
     readonly ggmlType: GgmlType,
     readonly offset: number | bigint,
-
-    /**
-     * Adjusted offset relative to the file.
-     *
-     * Added by the GGUF parser - not part of the file's metadata.
-     */
     readonly fileOffset: number | bigint,
-
-    /**
-     * For spliced metadata of multiple file parts, this will be the file part number.
-     * Starts from `1`.
-     *
-     * Added by the GGUF parser - not part of the file's metadata.
-     */
     readonly filePart: number
 };
-
 export const enum GgmlType {
     F32 = 0,
     F16 = 1,
@@ -60,5 +46,5 @@ export const enum GgmlType {
     IQ4_NL_4_4 = 36,
     IQ4_NL_4_8 = 37,
     IQ4_NL_8_8 = 38,
-    MXFP4 = 39 // MXFP4 (1 block)
+    MXFP4 = 39 
 }

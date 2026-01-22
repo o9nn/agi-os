@@ -1,7 +1,5 @@
 import { useContext } from 'react'
-
 import { DialogContext } from '../../contexts/DialogContext'
-
 export default function useDialog() {
   const {
     openDialog,
@@ -10,7 +8,6 @@ export default function useDialog() {
     closeAllDialogs,
     openDialogIds,
   } = useContext(DialogContext)
-
   return {
     openDialog,
     closeDialog,

@@ -1,5 +1,4 @@
 import type { EventId } from 'factorio:runtime'
-
 export interface ModsGlobals {
   remote_interfaces: string[]
   event_listeners: Record<string, ((...args: any) => any)[]>
@@ -8,7 +7,6 @@ export interface ModsGlobals {
   before_reload: () => void
   new_code_to_reload: string
 }
-
 declare global {
   let mods_globals: Record<string, ModsGlobals> | undefined
 }

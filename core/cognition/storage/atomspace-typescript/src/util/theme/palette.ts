@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-
 export const light = {
     "alternate": {
         "main": "#ffffff",
@@ -93,7 +91,6 @@ export const light = {
         "activatedOpacity": 0.12
     }
 };
-
 export const dark = {
     "alternate": {
         "main": "#212121",

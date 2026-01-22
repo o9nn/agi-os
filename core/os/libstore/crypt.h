@@ -1,12 +1,6 @@
-/* crypt.h (dummy version) -- do not perform encryption
- * Hardly worth copyrighting :-)
- */
-
 #ifdef CRYPT
-#  undef CRYPT      /* dummy version */
+#  undef CRYPT
 #endif
-
-#define RAND_HEAD_LEN  12  /* length of encryption random header */
-
+#define RAND_HEAD_LEN  12
 #define zencode
 #define zdecode

@@ -1,11 +1,10 @@
 import { GLOB_MARKDOWN_CODE, GLOB_TESTS } from '@antfu/eslint-config'
 import { defineConfig } from '@importantimport/eslint-config'
-
 export default defineConfig({
   typescript: { tsconfigPath: './tsconfig.json' },
 }, [{
   ignores: [
-    'docs/components/ui/**/*.tsx',
+    'docs/components/ui*.tsx',
   ],
 }, {
   rules: {

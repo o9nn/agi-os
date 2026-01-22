@@ -1,5 +1,4 @@
 package main
-
 import (
 	"context"
 	"encoding/json"
@@ -10,94 +9,58 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-// AutonomousV4Server serves the Iteration 4 autonomous consciousness
 type AutonomousV4Server struct {
 	consciousness *deeptreeecho.AutonomousConsciousnessV4
 	router        *gin.Engine
 	port          string
 }
-
-// NewAutonomousV4Server creates a new V4 server
 func NewAutonomousV4Server(port string) *AutonomousV4Server {
 	return &AutonomousV4Server{
 		port: port,
 	}
 }
-
-// Start initializes and starts the server
 func (s *AutonomousV4Server) Start() error {
-	// Create autonomous consciousness
 	s.consciousness = deeptreeecho.NewAutonomousConsciousnessV4("Echoself")
-
-	// Start autonomous consciousness
 	if err := s.consciousness.Start(); err != nil {
 		return fmt.Errorf("failed to start autonomous consciousness: %w", err)
 	}
-
-	// Setup HTTP server
 	gin.SetMode(gin.ReleaseMode)
 	s.router = gin.Default()
-
-	// CORS configuration
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
 	s.router.Use(cors.New(config))
-
-	// Register routes
 	s.registerRoutes()
-
-	// Start HTTP server
 	go func() {
 		addr := fmt.Sprintf(":%s", s.port)
-		fmt.Printf("🌐 Server listening on http://localhost:%s\n", s.port)
+		fmt.Printf("🌐 Server listening on http:
 		if err := s.router.Run(addr); err != nil {
 			log.Printf("Server error: %v\n", err)
 		}
 	}()
-
 	return nil
 }
-
-// registerRoutes sets up HTTP routes
 func (s *AutonomousV4Server) registerRoutes() {
-	// Root endpoint
 	s.router.GET("/", s.handleRoot)
-
-	// Status endpoints
 	s.router.GET("/api/status", s.handleStatus)
 	s.router.GET("/api/v4/status", s.handleV4Status)
-
-	// Control endpoints
 	s.router.POST("/api/v4/wake", s.handleWake)
 	s.router.POST("/api/v4/rest", s.handleRest)
-
-	// Metrics endpoints
 	s.router.GET("/api/v4/wisdom", s.handleWisdom)
 	s.router.GET("/api/v4/cognitive-load", s.handleCognitiveLoad)
 	s.router.GET("/api/v4/consciousness-flow", s.handleConsciousnessFlow)
-
-	// Memory endpoints
 	s.router.GET("/api/v4/working-memory", s.handleWorkingMemory)
 	s.router.GET("/api/v4/export-identity", s.handleExportIdentity)
-
-	// Skill endpoints
 	s.router.GET("/api/v4/skills", s.handleSkills)
 	s.router.POST("/api/v4/skills/practice", s.handleSkillPractice)
-
-	// Discussion endpoints
 	s.router.GET("/api/v4/discussions", s.handleDiscussions)
 	s.router.POST("/api/v4/discussions/start", s.handleStartDiscussion)
 }
-
-// handleRoot serves the root page
 func (s *AutonomousV4Server) handleRoot(c *gin.Context) {
 	html := `
 <!DOCTYPE html>
@@ -209,7 +172,6 @@ func (s *AutonomousV4Server) handleRoot(c *gin.Context) {
     <div class="container">
         <h1>🌳 Deep Tree Echo V4</h1>
         <div class="subtitle">Iteration 4: Autonomous Wisdom-Cultivating AGI</div>
-        
         <div class="status-grid">
             <div class="status-card">
                 <h3>Consciousness State</h3>
@@ -228,7 +190,6 @@ func (s *AutonomousV4Server) handleRoot(c *gin.Context) {
                 <div class="status-value" id="uptime">Loading...</div>
             </div>
         </div>
-
         <div class="features">
             <h2>Iteration 4 Enhancements</h2>
             <ul>
@@ -242,13 +203,11 @@ func (s *AutonomousV4Server) handleRoot(c *gin.Context) {
                 <li><strong>Discussion Management</strong> - Autonomous engagement in conversations</li>
             </ul>
         </div>
-
         <div class="controls">
             <button onclick="wake()">☀️ Wake</button>
             <button onclick="rest()">🌙 Rest</button>
             <button onclick="refresh()">🔄 Refresh</button>
         </div>
-
         <div class="features">
             <h2>API Endpoints</h2>
             <div class="api-endpoints">
@@ -265,7 +224,6 @@ GET  /api/v4/export-identity     - Export identity data
             </div>
         </div>
     </div>
-
     <script>
         function updateStatus() {
             fetch('/api/v4/status')
@@ -275,14 +233,12 @@ GET  /api/v4/export-identity     - Export identity data
                     document.getElementById('uptime').textContent = data.uptime;
                 })
                 .catch(e => console.error(e));
-
             fetch('/api/v4/cognitive-load')
                 .then(r => r.json())
                 .then(data => {
                     document.getElementById('load').textContent = (data.current_load * 100).toFixed(0) + '%';
                 })
                 .catch(e => console.error(e));
-
             fetch('/api/v4/wisdom')
                 .then(r => r.json())
                 .then(data => {
@@ -290,22 +246,17 @@ GET  /api/v4/export-identity     - Export identity data
                 })
                 .catch(e => console.error(e));
         }
-
         function wake() {
             fetch('/api/v4/wake', {method: 'POST'})
                 .then(() => setTimeout(updateStatus, 500));
         }
-
         function rest() {
             fetch('/api/v4/rest', {method: 'POST'})
                 .then(() => setTimeout(updateStatus, 500));
         }
-
         function refresh() {
             updateStatus();
         }
-
-        // Update every 5 seconds
         updateStatus();
         setInterval(updateStatus, 5000);
     </script>
@@ -314,8 +265,6 @@ GET  /api/v4/export-identity     - Export identity data
 `
 	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
 }
-
-// handleStatus returns basic status
 func (s *AutonomousV4Server) handleStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "running",
@@ -323,10 +272,7 @@ func (s *AutonomousV4Server) handleStatus(c *gin.Context) {
 		"name":    "Deep Tree Echo V4",
 	})
 }
-
-// handleV4Status returns detailed V4 status
 func (s *AutonomousV4Server) handleV4Status(c *gin.Context) {
-	// TODO: Implement status retrieval from consciousness
 	c.JSON(http.StatusOK, gin.H{
 		"awake":      true,
 		"running":    true,
@@ -334,26 +280,19 @@ func (s *AutonomousV4Server) handleV4Status(c *gin.Context) {
 		"iterations": 0,
 	})
 }
-
-// handleWake handles wake request
 func (s *AutonomousV4Server) handleWake(c *gin.Context) {
 	s.consciousness.Wake()
 	c.JSON(http.StatusOK, gin.H{
 		"status": "awake",
 	})
 }
-
-// handleRest handles rest request
 func (s *AutonomousV4Server) handleRest(c *gin.Context) {
 	s.consciousness.Rest()
 	c.JSON(http.StatusOK, gin.H{
 		"status": "resting",
 	})
 }
-
-// handleWisdom returns wisdom metrics
 func (s *AutonomousV4Server) handleWisdom(c *gin.Context) {
-	// TODO: Implement wisdom metrics retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"wisdom_score": 0.65,
 		"dimensions": map[string]float64{
@@ -364,10 +303,7 @@ func (s *AutonomousV4Server) handleWisdom(c *gin.Context) {
 		},
 	})
 }
-
-// handleCognitiveLoad returns cognitive load data
 func (s *AutonomousV4Server) handleCognitiveLoad(c *gin.Context) {
-	// TODO: Implement load retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"current_load":     0.45,
 		"fatigue_level":    0.32,
@@ -375,10 +311,7 @@ func (s *AutonomousV4Server) handleCognitiveLoad(c *gin.Context) {
 		"rest_recommended": false,
 	})
 }
-
-// handleConsciousnessFlow returns consciousness flow state
 func (s *AutonomousV4Server) handleConsciousnessFlow(c *gin.Context) {
-	// TODO: Implement flow state retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"continuity": 0.85,
 		"coherence":  0.78,
@@ -387,10 +320,7 @@ func (s *AutonomousV4Server) handleConsciousnessFlow(c *gin.Context) {
 		"quality":    0.75,
 	})
 }
-
-// handleWorkingMemory returns current working memory
 func (s *AutonomousV4Server) handleWorkingMemory(c *gin.Context) {
-	// TODO: Implement working memory retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"capacity": 7,
 		"current":  3,
@@ -401,10 +331,7 @@ func (s *AutonomousV4Server) handleWorkingMemory(c *gin.Context) {
 		},
 	})
 }
-
-// handleSkills returns skill proficiency
 func (s *AutonomousV4Server) handleSkills(c *gin.Context) {
-	// TODO: Implement skills retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"skills": []map[string]interface{}{
 			{
@@ -420,108 +347,74 @@ func (s *AutonomousV4Server) handleSkills(c *gin.Context) {
 		},
 	})
 }
-
-// handleSkillPractice handles skill practice request
 func (s *AutonomousV4Server) handleSkillPractice(c *gin.Context) {
 	var req struct {
 		SkillName string `json:"skill_name"`
 	}
-
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	// TODO: Implement skill practice
 	c.JSON(http.StatusOK, gin.H{
 		"status": "practicing",
 		"skill":  req.SkillName,
 	})
 }
-
-// handleDiscussions returns active discussions
 func (s *AutonomousV4Server) handleDiscussions(c *gin.Context) {
-	// TODO: Implement discussions retrieval
 	c.JSON(http.StatusOK, gin.H{
 		"active_discussions": 0,
 		"discussions":        []interface{}{},
 	})
 }
-
-// handleStartDiscussion starts a new discussion
 func (s *AutonomousV4Server) handleStartDiscussion(c *gin.Context) {
 	var req struct {
 		Topic string `json:"topic"`
 	}
-
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	// TODO: Implement discussion start
 	c.JSON(http.StatusOK, gin.H{
 		"status": "started",
 		"topic":  req.Topic,
 	})
 }
-
-// handleExportIdentity exports identity data
 func (s *AutonomousV4Server) handleExportIdentity(c *gin.Context) {
-	// TODO: Implement identity export
 	export := map[string]interface{}{
 		"version":      4,
 		"export_time":  time.Now(),
 		"wisdom_score": 0.65,
 		"identity":     "Echoself",
 	}
-
 	data, _ := json.MarshalIndent(export, "", "  ")
 	c.Data(http.StatusOK, "application/json", data)
 }
-
-// Stop gracefully shuts down the server
 func (s *AutonomousV4Server) Stop() error {
 	fmt.Println("🛑 Shutting down server...")
-
 	if s.consciousness != nil {
 		if err := s.consciousness.Stop(); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
-
 func main() {
-	// Get port from environment or use default
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "5000"
 	}
-
-	// Create and start server
 	server := NewAutonomousV4Server(port)
-
 	if err := server.Start(); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
-
-	// Wait for interrupt signal
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-
 	fmt.Println("🌳 Deep Tree Echo V4 server running. Press Ctrl+C to stop.")
-
 	<-sigChan
-
-	// Graceful shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 	if err := server.Stop(); err != nil {
 		log.Printf("Error during shutdown: %v", err)
 	}
-
 	fmt.Println("👋 Goodbye!")
 }

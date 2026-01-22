@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-
 import ChatAuditLogDialog from '../../components/dialogs/ChatAuditLogDialog'
 import { Props, EncryptionInfo } from '../../components/dialogs/EncryptionInfo'
 import MuteChat from '../../components/dialogs/MuteChat'
@@ -8,17 +7,13 @@ import useConfirmationDialog from '../dialog/useConfirmationDialog'
 import useDialog from '../dialog/useDialog'
 import useTranslationFunction from '../useTranslationFunction'
 import { BackendRemote, EffectfulBackendActions } from '../../backend-com'
-
 import type { T } from '@deltachat/jsonrpc-client'
-
 type ChatListItem = T.ChatListItemFetchResult & { kind: 'ChatListItem' }
-
 export default function useChatDialog() {
   const tx = useTranslationFunction()
   const openConfirmationDialog = useConfirmationDialog()
   const { openDialog } = useDialog()
   const { chatWithLinger, selectChat, unselectChat } = useChat()
-
   const openBlockContactById = useCallback(
     async (accountId: number, dmChatContact: number) => {
       const hasUserConfirmed = await openConfirmationDialog({
@@ -26,7 +21,6 @@ export default function useChatDialog() {
         confirmLabel: tx('menu_block_contact'),
         isConfirmDanger: true,
       })
-
       if (hasUserConfirmed) {
         if (
           chatWithLinger?.contactIds &&
@@ -40,25 +34,18 @@ export default function useChatDialog() {
     },
     [openConfirmationDialog, tx, unselectChat, chatWithLinger?.contactIds]
   )
-
-  /**
-   * Block contacts based on a DM chat/chatlistentry with that contact.
-   */
   const openBlockFirstContactOfChatDialog = useCallback(
     async (accountId: number, chat: T.FullChat | ChatListItem) => {
       const dmChatContact =
         (chat as ChatListItem).dmChatContact ||
         (chat as T.FullChat).contactIds[0]
-
       if (!dmChatContact) {
         return
       }
-
       return openBlockContactById(accountId, dmChatContact)
     },
     [openBlockContactById]
   )
-
   const openChatAuditDialog = useCallback(
     (
       selectedChat: Parameters<typeof ChatAuditLogDialog>[0]['selectedChat']
@@ -67,7 +54,6 @@ export default function useChatDialog() {
     },
     [openDialog]
   )
-
   const openClearChatDialog = useCallback(
     async (accountId: number, chatId: number) => {
       const messagesToDelete = await BackendRemote.rpc.getMessageIds(
@@ -76,17 +62,12 @@ export default function useChatDialog() {
         false,
         false
       )
-
       const hasUserConfirmed = await openConfirmationDialog({
         message: tx('ask_delete_messages', String(messagesToDelete.length), {
           quantity: messagesToDelete.length,
         }),
       })
-
       if (hasUserConfirmed) {
-        // @TODO: Check this:
-        // Workaround event race where it tried to load already deleted
-        // messages by unloading the chat first.
         unselectChat()
         await BackendRemote.rpc.deleteMessages(accountId, messagesToDelete)
         selectChat(accountId, chatId)
@@ -94,7 +75,6 @@ export default function useChatDialog() {
     },
     [openConfirmationDialog, selectChat, tx, unselectChat]
   )
-
   const openDeleteChatDialog = useCallback(
     async (
       accountId: number,
@@ -106,7 +86,6 @@ export default function useChatDialog() {
         confirmLabel: tx('delete'),
         isConfirmDanger: true,
       })
-
       if (hasUserConfirmed && chat.id) {
         await EffectfulBackendActions.deleteChat(accountId, chat.id)
         if (selectedChatId === chat.id) {
@@ -116,14 +95,12 @@ export default function useChatDialog() {
     },
     [openConfirmationDialog, tx, unselectChat]
   )
-
   const openEncryptionInfoDialog = useCallback(
     (props: Props) => {
       openDialog(EncryptionInfo, props)
     },
     [openDialog]
   )
-
   const openLeaveChatDialog = useCallback(
     async (accountId: number, chatId: number) => {
       const hasUserConfirmed = await openConfirmationDialog({
@@ -132,21 +109,18 @@ export default function useChatDialog() {
         isConfirmDanger: true,
         noMargin: true,
       })
-
       if (hasUserConfirmed) {
         BackendRemote.rpc.leaveGroup(accountId, chatId)
       }
     },
     [openConfirmationDialog, tx]
   )
-
   const openMuteChatDialog = useCallback(
     (chatId: number) => {
       openDialog(MuteChat, { chatId })
     },
     [openDialog]
   )
-
   return {
     openBlockFirstContactOfChatDialog,
     openBlockContactById,

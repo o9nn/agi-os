@@ -1,22 +1,16 @@
 typedef struct Fs Fs;
 typedef struct File File;
 typedef struct DirEntryEnum DirEntryEnum;
-
 #pragma incomplete Fs
 #pragma incomplete File
 #pragma incomplete DirEntryEnum
-
-/* modes */
-
 enum {
-	OReadOnly,
-	OReadWrite,
-	OOverWrite,
+OReadOnly,
+OReadWrite,
+OOverWrite,
 };
-
 extern char *currfsysname;
 extern char *foptname;
-
 void	fsClose(Fs*);
 int	fsEpochLow(Fs*, u32int);
 File	*fsGetRoot(Fs*);
@@ -29,7 +23,6 @@ void	fsSnapshotRemove(Fs*);
 int	fsSync(Fs*);
 int	fsUnhalt(Fs*);
 int	fsVac(Fs*, char*, uchar[VtScoreSize]);
-
 void	deeClose(DirEntryEnum*);
 DirEntryEnum *deeOpen(File*);
 int	deeRead(DirEntryEnum*, DirEntry*);

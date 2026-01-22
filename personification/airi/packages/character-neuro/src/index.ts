@@ -1,11 +1,4 @@
-/**
- * @proj-airi/character-neuro
- * 
- * Neuro-Sama character implementation - chaotic cognitive VTuber with multi-agent orchestration
- */
-
 export { NeuroCharacter } from './character'
-
 export type {
   NeuroPersonality,
   NeuroCognitiveState,
@@ -17,7 +10,6 @@ export type {
   NeuroReflection,
   SubordinateAgentConfig,
 } from './types'
-
 export {
   DEFAULT_NEURO_PERSONALITY,
   DEFAULT_CONSTRAINT_WEIGHTS,
@@ -33,7 +25,6 @@ export {
   SUBORDINATE_CONFIG,
   ATOMSPACE_CONFIG,
 } from './config'
-
 export {
   NEURO_SYSTEM_PROMPT,
   NEURO_COGNITIVE_INSTRUCTIONS,

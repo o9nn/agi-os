@@ -1,52 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 enum charclass {
-	OTHER, OLET, ILET, DIG, LPAR, RPAR, SLASH, PLUS, ILETF, ILETJ, VBAR,
-	NONE, LAST
+OTHER, OLET, ILET, DIG, LPAR, RPAR, SLASH, PLUS, ILETF, ILETJ, VBAR,
+NONE, LAST
 };
 extern int class[LAST][LAST];
-
 #define	dprintf		if (dbg) printf
-#define	max(x,y)	(((x) >= (y)) ? (x) : (y))	/* beware of side effects */
+#define	max(x,y)	(((x) >= (y)) ? (x) : (y))
 #define	min(x,y)	(((x) <= (y)) ? (x) : (y))
-
 extern	char	errbuf[200];
 extern	char	*cmdname;
 #define	ERROR	sprintf(errbuf,
 #define	FATAL	), error(1, errbuf)
 #define	WARNING	), error(0, errbuf)
 #define	SYNTAX	), yyerror(errbuf)
-
 #define	ROM	'1'
 #define	ITAL	'2'
 #define	BLD	'3'
 #define	BDIT	'4'
-
-#define	DEFGAP	-999	/* default gap in piles */
-
+#define	DEFGAP	-999
 extern int	dbg;
 extern int	ct;
 extern int	lp[];
-extern int	used[];		/* available registers */
-extern int	ps;		/* dflt init pt size */
-extern int	deltaps;	/* default change in ps */
-extern int	dps_set;	/* 1 => -p option used */
-extern int	gsize;		/* global size */
-extern int	ft;		/* default font */
-extern int	display;	/* 1 => inline, 0 => .EQ/.EN */
-extern int	synerr;		/* 1 if syntax error in this eqn */
-
-extern char	*typesetter;	/* typesetter name for -T... */
-extern int	minsize;	/* min size it can print */
-extern int	ttype;		/* actual type of typesetter: */
-
+extern int	used[];
+extern int	ps;
+extern int	deltaps;
+extern int	dps_set;
+extern int	gsize;
+extern int	ft;
+extern int	display;
+extern int	synerr;
+extern char	*typesetter;
+extern int	minsize;
+extern int	ttype;
 #define	DEVCAT	1
 #define	DEV202	2
 #define	DEVAPS	3
 #define	DEVPOST	4
-
 extern double	eht[];
 extern double	ebase[];
 extern int	lfont[];
@@ -58,62 +49,48 @@ extern int	yylval;
 extern int	eqnreg;
 extern double	eqnht;
 extern int	lefteq, righteq;
-extern int	markline;	/* 1 if this EQ/EN contains mark or lineup */
-
+extern int	markline;
 #define	TBLSIZE	100
-
 typedef struct s_tbl {
-	char	*name;		/* e.g., "max" or "sum" */
-	char	*cval;		/* e.g., "\\f1max\\fP" */
-	int	ival;		/*    or SUM */
-	struct s_tbl *next;
+char	*name;
+char	*cval;
+int	ival;
+struct s_tbl *next;
 } tbl;
-
-extern	char	*spaceval;	/* use in place of normal \x (for pic) */
-
+extern	char	*spaceval;
 #define	String	01
 #define	Macro	02
 #define	File	04
 #define	Char	010
 #define	Free	040
-
 typedef struct infile {
-	FILE	*fin;
-	char	*fname;
-	int	lineno;
+FILE	*fin;
+char	*fname;
+int	lineno;
 } Infile;
-
-typedef struct {	/* input source */
-	int	type;	/* Macro, String, File */
-	char	*sp;	/* if String or Macro */
+typedef struct {
+int	type;
+char	*sp;
 } Src;
-
-extern	Src	src[], *srcp;	/* input source stack */
-
+extern	Src	src[], *srcp;
 #define	MAXARGS	20
-typedef struct {	/* argument stack */
-	char	*argstk[MAXARGS];	/* pointers to args */
-	char	*argval;	/* points to space containing args */
+typedef struct {
+char	*argstk[MAXARGS];
+char	*argval;
 } Arg;
-
-typedef struct {	/* font number and name */
-	int	ft;
-	char	name[10];
+typedef struct {
+int	ft;
+char	name[10];
 } Font;
-
 extern	Font	ftstack[];
 extern	Font	*ftp;
-
 extern	int	szstack[];
 extern	int	nszstack;
-
 extern	Infile	infile[10];
 extern	Infile	*curfile;
-
 extern	tbl	*lookup(tbl **tblp, char *name);
 extern	void	install(tbl **tblp, char *name, char *cval, int ival);
 extern	tbl	*keytbl[], *deftbl[], *restbl[], *ftunetbl[];
-
 extern	int	salloc(void);
 extern	void	sfree(int);
 extern	void	nrwid(int, int, int);
@@ -125,13 +102,11 @@ extern	double	REL(double, int);
 extern	char	*pad(int);
 extern	void	getstr(char *, int);
 extern	char	*strsave(char *);
-
 extern	int	input(void);
 extern	int	unput(int);
 extern	void	pbstr(char *);
 extern	void	error(int, char *);
 extern	void	yyerror(char *);
-
 extern	void	diacrit(int, int);
 extern	void	eqnbox(int, int, int);
 extern	void	setfont(char *);

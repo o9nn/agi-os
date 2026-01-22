@@ -1,17 +1,6 @@
-; This file contains basic scheme wrappers for atom creation.
-; 
-; XXX THIS FILE IS TO BE USED IN ASSOCIATION WITH THIS TEST CASE ONLY
-; DO NOT USE THIS FILE FOR ORDINARY CODE DEVELOPMENT; YOUR CODE WILL
-; BE BROKEN IF YOU DO!  XXXX
-;
-; If you think you need this file, you don't; what you probably want is
-; the "opencog/scm/type_constructors.scm" which is guaranteed to have the 
-; correct content.
-;
 (define (stv mean conf) (cog-new-stv mean conf))
 (define (itv lower upper conf) (cog-new-itv lower upper conf))
 (define (ctv mean conf count) (cog-new-ctv mean conf count))
-
 (define (Node . x)
 	(apply cog-new-node (append (list 'Node) x)))
 (define (Link . x)
@@ -238,4 +227,3 @@
         (apply cog-new-link (append (list 'TypedVariableLink) x)))
 (define (TypeNode . x)
         (apply cog-new-node (append (list 'TypeNode) x)))
-

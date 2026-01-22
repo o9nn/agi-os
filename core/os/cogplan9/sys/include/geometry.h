@@ -5,19 +5,16 @@ typedef struct Point3 Point3;
 typedef struct Quaternion Quaternion;
 typedef struct Space Space;
 struct Point3{
-	double x, y, z, w;
+double x, y, z, w;
 };
 struct Quaternion{
-	double r, i, j, k;
+double r, i, j, k;
 };
 struct Space{
-	Matrix t;
-	Matrix tinv;
-	Space *next;
+Matrix t;
+Matrix tinv;
+Space *next;
 };
-/*
- * 3-d point arithmetic
- */
 Point3 add3(Point3 a, Point3 b);
 Point3 sub3(Point3 a, Point3 b);
 Point3 neg3(Point3 a);
@@ -43,9 +40,6 @@ Point3 fff2p3(Point3 f0, Point3 f1, Point3 f2);
 Point3 pdiv4(Point3 a);
 Point3 add4(Point3 a, Point3 b);
 Point3 sub4(Point3 a, Point3 b);
-/*
- * Quaternion arithmetic
- */
 void qtom(Matrix, Quaternion);
 Quaternion mtoq(Matrix);
 Quaternion qadd(Quaternion, Quaternion);
@@ -60,18 +54,12 @@ Quaternion slerp(Quaternion, Quaternion, double);
 Quaternion qmid(Quaternion, Quaternion);
 Quaternion qsqrt(Quaternion);
 void qball(Rectangle, Mouse *, Quaternion *, void (*)(void), Quaternion *);
-/*
- * Matrix arithmetic
- */
 void ident(Matrix);
 void matmul(Matrix, Matrix);
 void matmulr(Matrix, Matrix);
 double determinant(Matrix);
 void adjoint(Matrix, Matrix);
 double invertmat(Matrix, Matrix);
-/*
- * Space stack routines
- */
 Space *pushmat(Space *);
 Space *popmat(Space *);
 void rot(Space *, double, int);

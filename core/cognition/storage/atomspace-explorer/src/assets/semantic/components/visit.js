@@ -1,28 +1,13 @@
-/*!
- * # Semantic UI 2.0.0 - Visit
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Copyright 2015 Contributors
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 $.visit = $.fn.visit = function(parameters) {
   var
     $allModules     = $.isFunction(this)
         ? $(window)
         : $(this),
     moduleSelector  = $allModules.selector || '',
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
@@ -34,22 +19,17 @@ $.visit = $.fn.visit = function(parameters) {
         settings          = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.visit.settings, parameters)
           : $.extend({}, $.fn.visit.settings),
-
         error           = settings.error,
         namespace       = settings.namespace,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = namespace + '-module',
-
         $module         = $(this),
         $displays       = $(),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
         module
       ;
       module = {
-
         initialize: function() {
           if(settings.count) {
             module.store(settings.key.count, settings.count);
@@ -63,7 +43,6 @@ $.visit = $.fn.visit = function(parameters) {
           module.add.display($module);
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of visit module', module);
           instance = module;
@@ -71,14 +50,12 @@ $.visit = $.fn.visit = function(parameters) {
             .data(moduleNamespace, module)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying instance');
           $module
             .removeData(moduleNamespace)
           ;
         },
-
         increment: function(id) {
           var
             currentValue = module.get.count(),
@@ -95,7 +72,6 @@ $.visit = $.fn.visit = function(parameters) {
             module.store(settings.key.count, newValue);
           }
         },
-
         decrement: function(id) {
           var
             currentValue = module.get.count(),
@@ -109,7 +85,6 @@ $.visit = $.fn.visit = function(parameters) {
             module.store(settings.key.count, newValue);
           }
         },
-
         get: {
           count: function() {
             return +(module.retrieve(settings.key.count)) || 0;
@@ -145,7 +120,6 @@ $.visit = $.fn.visit = function(parameters) {
             return options;
           }
         },
-
         has: {
           visited: function(id, ids) {
             var
@@ -162,7 +136,6 @@ $.visit = $.fn.visit = function(parameters) {
             return visited;
           }
         },
-
         set: {
           count: function(value) {
             module.store(settings.key.count, value);
@@ -171,12 +144,10 @@ $.visit = $.fn.visit = function(parameters) {
             module.store(settings.key.ids, value);
           }
         },
-
         reset: function() {
           module.store(settings.key.count, 0);
           module.store(settings.key.ids, null);
         },
-
         add: {
           id: function(id) {
             var
@@ -210,7 +181,6 @@ $.visit = $.fn.visit = function(parameters) {
             }
           }
         },
-
         remove: {
           id: function(id) {
             var
@@ -230,7 +200,6 @@ $.visit = $.fn.visit = function(parameters) {
             module.set.count( module.get.idCount() );
           }
         },
-
         check: {
           limit: function(value) {
             value = value || module.get.count();
@@ -245,7 +214,6 @@ $.visit = $.fn.visit = function(parameters) {
             module.update.display(value);
           }
         },
-
         update: {
           display: function(value) {
             value = value || module.get.count();
@@ -255,7 +223,6 @@ $.visit = $.fn.visit = function(parameters) {
             }
           }
         },
-
         store: function(key, value) {
           var
             options = module.get.storageOptions(value)
@@ -283,7 +250,6 @@ $.visit = $.fn.visit = function(parameters) {
           if(settings.storageMethod == 'localstorage' && window.localStorage !== undefined) {
             storedValue = window.localStorage.getItem(key);
           }
-          // get by cookie
           else if($.cookie !== undefined) {
             storedValue = $.cookie(key);
           }
@@ -295,7 +261,6 @@ $.visit = $.fn.visit = function(parameters) {
           }
           return storedValue;
         },
-
         setting: function(name, value) {
           if( $.isPlainObject(name) ) {
             $.extend(true, settings, name);
@@ -467,7 +432,6 @@ $.visit = $.fn.visit = function(parameters) {
         }
         module.initialize();
       }
-
     })
   ;
   return (returnedValue !== undefined)
@@ -475,43 +439,31 @@ $.visit = $.fn.visit = function(parameters) {
     : this
   ;
 };
-
 $.fn.visit.settings = {
-
   name          : 'Visit',
-
   debug         : false,
   verbose       : false,
   performance   : true,
-
   namespace     : 'visit',
-
   increment     : false,
   surpass       : false,
   count         : false,
   limit         : false,
-
   delimiter     : '&',
   storageMethod : 'localstorage',
-
   key           : {
     count : 'visit-count',
     ids   : 'visit-ids'
   },
-
   expires       : 30,
   domain        : false,
   path          : '/',
-
   onLimit       : function() {},
   onChange      : function() {},
-
   error         : {
     method          : 'The method you called is not defined',
     missingPersist  : 'Using the persist setting requires the inclusion of PersistJS',
     noCookieStorage : 'The default storage cookie requires $.cookie to be included.'
   }
-
 };
-
 })( jQuery, window , document );

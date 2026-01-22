@@ -1,21 +1,3 @@
-; =============================================================================
-; AndToContextRule
-; 
-; SubsetLink
-;   AndLink
-;       A
-;       C
-;   AndLink
-;       B
-;       C
-; |-
-; ContextLink
-;   C
-;   SubsetLink
-;       A
-;       B
-;
-; -----------------------------------------------------------------------------
 (define and-to-context-rule
     (BindLink
         (VariableList
@@ -44,13 +26,8 @@
                         (SubsetLink
                             (VariableNode "$A")
                             (VariableNode "$B")))))))
-
 (define (and-to-context-formula SACBC CAB)
     (cog-set-tv!
         CAB (cog-tv SACBC)))
-
-		
-
-; Name the rule
 (define and-to-context-rule-name (DefinedSchemaNode "and-to-context-rule"))
 (DefineLink and-to-context-rule-name and-to-context-rule)

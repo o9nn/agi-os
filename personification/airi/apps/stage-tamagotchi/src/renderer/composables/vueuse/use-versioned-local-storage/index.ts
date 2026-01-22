@@ -1,20 +1,16 @@
 import type { IfAny, UseStorageOptions } from '@vueuse/core'
 import type { MaybeRefOrGetter, Ref, UnwrapRef } from 'vue'
-
 import { useLocalStorage } from '@vueuse/core'
 import { ref, toValue, watch } from 'vue'
-
 interface Versioned<T> { version?: string, data?: T }
 interface UseVersionedStorageOptions<T> {
   defaultVersion?: string
   satisfiesVersionBy?: (version: string) => boolean
   onVersionMismatch?: (value: Versioned<T>) => OnVersionMismatchActions<T>
 }
-
 export interface OnVersionMismatchKeep<T> { action: 'keep', data?: T }
 export interface OnVersionMismatchReset<T> { action: 'reset', data?: T }
 export type OnVersionMismatchActions<T> = OnVersionMismatchKeep<T> | OnVersionMismatchReset<T>
-
 export function useVersionedLocalStorage<T>(
   key: MaybeRefOrGetter<string>,
   initialValue: MaybeRefOrGetter<T>,
@@ -23,7 +19,6 @@ export function useVersionedLocalStorage<T>(
   const defaultVersion = options?.defaultVersion || '1.0.0'
   const data = ref(toValue(initialValue))
   const rawValue = useLocalStorage<Versioned<T>>(key, { version: defaultVersion, data: toValue(initialValue) }, options as unknown as UseStorageOptions<Versioned<T>>)
-
   watch(rawValue, (value) => {
     try {
       if ('version' in rawValue.value && rawValue.value.version != null) {
@@ -41,11 +36,9 @@ export function useVersionedLocalStorage<T>(
             data.value = toValue(initialValue)
           }
         }
-
         data.value = rawValue.value.data
         return
       }
-
       console.warn(`property key 'version' wasn't found in the value of key ${key} as ${value}, will keep the current ${toValue(initialValue)}`)
       rawValue.value = { version: defaultVersion, data: toValue(initialValue) }
       data.value = toValue(initialValue)
@@ -59,6 +52,5 @@ export function useVersionedLocalStorage<T>(
     immediate: true,
     deep: true,
   })
-
   return data
 }

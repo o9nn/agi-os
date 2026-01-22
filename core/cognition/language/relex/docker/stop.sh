@@ -1,7 +1,4 @@
 #! /bin/bash
-#
-# Stop any running containers previously started with 'run.sh'
-#
 NAME=$1
 if test x"$1" == x; then
    NAME=relex

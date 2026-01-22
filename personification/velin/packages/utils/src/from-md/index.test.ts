@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest'
-
 import { scriptFrom } from '.'
-
 describe('scriptFrom', () => {
   it('should be able to parse', () => {
     const result = scriptFrom(`
@@ -11,7 +9,6 @@ describe('scriptFrom', () => {
   </div>
 </template>
 `)
-
     expect(result).toMatchObject({
       template: `
 <template>
@@ -22,14 +19,12 @@ describe('scriptFrom', () => {
 `,
     })
   })
-
   it('should be able to parse with script', () => {
     const result = scriptFrom(`
 <script setup>
 import { ref } from 'vue'
 const count = ref(0)
 </script>
-
 <template>
   <div>
     <h1>Hello, world!</h1>
@@ -37,15 +32,12 @@ const count = ref(0)
   </div>
 </template>
 `)
-
     expect(result).toMatchObject({
       script: `
 import { ref } from 'vue'
 const count = ref(0)
 `,
       template: `
-
-
 <template>
   <div>
     <h1>Hello, world!</h1>

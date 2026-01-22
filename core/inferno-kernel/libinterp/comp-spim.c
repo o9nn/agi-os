@@ -1,2 +1,2 @@
-#define	HIOFFSET	4	/* byte offset of high-order word in little-endian vlongs */
+#define	HIOFFSET	4
 #include	"comp-mips.c"

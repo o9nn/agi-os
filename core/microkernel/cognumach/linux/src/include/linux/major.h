@@ -1,16 +1,7 @@
 #ifndef _LINUX_MAJOR_H
 #define _LINUX_MAJOR_H
-
-/*
- * This file has definitions for major device numbers.
- * For the device number assignments, see Documentation/devices.txt.
- */
-
-/* limits */
-
 #define MAX_CHRDEV 128
 #define MAX_BLKDEV 128
-
 #define UNNAMED_MAJOR	0
 #define MEM_MAJOR	1
 #define RAMDISK_MAJOR	1
@@ -57,7 +48,7 @@
 #define STL_SIOMEMMAJOR 28
 #define ACSI_MAJOR	28
 #define AZTECH_CDROM_MAJOR 29
-#define GRAPHDEV_MAJOR	29	/* SparcLinux & Linux/68k /dev/fb */
+#define GRAPHDEV_MAJOR	29
 #define CM206_CDROM_MAJOR 32
 #define IDE2_MAJOR	33
 #define IDE3_MAJOR	34
@@ -67,22 +58,14 @@
 #define RISCOM8_NORMAL_MAJOR 48
 #define RISCOM8_CALLOUT_MAJOR 49
 #define MKISS_MAJOR	55
-#define APBLOCK_MAJOR   60   /* AP1000 Block device */
-#define DDV_MAJOR       61   /* AP1000 DDV block device */
-
+#define APBLOCK_MAJOR   60
+#define DDV_MAJOR       61
 #define SPECIALIX_NORMAL_MAJOR 75
 #define SPECIALIX_CALLOUT_MAJOR 76
-
-/*
- * Tests for SCSI devices.
- */
-
 #define SCSI_BLK_MAJOR(M) \
-  ((M) == SCSI_DISK_MAJOR	\
-   || (M) == SCSI_CDROM_MAJOR)
-
+((M) == SCSI_DISK_MAJOR	\
+|| (M) == SCSI_CDROM_MAJOR)
 static __inline__ int scsi_blk_major(int m) {
-	return SCSI_BLK_MAJOR(m);
+return SCSI_BLK_MAJOR(m);
 }
-
 #endif

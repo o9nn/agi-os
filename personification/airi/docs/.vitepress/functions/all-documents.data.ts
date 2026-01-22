@@ -1,11 +1,7 @@
 import type { SiteConfig } from 'vitepress'
-
 import { createContentLoader } from 'vitepress'
-
 import { formatDate } from '../utils/utils'
-
 const config: SiteConfig = (globalThis as any).VITEPRESS_CONFIG
-
 interface Document {
   title: string
   url: string
@@ -14,10 +10,8 @@ interface Document {
   date: ReturnType<typeof formatDate>
   frontmatter?: Record<string, any>
 }
-
 declare const data: Document[]
 export { data }
-
 export default createContentLoader('**/*.md', {
   transform(raw): Document[] {
     return raw
@@ -27,10 +21,8 @@ export default createContentLoader('**/*.md', {
           if (!normalizedLanguagePrefix.startsWith('/')) {
             normalizedLanguagePrefix = `/${normalizedLanguagePrefix}`
           }
-
           return url.startsWith(normalizedLanguagePrefix)
         })
-
         return {
           title: frontmatter.title,
           url,

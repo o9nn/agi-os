@@ -30,7 +30,6 @@ import {resolveHeaderFlag} from "../utils/resolveHeaderFlag.js";
 import {withCliCommandDescriptionDocsUrl} from "../utils/withCliCommandDescriptionDocsUrl.js";
 import {ConsoleInteraction, ConsoleInteractionKey} from "../utils/ConsoleInteraction.js";
 import {DraftSequenceTokenPredictor} from "../../evaluator/LlamaContext/tokenPredictors/DraftSequenceTokenPredictor.js";
-
 type ChatCommand = {
     modelPath?: string,
     header?: string[],
@@ -74,7 +73,6 @@ type ChatCommand = {
     noMmap: boolean,
     printTimings: boolean
 };
-
 export const ChatCommand: CommandModule<object, ChatCommand> = {
     command: "chat [modelPath]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -83,7 +81,6 @@ export const ChatCommand: CommandModule<object, ChatCommand> = {
     ),
     builder(yargs) {
         const isInDocumentationMode = getIsInDocumentationMode();
-
         return yargs
             .option("modelPath", {
                 alias: ["m", "model", "path", "url", "uri"],
@@ -98,13 +95,10 @@ export const ChatCommand: CommandModule<object, ChatCommand> = {
             })
             .option("gpu", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return undefined;
-
                     return parseNodeLlamaCppGpuOption(value);
                 },
                 defaultDescription: "Uses the latest local build, and fallbacks to \"auto\"",
@@ -302,13 +296,10 @@ export const ChatCommand: CommandModule<object, ChatCommand> = {
             })
             .option("numa", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: llamaNumaOptions as any as Exclude<typeof llamaNumaOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return false;
-
                     return parseNumaOption(value);
                 },
                 defaultDescription: "false",
@@ -354,14 +345,12 @@ export const ChatCommand: CommandModule<object, ChatCommand> = {
                 debug, numa, meter, timing, noMmap, printTimings
             });
         } catch (err) {
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+            await new Promise((accept) => setTimeout(accept, 0)); 
             console.error(err);
             process.exit(1);
         }
     }
 };
-
-
 async function RunChat({
     modelPath: modelArg, header: headerArg, gpu, systemInfo, systemPrompt, systemPromptFile, prompt, promptFile, wrapper, noJinja,
     contextSize, batchSize, flashAttention, swaFullCache, noTrimWhitespace, grammar: grammarArg,
@@ -373,13 +362,10 @@ async function RunChat({
     if (contextSize === -1) contextSize = undefined;
     if (gpuLayers === -1) gpuLayers = undefined;
     if (reasoningBudget === -1) reasoningBudget = undefined;
-
     const headers = resolveHeaderFlag(headerArg);
     const trimWhitespace = !noTrimWhitespace;
-
     if (debug)
         console.info(`${chalk.yellow("Log level:")} debug`);
-
     const llamaLogLevel = debug
         ? LlamaLogLevel.debug
         : LlamaLogLevel.warn;
@@ -395,7 +381,6 @@ async function RunChat({
         });
     const logBatchSize = batchSize != null;
     const useMmap = !noMmap && llama.supportsMmap;
-
     const resolvedModelPath = await resolveCommandGgufPath(modelArg, llama, headers, {
         flashAttention,
         swaFullCache,
@@ -409,29 +394,22 @@ async function RunChat({
             consoleTitle: "Draft model file"
         })
         : undefined;
-
     if (systemInfo)
         console.log(llama.systemInfo);
-
     if (systemPromptFile != null && systemPromptFile !== "") {
         if (systemPrompt != null && systemPrompt !== "" && systemPrompt !== defaultChatSystemPrompt)
             console.warn(chalk.yellow("Both `systemPrompt` and `systemPromptFile` were specified. `systemPromptFile` will be used."));
-
         systemPrompt = await fs.readFile(path.resolve(process.cwd(), systemPromptFile), "utf8");
     }
-
     if (promptFile != null && promptFile !== "") {
         if (prompt != null && prompt !== "")
             console.warn(chalk.yellow("Both `prompt` and `promptFile` were specified. `promptFile` will be used."));
-
         prompt = await fs.readFile(path.resolve(process.cwd(), promptFile), "utf8");
     }
-
     if (batchSize != null && contextSize != null && batchSize > contextSize) {
         console.warn(chalk.yellow("Batch size is greater than the context size. Batch size will be set to the context size."));
         batchSize = contextSize;
     }
-
     let initialPrompt = prompt ?? null;
     const model = await withProgressLog({
         loadingText: chalk.blue.bold("Loading model"),
@@ -461,11 +439,10 @@ async function RunChat({
         } catch (err) {
             if (err === progressUpdater.abortSignal?.reason)
                 process.exit(0);
-
             throw err;
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
@@ -494,16 +471,14 @@ async function RunChat({
             } catch (err) {
                 if (err === progressUpdater.abortSignal?.reason)
                     process.exit(0);
-
                 throw err;
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
         });
-
     const draftContext = draftModel == null
         ? undefined
         : await withOra({
@@ -518,7 +493,7 @@ async function RunChat({
                 });
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
@@ -539,12 +514,11 @@ async function RunChat({
             });
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
     });
-
     const grammar = jsonSchemaGrammarFilePath != null
         ? await llama.createGrammarForJsonSchema(
             await fs.readJson(
@@ -576,17 +550,13 @@ async function RunChat({
     let lastDraftTokenMeterState = draftContextSequence?.tokenMeter.getState();
     let lastTokenMeterState = contextSequence.tokenMeter.getState();
     let lastTokenPredictionsStats = contextSequence.tokenPredictions;
-
-    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+    await new Promise((accept) => setTimeout(accept, 0)); 
     if (grammarArg != "text" && jsonSchemaGrammarFilePath != null)
         console.warn(chalk.yellow("Both `grammar` and `jsonSchemaGrammarFile` were specified. `jsonSchemaGrammarFile` will be used."));
-
     if (environmentFunctions && grammar != null) {
         console.warn(chalk.yellow("Environment functions are disabled since a grammar is already specified"));
         environmentFunctions = false;
     }
-
     const padTitle = await printCommonInfoLines({
         context,
         draftContext,
@@ -635,75 +605,59 @@ async function RunChat({
             value: "enabled"
         }]
     });
-
-    // this is for ora to not interfere with readline
     await new Promise((resolve) => setTimeout(resolve, 1));
-
     const replHistory = await ReplHistory.load(chatCommandHistoryFilePath, !noHistory);
-
     async function getPrompt() {
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
             history: replHistory.history.slice()
         });
-
         const res: string = await new Promise((accept) => rl.question(chalk.yellow("> "), accept));
         rl.close();
-
         return res;
     }
-
     if (prompt != null && prompt !== "" && !printTimings && (meter || timing)) {
-        // warm up the context sequence before the first evaluation, to make the timings of the actual evaluations more accurate
         const contextFirstToken = session.chatWrapper.generateContextState({
             chatHistory: [
                 ...session.getChatHistory(),
                 {type: "user", text: ""}
             ]
         }).contextText.tokenize(model.tokenizer)[0];
-
         if (contextFirstToken != null)
             await contextSequence.evaluateWithoutGeneratingNewTokens([contextFirstToken]);
     } else if (!printTimings && !meter)
         void session.preloadPrompt("")
-            .catch(() => void 0); // don't throw an error if preloading fails because a real prompt is sent early
-
+            .catch(() => void 0); 
     while (true) {
         let hadTrimmedWhitespaceTextInThisIterationAndSegment = false;
         let nextPrintLeftovers = "";
         const input = initialPrompt != null
             ? initialPrompt
             : await getPrompt();
-
         if (initialPrompt != null) {
             console.log(chalk.green("> ") + initialPrompt);
             initialPrompt = null;
         } else
             await replHistory.add(input);
-
         if (input === ".exit")
             break;
-
         process.stdout.write(chalk.yellow("AI: "));
-
         const [startColor, endColor] = chalk.blue("MIDDLE").split("MIDDLE");
         const [segmentStartColor, segmentEndColor] = chalk.gray("MIDDLE").split("MIDDLE");
-
         const abortController = new AbortController();
         const consoleInteraction = new ConsoleInteraction();
         consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, async () => {
             abortController.abort();
             consoleInteraction.stop();
         });
-
         const timeBeforePrompt = Date.now();
         let currentSegmentType: string | undefined;
         try {
             process.stdout.write(startColor!);
             consoleInteraction.start();
             await session.prompt(input, {
-                grammar: grammar as undefined, // this is a workaround to allow passing both `functions` and `grammar`
+                grammar: grammar as undefined, 
                 temperature,
                 minP,
                 topK,
@@ -732,7 +686,6 @@ async function RunChat({
                             ? "\n"
                             : "";
                         hadTrimmedWhitespaceTextInThisIterationAndSegment = false;
-
                         if (chunkType !== "segment" || segmentType == null) {
                             process.stdout.write(segmentEndColor!);
                             process.stdout.write(chalk.reset.whiteBright.bold(printNewline + "[response] "));
@@ -746,29 +699,22 @@ async function RunChat({
                             process.stdout.write(chalk.reset.whiteBright.bold(printNewline + `[segment: ${segmentType}] `));
                             process.stdout.write(segmentStartColor!);
                         }
-
                         currentSegmentType = segmentType;
                     }
-
                     let text = nextPrintLeftovers + chunk;
                     nextPrintLeftovers = "";
-
                     if (trimWhitespace) {
                         if (!hadTrimmedWhitespaceTextInThisIterationAndSegment) {
                             text = text.trimStart();
-
                             if (text.length > 0)
                                 hadTrimmedWhitespaceTextInThisIterationAndSegment = true;
                         }
-
                         const textWithTrimmedEnd = text.trimEnd();
-
                         if (textWithTrimmedEnd.length < text.length) {
                             nextPrintLeftovers = text.slice(textWithTrimmedEnd.length);
                             text = textWithTrimmedEnd;
                         }
                     }
-
                     process.stdout.write(text);
                 },
                 functions: (grammar == null && environmentFunctions)
@@ -781,30 +727,23 @@ async function RunChat({
                 throw err;
         } finally {
             consoleInteraction.stop();
-
             const currentEndColor = currentSegmentType != null
                 ? segmentEndColor!
                 : endColor!;
-
             if (abortController.signal.aborted)
                 process.stdout.write(currentEndColor + chalk.yellow("[generation aborted by user]"));
             else
                 process.stdout.write(currentEndColor);
-
             console.log();
         }
         const timeAfterPrompt = Date.now();
-
         if (printTimings) {
             if (LlamaLogLevelGreaterThan(llama.logLevel, LlamaLogLevel.info))
                 llama.logLevel = LlamaLogLevel.info;
-
             await context.printTimings();
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+            await new Promise((accept) => setTimeout(accept, 0)); 
             llama.logLevel = llamaLogLevel;
         }
-
         if (timing)
             console.info(
                 chalk.dim("Response duration: ") +
@@ -815,21 +754,17 @@ async function RunChat({
                     compact: false
                 })
             );
-
         if (meter) {
             const newTokenMeterState = contextSequence.tokenMeter.getState();
             const tokenMeterDiff = TokenMeter.diff(newTokenMeterState, lastTokenMeterState);
             lastTokenMeterState = newTokenMeterState;
-
             const showDraftTokenMeterDiff = lastDraftTokenMeterState != null && draftContextSequence != null;
-
             const tokenPredictionsStats = contextSequence.tokenPredictions;
             const validatedTokenPredictions = tokenPredictionsStats.validated - lastTokenPredictionsStats.validated;
             const refutedTokenPredictions = tokenPredictionsStats.refuted - lastTokenPredictionsStats.refuted;
             const usedTokenPredictions = tokenPredictionsStats.used - lastTokenPredictionsStats.used;
             const unusedTokenPredictions = tokenPredictionsStats.unused - lastTokenPredictionsStats.unused;
             lastTokenPredictionsStats = tokenPredictionsStats;
-
             console.info([
                 showDraftTokenMeterDiff && (
                     chalk.yellow("Main".padEnd("Drafter".length))
@@ -849,12 +784,10 @@ async function RunChat({
                     chalk.dim("Unused predictions:") + " " + String(unusedTokenPredictions).padEnd(5, " ")
                 )
             ].filter(Boolean).join("  "));
-
             if (lastDraftTokenMeterState != null && draftContextSequence != null) {
                 const newDraftTokenMeterState = draftContextSequence.tokenMeter.getState();
                 const draftTokenMeterDiff = TokenMeter.diff(newDraftTokenMeterState, lastDraftTokenMeterState);
                 lastDraftTokenMeterState = newDraftTokenMeterState;
-
                 console.info([
                     chalk.yellow("Drafter"),
                     chalk.dim("Input tokens:") + " " + String(draftTokenMeterDiff.usedInputTokens).padEnd(5, " "),
@@ -864,7 +797,6 @@ async function RunChat({
         }
     }
 }
-
 const defaultEnvironmentFunctions = {
     getDate: defineChatSessionFunction({
         description: "Retrieve the current date",

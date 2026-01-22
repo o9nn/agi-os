@@ -1,9 +1,7 @@
 package api
-
 import (
 	"testing"
 )
-
 func TestToolParameterToTypeScriptType(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -130,7 +128,6 @@ func TestToolParameterToTypeScriptType(t *testing.T) {
 			expected: "string | any[] | null",
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := tt.param.ToTypeScriptType()

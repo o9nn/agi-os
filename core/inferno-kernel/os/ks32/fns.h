@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 ulong	aifinit(uchar *aifarr);
 void	aamloop(int);
 void	archconfinit(void);
@@ -16,7 +15,7 @@ void	cleanDentry(void *);
 void	clockcheck(void);
 void	clockinit(void);
 void	clockpoll(void);
-#define	coherence()		/* nothing to do for cache coherence for uniprocessor */
+#define	coherence()
 uint	cpsrr(void);
 void	cursorhide(void);
 void	cursorunhide(void);
@@ -39,7 +38,7 @@ int	fpiarm(Ureg*);
 void	fpinit(void);
 ulong	getcallerpc(void*);
 void	gotopc(ulong);
-#define	idlehands()			/* nothing to do in the runproc */
+#define	idlehands()
 void	intrenable(int, void (*)(Ureg*, void*), void*, int);
 void intrclear(int, int);
 void intrmask(int, int);
@@ -124,12 +123,8 @@ void	_vdabcall(void);
 void	vgaputc(char);
 void	writeBackBDC(void);
 void	writeBackDC(void);
-
 #define KADDR(p)	((void *) p)
 #define PADDR(v)	va2pa((void*)(v))
-
-// #define timer_start()	(*OSCR)
-// #define timer_ticks(t)	(*OSCR - (ulong)(t))
 #define DELAY(ms)	timer_delay(MS2TMR(ms))
 #define MICRODELAY(us)	timer_delay(US2TMR(us))
 ulong	timer_start(void);

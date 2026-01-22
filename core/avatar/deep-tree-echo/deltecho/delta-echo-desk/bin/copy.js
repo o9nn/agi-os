@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-//@ts-check
 import { copyFile, mkdir, readdir, stat } from 'fs/promises'
 import { join } from 'path'
 import { watch as _watch } from 'chokidar'
-
 async function copyRecursive(source, destination) {
   if ((await stat(source)).isDirectory()) {
     await mkdir(destination, { recursive: true })
@@ -15,10 +13,8 @@ async function copyRecursive(source, destination) {
     await copyFile(source, destination)
   }
 }
-
 async function copy(source, destination, watch = false) {
   await mkdir(destination, { recursive: true })
-
   let files
   try {
     files = await readdir(source)
@@ -40,12 +36,9 @@ async function copy(source, destination, watch = false) {
       )
     }
   }
-
   console.log(`+ copied all source files to "${destination}"`)
-
   let running = false
   let scheduled = undefined
-
   if (watch === true) {
     const watcher = _watch(source)
     watcher.on('ready', () => {
@@ -55,7 +48,6 @@ async function copy(source, destination, watch = false) {
           scheduled = true
         } else {
           running = true
-
           copy(source, destination, false).finally(async () => {
             await new Promise(res => setTimeout(res, 1000))
             if (scheduled) {
@@ -70,16 +62,13 @@ async function copy(source, destination, watch = false) {
     })
   }
 }
-
 function main() {
-  /** @type {any} TODO type? */
   const options = {
     showHelp: false,
     watch: false,
     source: false,
     destination: false,
   }
-
   for (let i = 2; i < process.argv.length; i++) {
     const arg = process.argv[i]
     if (arg === '--help' || arg === '-h') {
@@ -95,7 +84,6 @@ function main() {
       console.error('- Unknown arguments. Please see help.')
     }
   }
-
   if (options.showHelp) {
     console.log(`copy-files.js <source> <destination> [OPTIONS]
 Source is the source folder from where this tool should copy all files to destination.
@@ -112,5 +100,4 @@ Options:
     copy(options.source, options.destination, options.watch)
   }
 }
-
 main()

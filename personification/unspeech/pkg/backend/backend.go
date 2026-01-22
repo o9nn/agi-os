@@ -1,9 +1,7 @@
 package backend
-
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/samber/mo"
-
 	"github.com/moeru-ai/unspeech/pkg/apierrors"
 	"github.com/moeru-ai/unspeech/pkg/backend/alibaba"
 	"github.com/moeru-ai/unspeech/pkg/backend/elevenlabs"
@@ -14,13 +12,11 @@ import (
 	"github.com/moeru-ai/unspeech/pkg/backend/volcengine"
 	"github.com/moeru-ai/unspeech/pkg/utils"
 )
-
 func Speech(c echo.Context) mo.Result[any] {
 	options := types.NewSpeechRequestOptions(c.Request().Body)
 	if options.IsError() {
 		return mo.Err[any](options.Error())
 	}
-
 	switch options.MustGet().Backend {
 	case "openai":
 		return openai.HandleSpeech(c, utils.ResultToOption(options))
@@ -38,13 +34,11 @@ func Speech(c echo.Context) mo.Result[any] {
 		return mo.Err[any](apierrors.NewErrBadRequest().WithDetail("unsupported backend"))
 	}
 }
-
 func Voices(c echo.Context) mo.Result[any] {
 	options := types.NewVoicesRequestOptions(c.Request())
 	if options.IsError() {
 		return mo.Err[any](options.Error())
 	}
-
 	switch options.MustGet().Backend {
 	case "openai":
 		return openai.HandleVoices(c, utils.ResultToOption(options))

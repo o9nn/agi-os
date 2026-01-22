@@ -1,7 +1,6 @@
 import {ChatWrapperSettings, Tokenizer} from "../../../types.js";
 import {LlamaText, SpecialTokensText} from "../../../utils/LlamaText.js";
 import {removeUndefinedFields} from "../../../utils/removeNullFields.js";
-
 export function extractSegmentSettingsFromTokenizerAndChatTemplate(
     chatTemplate: string | undefined, tokenizer?: Tokenizer
 ): ChatWrapperSettings["segments"] {
@@ -25,7 +24,6 @@ export function extractSegmentSettingsFromTokenizerAndChatTemplate(
                         prefix: LlamaText(new SpecialTokensText(prefix + "\n\n")),
                         suffix: LlamaText(new SpecialTokensText("\n\n" + suffix))
                     };
-
                 if (
                     (
                         hasAll(chatTemplate.replaceAll(prefix + "\\n" + suffix, ""), [
@@ -43,7 +41,6 @@ export function extractSegmentSettingsFromTokenizerAndChatTemplate(
                         prefix: LlamaText(new SpecialTokensText(prefix + "\n")),
                         suffix: LlamaText(new SpecialTokensText("\n" + suffix))
                     };
-
                 if (chatTemplate.includes(prefix) && chatTemplate.includes(suffix))
                     return {
                         prefix: LlamaText(new SpecialTokensText(prefix)),
@@ -51,15 +48,12 @@ export function extractSegmentSettingsFromTokenizerAndChatTemplate(
                     };
             }
         }
-
         if (tokenizer != null) {
             for (const [prefix, suffix] of tryMatchGroups) {
                 const thinkTokens = tokenizer(prefix, true, "trimLeadingSpace");
                 const thinkEndTokens = tokenizer(suffix, true, "trimLeadingSpace");
-
                 const [thinkToken] = thinkTokens;
                 const [thinkEndToken] = thinkEndTokens;
-
                 if (thinkTokens.length === 1 && thinkEndTokens.length === 1 &&
                     thinkToken != null && thinkEndToken != null
                 ) {
@@ -70,19 +64,16 @@ export function extractSegmentSettingsFromTokenizerAndChatTemplate(
                 }
             }
         }
-
         return undefined;
     }
-
     return removeUndefinedFields({
         thought: tryMatchPrefixSuffixPair([
-            ["<think>", "</think>"], // DeepSeek, QwQ
-            ["<thought>", "</thought>"], // EXAONE Deep
-            ["<|START_THINKING|>", "<|END_THINKING|>"] // Command R7B
+            ["<think>", "</think>"], 
+            ["<thought>", "</thought>"], 
+            ["<|START_THINKING|>", "<|END_THINKING|>"] 
         ])
     });
 }
-
 function hasAll(text: string, matches: string[]) {
     return matches.every((match) => text.includes(match));
 }

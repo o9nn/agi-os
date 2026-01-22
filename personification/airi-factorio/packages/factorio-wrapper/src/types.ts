@@ -4,7 +4,6 @@ export interface FactorioConfig {
   rconPassword: string
   rconPort: number
 }
-
 export interface WsServerConfig {
   host: string
   port: number

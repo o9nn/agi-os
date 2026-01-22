@@ -1,15 +1,12 @@
 package discover
-
 import (
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 )
-
 func IsNUMA() bool {
 	if runtime.GOOS != "linux" {
-		// numa support in llama.cpp is linux only
 		return false
 	}
 	ids := map[string]any{}

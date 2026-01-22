@@ -1,5 +1,4 @@
 import antfu from '@antfu/eslint-config'
-
 export default antfu(
   {
     jsx: true,
@@ -14,8 +13,4 @@ export default antfu(
       'cspell.config.yml',
     ],
   },
-  // {
-  //   ...await svelte({ typescript: true }),
-  //   files: ['**/*.svelte.ts', '**/*.svelte.js'],
-  // },
 )

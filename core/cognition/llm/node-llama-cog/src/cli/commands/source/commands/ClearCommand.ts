@@ -6,11 +6,9 @@ import withOra from "../../../../utils/withOra.js";
 import {clearAllLocalBuilds} from "../../../../bindings/utils/clearAllLocalBuilds.js";
 import {clearLocalCmake, fixXpackPermissions} from "../../../../utils/cmake.js";
 import {withCliCommandDescriptionDocsUrl} from "../../../utils/withCliCommandDescriptionDocsUrl.js";
-
 type ClearCommand = {
     type: "source" | "builds" | "cmake" | "all"
 };
-
 export const ClearCommand: CommandModule<object, ClearCommand> = {
     command: "clear [type]",
     aliases: ["clean"],
@@ -29,7 +27,6 @@ export const ClearCommand: CommandModule<object, ClearCommand> = {
     },
     handler: ClearLlamaCppBuildCommand
 };
-
 export async function ClearLlamaCppBuildCommand({type}: ClearCommand) {
     if (type === "source" || type === "all") {
         await withOra({
@@ -41,7 +38,6 @@ export async function ClearLlamaCppBuildCommand({type}: ClearCommand) {
             await fs.remove(llamaCppDirectoryInfoFilePath);
         });
     }
-
     if (type === "builds" || type === "all") {
         await withOra({
             loading: chalk.blue("Clearing all builds"),
@@ -51,7 +47,6 @@ export async function ClearLlamaCppBuildCommand({type}: ClearCommand) {
             await clearAllLocalBuilds();
         });
     }
-
     if (type === "cmake" || type === "all") {
         await withOra({
             loading: chalk.blue("Clearing internal cmake"),

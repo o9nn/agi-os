@@ -1,6 +1,5 @@
 #!/dis/sh
 fn bindfs {
-	# this may be useful as a general purpose cmd
 	(mntpt dirs)=$*
 	memfs $mntpt
 	for d in $dirs {
@@ -25,11 +24,9 @@ fn bindfs {
 		bind $d $mntpt^$d
 	}
 }
-
 fn x {
 	echo tcp!^$2
 }
-
 bindfs /tmp /dis /n/client /dev /prog
 listen -A  `{x `{ndb/csquery tcp!^`{cat /dev/sysname}^!rstyx}} {
 		@{
@@ -39,7 +36,6 @@ listen -A  `{x `{ndb/csquery tcp!^`{cat /dev/sysname}^!rstyx}} {
 			runas rstyx {auxi/rstyxd}
 		}&
 	}
-
 while {} {
 	demo/cpupool/regpoll tcp!200.1.1.104!6676 up
 	echo Registering Rstyx service

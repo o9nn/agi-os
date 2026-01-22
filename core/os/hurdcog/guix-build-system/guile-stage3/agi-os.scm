@@ -1,15 +1,9 @@
-;;;; Stage3: AGI-OS Features for GUIX Guile Integration  
-;;;; Copyright 2024 Unicorn Dynamics
-;;;; Part of SKZ Integration Strategy - Phase 3: Build System Orchestration
-
 (define-module (guix-build-system guile-stage3 agi-os)
   #:use-module (guix packages)
   #:use-module (guix build-system gnu)
   #:use-module (guix-build-system guile-stage2 extensions)
   #:use-module (gnu packages)
   #:export (stage3-guile guile-llama-cpp ecma262-features cognitive-interface))
-
-;; Define Guile-LLaMA-CPP package for LLM integration
 (define guile-llama-cpp
   (package
     (name "guile-llama-cpp")
@@ -18,8 +12,6 @@
     (description "LLaMA-CPP integration providing large language model 
 capabilities for cognitive operations and autonomous agent reasoning")
     (build-system gnu-build-system)))
-
-;; Define ECMA-262 features package for JavaScript integration
 (define ecma262-features
   (package
     (name "ecma262-features")
@@ -28,8 +20,6 @@ capabilities for cognitive operations and autonomous agent reasoning")
     (description "Modern JavaScript/ECMA-262 language support for web-based 
 cognitive interfaces and cross-platform agent development")
     (build-system gnu-build-system)))
-
-;; Define cognitive interface package
 (define cognitive-interface
   (package
     (name "cognitive-interface")
@@ -38,7 +28,6 @@ cognitive interfaces and cross-platform agent development")
     (description "Unified cognitive interface providing high-level operations 
 for AGI-OS functionality, autonomous agent coordination, and cognitive workflow management")
     (build-system gnu-build-system)))
-
 (define (install-agi-os-modules)
   "Install AGI-OS modules for Stage3"
   (begin
@@ -47,7 +36,6 @@ for AGI-OS functionality, autonomous agent coordination, and cognitive workflow 
     (format #t "Installing cognitive interface modules...~%")
     (format #t "Configuring AGI-OS autonomous agent framework...~%")
     #t))
-
 (define stage3-guile
   (package
     (inherit stage2-guile)
@@ -71,9 +59,7 @@ for AGI-OS functionality, autonomous agent coordination, and cognitive workflow 
          (add-after 'install 'install-agi-os-modules
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((out (assoc-ref outputs "out")))
-               ;; Install AGI-OS modules
                (install-agi-os-modules)
-               ;; Create SKZ integration marker
                (with-output-to-file (string-append out "/lib/guile/skz-integration-complete")
                  (lambda ()
                    (display "SKZ Integration Stage3 completed\n")
@@ -81,7 +67,6 @@ for AGI-OS functionality, autonomous agent coordination, and cognitive workflow 
                    (display "ECMA-262 features: integrated\n") 
                    (display "Cognitive interface: integrated\n")
                    (display "AGI-OS framework: operational\n")))
-               ;; Mark stage3 completion
                (with-output-to-file (string-append out "/lib/guile/stage3-complete")
                  (lambda ()
                    (display "Stage3 AGI-OS features completed\n")
@@ -90,7 +75,6 @@ for AGI-OS functionality, autonomous agent coordination, and cognitive workflow 
          (add-after 'install-agi-os-modules 'validate-agi-os-integration
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((out (assoc-ref outputs "out")))
-               ;; Validate AGI-OS integration
                (format #t "Validating AGI-OS integration...~%")
                (format #t "LLM capabilities: OK~%")
                (format #t "JavaScript/ECMA-262: OK~%")

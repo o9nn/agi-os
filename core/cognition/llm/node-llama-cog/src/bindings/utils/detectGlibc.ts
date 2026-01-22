@@ -3,7 +3,6 @@ import {BinaryPlatform} from "./getPlatform.js";
 import {asyncEvery} from "./asyncEvery.js";
 import {asyncSome} from "./asyncSome.js";
 import {hasFileInPath} from "./hasFileInPath.js";
-
 export async function detectGlibc({
     platform
 }: {
@@ -20,34 +19,32 @@ export async function detectGlibc({
             "/usr/lib/aarch64-linux-gnu",
             "/usr/lib/armv7l-linux-gnu"
         ];
-
         return await asyncEvery([
             asyncSome([
                 hasFileInPath("libc.so", librarySearchPaths),
                 hasFileInPath("libc.so.5", librarySearchPaths),
                 hasFileInPath("libc.so.6", librarySearchPaths),
-                hasFileInPath("libc.so.7", librarySearchPaths) // for when the next version comes out
+                hasFileInPath("libc.so.7", librarySearchPaths) 
             ]),
             asyncSome([
                 hasFileInPath("ld-linux.so", librarySearchPaths),
                 hasFileInPath("ld-linux.so.1", librarySearchPaths),
                 hasFileInPath("ld-linux.so.2", librarySearchPaths),
-                hasFileInPath("ld-linux.so.3", librarySearchPaths), // for when the next version comes out
+                hasFileInPath("ld-linux.so.3", librarySearchPaths), 
                 hasFileInPath("ld-linux-x86-64.so", librarySearchPaths),
                 hasFileInPath("ld-linux-x86-64.so.1", librarySearchPaths),
                 hasFileInPath("ld-linux-x86-64.so.2", librarySearchPaths),
-                hasFileInPath("ld-linux-x86-64.so.3", librarySearchPaths), // for when the next version comes out
+                hasFileInPath("ld-linux-x86-64.so.3", librarySearchPaths), 
                 hasFileInPath("ld-linux-aarch64.so", librarySearchPaths),
                 hasFileInPath("ld-linux-aarch64.so.1", librarySearchPaths),
                 hasFileInPath("ld-linux-aarch64.so.2", librarySearchPaths),
-                hasFileInPath("ld-linux-aarch64.so.3", librarySearchPaths), // for when the next version comes out
+                hasFileInPath("ld-linux-aarch64.so.3", librarySearchPaths), 
                 hasFileInPath("ld-linux-armv7l.so", librarySearchPaths),
                 hasFileInPath("ld-linux-armv7l.so.1", librarySearchPaths),
                 hasFileInPath("ld-linux-armv7l.so.2", librarySearchPaths),
-                hasFileInPath("ld-linux-armv7l.so.3", librarySearchPaths) // for when the next version comes out
+                hasFileInPath("ld-linux-armv7l.so.3", librarySearchPaths) 
             ])
         ]);
     }
-
     return false;
 }

@@ -1,7 +1,4 @@
-/* eslint-disable import/prefer-default-export */
 import { camelCase, isArray, transform, isObject } from "lodash";
-
-/** Recursively transforms all object keys into camelCase. */
 export const camelize = (
   obj: Record<string, unknown>
 ): Record<string, unknown> =>
@@ -14,7 +11,6 @@ export const camelize = (
       target: unknown
     ) => {
       const camelKey = isArray(target) ? key : camelCase(key);
-      // eslint-disable-next-line no-param-reassign
       result[camelKey] = isObject(value)
         ? camelize(value as Record<string, unknown>)
         : value;

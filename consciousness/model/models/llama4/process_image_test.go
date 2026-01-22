@@ -1,5 +1,4 @@
 package llama4
-
 import (
 	"cmp"
 	"image"
@@ -7,10 +6,8 @@ import (
 	"reflect"
 	"slices"
 	"testing"
-
 	gocmp "github.com/google/go-cmp/cmp"
 )
-
 func TestFactors(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -48,7 +45,6 @@ func TestFactors(t *testing.T) {
 			expected: []int{1, 97},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := factors(tt.input)
@@ -58,7 +54,6 @@ func TestFactors(t *testing.T) {
 		})
 	}
 }
-
 func TestSupportedResolutions(t *testing.T) {
 	expectedResolutions := []image.Point{
 		{X: 3360, Y: 336},
@@ -112,28 +107,22 @@ func TestSupportedResolutions(t *testing.T) {
 		{X: 336, Y: 2016},
 		{X: 672, Y: 2352},
 	}
-
 	sortResolutionFunc := func(a, b image.Point) int {
 		return cmp.Or(cmp.Compare(a.X, b.X), cmp.Compare(a.Y, b.Y))
 	}
-
 	slices.SortStableFunc(expectedResolutions, sortResolutionFunc)
-
 	imgProc := ImageProcessor{
 		imageSize:        336,
 		patchSize:        16,
 		numChannels:      3,
 		maxUpscalingSize: 448,
 	}
-
 	actualResolutions := imgProc.supportedResolutions()
 	slices.SortStableFunc(actualResolutions, sortResolutionFunc)
-
 	if diff := gocmp.Diff(expectedResolutions, actualResolutions); diff != "" {
 		t.Errorf("supportedResolutions() mismatch (-want +got):\n%s", diff)
 	}
 }
-
 func TestBestResolution(t *testing.T) {
 	tests := []struct {
 		name        string
@@ -208,9 +197,7 @@ func TestBestResolution(t *testing.T) {
 			image.Point{1600, 1200},
 		},
 	}
-
 	p := ImageProcessor{}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := p.bestResolution(tt.size, tt.resolutions, tt.max)
@@ -220,7 +207,6 @@ func TestBestResolution(t *testing.T) {
 		})
 	}
 }
-
 func TestMaxResolution(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -241,9 +227,7 @@ func TestMaxResolution(t *testing.T) {
 			image.Point{933, 700},
 		},
 	}
-
 	p := ImageProcessor{}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := p.maxResolution(tt.origRes, tt.targetRes)
@@ -253,7 +237,6 @@ func TestMaxResolution(t *testing.T) {
 		})
 	}
 }
-
 func TestProcessImage(t *testing.T) {
 	imgProc := ImageProcessor{
 		imageSize:        336,
@@ -261,39 +244,30 @@ func TestProcessImage(t *testing.T) {
 		numChannels:      3,
 		maxUpscalingSize: 448,
 	}
-
 	generateImage := func(seed int) image.Image {
 		width, height := 20, 10
 		img := image.NewRGBA(image.Rect(0, 0, width, height))
-
 		for x := range width {
-			// Use the seed to vary color generation
 			r := uint8((seed + x*11) % 256)
 			g := uint8((seed + x*17) % 256)
 			b := uint8((seed + x*23) % 256)
-
 			c := color.RGBA{R: r, G: g, B: b, A: 255}
 			for y := range height {
 				img.Set(x, y, c)
 			}
 		}
-
 		return img
 	}
-
 	pixelsLocal, pixelsGlobal, targetSize, err := imgProc.ProcessImage(generateImage(12))
 	if err != nil {
 		t.Error(err)
 	}
-
 	if n := len(pixelsLocal); n != 336*336*3 {
 		t.Errorf("unexpected size of f32s: %d", n)
 	}
-
 	if n := len(pixelsGlobal); n > 0 {
 		t.Errorf("unexpected size of f32s: %d", n)
 	}
-
 	if !targetSize.Eq(image.Point{336, 336}) {
 		t.Errorf("unexpected target size: %v", targetSize)
 	}

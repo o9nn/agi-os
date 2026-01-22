@@ -1,5 +1,4 @@
 #include "portfns.h"
-
 long	belong(char *);
 Chan*	chaninit(char*);
 void	check(Filsys *, long);
@@ -15,7 +14,6 @@ int	skipbl(int);
 void	startproc(void (*)(void), char *);
 void	syncproc(void);
 void	syncall(void);
-
 int	fprint(int, char*, ...);
 void	wreninit(Device);
 int	wrencheck(Device);
@@ -25,16 +23,10 @@ long	wrensuper(Device);
 long	wrenroot(Device);
 int	wrenread(Device, long, void *);
 int	wrenwrite(Device, long, void *);
-
-/*
- * macros for compat with bootes
- */
 #define	localfs			1
-
 #define devgrow(d, s)	0
 #define nofree(d, a)	0
 #define isro(d)		0
-
 #define	superaddr(d)		((*devcall[d.type].super)(d))
 #define	getraddr(d)		((*devcall[d.type].root)(d))
 #define devsize(d)		((*devcall[d.type].size)(d))

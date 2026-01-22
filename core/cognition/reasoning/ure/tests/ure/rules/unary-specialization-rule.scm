@@ -59,6 +59,5 @@
           (VariableNode "$texts")
           (VariableNode "$ms")))
       (VariableNode "$f")))))
-
 (define unary-specialization-rule-name (DefinedSchemaNode "unary-specialization-rule"))
 (DefineLink unary-specialization-rule-name unary-specialization-rule)

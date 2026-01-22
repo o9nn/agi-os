@@ -1,11 +1,4 @@
 #! /bin/bash
-#
-# Create subdirectories for alphabetized wikipedia articles,
-# Move articles from main directory into subdirs.
-# (This is the CJK version).
-#
-# Copyright (c) 2008, 2013, 2017 Linas Vepstas <linasvepstas@gmail.com>
-
 mkdir A-Z
 mkdir num
 mkdir 一-亞
@@ -29,9 +22,6 @@ mkdir 野-隴
 mkdir 隶-香
 mkdir 馬-龠
 mkdir misc
-
-# Must use find to do this, since "mv dir/A* otherdir/A"
-# leads to an overflow on the shell command line.
 echo "start A-Z"
 time find ../wiki-stripped -name '[A-Z]*' -exec mv {} A-Z \;
 time find ../wiki-stripped -name '[0-9]*' -exec mv {} num \;
@@ -60,8 +50,6 @@ time find ../wiki-stripped -name '[野-隴]*' -exec mv {} 	野-隴 \;
 time find ../wiki-stripped -name '[隶-香]*' -exec mv {} 	隶-香 \;
 time find ../wiki-stripped -name '[馬-龠]*' -exec mv {} 	馬-龠 \;
 time find ../wiki-stripped -name '*' -type f -exec mv {} misc \;
-
-# Print out article counts.
 echo "Article counts, by subdirectory"
 echo -n A-Z ; find A-Z | wc
 echo -n num ; find num | wc

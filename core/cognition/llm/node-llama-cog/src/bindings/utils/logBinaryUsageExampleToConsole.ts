@@ -2,7 +2,6 @@ import {BuildOptions} from "../types.js";
 import {removeUndefinedFields} from "../../utils/removeNullFields.js";
 import {LlamaOptions} from "../getLlama.js";
 import {getExampleUsageCodeOfGetLlama} from "./getExampleUsageCodeOfGetLlama.js";
-
 export function logBinaryUsageExampleToConsole(
     buildOptions: BuildOptions, specifyGpuType: boolean, showLatestBuildUsageExample: boolean = true
 ) {
@@ -24,7 +23,6 @@ export function logBinaryUsageExampleToConsole(
                 : llamaOptions
         )
     );
-
     if (showLatestBuildUsageExample) {
         console.log();
         console.log("To always use the latest binary you build using a CLI command, use this code:");

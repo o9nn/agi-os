@@ -1,10 +1,7 @@
 import * as v from 'valibot'
 import { describe, expect, it, vi } from 'vitest'
-
 import { streamObject } from '../src'
-
 type ExtractReadableStream<T> = T extends ReadableStream<infer U> ? U : never
-
 describe('@xsai/stream-object', () => {
   it('basic', async () => {
     const { partialObjectStream } = await streamObject({
@@ -25,17 +22,13 @@ describe('@xsai/stream-object', () => {
       }),
       seed: 39,
     })
-
     const objects: ExtractReadableStream<typeof partialObjectStream>[] = []
-
     for await (const partialObject of partialObjectStream) {
       objects.push(partialObject)
       expect(partialObject).toMatchSnapshot()
     }
-
     expect(objects.at(-1)!.answer).toBe('YES')
   })
-
   it('string array', async () => {
     const { elementStream } = await streamObject({
       baseURL: 'http://localhost:11434/v1/',
@@ -54,18 +47,15 @@ describe('@xsai/stream-object', () => {
       schema: v.string(),
       seed: 39,
     })
-
     const objects: string[] = []
     for await (const element of elementStream) {
       objects.push(element)
     }
-
     expect(objects).toHaveLength(5)
     for (const object of objects) {
       expect(object).toBeTypeOf('string')
     }
   })
-
   it('boolean array', async () => {
     const { elementStream } = await streamObject({
       baseURL: 'http://localhost:11434/v1/',
@@ -84,18 +74,15 @@ describe('@xsai/stream-object', () => {
       schema: v.boolean(),
       seed: 39,
     })
-
     const objects: boolean[] = []
     for await (const element of elementStream) {
       objects.push(element)
     }
-
     expect(objects).toHaveLength(5)
     for (const object of objects) {
       expect(object).toBeTypeOf('boolean')
     }
   })
-
   it('number array', async () => {
     const { elementStream } = await streamObject({
       baseURL: 'http://localhost:11434/v1/',
@@ -114,18 +101,15 @@ describe('@xsai/stream-object', () => {
       schema: v.number(),
       seed: 39,
     })
-
     const objects: number[] = []
     for await (const element of elementStream) {
       objects.push(element)
     }
-
     expect(objects).toHaveLength(5)
     for (const object of objects) {
       expect(object).toBeTypeOf('number')
     }
   })
-
   it('object array', async () => {
     const schema = v.object({
       fruit: v.string(),
@@ -147,16 +131,13 @@ describe('@xsai/stream-object', () => {
       schema,
       seed: 39,
     })
-
     const objects: { fruit: string }[] = []
     for await (const element of elementStream) {
       objects.push(element)
       expect(() => v.parse(schema, element)).not.throw()
     }
-
     expect(objects).toHaveLength(5)
   })
-
   it('object array with onFinish', async () => {
     const schema = v.object({
       fruit: v.string(),
@@ -180,15 +161,12 @@ describe('@xsai/stream-object', () => {
       schema,
       seed: 39,
     })
-
     const objects: { fruit: string }[] = []
     for await (const element of elementStream) {
       expect(() => v.parse(schema, element)).not.throw()
       objects.push(element)
     }
-
     expect(objects).toHaveLength(5)
-
     expect(onFinish).toBeCalled()
     expect(onFinish).toMatchSnapshot()
   })

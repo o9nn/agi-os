@@ -1,21 +1,17 @@
-
 typedef struct Playlistentry {
-	char	*file;
-	char	*onum;
+char	*file;
+char	*onum;
 } Playlistentry;
-
 typedef struct Playlist {
-	QLock;
-	int		nentries;
-	int		selected;
-	Playlistentry	*entry;
+QLock;
+int		nentries;
+int		selected;
+Playlistentry	*entry;
 } Playlist;
-
 extern Playlist	playlist;
 extern char	*playctlfile;
 extern char	*srvmount;
 extern int	playctlfd;
-
 void	playctlproc(void*a);
 void	playlistproc(void*);
 void	playvolproc(void*a);

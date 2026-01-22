@@ -11,62 +11,49 @@
 #define	AUDIO_IN_FLAG		0x00000400
 #define	AUDIO_OUT_FLAG		0x00000800
 #define	AUDIO_MOD_FLAG		0x10000000
-
 #define	Audio_Min_Val		0
 #define	Audio_Max_Val		100
-
 #define 	Audio_No_Val		0
 #define 	Audio_In_Val		1
 #define 	Audio_Out_Val		2
-
 #define	Audio_Max_Buf		32768
 #define	Bits_Per_Byte		8
-
 typedef struct Audio_d Audio_d;
 struct Audio_d {
-	ulong	flags;		/* bit flag for fields */
-	ulong	bits;		/* bits per sample */
-	ulong	buf;		/* buffer size */
-	ulong	chan;		/* number of channels */
-	ulong	dev;		/* device */
-	ulong	enc;		/* encoding format */
-	ulong	rate;		/* samples per second */
-	ulong	left;		/* left channel gain */
-	ulong	right;		/* right channel gain */
+ulong	flags;
+ulong	bits;
+ulong	buf;
+ulong	chan;
+ulong	dev;
+ulong	enc;
+ulong	rate;
+ulong	left;
+ulong	right;
 };
-
 typedef struct Audio_t Audio_t;
 struct Audio_t {
-	Audio_d	in;		/* input device */
-	Audio_d	out;		/* output device */
+Audio_d	in;
+Audio_d	out;
 };
-
 #define AUDIO_CMD_MAXNUM 32
-
 void audio_info_init(Audio_t*);
 int audioparse(char*, int n, Audio_t*);
-
 enum
 {
-	Qdir = 0,		/* must start at 0 representing a directory */
-	Qaudio,
-	Qaudioctl
+Qdir = 0,
+Qaudio,
+Qaudioctl
 };
-
-/* required external platform specific functions */
 void	audio_file_init(void);
 void	audio_file_open(Chan*, int);
 long	audio_file_read(Chan*, void*, long, vlong);
 long	audio_file_write(Chan*, void*, long, vlong);
 long	audio_ctl_write(Chan*, void*, long, vlong);
 void	audio_file_close(Chan*);
-
 typedef struct _svp_t {
-	char*		s;	/* string */
-	unsigned long	v;	/* value */
+char*		s;
+unsigned long	v;
 } svp_t;
-
-/* string value pairs for default audio values */
 extern svp_t audio_chan_tbl[];
 extern svp_t audio_indev_tbl[];
 extern svp_t audio_outdev_tbl[];
@@ -74,8 +61,6 @@ extern svp_t audio_enc_tbl[];
 extern svp_t audio_rate_tbl[];
 extern svp_t audio_val_tbl[];
 extern svp_t audio_bits_tbl[];
-
 extern Audio_d Default_Audio_Format;
 extern int Default_Audio_Input, Default_Audio_Output;
-
 extern Audio_t* getaudiodev(void);

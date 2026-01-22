@@ -1,9 +1,8 @@
-
 typedef union  {
-	Node	*p;
-	Cell	*cp;
-	int	i;
-	char	*s;
+Node	*p;
+Cell	*cp;
+int	i;
+char	*s;
 }	YYSTYPE;
 extern	YYSTYPE	yylval;
 #define	FIRSTTOKEN	57346

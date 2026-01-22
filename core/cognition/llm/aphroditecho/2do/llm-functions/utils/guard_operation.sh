@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-
-# Guard an operation with a confirmation prompt.
-
 main() {
     if [ -t 1 ]; then
         confirmation_prompt="${1:-"Are you sure you want to continue?"}"
@@ -12,5 +9,4 @@ main() {
         fi
     fi
 }
-
 main "$@"

@@ -1,5 +1,4 @@
 package server
-
 import (
 	"bytes"
 	"fmt"
@@ -7,11 +6,9 @@ import (
 	"os"
 	"strings"
 	"testing"
-
 	fsggml "github.com/EchoCog/echollama/fs/ggml"
 	"github.com/EchoCog/echollama/ml/backend/ggml"
 )
-
 func TestGetTensorNewType(t *testing.T) {
 	cases := []struct {
 		name          string
@@ -165,7 +162,6 @@ func TestGetTensorNewType(t *testing.T) {
 		})
 	}
 }
-
 func TestQuantizeModel(t *testing.T) {
 	cases := []struct {
 		name                string
@@ -254,7 +250,6 @@ func TestQuantizeModel(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			p, _ := createBinFile(t, tt.kv, tt.tensors)
@@ -269,7 +264,6 @@ func TestQuantizeModel(t *testing.T) {
 			}
 			progressCalled := false
 			progress := func(n uint64) {
-				// fmt.Fprintf(os.Stderr, "progress: %f\n", p)
 				progressCalled = true
 			}
 			tmp, err := os.CreateTemp(t.TempDir(), tt.name+".out")
@@ -281,7 +275,6 @@ func TestQuantizeModel(t *testing.T) {
 			if err != nil {
 				t.Fatal(err.Error())
 			}
-
 			err = quantize(fp, tmp, meta, ftype, progress)
 			if err != nil {
 				t.Fatalf("error during quantize: %s", err)
@@ -289,7 +282,6 @@ func TestQuantizeModel(t *testing.T) {
 			if !progressCalled {
 				t.Fatalf("progress was not reported")
 			}
-			// Now attempt to load it back and make sure types match expected
 			fpNew, err := os.Open(tmp.Name())
 			if err != nil {
 				t.Fatalf("failed to load the quantized model %s: %s", tmp.Name(), err)
@@ -310,14 +302,12 @@ func TestQuantizeModel(t *testing.T) {
 		})
 	}
 }
-
 func TestConvertToF32(t *testing.T) {
 	expected := make([]float32, 256)
 	for i := range expected {
 		expected[i] = float32(i)
 	}
 	for dtype, data := range quantBytes {
-		// Skip the no-op
 		if dtype == fsggml.TensorTypeF32 {
 			continue
 		}
@@ -330,7 +320,6 @@ func TestConvertToF32(t *testing.T) {
 		})
 	}
 }
-
 func dotProduct[V float32 | float64](v1, v2 []V) V {
 	var result V = 0
 	for i := range v1 {
@@ -338,7 +327,6 @@ func dotProduct[V float32 | float64](v1, v2 []V) V {
 	}
 	return result
 }
-
 func magnitude[V float32 | float64](v []V) V {
 	var result V = 0
 	for _, val := range v {
@@ -346,28 +334,9 @@ func magnitude[V float32 | float64](v []V) V {
 	}
 	return V(math.Sqrt(float64(result)))
 }
-
 func cosineSimilarity[V float32 | float64](v1, v2 []V) V {
 	return dotProduct(v1, v2) / (magnitude(v1) * magnitude(v2))
 }
-
-// Precomputed quantized data - arange 256
-// # For gguf-py supported types
-// import gguf
-// import numpy as np
-// print(repr(gguf.quantize(np.arange(256, dtype=np.float16), gguf.GGMLQuantizationType.Q4_0)))
-//
-// For types not supported by gguf-py converted via ggml_fp32_to_fp16_row and quantize_XXX
-//
-//	data := make([]byte, 256*2)
-//	fp32 := make([]float32, 256)
-//	for i := range 256 {
-//		fp32[i] = float32(i)
-//	}
-//	l := C.quantize_q6_K((*C.float)(&fp32[0]), unsafe.Pointer(&data[0]), 1, 256, nil)
-//	for i := range data[:int(l)] {
-//		fmt.Printf("%d, ", data[i])
-//	}
 var (
 	quantBytes = map[fsggml.TensorType][]byte{
 		fsggml.TensorTypeQ4_0: {

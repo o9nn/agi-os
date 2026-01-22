@@ -1,6 +1,4 @@
-
 biggraph = "arg=rpctotal&graph=diff"
-
 graphname = new Array(
 	"arg=*&graph=diskbw",
 		"<b>disk</b> bytes/second",
@@ -8,12 +6,10 @@ graphname = new Array(
 		"<b>network</b> bytes/second",
 	"arg=*&graph=iobw",
 		"total: <b>disk+net</b> bytes/second",
-
 	"arg=apartreadbyte&graph=diff",
 		"arena read bytes/second",
 	"arg=apartwritebyte&graph=diff",
 		"arena write bytes/second",
-
 	"arg=bloomfalsemiss&graph=pctdiff&arg2=bloomlookup&max=100",
 		"bloom false hit %",
 	"arg=bloomhit&graph=pctdiff&arg2=bloomlookup&max=100",
@@ -22,7 +18,6 @@ graphname = new Array(
 		"bloom lookup time",
 	"arg=bloomones&graph=pct&arg2=bloombits&max=100",
 		"bloom usage %",
-
 	"arg=dcachedirty&graph=pct&arg2=dcachesize&max=100",
 		"dcache dirty %",
 	"arg=dcachehit&graph=pctdiff&arg2=dcachelookup&max=100",
@@ -33,7 +28,6 @@ graphname = new Array(
 		"dcache lookups/second",
 	"arg=dcachewrite&graph=diff",
 		"dcache writes/second",
-
 	"arg=icachedirty&graph=pct&arg2=icachesize&max=100",
 		"icache dirty %",
 	"arg=icachehit&graph=pctdiff&arg2=icachelookup&max=100",
@@ -44,19 +38,16 @@ graphname = new Array(
 		"icache prefetches/second",
 	"arg=icachewrite&graph=diff",
 		"icache writes/second",
-
 	"arg=isectreadbyte&graph=diff",	
 		"isect read bytes/second",
 	"arg=isectwritebyte&graph=diff",
 		"isect write bytes/second",
-
 	"arg=lcachehit&graph=pctdiff&arg2=lcachelookup&max=100",
 		"lump cache hit %",
 	"arg=lcachelookuptime&graph=divdiff&arg2=lcachelookup",
 		"lump cache lookup time",
 	"arg=lcachewrite&graph=diff",
 		"lcache writes/second",
-
 	"arg=rpcreadbyte&graph=diff",
 		"read RPC bytes/second",
 	"arg=rpctotal&graph=diff",
@@ -75,10 +66,8 @@ graphname = new Array(
 		"fresh write RPC time",
 	"arg=rpcwriteoldtime&graph=divdiff&arg2=rpcwriteold",
 		"dup write RPC time",
-
 	"arg=sumreadbyte&graph=diff",
 		"checksum bytes/second",
-
 	"arg=dblockstall",
 		"threads stalled: dblock",
 	"arg=dcachestall",
@@ -87,10 +76,8 @@ graphname = new Array(
 		"threads stalled: icache",
 	"arg=lumpstall",
 		"threads stalled: lump",
-
 	"arg=END"
 )
-
 column0 = new Array(
 	"column0",
 	"!bandwidth",
@@ -104,15 +91,12 @@ column0 = new Array(
 	"arg=apartreadbyte&graph=diff",
 	"arg=apartwritebyte&graph=diff",
 	"arg=sumreadbyte&graph=diff",
-	
 	"!bloom filter",
 	"arg=bloomhit&graph=pctdiff&arg2=bloomlookup&max=100",
 	"arg=bloomfalsemiss&graph=pctdiff&arg2=bloomlookup&max=100",
 	"arg=bloomones&graph=pct&arg2=bloombits&max=100",
-	
 	"END"
 )
-
 column1 = new Array(
 	"column1",
 	"!icache",
@@ -120,29 +104,23 @@ column1 = new Array(
 	"arg=icachehit&graph=pctdiff&arg2=icachelookup&max=100",
 	"arg=icachewrite&graph=diff",
 	"arg=icacheprefetch&graph=diff",
-	
 	"!dcache",
 	"arg=dcachedirty&graph=pct&arg2=dcachesize&max=100",
 	"arg=dcachehit&graph=pctdiff&arg2=dcachelookup&max=100",
 	"arg=dcachelookup&graph=diff",
 	"arg=dcachewrite&graph=diff",
-	
 	"!lump cache",
 	"arg=lcachehit&graph=pctdiff&arg2=lcachelookup&max=100",
 	"arg=lcachewrite&graph=diff",
-	
 	"END"
 )
-
 column2 = new Array(
 	"column2",
-
 	"!stalls",
 	"arg=icachestall",
 	"arg=dcachestall",
 	"arg=dblockstall",
 	"arg=lumpstall",
-	
 	"!timings",
 	"arg=bloomlookuptime&graph=divdiff&arg2=bloomlookup",
 	"arg=icachelookuptime&graph=divdiff&arg2=icachelookup",
@@ -154,26 +132,21 @@ column2 = new Array(
 	"arg=rpcreaduncachedtime&graph=divdiff&arg2=rpcreaduncached",
 	"arg=rpcwritenewtime&graph=divdiff&arg2=rpcwritenew",
 	"arg=rpcwriteoldtime&graph=divdiff&arg2=rpcwriteold",
-	
 	"END"
 )
-
 col0info = new Array(column0.length)
 col1info = new Array(column1.length)
 col2info = new Array(column2.length)
-
 function cleardebug() {
 	var p = document.getElementById("debug")
 	p.innerHTML = ""
 }
-
 function debug(s) {
 	var p = document.getElementById("debug")
 	if(p.innerHTML == "")
 		p.innerHTML = "<a href=\"javascript:cleardebug()\">clear</a>\n"
 	p.innerHTML += "<br>"+s
 }
-
 function Ginfo(y, fill, name) {
 	var g = new Object()
 	g.y = y
@@ -181,19 +154,16 @@ function Ginfo(y, fill, name) {
 	g.name = name
 	return g
 }
-
 function cleartable(t) {
 	for(var i=t.rows.length-1; i>=0; i--)
 		t.deleteRow(i)
 }
-
 function textofname(name)
 {
 	for(var i=0; i<graphname.length; i+=2)
 		if(name == graphname[i])
 			return graphname[i+1]
 }
-
 function graphrow(row, span, name, dt, wid, ht, fill, text) {
 	var url = "/graph?"+name
 	url = url+"&min=0"
@@ -201,7 +171,6 @@ function graphrow(row, span, name, dt, wid, ht, fill, text) {
 	url = url+"&wid="+wid
 	url = url+"&ht="+ht
 	url = url+"&fill="+fill
-
 	var s = "<td colSpan="+span
 	s = s+" valign=bottom"
 	s = s+" align=center"
@@ -211,43 +180,34 @@ function graphrow(row, span, name, dt, wid, ht, fill, text) {
 	s = s+">"+textofname(name)+text+"</td>"
 	row.innerHTML = s
 }
-
-
 function graphcell(cell, name, dt, wid, ht, fill) {
 	cell.vAlign = "bottom"
 	cell.align = "center"
 	cell.width = wid
 	cell.height = ht
 }
-
 function redraw() {
 	redrawgraphs()
 	redrawsettings()
 }
-
 function redrawgraphs() {
 	var t = document.getElementById("statgraphs")
-	
 	cleartable(t)
 	for(var i=0; i<4; i++)
 		t.insertRow(i)
-
 	graphrow(t.rows[0], 3, biggraph, 86400, 900, 30, 0, " &ndash; showing 24 hours")
 	graphrow(t.rows[1], 3, biggraph, 3600, 900, 30, 1, " &ndash; showing 1 hour")
 	t.rows[2].innerHTML = "<td height=10></td>"
-	
 	var r = t.rows[3]
 	graphtable(r.insertCell(0), column0, col0info, 0)
 	graphtable(r.insertCell(1), column1, col1info, 2)
 	graphtable(r.insertCell(2), column2, col2info, 4)
 }
-
 function graphtable(bigcell, list, infolist, fill) {
 	bigcell.innerHTML = "<table id=\""+list[0]+"\"></table>"
 	bigcell.vAlign = "top"
 	var t = document.getElementById(list[0])
 	t.onclick = columnclick
-
 	for(var i=1; i<list.length; i++){
 		var r = t.insertRow(t.rows.length)
 		name = list[i]
@@ -266,7 +226,6 @@ function graphtable(bigcell, list, infolist, fill) {
 		}
 	}
 }
-
 function xpos(obj) {
 	var x = 0
 	if(obj.fixedx)
@@ -280,7 +239,6 @@ function xpos(obj) {
 		x = obj.x
 	return x
 }
-		
 function ypos(obj) {
 	var y = 0
 	if(obj.fixedy)
@@ -294,15 +252,12 @@ function ypos(obj) {
 		y = obj.y
 	return y
 }
-
 function scrollleft() {
 	return document.body.scrollLeft
 }
-
 function scrolltop() {
 	return document.body.scrollTop
 }
-
 function columnclick(e) {
 	if(e.which && e.which != 1)
 		return;
@@ -314,10 +269,8 @@ function columnclick(e) {
 		graphrow(t.rows[1], 3, biggraph, 3600, 900, 30, 1, " &ndash; showing 1 hour")
 	}
 }
-
 function findgraph(x, y) {
 	var g
-	
 	if(g = findgraphin(x, y, "column2", col2info))
 		return g
 	if(g = findgraphin(x, y, "column1", col1info))
@@ -326,7 +279,6 @@ function findgraph(x, y) {
 		return g
 	return
 }
-
 function findgraphin(x, y, tname, info) {
 	var t = document.getElementById(tname)
 	if(x < xpos(t))
@@ -338,7 +290,6 @@ function findgraphin(x, y, tname, info) {
 	}
 	return
 }
-
 function setof(name, val, list) {
 	var s = ""
 	for(var i=0; i<list.length; i++){
@@ -349,7 +300,6 @@ function setof(name, val, list) {
 	}
 	return s
 }
-
 function loglinks(list) {
 	var s = ""
 	for(var i=0; i<list.length; i++){
@@ -357,7 +307,6 @@ function loglinks(list) {
 	}
 	return s
 }
-
 first = 1
 function redrawsettings() {
 	if(first){
@@ -378,10 +327,8 @@ function redrawsettings() {
 	s = s+"</font>"
 	document.getElementById("settings").innerHTML = s
 }
-
 function set(name, value) {
 	eval(name+"= \""+value+"\"")
 	redrawsettings()
-	// Works in FireFox, not in Safari
 	parent.hidden.location.href = "/set/"+name+"/"+value
 }

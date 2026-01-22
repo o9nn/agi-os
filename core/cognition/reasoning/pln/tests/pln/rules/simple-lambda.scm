@@ -1,5 +1,3 @@
-;; Simple examples for LambdaLink for testing Lambda distribution rules
-
 (define l0
 (AndLink
    (LambdaLink
@@ -12,7 +10,6 @@
       (EvaluationLink
          (PredicateNode "Q")
          (VariableNode "$X")))))
-
 (define l1
 (LambdaLink (stv 0.6 0.3)
    (VariableNode "$X")
@@ -23,12 +20,10 @@
       (EvaluationLink
          (PredicateNode "Q")
          (VariableNode "$X")))))
-
 (define l2
 (LambdaLink
    (VariableNode "$X")
    (EvaluationLink (stv 0.4 0.7)
       (PredicateNode "P")
       (ConceptNode "A"))))
-
 (AndLink l1 l2)

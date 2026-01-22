@@ -1,11 +1,9 @@
 import type { EventContext } from '../../context'
 import type { DirectionalEventa, Eventa } from '../../eventa'
-
 import { createContext as createBaseContext } from '../../context'
 import { and, defineInboundEventa, defineOutboundEventa, EventaFlowDirection, matchBy } from '../../eventa'
 import { generateWorkerPayload, parseWorkerPayload } from './internal'
 import { isWorkerEventa, normalizeOnListenerParameters, workerErrorEvent } from './shared'
-
 export function createContext(worker: Worker) {
   const ctx = createBaseContext() as EventContext<
     {
@@ -14,7 +12,6 @@ export function createContext(worker: Worker) {
     },
     { raw: { message?: MessageEvent, error?: ErrorEvent, messageError?: MessageEvent } }
   >
-
   ctx.on(and(
     matchBy((e: DirectionalEventa<any>) => e._flowDirection === EventaFlowDirection.Outbound || !e._flowDirection),
     matchBy('*'),
@@ -25,10 +22,8 @@ export function createContext(worker: Worker) {
       worker.postMessage(data, { transfer })
       return
     }
-
     worker.postMessage(data)
   })
-
   worker.onmessage = (event) => {
     try {
       const { type, payload } = parseWorkerPayload<Eventa<any>>(event.data)
@@ -44,19 +39,15 @@ export function createContext(worker: Worker) {
       ctx.emit(workerErrorEvent, { error }, { raw: { message: event } })
     }
   }
-
   worker.onerror = (error) => {
     ctx.emit(workerErrorEvent, { error }, { raw: { error } })
   }
-
   worker.onmessageerror = (error) => {
     ctx.emit(workerErrorEvent, { error }, { raw: { messageError: error } })
   }
-
   return {
     context: ctx,
   }
 }
-
 export { defineOutboundWorkerEventa, defineWorkerEventa, isWorkerEventa, withTransfer } from './shared'
 export type * from './shared'

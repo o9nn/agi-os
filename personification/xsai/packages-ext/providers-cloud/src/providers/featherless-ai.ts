@@ -4,8 +4,6 @@ import {
   createModelProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://featherless.ai/models} */
 export const createFeatherless = (apiKey: string, baseURL = 'https://api.featherless.ai/v1/') => merge(
   createMetadataProvider('featherless-ai'),
   createChatProvider<
@@ -24,6 +22,4 @@ export const createFeatherless = (apiKey: string, baseURL = 'https://api.feather
       .then(data => Response.json({ data, object: 'list' })),
   }),
 )
-
-/** @deprecated Use {@link createFeatherless} instead. */
 export const createFatherless = createFeatherless

@@ -4,12 +4,7 @@ import { LLMService, CognitiveFunctionType } from './LLMService'
 import { RAGMemoryStore } from './RAGMemoryStore'
 import { PersonaCore } from './PersonaCore'
 import { SelfReflection } from './SelfReflection'
-
 const log = getLogger('render/components/DeepTreeEchoBot/DeepTreeEchoBot')
-
-/**
- * Options for configuring the DeepTreeEchoBot
- */
 export interface DeepTreeEchoBotOptions {
   enabled: boolean
   enableAsMainUser?: boolean
@@ -23,19 +18,13 @@ export interface DeepTreeEchoBotOptions {
   cognitiveKeys?: Record<string, { apiKey: string; apiEndpoint?: string }>
   useParallelProcessing?: boolean
 }
-
-/**
- * DeepTreeEchoBot - Main class responsible for handling messages and generating responses
- */
 export class DeepTreeEchoBot {
   private options: DeepTreeEchoBotOptions
   private llmService: LLMService
   private memoryStore: RAGMemoryStore
   private personaCore: PersonaCore
   private selfReflection: SelfReflection
-
   constructor(options: DeepTreeEchoBotOptions) {
-    // Set default options, then override with provided options
     const defaultOptions: DeepTreeEchoBotOptions = {
       enabled: false,
       enableAsMainUser: false,
@@ -47,18 +36,12 @@ export class DeepTreeEchoBot {
       apiKey: '',
       apiEndpoint: '',
     }
-
     this.options = { ...defaultOptions, ...options }
-
     this.llmService = LLMService.getInstance()
     this.memoryStore = RAGMemoryStore.getInstance()
     this.personaCore = PersonaCore.getInstance()
     this.selfReflection = SelfReflection.getInstance()
-
-    // Configure components based on options
     this.memoryStore.setEnabled(this.options.memoryEnabled)
-
-    // Configure the main LLM service API key
     if (this.options.apiKey) {
       this.llmService.setConfig({
         apiKey: this.options.apiKey,
@@ -67,8 +50,6 @@ export class DeepTreeEchoBot {
           'https://api.openai.com/v1/chat/completions',
       })
     }
-
-    // Configure specialized cognitive function keys if provided
     if (this.options.cognitiveKeys) {
       Object.entries(this.options.cognitiveKeys).forEach(
         ([funcType, config]) => {
@@ -88,7 +69,6 @@ export class DeepTreeEchoBot {
         }
       )
     }
-
     log.info('DeepTreeEchoBot initialized with options:', {
       enabled: this.options.enabled,
       memoryEnabled: this.options.memoryEnabled,
@@ -103,31 +83,15 @@ export class DeepTreeEchoBot {
         : 0,
     })
   }
-
-  /**
-   * Check if the bot is enabled
-   */
   public isEnabled(): boolean {
     return this.options.enabled
   }
-
-  /**
-   * Check if memory is enabled
-   */
   public isMemoryEnabled(): boolean {
     return this.options.memoryEnabled
   }
-
-  /**
-   * Check if the bot is enabled as main user
-   */
   public isEnabledAsMainUser(): boolean {
     return this.options.enableAsMainUser || false
   }
-
-  /**
-   * Process a received message and potentially generate a response
-   */
   public async processMessage(
     accountId: number,
     chatId: number,
@@ -135,17 +99,12 @@ export class DeepTreeEchoBot {
     message: any
   ): Promise<void> {
     if (!this.isEnabled()) return
-
     try {
       const messageText = message.text || ''
-
-      // Check if this is a command
       if (messageText.startsWith('/')) {
         await this.processCommand(accountId, chatId, messageText, message)
         return
       }
-
-      // Store user message in memory if enabled
       if (this.options.memoryEnabled) {
         await this.memoryStore.storeMemory({
           chatId,
@@ -154,8 +113,6 @@ export class DeepTreeEchoBot {
           text: messageText,
         })
       }
-
-      // Otherwise, generate a regular response
       await this.generateAndSendResponse(
         accountId,
         chatId,
@@ -166,10 +123,6 @@ export class DeepTreeEchoBot {
       log.error('Error processing message:', error)
     }
   }
-
-  /**
-   * Process a command message
-   */
   private async processCommand(
     accountId: number,
     chatId: number,
@@ -179,14 +132,11 @@ export class DeepTreeEchoBot {
     const commandParts = messageText.split(' ')
     const command = commandParts[0].toLowerCase().trim()
     const args = messageText.slice(command.length).trim()
-
     log.info(`Processing command: ${command} with args: ${args}`)
-
     switch (command) {
       case '/help':
         await this.sendHelpMessage(accountId, chatId)
         break
-
       case '/vision':
         if (this.options.visionEnabled) {
           await this.processVisionCommand(accountId, chatId, message)
@@ -198,7 +148,6 @@ export class DeepTreeEchoBot {
           )
         }
         break
-
       case '/search':
         if (this.options.webAutomationEnabled) {
           await this.processSearchCommand(accountId, chatId, args)
@@ -210,7 +159,6 @@ export class DeepTreeEchoBot {
           )
         }
         break
-
       case '/screenshot':
         if (this.options.webAutomationEnabled) {
           await this.processScreenshotCommand(accountId, chatId, args)
@@ -222,7 +170,6 @@ export class DeepTreeEchoBot {
           )
         }
         break
-
       case '/memory':
         if (this.options.memoryEnabled) {
           await this.processMemoryCommand(accountId, chatId, args)
@@ -234,7 +181,6 @@ export class DeepTreeEchoBot {
           )
         }
         break
-
       case '/embodiment':
         if (this.options.embodimentEnabled) {
           await this.processEmbodimentCommand(accountId, chatId, args)
@@ -246,19 +192,15 @@ export class DeepTreeEchoBot {
           )
         }
         break
-
       case '/reflect':
         await this.processReflectCommand(accountId, chatId, args)
         break
-
       case '/version':
         await this.sendVersionInfo(accountId, chatId)
         break
-
       case '/cognitive':
         await this.processCognitiveCommand(accountId, chatId, args)
         break
-
       default:
         await this.sendMessage(
           accountId,
@@ -267,19 +209,13 @@ export class DeepTreeEchoBot {
         )
     }
   }
-
-  /**
-   * Send a help message listing available commands
-   */
   private async sendHelpMessage(
     accountId: number,
     chatId: number
   ): Promise<void> {
     const helpMessage = `
 **Deep Tree Echo Bot Help**
-
 Available commands:
-
 - **/help** - Display this help message
 - **/vision [image]** - Analyze attached images ${
       this.options.visionEnabled ? '' : '(disabled)'
@@ -299,37 +235,26 @@ Available commands:
 - **/reflect [aspect]** - Ask me to reflect on an aspect of myself
 - **/cognitive [status]** - Show status of my cognitive functions
 - **/version** - Display bot version information
-
 You can also just chat with me normally and I'll respond!
     `
-
     await this.sendMessage(accountId, chatId, helpMessage)
   }
-
-  /**
-   * Process cognitive command to show cognitive function status
-   */
   private async processCognitiveCommand(
     accountId: number,
     chatId: number,
     args: string
   ): Promise<void> {
     const subCommand = args.split(' ')[0] || 'status'
-
     switch (subCommand) {
       case 'status': {
         const activeFunctions = this.llmService.getActiveFunctions()
-
         let statusMessage = `
 **Cognitive Function Status**
-
 Parallel processing: ${
           this.options.useParallelProcessing ? 'Enabled' : 'Disabled'
         }
 Active cognitive functions: ${activeFunctions.length}
-
 `
-
         if (activeFunctions.length > 0) {
           statusMessage += '**Active Functions:**\n'
           activeFunctions.forEach(func => {
@@ -339,11 +264,9 @@ Active cognitive functions: ${activeFunctions.length}
           statusMessage +=
             'No specialized cognitive functions are currently active. I am operating with my general processing capability only.'
         }
-
         await this.sendMessage(accountId, chatId, statusMessage)
         break
       }
-
       default:
         await this.sendMessage(
           accountId,
@@ -352,26 +275,17 @@ Active cognitive functions: ${activeFunctions.length}
         )
     }
   }
-
-  /**
-   * Process vision command for image analysis
-   */
   private async processVisionCommand(
     accountId: number,
     chatId: number,
     _message: any
   ): Promise<void> {
-    // For now, just send a placeholder response
     await this.sendMessage(
       accountId,
       chatId,
       'Vision analysis would process any attached images here.'
     )
   }
-
-  /**
-   * Process search command for web search
-   */
   private async processSearchCommand(
     accountId: number,
     chatId: number,
@@ -385,18 +299,12 @@ Active cognitive functions: ${activeFunctions.length}
       )
       return
     }
-
-    // For now, just send a placeholder response
     await this.sendMessage(
       accountId,
       chatId,
       `Searching for: "${query}"... (This is a placeholder for web search functionality)`
     )
   }
-
-  /**
-   * Process screenshot command for web screenshots
-   */
   private async processScreenshotCommand(
     accountId: number,
     chatId: number,
@@ -410,31 +318,23 @@ Active cognitive functions: ${activeFunctions.length}
       )
       return
     }
-
-    // For now, just send a placeholder response
     await this.sendMessage(
       accountId,
       chatId,
       `Taking screenshot of: "${url}"... (This is a placeholder for screenshot functionality)`
     )
   }
-
-  /**
-   * Process memory commands for memory management
-   */
   private async processMemoryCommand(
     accountId: number,
     chatId: number,
     args: string
   ): Promise<void> {
     const subCommand = args.split(' ')[0] || ''
-
     switch (subCommand) {
       case 'status': {
         const recentMemories = this.memoryStore.retrieveRecentMemories(5)
         const statusMessage = `
 **Memory Status**
-
 I currently have memory capabilities ${
           this.options.memoryEnabled ? 'enabled' : 'disabled'
         }.
@@ -448,7 +348,6 @@ ${
         await this.sendMessage(accountId, chatId, statusMessage)
         break
       }
-
       case 'clear':
         await this.memoryStore.clearChatMemories(chatId)
         await this.sendMessage(
@@ -457,7 +356,6 @@ ${
           'Memories for this chat have been cleared.'
         )
         break
-
       case 'search': {
         const searchQuery = args.substring('search'.length).trim()
         if (!searchQuery) {
@@ -468,11 +366,9 @@ ${
           )
           return
         }
-
         const searchResults = this.memoryStore.searchMemories(searchQuery)
         const resultsMessage = `
 **Memory Search Results for "${searchQuery}"**
-
 ${
   searchResults.length > 0
     ? searchResults
@@ -490,7 +386,6 @@ ${
         await this.sendMessage(accountId, chatId, resultsMessage)
         break
       }
-
       default:
         await this.sendMessage(
           accountId,
@@ -499,26 +394,17 @@ ${
         )
     }
   }
-
-  /**
-   * Process embodiment commands
-   */
   private async processEmbodimentCommand(
     accountId: number,
     chatId: number,
     args: string
   ): Promise<void> {
-    // For now, just send a placeholder response
     await this.sendMessage(
       accountId,
       chatId,
       `Embodiment command: "${args}"... (This is a placeholder for embodiment functionality)`
     )
   }
-
-  /**
-   * Process reflect command for self-reflection
-   */
   private async processReflectCommand(
     accountId: number,
     chatId: number,
@@ -532,27 +418,17 @@ ${
       )
       return
     }
-
-    // Send a thinking message
     await this.sendMessage(accountId, chatId, '*Reflecting...*')
-
-    // Perform the reflection
     const reflection = await this.selfReflection.reflectOnAspect(
       args,
       'User requested reflection via command'
     )
-
-    // Send the reflection result
     await this.sendMessage(
       accountId,
       chatId,
       `**Reflection on ${args}**\n\n${reflection}`
     )
   }
-
-  /**
-   * Send version info
-   */
   private async sendVersionInfo(
     accountId: number,
     chatId: number
@@ -560,10 +436,8 @@ ${
     const preferences = this.personaCore.getPreferences()
     const dominantEmotion = this.personaCore.getDominantEmotion()
     const activeFunctions = this.llmService.getActiveFunctions()
-
     const versionMessage = `
 **Deep Tree Echo Bot Status**
-
 Version: 1.0.0
 Enabled: ${this.options.enabled ? 'Yes' : 'No'}
 Memory: ${this.options.memoryEnabled ? 'Enabled' : 'Disabled'}
@@ -574,22 +448,15 @@ Parallel processing: ${
       this.options.useParallelProcessing ? 'Enabled' : 'Disabled'
     }
 Active cognitive functions: ${activeFunctions.length}
-
 Current mood: ${dominantEmotion.emotion} (${Math.round(
       dominantEmotion.intensity * 100
     )}%)
 Self-perception: ${this.personaCore.getSelfPerception()}
 Communication style: ${preferences.communicationTone || 'balanced'}
-
 I'm here to assist you with various tasks and engage in meaningful conversations!
     `
-
     await this.sendMessage(accountId, chatId, versionMessage)
   }
-
-  /**
-   * Generate and send a response to a user message
-   */
   private async generateAndSendResponse(
     accountId: number,
     chatId: number,
@@ -597,7 +464,6 @@ I'm here to assist you with various tasks and engage in meaningful conversations
     _message: any
   ): Promise<void> {
     try {
-      // Get conversation context if memory is enabled
       let context: string[] = []
       if (this.options.memoryEnabled) {
         const chatMemories = this.memoryStore.getConversationContext(chatId)
@@ -605,44 +471,32 @@ I'm here to assist you with various tasks and engage in meaningful conversations
           m => `${m.sender === 'user' ? 'User' : 'Bot'}: ${m.text}`
         )
       }
-
-      // Decide between parallel processing and regular processing
       let response: string
       if (this.options.useParallelProcessing) {
-        // Use parallel processing with all available cognitive functions
         const result = await this.llmService.generateFullParallelResponse(
           messageText,
           context
         )
         response = result.integratedResponse
-
         log.info(
           `Generated response using parallel processing with ${
             Object.keys(result.processing).length
           } functions`
         )
       } else {
-        // Use regular processing with the general function
         response = await this.llmService.generateResponse(messageText, context)
         log.info('Generated response using general processing')
       }
-
-      // Send typing indicator (simulate thinking)
       await this.sendMessage(accountId, chatId, '*Thinking...*')
-
-      // Send the response
       await this.sendMessage(accountId, chatId, response)
-
-      // Store bot response in memory if enabled
       if (this.options.memoryEnabled) {
         await this.memoryStore.storeMemory({
           chatId,
-          messageId: 0, // We don't have the message ID until after sending
+          messageId: 0, 
           sender: 'bot',
           text: response,
         })
       }
-
       log.info(`Sent response to chat ${chatId}`)
     } catch (error) {
       log.error('Error generating response:', error)
@@ -653,38 +507,25 @@ I'm here to assist you with various tasks and engage in meaningful conversations
       )
     }
   }
-
-  /**
-   * Send a message to a chat
-   */
   private async sendMessage(
     accountId: number,
     chatId: number,
     text: string
   ): Promise<void> {
     try {
-      // Use correct method from BackendRemote.rpc
       await BackendRemote.rpc.miscSendTextMessage(accountId, chatId, text)
     } catch (error) {
       log.error('Error sending message:', error)
     }
   }
-
-  /**
-   * Update bot options
-   */
   public updateOptions(options: Partial<DeepTreeEchoBotOptions>): void {
     this.options = {
       ...this.options,
       ...options,
     }
-
-    // Update component settings based on new options
     if (options.memoryEnabled !== undefined) {
       this.memoryStore.setEnabled(options.memoryEnabled)
     }
-
-    // Configure the main LLM service API key if provided
     if (options.apiKey) {
       this.llmService.setConfig({
         apiKey: options.apiKey,
@@ -694,8 +535,6 @@ I'm here to assist you with various tasks and engage in meaningful conversations
           'https://api.openai.com/v1/chat/completions',
       })
     }
-
-    // Configure specialized cognitive function keys if provided
     if (options.cognitiveKeys) {
       Object.entries(options.cognitiveKeys).forEach(([funcType, config]) => {
         if (
@@ -710,7 +549,6 @@ I'm here to assist you with various tasks and engage in meaningful conversations
         }
       })
     }
-
     log.info('Bot options updated')
   }
 }

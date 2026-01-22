@@ -4,15 +4,12 @@
 #include <mach.h>
 #define Extern extern
 #include "power.h"
-
 void
 icacheinit(void)
 {
 }
-
 void
 updateicache(ulong addr)
 {
-	USED(addr);
+USED(addr);
 }
-

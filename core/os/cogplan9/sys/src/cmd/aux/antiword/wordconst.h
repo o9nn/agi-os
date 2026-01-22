@@ -1,42 +1,22 @@
-/*
- * wordconst.h
- * Copyright (C) 1998-2004 A.J. van Os; Released under GNU GPL
- *
- * Description:
- * Constants and macros for the interpretation of MS Word files
- */
-
 #if !defined(__wordconst_h)
 #define __wordconst_h 1
-
-/*
- * A bit odd definition of the type Boolean, but RISC OS insists
- * on this and Linux/Unix doesn't mind.
- */
 #if !defined(BOOL)
 #define BOOL int
 #define TRUE 1
 #define FALSE 0
-#endif /* !BOOL */
-
-/* Block sizes */
+#endif
 #define HEADER_SIZE			768
 #define BIG_BLOCK_SIZE			512
 #define PROPERTY_SET_STORAGE_SIZE	128
 #define SMALL_BLOCK_SIZE		 64
-/* Switch size of Depot use */
 #define MIN_SIZE_FOR_BBD_USE		0x1000
-/* Table sizes */
 #define TABLE_COLUMN_MAX		 31
-/* Maximum number of tabs positions in a paragraph */
 #define NUMBER_OF_TABS_MAX		 64
-/* Font sizes (in half-points) */
 #define MIN_FONT_SIZE			  8
 #define DEFAULT_FONT_SIZE		 20
 #define MAX_FONT_SIZE			240
 #define MIN_TABLEFONT_SIZE		 16
 #define MAX_TABLEFONT_SIZE		 20
-/* Font styles */
 #define FONT_REGULAR			0x0000
 #define FONT_BOLD			0x0001
 #define FONT_ITALIC			0x0002
@@ -48,7 +28,6 @@
 #define FONT_MARKDEL			0x0080
 #define FONT_SUPERSCRIPT		0x0100
 #define FONT_SUBSCRIPT			0x0200
-/* Font colors */
 #define FONT_COLOR_DEFAULT		 0
 #define FONT_COLOR_BLACK		 1
 #define FONT_COLOR_BLUE			 2
@@ -58,21 +37,14 @@
 #define FONT_COLOR_RED			 6
 #define FONT_COLOR_YELLOW		 7
 #define FONT_COLOR_WHITE		 8
-/* Special block numbers */
 #define END_OF_CHAIN			0xfffffffeUL
 #define UNUSED_BLOCK			0xffffffffUL
-/* Blocksize (512 bytes) and maximum filesize (4 GB) gives 0..7fffff */
 #define MAX_BLOCKNUMBER			0x007fffffUL
-/* Invalid character position */
 #define CP_INVALID			0xffffffffUL
-/* Invalid file offset */
 #define FC_INVALID			0xffffffffUL
-/* Special istd values */
 #define ISTD_INVALID			USHRT_MAX
 #define ISTD_NORMAL			0
-/* Properties modifier without value */
 #define IGNORE_PROPMOD			0
-/* Types of lists */
 #define LIST_ARABIC_NUM			0x00
 #define LIST_UPPER_ROMAN		0x01
 #define LIST_LOWER_ROMAN		0x02
@@ -85,40 +57,32 @@
 #define LIST_SPECIAL			0x17
 #define LIST_SPECIAL2			0x19
 #define LIST_BULLETS			0xff
-/* Types of paragraph alignment */
 #define ALIGNMENT_LEFT			0x00
 #define ALIGNMENT_CENTER		0x01
 #define ALIGNMENT_RIGHT			0x02
 #define ALIGNMENT_JUSTIFY		0x03
-/* Minimum vertical space before and after a heading line */
-#define HEADING_GAP			120	/* twips */
-/* Style identifier */
+#define HEADING_GAP			120
 #define STI_USER			0xffe
 #define STI_NIL				0xfff
-/* Table border style codes */
 #define TABLE_BORDER_TOP		0x01
 #define TABLE_BORDER_LEFT		0x02
 #define TABLE_BORDER_BOTTOM		0x04
 #define TABLE_BORDER_RIGHT		0x08
-
-/* Macros */
-	/* Get macros */
 #define ucGetByte(i,a)		((unsigned char)(a[i]))
 #define usGetWord(i,a)		((unsigned short)\
-					((unsigned int)(a[(i)+1])<<8|\
-					 (unsigned int)(a[i])))
+((unsigned int)(a[(i)+1])<<8|\
+(unsigned int)(a[i])))
 #define ulGetLong(i,a)		((unsigned long)(a[i])|\
-					(unsigned long)(a[(i)+1])<<8|\
-					(unsigned long)(a[(i)+2])<<16|\
-					(unsigned long)(a[(i)+3])<<24)
+(unsigned long)(a[(i)+1])<<8|\
+(unsigned long)(a[(i)+2])<<16|\
+(unsigned long)(a[(i)+3])<<24)
 #define usGetWordBE(i,a)	((unsigned short)\
-					((unsigned int)(a[i])<<8|\
-					 (unsigned int)(a[(i)+1])))
+((unsigned int)(a[i])<<8|\
+(unsigned int)(a[(i)+1])))
 #define ulGetLongBE(i,a)	((unsigned long)(a[(i)+3])|\
-					(unsigned long)(a[(i)+2])<<8|\
-					(unsigned long)(a[(i)+1])<<16|\
-					(unsigned long)(a[i])<<24)
-	/* Font style macros */
+(unsigned long)(a[(i)+2])<<8|\
+(unsigned long)(a[(i)+1])<<16|\
+(unsigned long)(a[i])<<24)
 #define bIsBold(x)		(((x) & FONT_BOLD) == FONT_BOLD)
 #define bIsItalic(x)		(((x) & FONT_ITALIC) == FONT_ITALIC)
 #define bIsUnderline(x)		(((x) & FONT_UNDERLINE) == FONT_UNDERLINE)
@@ -129,69 +93,52 @@
 #define bIsMarkDel(x)		(((x) & FONT_MARKDEL) == FONT_MARKDEL)
 #define bIsSuperscript(x)	(((x) & FONT_SUPERSCRIPT) == FONT_SUPERSCRIPT)
 #define bIsSubscript(x)		(((x) & FONT_SUBSCRIPT) == FONT_SUBSCRIPT)
-	/* Table border style code macros */
 #define bIsTableBorderTop(x)	(((x) & TABLE_BORDER_TOP) == TABLE_BORDER_TOP)
 #define bIsTableBorderLeft(x)	(((x) & TABLE_BORDER_LEFT) == TABLE_BORDER_LEFT)
 #define bIsTableBorderBottom(x)	(((x) & TABLE_BORDER_BOTTOM) == TABLE_BORDER_BOTTOM)
 #define bIsTableBorderRight(x)	(((x) & TABLE_BORDER_RIGHT) == TABLE_BORDER_RIGHT)
-	/* Computation macros */
 #if defined(__riscos)
-/* From Words half-points to draw units (plus a percentage) */
 #define lWord2DrawUnits00(x)	((long)(x) * 320)
 #define lWord2DrawUnits20(x)	((long)(x) * 384)
 #define lToBaseLine(x)		((long)(x) *  45)
-#endif /* __riscos */
-/* From twips (1/20 of a point) to millipoints */
+#endif
 #define lTwips2MilliPoints(x)	((long)(x) * 50)
-/* From twips (1/20 of a point) to points */
 #define dTwips2Points(x)	((double)(x) / 20.0)
-/* From default characters (16 OS units wide) to millipoints */
 #define lChar2MilliPoints(x)	((long)(x) * 6400)
 #define iMilliPoints2Char(x)	(int)(((long)(x) + 3200) / 6400)
 #define iDrawUnits2Char(x)	(int)(((long)(x) + 2048) / 4096)
-/* From draw units (1/180*256 inch) to millipoints (1/72*1000 inch) */
 #define lDrawUnits2MilliPoints(x)	(((long)(x) * 25 +  8) / 16)
 #define lMilliPoints2DrawUnits(x)	(((long)(x) * 16 + 12) / 25)
 #define lPoints2DrawUnits(x)		((long)(x) * 640)
 #define dDrawUnits2Points(x)		((double)(x) / 640.0)
-
-/* Special characters */
-#define IGNORE_CHARACTER	0x00	/* ^@ */
-#define PICTURE			0x01	/* ^A */
-#define FOOTNOTE_OR_ENDNOTE	0x02	/* ^B */
-#define FOOTNOTE_SEPARATOR	0x03	/* ^C */
-#define FOOTNOTE_CONTINUATION	0x04	/* ^D */
-#define ANNOTATION		0x05	/* ^E */
-#define TABLE_SEPARATOR		0x07	/* ^G */
-#define FRAME			0x08	/* ^H */
-#define TAB			0x09	/* ^I */
-/* End of line characters */
-#define LINE_FEED		0x0a	/* ^J */
-#define HARD_RETURN		0x0b	/* ^K */
-#define PAGE_BREAK		0x0c	/* ^L */
-#define PAR_END			0x0d	/* ^M */
-#define COLUMN_FEED		0x0e	/* ^N */
-/* Embedded stuff */
-#define START_EMBEDDED		0x13	/* ^S */
-#define END_IGNORE		0x14	/* ^T */
-#define END_EMBEDDED		0x15	/* ^U */
-/* Special characters */
+#define IGNORE_CHARACTER	0x00
+#define PICTURE			0x01
+#define FOOTNOTE_OR_ENDNOTE	0x02
+#define FOOTNOTE_SEPARATOR	0x03
+#define FOOTNOTE_CONTINUATION	0x04
+#define ANNOTATION		0x05
+#define TABLE_SEPARATOR		0x07
+#define FRAME			0x08
+#define TAB			0x09
+#define LINE_FEED		0x0a
+#define HARD_RETURN		0x0b
+#define PAGE_BREAK		0x0c
+#define PAR_END			0x0d
+#define COLUMN_FEED		0x0e
+#define START_EMBEDDED		0x13
+#define END_IGNORE		0x14
+#define END_EMBEDDED		0x15
 #if defined(DEBUG)
 #define FILLER_CHAR		'~'
 #else
 #define FILLER_CHAR		' '
-#endif /* DEBUG */
+#endif
 #define TABLE_SEPARATOR_CHAR	'|'
-/* Pseudo characters. These must be outside the Unicode range */
 #define FOOTNOTE_CHAR		((unsigned long)0xffff + 1)
 #define ENDNOTE_CHAR		((unsigned long)0xffff + 2)
 #define UNKNOWN_NOTE_CHAR	((unsigned long)0xffff + 3)
-
-/* Charactercodes as used by Word */
 #define WORD_UNBREAKABLE_JOIN		0x1e
 #define WORD_SOFT_HYPHEN		0x1f
-
-/* Unicode characters */
 #define UNICODE_DOUBLE_LEFT_ANGLE_QMARK	0x00ab
 #define UNICODE_MIDDLE_DOT		0x00b7
 #define UNICODE_DOUBLE_RIGHT_ANGLE_QMARK	0x00bb
@@ -306,7 +253,6 @@
 #define UNICODE_SMALL_LIGATURE_FI	0xfb01
 #define UNICODE_SMALL_LIGATURE_FL	0xfb02
 #define UNICODE_ZERO_WIDTH_NO_BREAK_SPACE	0xfeff
-
 #if defined(__riscos)
 #define OUR_ELLIPSIS			0x8c
 #define OUR_EM_DASH			0x98
@@ -315,7 +261,6 @@
 #define OUR_ELLIPSIS			'.'
 #define OUR_EM_DASH			'-'
 #define OUR_UNBREAKABLE_JOIN		'-'
-#endif /* __riscos */
+#endif
 #define OUR_DIAMOND			'-'
-
-#endif /* __wordconst_h */
+#endif

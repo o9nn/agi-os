@@ -1,99 +1,92 @@
-/* Runes for special purposes (0xe800-0xfdff is Private Use Area) */
-enum {	NONE=0xe800,	/* Emit nothing */
-	TAGS,		/* Start of tag */
-	TAGE,		/* End of tag */
-	SPCS,		/* Start of special character name */
-	PAR,		/* Newline, indent */
-	LIGS,		/* Start of ligature codes */
-	LACU=LIGS,	/* Acute (´) ligatures */
-	LGRV,		/* Grave (ˋ) ligatures */
-	LUML,		/* Umlaut (¨) ligatures */
-	LCED,		/* Cedilla (¸) ligatures */
-	LTIL,		/* Tilde (˜) ligatures */
-	LBRV,		/* Breve (˘) ligatures */
-	LRNG,		/* Ring (˚) ligatures */
-	LDOT,		/* Dot (˙) ligatures */
-	LDTB,		/* Dot below (.) ligatures */
-	LFRN,		/* Frown (⌢) ligatures */
-	LFRB,		/* Frown below (̯) ligatures */
-	LOGO,		/* Ogonek (˛) ligatures */
-	LMAC,		/* Macron (¯) ligatures */
-	LHCK,		/* Hacek (ˇ) ligatures */
-	LASP,		/* Asper (ʽ) ligatures */
-	LLEN,		/* Lenis (ʼ) ligatures */
-	LBRB,		/* Breve below (̮) ligatures */
-	LIGE,		/* End of ligature codes */
-	MULTI,		/* Start of multi-rune codes */
-	MAAS=MULTI,	/* ʽα */
-	MALN,		/* ʼα */
-	MAND,		/* and */
-	MAOQ,		/* a/q */
-	MBRA,		/* <| */
-	MDD,		/* .. */
-	MDDD,		/* ... */
-	MEAS,		/* ʽε */
-	MELN,		/* ʼε */
-	MEMM,		/* —— */
-	MHAS,		/* ʽη */
-	MHLN,		/* ʼη */
-	MIAS,		/* ʽι */
-	MILN,		/* ʼι */
-	MLCT,		/* ct */
-	MLFF,		/* ff */
-	MLFFI,		/* ffi */
-	MLFFL,		/* ffl */
-	MLFL,		/* fl */
-	MLFI,		/* fi */
-	MLLS,		/* ll with swing */
-	MLST,		/* st */
-	MOAS,		/* ʽο */
-	MOLN,		/* ʼο */
-	MOR,		/* or */
-	MRAS,		/* ʽρ */
-	MRLN,		/* ʼρ */
-	MTT,		/* ~~ */
-	MUAS,		/* ʽυ */
-	MULN,		/* ʼυ */
-	MWAS,		/* ʽω */
-	MWLN,		/* ʼω */
-	MOE,		/* oe */
-	MES,		/* em space */
-	MULTIE,		/* End of multi-rune codes */
+enum {	NONE=0xe800,
+TAGS,
+TAGE,
+SPCS,
+PAR,
+LIGS,
+LACU=LIGS,
+LGRV,
+LUML,
+LCED,
+LTIL,
+LBRV,
+LRNG,
+LDOT,
+LDTB,
+LFRN,
+LFRB,
+LOGO,
+LMAC,
+LHCK,
+LASP,
+LLEN,
+LBRB,
+LIGE,
+MULTI,
+MAAS=MULTI,
+MALN,
+MAND,
+MAOQ,
+MBRA,
+MDD,
+MDDD,
+MEAS,
+MELN,
+MEMM,
+MHAS,
+MHLN,
+MIAS,
+MILN,
+MLCT,
+MLFF,
+MLFFI,
+MLFFL,
+MLFL,
+MLFI,
+MLLS,
+MLST,
+MOAS,
+MOLN,
+MOR,
+MRAS,
+MRLN,
+MTT,
+MUAS,
+MULN,
+MWAS,
+MWLN,
+MOE,
+MES,
+MULTIE,
 };
 #define Nligs (LIGE-LIGS)
 #define Nmulti (MULTIE-MULTI)
-
 typedef struct Entry Entry;
 typedef struct Assoc Assoc;
 typedef struct Nassoc Nassoc;
 typedef struct Dict Dict;
-
 struct Entry {
-	char	*start;		/* entry starts at start */
-	char	*end;		/* and finishes just before end */
-	long	doff;		/* dictionary offset (for debugging) */
+char	*start;
+char	*end;
+long	doff;
 };
-
 struct Assoc {
-	char	*key;
-	long	val;
+char	*key;
+long	val;
 };
-
 struct Nassoc {
-	long	key;
-	long	val;
+long	key;
+long	val;
 };
-
 struct Dict {
-	char	*name;			/* dictionary name */
-	char	*desc;			/* description */
-	char	*path;			/* path to dictionary data */
-	char	*indexpath;		/* path to index data */
-	long	(*nextoff)(long);	/* function to find next entry offset from arg */
-	void	(*printentry)(Entry, int); /* function to print entry */
-	void	(*printkey)(void);	/* function to print pronunciation key */
+char	*name;
+char	*desc;
+char	*path;
+char	*indexpath;
+long	(*nextoff)(long);
+void	(*printentry)(Entry, int);
+void	(*printkey)(void);
 };
-
 int	acomp(Rune*, Rune*);
 Rune	*changett(Rune *, Rune *, int);
 void	err(char*, ...);
@@ -111,7 +104,6 @@ void	outnl(int);
 void	outpiece(char *, char *);
 void	runescpy(Rune*, Rune*);
 long	runetol(Rune*);
-
 long	oednextoff(long);
 void	oedprintentry(Entry, int);
 void	oedprintkey(void);
@@ -150,7 +142,6 @@ void	thesprintkey(void);
 long	worldnextoff(long);
 void	worldprintentry(Entry, int);
 void	worldprintkey(void);
-
 extern Biobuf	*bdict;
 extern Biobuf	*bout;
 extern int	linelen;
@@ -159,5 +150,4 @@ extern int	outinhibit;
 extern int	debug;
 extern Rune	*multitab[];
 extern Dict	dicts[];
-
 #define asize(a) (sizeof (a)/sizeof(a[0]))

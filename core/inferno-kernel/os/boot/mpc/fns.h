@@ -96,21 +96,15 @@ void	uartsetboot(void (*f)(uchar*, int));
 void	uartspecial(int, int, Queue**, Queue**, void(*)(Queue*,int));
 void	uartwait(void);
 long	unsqueezef(Block*, ulong*);
-
 #define	GSHORT(p)	(((p)[1]<<8)|(p)[0])
 #define	GLONG(p)	((GSHORT(p+2)<<16)|GSHORT(p))
 #define	GLSHORT(p)	(((p)[0]<<8)|(p)[1])
 #define	GLLONG(p)	((GLSHORT(p)<<16)|GLSHORT(p+2))
-
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	((ulong)(a)&~KSEGM)
-
-/* IBM bit field order */
 #define	IBIT(b)	((ulong)1<<(31-(b)))
 #define	SIBIT(n)	((ushort)1<<(15-(n)))
-
 #define IOREGS(x, T)	((T*)((char*)m->iomem+(x)))
-
 int	uartinit(void);
 Partition*	setuartpart(int, char*);
 long	uartread(int, void*, long);

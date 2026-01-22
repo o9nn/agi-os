@@ -1,5 +1,4 @@
 export type Assets = Asset[]
-
 export interface Asset {
   ext: string
   name: string

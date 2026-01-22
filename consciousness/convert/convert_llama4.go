@@ -1,15 +1,11 @@
 package convert
-
 import (
 	"slices"
 	"strings"
-
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type llama4Model struct {
 	ModelParameters
 	TextModel struct {
@@ -33,27 +29,21 @@ type llama4Model struct {
 		PixelShuffleRatio float32 `json:"pixel_shuffle_ratio"`
 	} `json:"vision_config"`
 }
-
-// KV implements ModelConverter.
 func (p *llama4Model) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "llama4"
-
 	for k, v := range p.TextModel.KV(t) {
 		if strings.HasPrefix(k, "llama.") {
 			kv[strings.ReplaceAll(k, "llama.", "llama4.")] = v
 		}
 	}
-
 	kv["llama4.feed_forward_length"] = p.TextModel.IntermediateSizeMLP
 	kv["llama4.expert_feed_forward_length"] = p.TextModel.IntermediateSize
-
 	kv["llama4.expert_count"] = p.TextModel.NumLocalExperts
 	kv["llama4.expert_used_count"] = p.TextModel.NumExpertsPerToken
 	kv["llama4.interleave_moe_layer_step"] = p.TextModel.InterleaveMOELayerStep
 	kv["llama4.use_qk_norm"] = p.TextModel.UseQKNorm
 	kv["llama4.attention.chunk_size"] = p.TextModel.AttentionChunkSize
-
 	kv["llama4.vision.block_count"] = p.VisionModel.NumHiddenLayers
 	kv["llama4.vision.embedding_length"] = p.VisionModel.HiddenSize
 	kv["llama4.vision.feed_forward_length"] = p.VisionModel.IntermediateSize
@@ -65,8 +55,6 @@ func (p *llama4Model) KV(t *Tokenizer) ggml.KV {
 	kv["llama4.vision.pixel_shuffle_ratio"] = p.VisionModel.PixelShuffleRatio
 	return kv
 }
-
-// Replacements implements ModelConverter.
 func (p *llama4Model) Replacements() []string {
 	return append(
 		p.TextModel.Replacements(),
@@ -86,11 +74,8 @@ func (p *llama4Model) Replacements() []string {
 		"patch_embedding.linear", "patch_embedding",
 	)
 }
-
-// Tensors implements ModelConverter.
 func (p *llama4Model) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
-
 	var textTensors []Tensor
 	for _, t := range ts {
 		if strings.HasPrefix(t.Name(), "v.") || strings.HasPrefix(t.Name(), "mm.") {
@@ -101,15 +86,10 @@ func (p *llama4Model) Tensors(ts []Tensor) []*ggml.Tensor {
 				WriterTo: t,
 			})
 		} else if strings.Contains(t.Name(), "ffn_gate_up_exps") {
-			// gate and up projectors are fused
-			// dims[1], dims[2] must be swapped
-			// [experts, hidden_size, intermediate_size * 2] --> [experts, intermediate_size, hidden_size]
 			halfDim := int(t.Shape()[2]) / 2
-
 			newShape := slices.Clone(t.Shape())
 			newShape[1], newShape[2] = newShape[2]/2, newShape[1]
 			for i, name := range []string{"ffn_gate_exps", "ffn_up_exps"} {
-				// clone tensor since we need separate repackers
 				tt := t.Clone()
 				tt.SetRepacker(p.repack(nil, nil, tensor.S(i*halfDim, (i+1)*halfDim)))
 				out = append(out, &ggml.Tensor{
@@ -120,8 +100,6 @@ func (p *llama4Model) Tensors(ts []Tensor) []*ggml.Tensor {
 				})
 			}
 		} else if strings.Contains(t.Name(), "ffn_down_exps") {
-			// dims[1], dims[2] must be swapped
-			// [experts, intermediate_size, hidden_size] --> [experts, hidden_size, intermediate_size]
 			t.SetRepacker(p.repack())
 			newShape := slices.Clone(t.Shape())
 			newShape[1], newShape[2] = newShape[2], newShape[1]
@@ -135,35 +113,28 @@ func (p *llama4Model) Tensors(ts []Tensor) []*ggml.Tensor {
 			textTensors = append(textTensors, t)
 		}
 	}
-
 	p.TextModel.skipRepack = true
 	out = append(out, p.TextModel.Tensors(textTensors)...)
 	return out
 }
-
 func (p *llama4Model) repack(slice ...tensor.Slice) Repacker {
 	return func(name string, data []float32, shape []uint64) ([]float32, error) {
 		dims := make([]int, len(shape))
 		for i, dim := range shape {
 			dims[i] = int(dim)
 		}
-
 		var t tensor.Tensor = tensor.New(tensor.WithShape(dims...), tensor.WithBacking(data))
 		t, err := t.Slice(slice...)
 		if err != nil {
 			return nil, err
 		}
-
 		if err := t.T(0, 2, 1); err != nil {
 			return nil, err
 		}
-
 		t = tensor.Materialize(t)
-		// flatten tensor so it can be return as a vector
 		if err := t.Reshape(t.Shape().TotalSize()); err != nil {
 			return nil, err
 		}
-
 		return native.VectorF32(t.(*tensor.Dense))
 	}
 }

@@ -1,13 +1,10 @@
 package logutil
-
 import (
 	"io"
 	"log/slog"
 	"path/filepath"
 )
-
 const LevelTrace slog.Level = -8
-
 func NewLogger(w io.Writer, level slog.Level) *slog.Logger {
 	return slog.New(slog.NewTextHandler(w, &slog.HandlerOptions{
 		Level:     level,

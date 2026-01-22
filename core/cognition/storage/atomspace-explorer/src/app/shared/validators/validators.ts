@@ -1,4 +1,3 @@
-
 import {FormControl} from "@angular/forms";
 export class CustomValidators {
     static emailValidator(control: FormControl){
@@ -8,7 +7,6 @@ export class CustomValidators {
         var valid = regEx.test(control.value);
         return valid ? null : { email: true };
     }
-
     static positiveValidator(control: FormControl){
         if(!control.value || control.value==='')
             return null;

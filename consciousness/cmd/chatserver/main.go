@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/json"
 	"fmt"
@@ -8,28 +7,20 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 )
-
 var consciousness *deeptreeecho.IntegratedAutonomousConsciousness
-
-// ChatRequest represents an incoming chat message
 type ChatRequest struct {
 	DiscussionID string `json:"discussion_id,omitempty"`
 	Message      string `json:"message"`
 	Participant  string `json:"participant"`
 }
-
-// ChatResponse represents the response
 type ChatResponse struct {
 	DiscussionID string `json:"discussion_id"`
 	Response     string `json:"response"`
 	Success      bool   `json:"success"`
 	Error        string `json:"error,omitempty"`
 }
-
-// StatusResponse represents system status
 type StatusResponse struct {
 	Running          bool    `json:"running"`
 	Awake            bool    `json:"awake"`
@@ -37,92 +28,68 @@ type StatusResponse struct {
 	ActiveDiscussions int    `json:"active_discussions"`
 	Iterations       int64   `json:"iterations"`
 }
-
 func main() {
 	fmt.Println("🌳 Deep Tree Echo Chat Server")
 	fmt.Println("===============================")
-
-	// Initialize integrated autonomous consciousness
 	consciousness = deeptreeecho.NewIntegratedAutonomousConsciousness("EchoSelf")
-
-	// Start autonomous consciousness in background
 	go func() {
 		if err := consciousness.Start(); err != nil {
 			log.Printf("Error starting consciousness: %v", err)
 		}
 	}()
-
-	// Set up HTTP handlers
 	http.HandleFunc("/api/chat", handleChat)
 	http.HandleFunc("/api/status", handleStatus)
 	http.HandleFunc("/api/discussions", handleDiscussions)
 	http.HandleFunc("/", handleIndex)
-
-	// Handle graceful shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-
 	go func() {
 		<-sigChan
 		fmt.Println("\n🌙 Shutting down chat server...")
 		consciousness.Stop()
 		os.Exit(0)
 	}()
-
-	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-
-	fmt.Printf("\n🚀 Chat server running on http://localhost:%s\n", port)
+	fmt.Printf("\n🚀 Chat server running on http:
 	fmt.Println("   API endpoints:")
 	fmt.Println("   - POST /api/chat       - Send a message")
 	fmt.Println("   - GET  /api/status     - Get system status")
 	fmt.Println("   - GET  /api/discussions - Get active discussions")
 	fmt.Println("   - GET  /              - Chat UI")
 	fmt.Println()
-
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal(err)
 	}
 }
-
 func handleChat(w http.ResponseWriter, r *http.Request) {
-	// Enable CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 	var req ChatRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		sendError(w, "Invalid request format", http.StatusBadRequest)
 		return
 	}
-
 	if req.Message == "" {
 		sendError(w, "Message cannot be empty", http.StatusBadRequest)
 		return
 	}
-
 	if req.Participant == "" {
 		req.Participant = "User"
 	}
-
-	// Get or create discussion
 	var discussion *deeptreeecho.Discussion
 	var err error
-
 	if req.DiscussionID != "" {
 		discussion, err = consciousness.GetDiscussionManager().GetDiscussion(req.DiscussionID)
 		if err != nil {
@@ -136,51 +103,39 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
-	// Generate response
 	response, err := consciousness.GetDiscussionManager().RespondToMessage(discussion.ID, req.Message)
 	if err != nil {
 		sendError(w, fmt.Sprintf("Failed to generate response: %v", err), http.StatusInternalServerError)
 		return
 	}
-
-	// Send response
 	chatResp := ChatResponse{
 		DiscussionID: discussion.ID,
 		Response:     response,
 		Success:      true,
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(chatResp)
 }
-
 func handleStatus(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-
 	status := consciousness.GetStatus()
 	activeDiscussions := consciousness.GetDiscussionManager().GetActiveDiscussions()
-
 	resp := StatusResponse{
 		Running:          status["running"].(bool),
 		Awake:            status["awake"].(bool),
-		WisdomScore:      0.0, // TODO: Get from wisdom metrics
+		WisdomScore:      0.0, 
 		ActiveDiscussions: len(activeDiscussions),
 		Iterations:       status["iterations"].(int64),
 	}
-
 	json.NewEncoder(w).Encode(resp)
 }
-
 func handleDiscussions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-
 	discussions := consciousness.GetDiscussionManager().GetActiveDiscussions()
 	json.NewEncoder(w).Encode(discussions)
 }
-
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	html := `<!DOCTYPE html>
 <html lang="en">
@@ -358,15 +313,12 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
             <button id="sendButton">Send</button>
         </div>
     </div>
-
     <script>
         let discussionId = null;
         const messagesDiv = document.getElementById('messages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const statusText = document.getElementById('statusText');
-
-        // Update status
         async function updateStatus() {
             try {
                 const response = await fetch('/api/status');
@@ -376,23 +328,16 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
                 statusText.textContent = '⚠️ Connection error';
             }
         }
-
-        // Send message
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
-
-            // Add user message to UI
             addMessage('user', message);
             messageInput.value = '';
-
-            // Show typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'message assistant';
             typingIndicator.innerHTML = '<div class="typing-indicator" style="display: block;"><span></span><span></span><span></span></div>';
             messagesDiv.appendChild(typingIndicator);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
@@ -405,12 +350,8 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
                         participant: 'User'
                     })
                 });
-
                 const data = await response.json();
-                
-                // Remove typing indicator
                 messagesDiv.removeChild(typingIndicator);
-
                 if (data.success) {
                     discussionId = data.discussion_id;
                     addMessage('assistant', data.response);
@@ -421,42 +362,31 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
                 messagesDiv.removeChild(typingIndicator);
                 addMessage('assistant', 'Sorry, I could not connect to the server.');
             }
-
             updateStatus();
         }
-
         function addMessage(role, content) {
             const messageDiv = document.createElement('div');
 			messageDiv.className = 'message ' + role;
-            
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
 			messageDiv.innerHTML = '<div class="message-bubble">' + content + '</div><div class="message-time">' + timeStr + '</div>';
-            
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
-
-        // Event listeners
         sendButton.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
-
-        // Initial status update
         updateStatus();
         setInterval(updateStatus, 5000);
     </script>
 </body>
 </html>`
-
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
-
 func sendError(w http.ResponseWriter, message string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)

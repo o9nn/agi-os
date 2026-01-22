@@ -1,16 +1,13 @@
 import { RC_Config } from '@deltachat-desktop/shared/shared-types'
-
 export const RCConfig: RC_Config = {
-  'log-debug': true, // should become real
-  'log-to-console': true, // should become real
-  'machine-readable-stacktrace': false, // should become real
-  devmode: true, // should become real
-  theme: undefined, // maybe real
-  'theme-watch': false, // maybe real
-  'translation-watch': false, // maybe real
-  'allow-unsafe-core-replacement': false, //maybe real when we implement it
-
-  // those do not apply to browser
+  'log-debug': true, 
+  'log-to-console': true, 
+  'machine-readable-stacktrace': false, 
+  devmode: true, 
+  theme: undefined, 
+  'theme-watch': false, 
+  'translation-watch': false, 
+  'allow-unsafe-core-replacement': false, 
   minimized: false,
   version: false,
   v: false,

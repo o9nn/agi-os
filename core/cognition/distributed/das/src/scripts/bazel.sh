@@ -1,7 +1,5 @@
 #!/bin/bash
-
 set -exou pipefail
-
 detect_host_arch() {
   case "$(uname -m)" in
     x86_64)
@@ -15,30 +13,21 @@ detect_host_arch() {
       ;;
   esac
 }
-
 ARCH=$(detect_host_arch)
-
 IMAGE_NAME="das-builder:$ARCH"
 CONTAINER_USER=$([ "$ARCH" != "arm64" ] && echo "$USER" || echo "builder")
 CONTAINER_NAME="das-bazel-cmd-$(uuidgen | cut -d '-' -f 1)-$(date +%Y%m%d%H%M%S)"
-
 ENV_VARS=$(test -f .env && echo "--env-file=.env" || echo "")
-
-# local paths
 LOCAL_WORKDIR=$(pwd)
 LOCAL_BIN_DIR=$LOCAL_WORKDIR/bin/$ARCH
 LOCAL_LIB_DIR=$LOCAL_WORKDIR/lib/$ARCH
 LOCAL_CACHE="$HOME/.cache/das/$ARCH"
-
 mkdir -p "$LOCAL_LIB_DIR" "$LOCAL_BIN_DIR" "$LOCAL_CACHE"
-
-# container paths
 CONTAINER_WORKDIR=/opt/das
 CONTAINER_WORKSPACE_DIR=/opt/das/src
 CONTAINER_LIB_DIR=$CONTAINER_WORKDIR/lib/$ARCH
 CONTAINER_BIN_DIR=$CONTAINER_WORKDIR/bin/$ARCH
 CONTAINER_CACHE=/home/"${CONTAINER_USER}"/.cache
-
 docker run --rm \
   $([ "$ARCH" != "arm64" ] && echo "--user=$(id -u):$(id -g) --volume /etc/passwd:/etc/passwd:ro" || echo "--user=$CONTAINER_USER") \
   --privileged \
@@ -52,9 +41,7 @@ docker run --rm \
   --workdir "$CONTAINER_WORKSPACE_DIR" \
   "${IMAGE_NAME}" \
   ./scripts/bazel_exec.sh "$@"
-
 sleep 1
-
 if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
   echo "Removing existing container: ${CONTAINER_NAME}"
   _=$(docker rm -f "${CONTAINER_NAME}" 2>&1 > /dev/null || true)

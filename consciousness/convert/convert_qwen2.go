@@ -1,7 +1,5 @@
 package convert
-
 import "github.com/EchoCog/echollama/fs/ggml"
-
 type qwen2Model struct {
 	ModelParameters
 	MaxPositionEmbeddings uint32  `json:"max_position_embeddings"`
@@ -19,9 +17,7 @@ type qwen2Model struct {
 	} `json:"rope_scaling"`
 	RMSNormEPS float32 `json:"rms_norm_eps"`
 }
-
 var _ ModelConverter = (*qwen2Model)(nil)
-
 func (q *qwen2Model) KV(t *Tokenizer) ggml.KV {
 	kv := q.ModelParameters.KV(t)
 	kv["general.architecture"] = "qwen2"
@@ -33,10 +29,8 @@ func (q *qwen2Model) KV(t *Tokenizer) ggml.KV {
 	kv["qwen2.attention.head_count_kv"] = q.NumKeyValueHeads
 	kv["qwen2.rope.freq_base"] = q.RopeTheta
 	kv["qwen2.attention.layer_norm_rms_epsilon"] = q.RMSNormEPS
-
 	switch q.RopeScaling.Type {
 	case "":
-		// no scaling
 	case "yarn":
 		kv["qwen2.rope.scaling.type"] = q.RopeScaling.Type
 		kv["qwen2.rope.scaling.factor"] = q.RopeScaling.Factor
@@ -47,7 +41,6 @@ func (q *qwen2Model) KV(t *Tokenizer) ggml.KV {
 	}
 	return kv
 }
-
 func (q *qwen2Model) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
 	for _, t := range ts {
@@ -58,10 +51,8 @@ func (q *qwen2Model) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *qwen2Model) Replacements() []string {
 	return []string{
 		"lm_head", "output",

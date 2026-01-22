@@ -5,7 +5,6 @@ import {
   createSpeechProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
 export const createPlayer2 = (baseURL = 'http://localhost:4315/v1/', gameKey = 'xsai') => merge(createMetadataProvider('player2'), createChatProvider({ baseURL, headers: { 'player2-game-key': gameKey } }), createSpeechProvider({
   baseURL,
   fetch: async (input: Parameters<typeof globalThis.fetch>[0], reqInit: Parameters<typeof globalThis.fetch>[1]) => {
@@ -38,10 +37,9 @@ export const createPlayer2 = (baseURL = 'http://localhost:4315/v1/', gameKey = '
     return globalThis.fetch(newUrl, reqInit).then(async res => res.json() as Promise<{ data?: string }>).then((json: { data?: string }) => {
       const base64 = json.data ?? ''
       const bytes = decodeBase64(base64)
-
       return new Response(bytes, {
         headers: {
-          'Content-Type': 'audio/mpeg', // adjust if needed
+          'Content-Type': 'audio/mpeg', 
         },
         status: 200,
       })

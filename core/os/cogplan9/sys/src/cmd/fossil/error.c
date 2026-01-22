@@ -2,7 +2,6 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-
 char EBadAddr[] = "illegal block address";
 char EBadDir[] = "corrupted directory entry";
 char EBadEntry[] = "corrupted file entry";

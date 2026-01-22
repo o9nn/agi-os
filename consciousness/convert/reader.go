@@ -1,12 +1,10 @@
 package convert
-
 import (
 	"errors"
 	"io"
 	"io/fs"
 	"strings"
 )
-
 type Tensor interface {
 	Name() string
 	Shape() []uint64
@@ -15,28 +13,23 @@ type Tensor interface {
 	WriteTo(io.Writer) (int64, error)
 	Clone() Tensor
 }
-
 type tensorBase struct {
 	name     string
 	shape    []uint64
 	repacker Repacker
 }
-
 func (t tensorBase) Name() string {
 	return t.name
 }
-
 func (t tensorBase) Shape() []uint64 {
 	return t.shape
 }
-
 const (
 	tensorKindFP32 uint32 = iota
 	tensorKindFP16
 	tensorKindMXFP4 = 4
 	tensorKindBF16  = 30
 )
-
 func (t tensorBase) Kind() uint32 {
 	if strings.HasSuffix(t.name, ".ffn_gate_inp.weight") ||
 		t.name == "token_types.weight" ||
@@ -44,10 +37,8 @@ func (t tensorBase) Kind() uint32 {
 		t.name == "v.tile_position_embd.weight" ||
 		t.name == "v.pre_tile_position_embd.weight" ||
 		t.name == "v.post_tile_position_embd.weight" {
-		// these tensors are always F32
 		return tensorKindFP32
 	}
-
 	switch len(t.shape) {
 	case 0:
 		panic("invalid tensor shape")
@@ -57,13 +48,10 @@ func (t tensorBase) Kind() uint32 {
 		return tensorKindFP16
 	}
 }
-
 func (t *tensorBase) SetRepacker(fn Repacker) {
 	t.repacker = fn
 }
-
 type Repacker func(string, []float32, []uint64) ([]float32, error)
-
 func parseTensors(fsys fs.FS, replacer *strings.Replacer) ([]Tensor, error) {
 	patterns := []struct {
 		Pattern string
@@ -74,17 +62,14 @@ func parseTensors(fsys fs.FS, replacer *strings.Replacer) ([]Tensor, error) {
 		{"pytorch_model.bin", parseTorch},
 		{"consolidated.*.pth", parseTorch},
 	}
-
 	for _, pattern := range patterns {
 		matches, err := fs.Glob(fsys, pattern.Pattern)
 		if err != nil {
 			return nil, err
 		}
-
 		if len(matches) > 0 {
 			return pattern.Func(fsys, replacer, matches...)
 		}
 	}
-
 	return nil, errors.New("unknown tensor format")
 }

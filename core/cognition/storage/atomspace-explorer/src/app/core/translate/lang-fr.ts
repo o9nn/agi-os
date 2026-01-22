@@ -1,6 +1,4 @@
-// French
 export const LANG_FR_NAME = 'fr';
-
 export const LANG_FR_TRANS = {
     'Visualize': 'Visualiser',
     'Fetch': 'Rechercher',

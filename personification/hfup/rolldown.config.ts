@@ -1,7 +1,6 @@
 import { defineConfig, RolldownOptions } from 'rolldown'
 import builtins from 'builtin-modules'
 import UnpluginIsolatedDecl from 'unplugin-isolated-decl/rolldown'
-
 function entryFor(integration: 'esbuild' | 'rolldown' | 'rollup' | 'rspack' | 'vite' | 'webpack'): RolldownOptions[] {
   return [
     {
@@ -37,7 +36,6 @@ function entryFor(integration: 'esbuild' | 'rolldown' | 'rollup' | 'rspack' | 'v
     },
   ]
 }
-
 export default defineConfig([
   ...entryFor('esbuild'),
   ...entryFor('rolldown'),

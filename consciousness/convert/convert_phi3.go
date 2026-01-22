@@ -1,5 +1,4 @@
 package convert
-
 import (
 	"cmp"
 	"encoding/binary"
@@ -7,10 +6,8 @@ import (
 	"math"
 	"strings"
 	"sync"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type phi3Model struct {
 	ModelParameters
 	NumHiddenLayers   uint32  `json:"num_hidden_layers"`
@@ -34,9 +31,7 @@ type phi3Model struct {
 	OriginalMaxPositionEmbeddings uint32  `json:"original_max_position_embeddings"`
 	SlidingWindow                 uint32  `json:"sliding_window"`
 }
-
 var _ ModelConverter = (*phi3Model)(nil)
-
 func (p *phi3Model) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "phi3"
@@ -51,12 +46,9 @@ func (p *phi3Model) KV(t *Tokenizer) ggml.KV {
 	kv["phi3.rope.freq_base"] = p.RopeTheta
 	kv["phi3.rope.scaling.original_context_length"] = p.OriginalMaxPositionEmbeddings
 	kv["phi3.attention.sliding_window"] = p.SlidingWindow
-
 	scale := float64(p.MaxPositionEmbeddings) / float64(p.OriginalMaxPositionEmbeddings)
-
 	switch p.RopeScaling.Type {
 	case "":
-		// no scaling
 	case "su", "longrope":
 		kv["phi3.rope.scaling.attn_factor"] = float32(max(math.Sqrt(1+math.Log(scale)/math.Log(float64(p.OriginalMaxPositionEmbeddings))), 1.0))
 	case "yarn":
@@ -64,13 +56,10 @@ func (p *phi3Model) KV(t *Tokenizer) ggml.KV {
 	default:
 		panic("unknown rope scaling type")
 	}
-
 	return kv
 }
-
 func (p *phi3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 	var addRopeFactors sync.Once
-
 	out := make([]*ggml.Tensor, 0, len(ts)+2)
 	for _, t := range ts {
 		if strings.HasPrefix(t.Name(), "blk.0.") {
@@ -88,7 +77,6 @@ func (p *phi3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 				})
 			})
 		}
-
 		out = append(out, &ggml.Tensor{
 			Name:     t.Name(),
 			Kind:     t.Kind(),
@@ -96,10 +84,8 @@ func (p *phi3Model) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *phi3Model) Replacements() []string {
 	return []string{
 		"lm_head", "output",
@@ -114,9 +100,7 @@ func (p *phi3Model) Replacements() []string {
 		"post_attention_layernorm", "ffn_norm",
 	}
 }
-
 type ropeFactor []float32
-
 func (r ropeFactor) WriteTo(w io.Writer) (int64, error) {
 	return 0, binary.Write(w, binary.LittleEndian, r)
 }

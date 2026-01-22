@@ -1,20 +1,15 @@
 import type { GenerateTextOptions } from '@xsai/generate-text'
 import type { Message as LLMMessage } from '@xsai/shared-chat'
 import type { Message } from 'grammy/types'
-
 import type { Action } from '../types'
-
 import { env } from 'node:process'
-
 import { Format, useLogg } from '@guiiai/logg'
 import { trace } from '@opentelemetry/api'
 import { generateText } from '@xsai/generate-text'
 import { message } from '@xsai/utils-chat'
 import { parse } from 'best-effort-json-parser'
-
 import { personality, systemTicking } from '../prompts'
 import { div, span, vif } from '../prompts/utils'
-
 export async function imagineAnAction(
   botId: string,
   currentAbortController: AbortController | undefined,
@@ -27,12 +22,9 @@ export async function imagineAnAction(
 ): Promise<Action | undefined> {
   const logger = useLogg('imagineAnAction').useGlobalConfig()
   const tracer = trace.getTracer('airi.telegram.bot')
-
   return await tracer.startActiveSpan('telegram.module.generate_agent_action.generate', async (s) => {
     s.setAttribute('telegram.bot.id', botId)
-
     let responseText = ''
-
     const requestMessages = message.messages(
       message.system(
         div(
@@ -64,13 +56,11 @@ export async function imagineAnAction(
         ),
       ),
     )
-
     try {
       const res = await tracer.startActiveSpan('llm.chat.generate_text', async (s) => {
         s.setAttribute('llm.chat.model', env.LLM_MODEL!)
         s.setAttribute('llm.chat.messages', JSON.stringify(requestMessages))
         s.setAttribute('llm.provider.api_base_url', env.LLM_API_BASE_URL!)
-
         const req = {
           apiKey: env.LLM_API_KEY!,
           baseURL: env.LLM_API_BASE_URL!,
@@ -82,21 +72,16 @@ export async function imagineAnAction(
           (req as Record<string, unknown>).think = false
           s.setAttribute('llm.chat.ollama.think', false)
         }
-
         const res = await generateText(req)
         s.setAttribute('llm.chat.generate_text.response.full_text', res.text)
-
         res.text = res.text.replace(/<think>[\s\S]*?<\/think>/, '').trim()
         if (!res.text) {
           throw new Error('No response text')
         }
-
         s.setAttribute('llm.chat.generate_text.response.text', res.text)
-
         s.end()
         return res
       })
-
       logger.withFields({
         response: res.text,
         unreadMessages: Object.fromEntries(Object.entries(globalStates.unreadMessages).map(([key, value]) => [key, value.length])),
@@ -105,7 +90,6 @@ export async function imagineAnAction(
         promptTokens: res.usage.prompt_tokens,
         completion_tokens: res.usage.completion_tokens,
       }).log('Generated action')
-
       const action = tracer.startActiveSpan('telegram.module.generate_agent_action.parse', (s) => {
         responseText = res.text
           .replace(/^```json\s*\n/, '')
@@ -113,15 +97,12 @@ export async function imagineAnAction(
           .replace(/^```\s*\n/, '')
           .replace(/\n```$/, '')
           .trim()
-
         const action = parse(responseText) as Action
         s.setAttribute('telegram.bot.id', botId)
         s.setAttribute('telegram.module.generate_agent_action.parsed_action', JSON.stringify(action))
-
         s.end()
         return action
       })
-
       s.end()
       return action
     }

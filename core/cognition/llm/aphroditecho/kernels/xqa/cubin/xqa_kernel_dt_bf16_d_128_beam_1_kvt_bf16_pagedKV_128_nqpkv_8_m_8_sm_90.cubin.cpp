@@ -1,20 +1,3 @@
-/*
- * SPDX-FileCopyrightText: Copyright (c) 1993-2023 NVIDIA CORPORATION &
- * AFFILIATES. All rights reserved. SPDX-License-Identifier: Apache-2.0
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// clang-format off
 unsigned long long xqa_kernel_dt_bf16_d_128_beam_1_kvt_bf16_pagedKV_128_nqpkv_8_m_8_sm_90_cubin[] = {
 0x33010102464c457fULL, 0x0000000000000007ULL, 0x0000007d00be0002ULL, 0x0000000000000000ULL,
 0x0000000000012078ULL, 0x0000000000011bf8ULL, 0x00380040005a0d5aULL, 0x0001001200400006ULL,
@@ -2337,5 +2320,3 @@ unsigned long long xqa_kernel_dt_bf16_d_128_beam_1_kvt_bf16_pagedKV_128_nqpkv_8_
 0x0000000000000008ULL
 };
 unsigned int xqa_kernel_dt_bf16_d_128_beam_1_kvt_bf16_pagedKV_128_nqpkv_8_m_8_sm_90_cubin_len = 74184;
-
-// clang-format on

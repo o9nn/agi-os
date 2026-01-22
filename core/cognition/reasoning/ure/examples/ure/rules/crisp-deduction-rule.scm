@@ -1,14 +1,3 @@
-;; =============================================================================
-;; Deduction Rule.
-;;
-;; A->B
-;; B->C
-;; |-
-;; A->C
-;;
-;; See examples/ure/README.md for more details.
-;; -----------------------------------------------------------------------------
-
 (define crisp-deduction-rule
     (BindLink
         (VariableSet
@@ -27,7 +16,6 @@
                     (VariableNode "$C")
                 )
             )
-            ;; To avoid matching (Implication A B) and (Implication B A)
             (NotLink
                 (IdenticalLink
                     (VariableNode "$A")
@@ -47,14 +35,6 @@
                 (ImplicationLink
                     (VariableNode "$B")
                     (VariableNode "$C"))))))
-
-;; -----------------------------------------------------------------------------
-;; Deduction Formula
-;;
-;; If both confidence and strength of A->B and B->C are above 0.5 then
-;; set the TV of A->C to (stv 1 1)
-;; -----------------------------------------------------------------------------
-
 (define (crisp-deduction AC AB BC)
     (let
         ((sAB (cog-mean AB))
@@ -63,8 +43,6 @@
          (cBC (cog-confidence BC)))
       (if (and (>= sAB 0.5) (>= cAB 0.5) (>= sBC 0.5) (>= cBC 0.5))
           (cog-set-tv! AC (stv 1 1)))))
-
-;; Associate a name to the rule
 (define crisp-deduction-rule-name
   (DefinedSchemaNode "crisp-deduction-rule"))
 (DefineLink

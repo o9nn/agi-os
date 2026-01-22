@@ -1,7 +1,3 @@
-/**
- * @typedef {import('@webxdc/types').RealtimeListener} RT
- * @type {RT}
- */
 class RealtimeListener {
   constructor(sendRealtime, leaveRealtime) {
     this.listener = null
@@ -9,11 +5,9 @@ class RealtimeListener {
     this.sendRealtime = sendRealtime
     this.leaveRealtime = leaveRealtime
   }
-
   is_trashed() {
     return this.trashed
   }
-
   receive(data) {
     if (this.trashed) {
       throw new Error('realtime listener is trashed and can no longer be used')
@@ -22,11 +16,9 @@ class RealtimeListener {
       this.listener(data)
     }
   }
-
   setListener(listener) {
     this.listener = listener
   }
-
   send(data) {
     if ((!data) instanceof Uint8Array) {
       throw new Error('realtime listener data must be a Uint8Array')
@@ -36,30 +28,17 @@ class RealtimeListener {
     }
     this.sendRealtime(Array.from(data))
   }
-
   leave() {
     this.trashed = true
     this.leaveRealtime()
   }
 }
-
-//@ts-check
 ;(() => {
   const { contextBridge, ipcRenderer } = require('electron')
-  // setup is finished
   let is_ready = false
-
-  // used to replace the location.href of the iframe if
-  // setLocation was called before all connections were filled
   let locationUrl = ''
-
   let connectionsFilled = false
-
-  /**
-   * @type {Parameters<import('@webxdc/types').Webxdc["setUpdateListener"]>[0]|null}
-   */
   let callback = null
-  /** @type {RT | null} */
   let realtimeListener = null
   let last_serial = 0
   let setUpdateListenerPromise = null
@@ -78,7 +57,6 @@ class RealtimeListener {
       setUpdateListenerPromise = null
     }
   }
-
   const onStatusUpdate = async () => {
     if (is_running) {
       scheduled = true
@@ -99,16 +77,11 @@ class RealtimeListener {
   ipcRenderer.on('webxdc.statusUpdate', _ev => {
     onStatusUpdate()
   })
-
   ipcRenderer.on('webxdc.realtimeData', (ev_, data) => {
     if (realtimeListener && !realtimeListener.is_trashed()) {
       realtimeListener.receive(Uint8Array.from(data))
     }
   })
-
-  /**
-   * @type {import('@webxdc/types').Webxdc}
-   */
   const api = {
     selfAddr: '?Setup Missing?',
     selfName: '?Setup Missing?',
@@ -125,7 +98,6 @@ class RealtimeListener {
       if (realtimeListener && !realtimeListener.is_trashed()) {
         throw new Error('realtime listener already exists')
       }
-
       realtimeListener = new RealtimeListener(
         arr => ipcRenderer.invoke('webxdc.sendRealtimeData', arr),
         () => ipcRenderer.invoke('webxdc.leaveRealtimeChannel')
@@ -159,23 +131,18 @@ class RealtimeListener {
           'Error from sendToChat: Invalid empty message, at least one of text or file should be provided'
         )
       }
-      /** @type {(file: Blob) => Promise<string>} */
       const blob_to_base64 = file => {
         const data_start = ';base64,'
         return new Promise((resolve, reject) => {
           const reader = new FileReader()
           reader.readAsDataURL(file)
           reader.onload = () => {
-            /** @type {string} */
-            //@ts-ignore
             const data = reader.result
             resolve(data.slice(data.indexOf(data_start) + data_start.length))
           }
           reader.onerror = () => reject(reader.error)
         })
       }
-
-      /** @type {{file_name: string, file_content: string} | null} */
       let file = null
       if (content.file) {
         let base64Content
@@ -191,19 +158,12 @@ class RealtimeListener {
             'you can only set one of `blob`, `base64` or `plainText`, not multiple ones'
           )
         }
-
-        // @ts-ignore - needed because typescript imagines that blob would not exist
         if (content.file.blob instanceof Blob) {
-          // @ts-ignore - needed because typescript imagines that blob would not exist
           base64Content = await blob_to_base64(content.file.blob)
-          // @ts-ignore - needed because typescript imagines that base64 would not exist
         } else if (typeof content.file.base64 === 'string') {
-          // @ts-ignore - needed because typescript imagines that base64 would not exist
           base64Content = content.file.base64
-          // @ts-ignore - needed because typescript imagines that plainText would not exist
         } else if (typeof content.file.plainText === 'string') {
           base64Content = await blob_to_base64(
-            // @ts-ignore - needed because typescript imagines that plainText would not exist
             new Blob([content.file.plainText])
           )
         } else {
@@ -211,13 +171,11 @@ class RealtimeListener {
             'data is not set or wrong format, set one of `blob`, `base64` or `plainText`, see webxdc documentation for sendToChat'
           )
         }
-
         file = {
           file_name: content.file.name,
           file_content: base64Content,
         }
       }
-
       await ipcRenderer.invoke('webxdc.sendToChat', file, content.text)
     },
     importFiles: filters => {
@@ -243,9 +201,7 @@ class RealtimeListener {
       return promise
     },
   }
-
   const connections = []
-
   contextBridge.exposeInMainWorld('webxdc_internal', {
     setup: (selfAddr, selfName, sendUpdateInterval, sendUpdateMaxSize) => {
       if (is_ready) {
@@ -255,21 +211,16 @@ class RealtimeListener {
       api.selfName = Buffer.from(selfName, 'base64').toString('utf-8')
       api.sendUpdateInterval = sendUpdateInterval
       api.sendUpdateMaxSize = sendUpdateMaxSize
-
-      // be sure that webxdc.js was included
       contextBridge.exposeInMainWorld('webxdc', api)
       is_ready = true
-
       window.frames[0].window.addEventListener('keydown', keydown_handler)
     },
     fill_up_connections: async () => {
-      /** @type {HTMLProgressElement} */
       const loadingProgress = document.getElementById('progress')
       const numIterations = 50
       loadingProgress.max = numIterations
       const loadingDiv = document.getElementById('loading')
       const iframe = document.getElementById('frame')
-
       const cert = {
         certificates: [
           await RTCPeerConnection.generateCertificate({
@@ -278,7 +229,6 @@ class RealtimeListener {
           }),
         ],
       }
-
       try {
         for (let i = 0; i < numIterations; i++) {
           connections.push(new RTCPeerConnection(cert))
@@ -291,7 +241,7 @@ class RealtimeListener {
           connections.push(new RTCPeerConnection(cert))
           connections.push(new RTCPeerConnection(cert))
           connections.push(new RTCPeerConnection(cert))
-          await new Promise(res => setTimeout(res, 0)) // this is to view loading bar, it returns to the ev loop
+          await new Promise(res => setTimeout(res, 0)) 
           loadingProgress.value = i + 1
         }
         try {
@@ -312,25 +262,18 @@ class RealtimeListener {
         ipcRenderer.invoke('webxdc.exit')
       }
     },
-    /**
-     * called via webContents.executeJavaScript
-     */
     setLocationUrl(base64EncodedHref) {
       locationUrl = Buffer.from(base64EncodedHref, 'base64').toString('utf8')
       if (locationUrl && locationUrl !== '' && connectionsFilled) {
-        // if connectionsFilled is false, the url is loaded after
-        // the connections are filled
         window.frames[0].window.location = locationUrl
       }
     },
   })
-
   const keydown_handler = ev => {
     if (ev.code == 'Escape') {
       ipcRenderer.invoke('webxdc.exitFullscreen')
     }
   }
-
   window.addEventListener('keydown', keydown_handler)
   window.onload = () => {
     const frame = document.getElementById('frame')
@@ -340,14 +283,7 @@ class RealtimeListener {
       console.log('attaching F12 handler failed, frame not found')
     }
   }
-
   contextBridge.exposeInMainWorld('webxdc_custom', {
-    /**
-     *
-     * @param {string} file_name
-     * @param {string} base64_content
-     * @param {string | undefined} icon_data_url
-     */
     desktopDragFileOut: (file_name, base64_content, icon_data_url) => {
       ipcRenderer.invoke(
         'webxdc:custom:drag-file-out',

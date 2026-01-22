@@ -2,16 +2,13 @@ import {describe, expect, test} from "vitest";
 import {Token, SequenceEvaluateOutput} from "../../../src/index.js";
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
 describe("llama 3.1", () => {
     describe("evaluate with metadata", () => {
         const text = "The quick brown fox jumps over the lazy dog, but! the lazy dog is too lazy to care. " +
             "The reason for this is that the lazy dog is too lazy to care about the quick brown fox.";
-
         test("no options", {timeout: 1000 * 60 * 60 * 2}, async () => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -19,17 +16,14 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const inputTokens = model.tokenize(text);
             const maxTokens = 10;
             const res: SequenceEvaluateOutput<{}>[] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {})) {
                 res.push(output);
-
                 if (res.length >= maxTokens)
                     break;
             }
-
             simplifyRes(res);
             expect(res).toMatchInlineSnapshot(`
               [
@@ -66,15 +60,11 @@ describe("llama 3.1", () => {
               ]
             `);
         });
-
         test("with probabilities", {timeout: 1000 * 60 * 60 * 2}, async (testContext) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
-            // the precise values are different for each GPU type, so we skip the test for GPUs other than metal
             if (llama.gpu !== "metal")
                 testContext.skip();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -82,17 +72,14 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const inputTokens = model.tokenize(text);
             const maxTokens = 10;
             const res: SequenceEvaluateOutput<{readonly probabilities: true}>[] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {probabilities: true})) {
                 res.push(output);
-
                 if (res.length >= maxTokens)
                     break;
             }
-
             simplifyRes(res);
             expect(res).toMatchInlineSnapshot(`
               [
@@ -249,15 +236,11 @@ describe("llama 3.1", () => {
               ]
             `);
         });
-
         test("with confidence", {timeout: 1000 * 60 * 60 * 2}, async (testContext) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
-            // the precise values are different for each GPU type, so we skip the test for GPUs other than metal
             if (llama.gpu !== "metal")
                 testContext.skip();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -265,17 +248,14 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const inputTokens = model.tokenize(text);
             const maxTokens = 10;
             const res: SequenceEvaluateOutput<{readonly confidence: true}>[] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {confidence: true})) {
                 res.push(output);
-
                 if (res.length >= maxTokens)
                     break;
             }
-
             simplifyRes(res);
             expect(res).toMatchInlineSnapshot(`
               [
@@ -322,15 +302,11 @@ describe("llama 3.1", () => {
               ]
             `);
         });
-
         test("with probabilities and confidence", {timeout: 1000 * 60 * 60 * 2}, async (testContext) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
-            // the precise values are different for each GPU type, so we skip the test for GPUs other than metal
             if (llama.gpu !== "metal")
                 testContext.skip();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -338,17 +314,14 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const inputTokens = model.tokenize(text);
             const maxTokens = 10;
             const res: SequenceEvaluateOutput<{readonly probabilities: true, readonly confidence: true}>[] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {probabilities: true, confidence: true})) {
                 res.push(output);
-
                 if (res.length >= maxTokens)
                     break;
             }
-
             simplifyRes(res);
             expect(res).toMatchInlineSnapshot(`
               [
@@ -515,15 +488,11 @@ describe("llama 3.1", () => {
               ]
             `);
         });
-
         test("confidence alone matches probability alone", {timeout: 1000 * 60 * 60 * 2}, async (testContext) => {
             const modelPath = await getModelFile("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf");
             const llama = await getTestLlama();
-
-            // the precise values are different for each GPU type, so we skip the test for GPUs other than metal
             if (llama.gpu !== "metal")
                 testContext.skip();
-
             const model = await llama.loadModel({
                 modelPath
             });
@@ -531,37 +500,28 @@ describe("llama 3.1", () => {
                 contextSize: 512
             });
             const sequence = context.getSequence();
-
             const inputTokens = model.tokenize(text);
             const maxTokens = 10;
-
             const probabilityRes: [token: Token, probability: number][] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {probabilities: true})) {
                 const tokenProbability = output.probabilities.get(output.token);
                 if (tokenProbability == null)
                     throw new Error("Token probability not found");
-
                 probabilityRes.push([output.token, tokenProbability]);
-
                 if (probabilityRes.length >= maxTokens)
                     break;
             }
-
             await sequence.clearHistory();
-
             const confidenceRes: [token: Token, probability: number][] = [];
             for await (const output of sequence.evaluateWithMetadata(inputTokens, {confidence: true})) {
                 confidenceRes.push([output.token, output.confidence]);
-
                 if (confidenceRes.length >= maxTokens)
                     break;
             }
-
             expect(probabilityRes).toEqual(confidenceRes);
         });
     });
 });
-
 function simplifyRes<T extends Partial<SequenceEvaluateOutput<{readonly probabilities: true, readonly confidence: true}>>>(res: T[]) {
     for (const item of res) {
         if (item.probabilities != null)
@@ -570,7 +530,6 @@ function simplifyRes<T extends Partial<SequenceEvaluateOutput<{readonly probabil
                     .slice(0, 10)
                     .map(([token, probability]) => [token, parseFloat(probability.toFixed(7))])
             );
-
         if (item.confidence != null)
             item.confidence = parseFloat(item.confidence.toFixed(7));
     }

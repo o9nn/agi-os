@@ -1,4 +1,3 @@
- /* t0.c: storage allocation */
 #
 # include "t.h"
 int expflg = 0;
@@ -45,5 +44,5 @@ int texct = 0;
 char texstr[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789";
 int linstart;
 char *exstore, *exlim, *exspace;
-Biobuf *tabin  /*= stdin */;
-Biobuf tabout  /* = stdout */;
+Biobuf *tabin  ;
+Biobuf tabout  ;

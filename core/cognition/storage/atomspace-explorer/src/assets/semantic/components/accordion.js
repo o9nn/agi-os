@@ -1,41 +1,24 @@
-/*!
- * # Semantic UI 2.2.10 - Accordion
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.accordion = function(parameters) {
   var
     $allModules     = $(this),
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
-
     requestAnimationFrame = window.requestAnimationFrame
       || window.mozRequestAnimationFrame
       || window.webkitRequestAnimationFrame
       || window.msRequestAnimationFrame
       || function(callback) { setTimeout(callback, 0); },
-
     returnedValue
   ;
   $allModules
@@ -44,28 +27,22 @@ $.fn.accordion = function(parameters) {
         settings        = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.accordion.settings, parameters)
           : $.extend({}, $.fn.accordion.settings),
-
         className       = settings.className,
         namespace       = settings.namespace,
         selector        = settings.selector,
         error           = settings.error,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
         moduleSelector  = $allModules.selector || '',
-
         $module  = $(this),
         $title   = $module.find(selector.title),
         $content = $module.find(selector.content),
-
         element  = this,
         instance = $module.data(moduleNamespace),
         observer,
         module
       ;
-
       module = {
-
         initialize: function() {
           module.debug('Initializing', $module);
           module.bind.events();
@@ -74,14 +51,12 @@ $.fn.accordion = function(parameters) {
           }
           module.instantiate();
         },
-
         instantiate: function() {
           instance = module;
           $module
             .data(moduleNamespace, module)
           ;
         },
-
         destroy: function() {
           module.debug('Destroying previous instance', $module);
           $module
@@ -89,12 +64,10 @@ $.fn.accordion = function(parameters) {
             .removeData(moduleNamespace)
           ;
         },
-
         refresh: function() {
           $title   = $module.find(selector.title);
           $content = $module.find(selector.content);
         },
-
         observeChanges: function() {
           if('MutationObserver' in window) {
             observer = new MutationObserver(function(mutations) {
@@ -108,7 +81,6 @@ $.fn.accordion = function(parameters) {
             module.debug('Setting up mutation observer', observer);
           }
         },
-
         bind: {
           events: function() {
             module.debug('Binding delegated events');
@@ -117,13 +89,11 @@ $.fn.accordion = function(parameters) {
             ;
           }
         },
-
         event: {
           click: function() {
             module.toggle.call(this);
           }
         },
-
         toggle: function(query) {
           var
             $activeTitle = (query !== undefined)
@@ -150,7 +120,6 @@ $.fn.accordion = function(parameters) {
             module.open.call($activeTitle);
           }
         },
-
         open: function(query) {
           var
             $activeTitle = (query !== undefined)
@@ -215,7 +184,6 @@ $.fn.accordion = function(parameters) {
             })
           ;
         },
-
         close: function(query) {
           var
             $activeTitle = (query !== undefined)
@@ -276,7 +244,6 @@ $.fn.accordion = function(parameters) {
             ;
           }
         },
-
         closeOthers: function(index) {
           var
             $activeTitle = (index !== undefined)
@@ -340,9 +307,7 @@ $.fn.accordion = function(parameters) {
             ;
           }
         },
-
         reset: {
-
           display: function() {
             module.verbose('Removing inline display from element', this);
             $(this).css('display', '');
@@ -353,7 +318,6 @@ $.fn.accordion = function(parameters) {
               ;
             }
           },
-
           opacity: function() {
             module.verbose('Removing inline opacity from element', this);
             $(this).css('opacity', '');
@@ -364,9 +328,7 @@ $.fn.accordion = function(parameters) {
               ;
             }
           },
-
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -551,60 +513,43 @@ $.fn.accordion = function(parameters) {
     : this
   ;
 };
-
 $.fn.accordion.settings = {
-
   name            : 'Accordion',
   namespace       : 'accordion',
-
   silent          : false,
   debug           : false,
   verbose         : false,
   performance     : true,
-
-  on              : 'click', // event on title that opens accordion
-
-  observeChanges  : true,  // whether accordion should automatically refresh on DOM insertion
-
-  exclusive       : true,  // whether a single accordion content panel should be open at once
-  collapsible     : true,  // whether accordion content can be closed
-  closeNested     : false, // whether nested content should be closed when a panel is closed
-  animateChildren : true,  // whether children opacity should be animated
-
-  duration        : 350, // duration of animation
-  easing          : 'easeOutQuad', // easing equation for animation
-
-
-  onOpening       : function(){}, // callback before open animation
-  onOpen          : function(){}, // callback after open animation
-  onClosing       : function(){}, // callback before closing animation
-  onClose         : function(){}, // callback after closing animation
-  onChange        : function(){}, // callback after closing or opening animation
-
+  on              : 'click', 
+  observeChanges  : true,  
+  exclusive       : true,  
+  collapsible     : true,  
+  closeNested     : false, 
+  animateChildren : true,  
+  duration        : 350, 
+  easing          : 'easeOutQuad', 
+  onOpening       : function(){}, 
+  onOpen          : function(){}, 
+  onClosing       : function(){}, 
+  onClose         : function(){}, 
+  onChange        : function(){}, 
   error: {
     method : 'The method you called is not defined'
   },
-
   className   : {
     active    : 'active',
     animating : 'animating'
   },
-
   selector    : {
     accordion : '.accordion',
     title     : '.title',
     trigger   : '.title',
     content   : '.content'
   }
-
 };
-
-// Adds easing
 $.extend( $.easing, {
   easeOutQuad: function (x, t, b, c, d) {
     return -c *(t/=d)*(t-2) + b;
   }
 });
-
 })( jQuery, window, document );
-

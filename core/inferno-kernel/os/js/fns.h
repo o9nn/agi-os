@@ -2,9 +2,8 @@
 #define dumplongs(x, y, z)
 #define clockcheck()
 #define setpanic()
-
 void	links(void);
-void	prom_printf(char *format, ...);	/* can't use after mmuinit() */
+void	prom_printf(char *format, ...);
 void	savefpregs(FPU *);
 void	restfpregs(FPU*);
 void	savefsr(FPenv *);
@@ -19,12 +18,11 @@ void	clearftt(ulong);
 #define	clearmmucache()
 void	clockinit(void);
 void	clock(Ureg*);
-#define	coherence()		/* nothing to do on uniprocessor */
+#define	coherence()
 void	dcflush(void);
 void	disabfp(void);
 void	enabfp(void);
 char*	excname(ulong);
-
 #define	flushpage(pa)	icflush()
 void	flushtlb(void);
 void	flushtlbctx(void);
@@ -46,7 +44,7 @@ void	flushicache(void);
 void	flushdcache(void);
 void	flushiline(ulong);
 void	flushdline(ulong);
-#define	idlehands()			/* nothing to do in the runproc */
+#define	idlehands()
 void	intrinit(void);
 void	ioinit(void);
 void	kbdclock(void);
@@ -85,23 +83,19 @@ void	setpsr(ulong);
 void	spldone(void);
 void	trap(Ureg*);
 void	trapinit(void);
-#define	wbflush()	/* mips compatibility */
+#define	wbflush()
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 ulong	getcallerpc(void*);
 void	dumpregs(Ureg*);
-
 void	ns16552special(int,int,Queue**,Queue**,int (*)(Queue*,int));
 char	ns16552dmarcv(int);
 void	ns16552install(void);
 void	ns16552intr(int);
-
 long	dmasetup(int,void*,long,int);
 void	dmaend(int);
 int	dmacount(int);
-
 void	superioinit(ulong va, uchar*, uchar*, uchar*, uchar*);
 ulong	superiova(void);
-
 uchar	superio_readctl(void);
 uchar	superio_readdata(void);
 void	superio_writectl(uchar val);

@@ -1,16 +1,3 @@
-; =====================================================================
-; OrBreakdownRule
-;
-; OrLink 
-;    A
-;    B
-; &
-;    A
-; |-
-;    B
-;----------------------------------------------------------------------
-
-
 (define or-breakdown-rule
   (BindLink
    (VariableList
@@ -29,13 +16,11 @@
       (VariableNode "$B"))
      (VariableNode "$A")
      (VariableNode "$B")))))
-
 (define (or-breakdown-formula AB A B)
   (cog-set-tv!
    B
    (or-breakdown-side-effect-free-formula AB A B))
 )
-
 (define (or-breakdown-side-effect-free-formula AB A B)
   (let 
       ((sAB (cog-mean AB))
@@ -43,7 +28,5 @@
        (sA (cog-mean A))
        (cA (cog-confidence A)))
     (stv (/ sAB (- 1 sA)) (min cAB cA))))
-
-; Name the rule
 (define or-breakdown-rule-name (DefinedSchemaNode "or-breakdown-rule"))
 (DefineLink or-breakdown-rule-name or-breakdown-rule)

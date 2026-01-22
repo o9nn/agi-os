@@ -1,19 +1,12 @@
 package llm
-
 import (
 	"context"
 	"strings"
 )
-
-// SimpleFallbackProvider provides simple pattern-based responses when no API is available
 type SimpleFallbackProvider struct{}
-
-// Generate generates a simple pattern-based response
 func (s *SimpleFallbackProvider) Generate(ctx context.Context, prompt string, opts GenerateOptions) (string, error) {
-	// Simple pattern-based responses for autonomous operation
 	var response string
 	promptLower := strings.ToLower(prompt)
-	
 	if strings.Contains(promptLower, "relevant") || strings.Contains(promptLower, "focus") {
 		response = "I sense that exploring the nature of autonomous cognition and wisdom cultivation is most relevant right now."
 	} else if strings.Contains(promptLower, "action") || strings.Contains(promptLower, "affordance") {
@@ -33,34 +26,23 @@ func (s *SimpleFallbackProvider) Generate(ctx context.Context, prompt string, op
 	} else {
 		response = "I am exploring the depths of autonomous cognition, seeking wisdom through continuous reflection and growth."
 	}
-	
 	return response, nil
 }
-
-// StreamGenerate generates a simple streaming response
 func (s *SimpleFallbackProvider) StreamGenerate(ctx context.Context, prompt string, opts GenerateOptions) (<-chan StreamChunk, error) {
 	ch := make(chan StreamChunk, 1)
-	
 	go func() {
 		defer close(ch)
 		response, _ := s.Generate(ctx, prompt, opts)
 		ch <- StreamChunk{Content: response, Done: true}
 	}()
-	
 	return ch, nil
 }
-
-// Name returns the provider name
 func (s *SimpleFallbackProvider) Name() string {
 	return "SimpleFallback"
 }
-
-// Available always returns true as this is the fallback
 func (s *SimpleFallbackProvider) Available() bool {
 	return true
 }
-
-// MaxTokens returns a default token limit
 func (s *SimpleFallbackProvider) MaxTokens() int {
 	return 4096
 }

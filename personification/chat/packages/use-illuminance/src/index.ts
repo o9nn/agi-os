@@ -1,20 +1,16 @@
 import { useSingleton } from 'foxact/use-singleton'
 import { useSyncExternalStore } from 'react'
-
 declare global {
   interface Window {
     AmbientLightSensor?: AmbientLightSensor
   }
 }
-
 interface SensorErrorEvent extends Event {
   readonly error: Error
 }
-
 interface SensorOptions {
   frequency?: number
 }
-
 declare class Sensor extends EventTarget {
   readonly activated: boolean
   readonly hasReading: boolean
@@ -35,51 +31,24 @@ declare class Sensor extends EventTarget {
   start(): void
   stop(): void
 }
-
-/** from {@link https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/w3c-generic-sensor | `@types/w3c-generic-sensor`} */
 declare class AmbientLightSensor extends Sensor {
   readonly illuminance?: number
   constructor(options?: SensorOptions)
 }
-
 declare global {
   interface Window {
     AmbientLightSensor?: AmbientLightSensor
   }
 }
-
-/**
- * Get illuminance from {@link https://developer.mozilla.org/en-US/docs/Web/API/AmbientLightSensor | AmbientLightSensor API}.
- *
- * @example
- * ```tsx
- * import { useIlluminance } from '@n3p6/use-illuminance'
- *
- * const App = () => {
- *   const illuminance = useIlluminance()
- *
- *   return (
- *     <div>
- *       <h1>Illuminance:</h1>
- *       <span>{illuminance}</span>
- *     </div>
- *   )
- * }
- *
- * export default App
- * ```
- */
 export const useIlluminance = () => {
   const sensor = useSingleton(() => {
     if ('AmbientLightSensor' in window) {
       return new AmbientLightSensor()
     }
   })
-
   const subscribe = (onStoreChange: () => void) => {
     if (!sensor.current)
       return () => {}
-
     sensor.current.addEventListener('reading', onStoreChange)
     sensor.current.start()
     return () => {
@@ -90,9 +59,7 @@ export const useIlluminance = () => {
   const getSnapshot = () => {
     if (!sensor.current)
       return
-
     return sensor.current.illuminance
   }
-
   return useSyncExternalStore(subscribe, getSnapshot)
 }

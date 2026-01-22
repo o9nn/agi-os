@@ -1,32 +1,17 @@
-/*!
- * # Semantic UI 2.2.10 - Rating
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.rating = function(parameters) {
   var
     $allModules     = $(this),
     moduleSelector  = $allModules.selector || '',
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
@@ -38,35 +23,26 @@ $.fn.rating = function(parameters) {
         settings        = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.rating.settings, parameters)
           : $.extend({}, $.fn.rating.settings),
-
         namespace       = settings.namespace,
         className       = settings.className,
         metadata        = settings.metadata,
         selector        = settings.selector,
         error           = settings.error,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
         element         = this,
         instance        = $(this).data(moduleNamespace),
-
         $module         = $(this),
         $icon           = $module.find(selector.icon),
-
         initialLoad,
         module
       ;
-
       module = {
-
         initialize: function() {
           module.verbose('Initializing rating module', settings);
-
           if($icon.length === 0) {
             module.setup.layout();
           }
-
           if(settings.interactive) {
             module.enable();
           }
@@ -78,7 +54,6 @@ $.fn.rating = function(parameters) {
           module.remove.initialLoad();
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Instantiating module', settings);
           instance = module;
@@ -86,7 +61,6 @@ $.fn.rating = function(parameters) {
             .data(moduleNamespace, module)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying previous instance', instance);
           module.remove.events();
@@ -94,11 +68,9 @@ $.fn.rating = function(parameters) {
             .removeData(moduleNamespace)
           ;
         },
-
         refresh: function() {
           $icon   = $module.find(selector.icon);
         },
-
         setup: {
           layout: function() {
             var
@@ -112,7 +84,6 @@ $.fn.rating = function(parameters) {
             module.refresh();
           }
         },
-
         event: {
           mouseenter: function() {
             var
@@ -156,12 +127,10 @@ $.fn.rating = function(parameters) {
             }
           }
         },
-
         clearRating: function() {
           module.debug('Clearing current rating');
           module.set.rating(0);
         },
-
         bind: {
           events: function() {
             module.verbose('Binding events');
@@ -172,7 +141,6 @@ $.fn.rating = function(parameters) {
             ;
           }
         },
-
         remove: {
           events: function() {
             module.verbose('Removing events');
@@ -184,7 +152,6 @@ $.fn.rating = function(parameters) {
             initialLoad = false;
           }
         },
-
         enable: function() {
           module.debug('Setting rating to interactive mode');
           module.bind.events();
@@ -192,7 +159,6 @@ $.fn.rating = function(parameters) {
             .removeClass(className.disabled)
           ;
         },
-
         disable: function() {
           module.debug('Setting rating to read-only mode');
           module.remove.events();
@@ -200,13 +166,11 @@ $.fn.rating = function(parameters) {
             .addClass(className.disabled)
           ;
         },
-
         is: {
           initialLoad: function() {
             return initialLoad;
           }
         },
-
         get: {
           initialRating: function() {
             if($module.data(metadata.rating) !== undefined) {
@@ -230,7 +194,6 @@ $.fn.rating = function(parameters) {
             return currentRating;
           }
         },
-
         set: {
           rating: function(rating) {
             var
@@ -262,7 +225,6 @@ $.fn.rating = function(parameters) {
             initialLoad = true;
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -441,54 +403,41 @@ $.fn.rating = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.fn.rating.settings = {
-
   name          : 'Rating',
   namespace     : 'rating',
-
   slent         : false,
   debug         : false,
   verbose       : false,
   performance   : true,
-
   initialRating : 0,
   interactive   : true,
   maxRating     : 4,
   clearable     : 'auto',
-
   fireOnInit    : false,
-
   onRate        : function(rating){},
-
   error         : {
     method    : 'The method you called is not defined',
     noMaximum : 'No maximum rating specified. Cannot generate HTML automatically'
   },
-
-
   metadata: {
     rating    : 'rating',
     maxRating : 'maxRating'
   },
-
   className : {
     active   : 'active',
     disabled : 'disabled',
     selected : 'selected',
     loading  : 'loading'
   },
-
   selector  : {
     icon : '.icon'
   },
-
   templates: {
     icon: function(maxRating) {
       var
@@ -502,7 +451,5 @@ $.fn.rating.settings = {
       return html;
     }
   }
-
 };
-
 })( jQuery, window, document );

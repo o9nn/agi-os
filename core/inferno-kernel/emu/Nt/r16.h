@@ -1,5 +1,4 @@
 typedef unsigned short Rune16;
-
 wchar_t	*widen(char *s);
 char		*narrowen(wchar_t *ws);
 int		widebytes(wchar_t *ws);

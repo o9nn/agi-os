@@ -1,8 +1,6 @@
 import {describe, expect, test} from "vitest";
 import {ChatHistoryItem, ChatModelFunctions, QwenChatWrapper} from "../../../src/index.js";
 import {defaultChatSystemPrompt} from "../../../src/config.js";
-
-
 describe("QwenChatWrapper", () => {
     const conversationHistory: ChatHistoryItem[] = [{
         type: "system",
@@ -115,11 +113,9 @@ describe("QwenChatWrapper", () => {
             }
         }
     };
-
     test("should generate valid context text", () => {
         const chatWrapper = new QwenChatWrapper();
         const {contextText} = chatWrapper.generateContextState({chatHistory: conversationHistory});
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|im_start|>system
@@ -136,24 +132,19 @@ describe("QwenChatWrapper", () => {
             "Hello!",
           ])
         `);
-
         const chatWrapper2 = new QwenChatWrapper();
         const {contextText: contextText2} = chatWrapper2.generateContextState({
             chatHistory: conversationHistory2,
             availableFunctions: conversationHistory2Functions
         });
-
         expect(contextText2).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|im_start|>system
           "),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           # Tools
-
           You may call one or more functions to assist with the user query.
-
           You are provided with function signatures within ",
             new SpecialTokensText("<tools></tools>"),
             " XML tags:
@@ -164,7 +155,6 @@ describe("QwenChatWrapper", () => {
           ",
             new SpecialTokensText("</tools>"),
             "
-
           For each function call, return a json object with function name and arguments within ",
             new SpecialTokensText("<tool_call></tool_call>"),
             " XML tags:
@@ -203,7 +193,6 @@ describe("QwenChatWrapper", () => {
             "I'm good, how are you?",
           ])
         `);
-
         const chatWrapper3 = new QwenChatWrapper();
         const {contextText: contextText3} = chatWrapper3.generateContextState({chatHistory: conversationHistory});
         const {contextText: contextText3WithOpenModelResponse} = chatWrapper3.generateContextState({
@@ -215,7 +204,6 @@ describe("QwenChatWrapper", () => {
                 }
             ]
         });
-
         expect(contextText3).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|im_start|>system
@@ -232,7 +220,6 @@ describe("QwenChatWrapper", () => {
             "Hello!",
           ])
         `);
-
         expect(contextText3WithOpenModelResponse).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|im_start|>system
@@ -253,25 +240,20 @@ describe("QwenChatWrapper", () => {
           ])
         `);
     });
-
     test("should generate valid context text for 2 sequential function calls", () => {
         const chatWrapper = new QwenChatWrapper();
         const {contextText} = chatWrapper.generateContextState({
             chatHistory: conversationHistory3,
             availableFunctions: conversationHistory3Functions
         });
-
         expect(contextText).toMatchInlineSnapshot(`
           LlamaText([
             new SpecialTokensText("<|im_start|>system
           "),
             "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
           If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. If you don't know the answer to a question, don't share false information.
-
           # Tools
-
           You may call one or more functions to assist with the user query.
-
           You are provided with function signatures within ",
             new SpecialTokensText("<tools></tools>"),
             " XML tags:
@@ -283,7 +265,6 @@ describe("QwenChatWrapper", () => {
           ",
             new SpecialTokensText("</tools>"),
             "
-
           For each function call, return a json object with function name and arguments within ",
             new SpecialTokensText("<tool_call></tool_call>"),
             " XML tags:

@@ -1,6 +1,5 @@
 import { tool } from '@xsai/tool'
 import { z } from 'zod'
-
 const tools = [
   tool({
     name: 'debug_random_number',
@@ -15,5 +14,4 @@ const tools = [
     parameters: z.object({}),
   }),
 ]
-
 export const debug = async () => Promise.all(tools)

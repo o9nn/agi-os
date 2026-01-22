@@ -1,5 +1,4 @@
 import { useLocalStorage } from 'foxact/use-local-storage'
-
 export const useLLMProvider = () => useLocalStorage<{
   apiKey: string
   baseURL: string
@@ -9,7 +8,6 @@ export const useLLMProvider = () => useLocalStorage<{
   baseURL: 'http://localhost:11434/v1/',
   model: '',
 })
-
 export const useTTSProvider = () => useLocalStorage<{
   apiKey: string
   baseURL: string
@@ -21,7 +19,6 @@ export const useTTSProvider = () => useLocalStorage<{
   model: '',
   voice: '',
 })
-
 export const useSTTProvider = () => useLocalStorage<{
   apiKey: string
   baseURL: string

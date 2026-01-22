@@ -41,7 +41,6 @@
       )
    )
 )
-
 (define implication-introduction-rule
    (BindLink
       (VariableList
@@ -83,5 +82,4 @@
       )
    )
 )
-
 (define (dummy . args) (Concept "dummy"))

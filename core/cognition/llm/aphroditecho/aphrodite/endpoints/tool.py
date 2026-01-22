@@ -1,50 +1,32 @@
 import os
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
-
 from aphrodite.common.logger import log_once
-
 if TYPE_CHECKING:
-    # Avoid circular import.
     from aphrodite.endpoints.context import ConversationContext
-
-
 class Tool(ABC):
-
     @abstractmethod
-    async def get_result(self, context: "ConversationContext") -> Any:
+    async def get_result(self, context: 'ConversationContext') -> Any:
         pass
-
-
 class HarmonyBrowserTool(Tool):
-
     def __init__(self):
         self.enabled = True
-        exa_api_key = os.getenv("EXA_API_KEY")
+        exa_api_key = os.getenv('EXA_API_KEY')
         if not exa_api_key:
             self.enabled = False
-            log_once(
-                "WARNING",
-                "EXA_API_KEY is not set, browsing is disabled")
+            log_once('WARNING', 'EXA_API_KEY is not set, browsing is disabled')
             return
-
         try:
             from gpt_oss.tools.simple_browser import SimpleBrowserTool
             from gpt_oss.tools.simple_browser.backend import ExaBackend
         except ImportError:
             self.enabled = False
-            log_once(
-                "WARNING",
-                "gpt_oss is not installed, browsing is disabled")
+            log_once('WARNING', 'gpt_oss is not installed, browsing is disabled')
             return
-
-        browser_backend = ExaBackend(source="web", api_key=exa_api_key)
+        browser_backend = ExaBackend(source='web', api_key=exa_api_key)
         self.browser_tool = SimpleBrowserTool(backend=browser_backend)
-        log_once(
-            "INFO",
-            "Browser tool initialized")
-
-    async def get_result(self, context: "ConversationContext") -> Any:
+        log_once('INFO', 'Browser tool initialized')
+    async def get_result(self, context: 'ConversationContext') -> Any:
         from aphrodite.endpoints.context import HarmonyContext
         assert isinstance(context, HarmonyContext)
         last_msg = context.messages[-1]
@@ -52,32 +34,21 @@ class HarmonyBrowserTool(Tool):
         async for msg in self.browser_tool.process(last_msg):
             tool_output_msgs.append(msg)
         return tool_output_msgs
-
     @property
     def tool_config(self) -> Any:
         return self.browser_tool.tool_config
-
-
 class HarmonyPythonTool(Tool):
-
     def __init__(self):
         self.enabled = True
-
         try:
             from gpt_oss.tools.python_docker.docker_tool import PythonTool
         except ImportError:
             self.enabled = False
-            log_once(
-                "WARNING",
-                "gpt_oss is not installed, code interpreter is disabled")
+            log_once('WARNING', 'gpt_oss is not installed, code interpreter is disabled')
             return
-
         self.python_tool = PythonTool()
-        log_once(
-            "INFO",
-            "Code interpreter tool initialized")
-
-    async def get_result(self, context: "ConversationContext") -> Any:
+        log_once('INFO', 'Code interpreter tool initialized')
+    async def get_result(self, context: 'ConversationContext') -> Any:
         from aphrodite.endpoints.context import HarmonyContext
         assert isinstance(context, HarmonyContext)
         last_msg = context.messages[-1]
@@ -85,7 +56,6 @@ class HarmonyPythonTool(Tool):
         async for msg in self.python_tool.process(last_msg):
             tool_output_msgs.append(msg)
         return tool_output_msgs
-
     @property
     def tool_config(self) -> Any:
         return self.python_tool.tool_config

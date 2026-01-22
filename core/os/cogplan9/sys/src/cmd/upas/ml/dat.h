@@ -1,20 +1,16 @@
-
 #include "../smtp/smtp.h"
 #include "../smtp/y.tab.h"
-
 typedef struct Addr Addr;
 struct Addr
 {
-	char *addr;
-	Addr *next;
+char *addr;
+Addr *next;
 };
-
 String *from;
 String *sender;
 Field *firstfield;
 int na;
 Addr *al;
-
 extern String*	getaddr(Node *p);
 extern void	getaddrs(void);
 extern void	writeaddr(char *file, char *addr, int, char *);

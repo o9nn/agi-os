@@ -7,5 +7,4 @@
 #include	"ureg.h"
 #include	"../port/error.h"
 #include	<flate.h>
-
 #include	"inflate.guts.c"

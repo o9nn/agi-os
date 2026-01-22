@@ -2,7 +2,6 @@ import { OpenAI } from "openai";
 import { HfInference } from "@huggingface/inference";
 import { createClient } from "@supabase/supabase-js";
 import { getMemoryService } from "../../app/services/memory.server";
-
 export interface AIServiceConfig {
   openaiApiKey?: string;
   huggingfaceApiKey?: string;
@@ -10,19 +9,16 @@ export interface AIServiceConfig {
   supabaseKey?: string;
   userId?: string;
 }
-
 export interface AIResponseMetadata {
   model?: string;
   [key: string]: unknown;
 }
-
 export interface AIResponse {
   text: string;
   source?: string;
   confidence?: number;
   metadata?: AIResponseMetadata;
 }
-
 export class AIService {
   private static instance: AIService;
   private openai: OpenAI | null = null;
@@ -31,16 +27,13 @@ export class AIService {
   private supabase: ReturnType<typeof createClient> | null = null;
   private userId: string | null = null;
   private memoryService = getMemoryService();
-
   private constructor() {}
-
   public static getInstance(): AIService {
     if (!AIService.instance) {
       AIService.instance = new AIService();
     }
     return AIService.instance;
   }
-
   public initialize(config: AIServiceConfig): void {
     if (config.openaiApiKey) {
       this.openai = new OpenAI({
@@ -48,30 +41,22 @@ export class AIService {
         dangerouslyAllowBrowser: true,
       });
     }
-
     if (config.huggingfaceApiKey) {
       this.hf = new HfInference(config.huggingfaceApiKey);
     }
-
     if (config.supabaseUrl && config.supabaseKey) {
       this.supabase = createClient(config.supabaseUrl, config.supabaseKey);
     }
-
     if (config.userId) {
       this.userId = config.userId;
     }
-
-    // Initialize LlamaIndex with OpenAI if available
     if (this.openai) {
-      // Note: LlamaIndex usage to be implemented when needed
       this.llama = null;
     }
   }
-
   public isInitialized(): boolean {
     return !!this.openai || !!this.hf;
   }
-
   public async generateResponse(
     prompt: string,
     options: {
@@ -83,8 +68,6 @@ export class AIService {
     } = {}
   ): Promise<AIResponse> {
     const { model = "gpt-4-turbo", provider = "openai" } = options;
-
-    // Get relevant memories if requested
     let contextMemories: string[] = [];
     if (options.useMemoryContext && this.userId) {
       const memories = await this.memoryService.searchMemories(prompt, {
@@ -93,13 +76,10 @@ export class AIService {
       });
       contextMemories = memories.map((mem: { content: string }) => mem.content);
     }
-
-    // Build context-aware prompt
     const contextPrompt =
       contextMemories.length > 0
         ? `Context from memory:\n${contextMemories.join("\n\n")}\n\nUser request: ${prompt}`
         : prompt;
-
     try {
       switch (provider) {
         case "openai": {
@@ -116,7 +96,6 @@ export class AIService {
             metadata: { model },
           };
         }
-
         case "huggingface": {
           if (!this.hf) throw new Error("HuggingFace not initialized");
           const response = await this.hf.textGeneration({
@@ -133,10 +112,8 @@ export class AIService {
             metadata: { model: "Mixtral-8x7B" },
           };
         }
-
         case "llama": {
           if (!this.llama) throw new Error("LlamaIndex not initialized");
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const llamaResponse = await (this.llama as any).query(contextPrompt);
           return {
             text: String(llamaResponse),
@@ -144,7 +121,6 @@ export class AIService {
             metadata: { model: "llama-index" },
           };
         }
-
         default: {
           throw new Error(`Unknown provider: ${provider}`);
         }
@@ -154,26 +130,22 @@ export class AIService {
       throw error;
     }
   }
-
   public async generateEmbedding(text: string): Promise<number[]> {
     if (!this.openai) {
       throw new Error("OpenAI not initialized");
     }
-
     try {
       const response = await this.openai.embeddings.create({
         model: "text-embedding-3-large",
         input: text,
         dimensions: 1536,
       });
-
       return response.data[0].embedding;
     } catch (error) {
       console.error("Error generating embedding:", error);
       throw error;
     }
   }
-
   public async analyzeMemories(): Promise<{
     insights: string[];
     patterns: string[];
@@ -182,7 +154,6 @@ export class AIService {
     if (!this.openai || !this.userId) {
       throw new Error("OpenAI or user not initialized");
     }
-
     try {
       const memories = await this.memoryService.listMemories({ limit: 20 });
       const memoryText = memories
@@ -191,7 +162,6 @@ export class AIService {
             `Title: ${m.title}\nContent: ${m.content}\nTags: ${m.tags.join(", ")}`
         )
         .join("\n\n");
-
       const response = await this.openai.chat.completions.create({
         model: "gpt-4-turbo",
         messages: [
@@ -207,7 +177,6 @@ export class AIService {
         ],
         response_format: { type: "json_object" },
       });
-
       const analysis = JSON.parse(
         response.choices[0]?.message?.content || "{}"
       );
@@ -222,11 +191,8 @@ export class AIService {
     }
   }
 }
-
-// React hook for using AIService
 export const useAI = () => {
   const service = AIService.getInstance();
-
   return {
     initialize: (config: AIServiceConfig) => service.initialize(config),
     isInitialized: () => service.isInitialized(),

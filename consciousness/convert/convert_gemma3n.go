@@ -1,18 +1,14 @@
 package convert
-
 import (
 	"slices"
 	"strings"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
 	"gonum.org/v1/gonum/stat/distuv"
 )
-
 type gemma3nModel struct {
 	ModelParameters
-
 	TextModel struct {
 		ActivationSparsityPattern []float32 `json:"activation_sparsity_pattern"`
 		AltupActiveIdx            uint32    `json:"altup_active_idx"`
@@ -37,7 +33,6 @@ type gemma3nModel struct {
 	} `json:"text_config"`
 	VisionModel struct{} `json:"vision_config"`
 }
-
 func (m *gemma3nModel) KV(t *Tokenizer) ggml.KV {
 	kv := m.ModelParameters.KV(t)
 	kv["general.architecture"] = "gemma3n"
@@ -75,20 +70,17 @@ func (m *gemma3nModel) KV(t *Tokenizer) ggml.KV {
 	kv["gemma3n.rope.freq_base"] = m.TextModel.RopeTheta
 	return kv
 }
-
 func (m *gemma3nModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	out, ts := mergeTensors(ts,
 		merge{"altup_proj.*.weight", "altup_proj.weight"},
 		merge{"altup_unembd_proj.*.weight", "altup_unembd_proj.weight"},
 	)
-
 	for _, t := range ts {
 		switch {
 		case strings.Contains(t.Name(), "audio_tower"),
 			strings.Contains(t.Name(), "embed_audio"),
 			strings.Contains(t.Name(), "vision_tower"),
 			strings.Contains(t.Name(), "embed_vision"):
-			// TODO: handle audio and vision towers
 			continue
 		case strings.Contains(t.Name(), "altup_predict_coef"),
 			strings.Contains(t.Name(), "altup_correct_coef"):
@@ -98,23 +90,18 @@ func (m *gemma3nModel) Tensors(ts []Tensor) []*ggml.Tensor {
 					for i := range shape {
 						dims[i] = int(shape[i])
 					}
-
 					var t tensor.Tensor = tensor.New(tensor.WithShape(dims...), tensor.WithBacking(data))
-
 					t, err = tensor.Clamp(t, -m.TextModel.AltupCoefClip, m.TextModel.AltupCoefClip)
 					if err != nil {
 						return nil, err
 					}
-
 					if err := t.Reshape(t.Shape().TotalSize()); err != nil {
 						return nil, err
 					}
-
 					return native.VectorF32(t.(*tensor.Dense))
 				})
 			}
 		}
-
 		out = append(out, &ggml.Tensor{
 			Name:     t.Name(),
 			Kind:     t.Kind(),
@@ -122,10 +109,8 @@ func (m *gemma3nModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (m *gemma3nModel) Replacements() []string {
 	return []string{
 		"model.language_model.embed_tokens_per_layer", "per_layer_token_embd",
@@ -135,7 +120,6 @@ func (m *gemma3nModel) Replacements() []string {
 		"model.language_model.altup_unembed_projections", "altup_unembd_proj",
 		"model.language_model.norm", "output_norm",
 		"model.language_model.layers", "blk",
-
 		"input_layernorm", "attn_norm",
 		"self_attn.q_proj", "attn_q",
 		"self_attn.q_norm", "attn_q_norm",

@@ -5,10 +5,8 @@ import {
   createModelProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
 export const createGoogleGenerativeAI = (apiKey: string, baseURL = 'https://generativelanguage.googleapis.com/v1beta/openai/') => merge(
   createMetadataProvider('google-generative-ai'),
-  /** @see {@link https://aistudio.google.com/u/1/prompts/new_chat} */
   createChatProvider<
     | 'gemini-2.0-flash'
     | 'gemini-2.0-flash-lite-preview-02-05'

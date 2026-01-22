@@ -1,18 +1,10 @@
-//go:build integration
-
 package integration
-
 import (
 	"context"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 )
-
-// TODO - this would ideally be in the llm package, but that would require some refactoring of interfaces in the server
-//        package to avoid circular dependencies
-
 var (
 	stream = false
 	req    = [2]api.GenerateRequest{
@@ -39,7 +31,6 @@ var (
 		{"england", "english", "massachusetts", "pilgrims"},
 	}
 )
-
 func TestIntegrationSimple(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()

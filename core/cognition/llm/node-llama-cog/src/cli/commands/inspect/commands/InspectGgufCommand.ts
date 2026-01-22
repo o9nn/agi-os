@@ -18,9 +18,7 @@ import {GgufTensorInfo} from "../../../../gguf/types/GgufTensorInfoTypes.js";
 import {toBytes} from "../../../utils/toBytes.js";
 import {printDidYouMeanUri} from "../../../utils/resolveCommandGgufPath.js";
 import {isModelUri} from "../../../../utils/parseModelUri.js";
-
 const chatTemplateKey = ".chatTemplate";
-
 type InspectGgufCommand = {
     modelPath: string,
     header?: string[],
@@ -31,7 +29,6 @@ type InspectGgufCommand = {
     plainJson: boolean,
     outputToJsonFile?: string
 };
-
 export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
     command: "gguf [modelPath]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -98,7 +95,6 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
         modelPath: ggufPath, header: headerArg, key, noSplice, fullTensorInfo, fullMetadataArrays, plainJson, outputToJsonFile
     }: InspectGgufCommand) {
         const headers = resolveHeaderFlag(headerArg);
-
         const [resolvedModelDestination, resolvedGgufPath] = (!plainJson && isModelUri(ggufPath))
             ? await withOra({
                 loading: chalk.blue("Resolving model URI"),
@@ -107,16 +103,13 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                 noSuccessLiveStatus: true
             }, () => resolveModelArgToFilePathOrUrl(ggufPath, headers))
             : await resolveModelArgToFilePathOrUrl(ggufPath, headers);
-
         if (resolvedModelDestination.type === "file" && !await fs.pathExists(resolvedGgufPath)) {
             console.error(`${chalk.red("File does not exist:")} ${resolvedGgufPath}`);
             printDidYouMeanUri(ggufPath);
             process.exit(1);
         }
-
         if (!plainJson)
             printModelDestination(resolvedModelDestination);
-
         const parsedMetadata = plainJson
             ? await readGgufFileInfo(resolvedGgufPath, {
                 fetchHeaders: resolvedModelDestination.type === "file"
@@ -137,11 +130,8 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                     spliceSplitFiles: !noSplice
                 });
             });
-
         removeAdditionalTensorInfoFields(parsedMetadata.fullTensorInfo);
-
         const fileTypeName = getGgufFileTypeName(parsedMetadata.metadata.general?.file_type);
-
         if (plainJson || outputToJsonFile != null) {
             const getOutputJson = () => {
                 if (key != null) {
@@ -152,10 +142,8 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                         console.log(`Key not found: ${key}`);
                         process.exit(1);
                     }
-
                     return JSON.stringify(keyValue, undefined, 4);
                 }
-
                 return JSON.stringify({
                     splicedParts: parsedMetadata.splicedParts,
                     version: parsedMetadata.version,
@@ -167,9 +155,7 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                     tensorInfo: parsedMetadata.fullTensorInfo
                 }, undefined, 4);
             };
-
             const outputJson = getOutputJson();
-
             if (outputToJsonFile != null) {
                 const filePath = path.resolve(process.cwd(), outputToJsonFile);
                 await fs.writeFile(filePath, outputJson, "utf8");
@@ -185,7 +171,6 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                 console.log(`${chalk.red("Metadata key not found:")} ${key}`);
                 process.exit(1);
             }
-
             const metadataPrettyPrintOptions: PrettyPrintObjectOptions = {
                 maxArrayValues: fullMetadataArrays
                     ? undefined
@@ -193,7 +178,6 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                 useNumberGrouping: true,
                 maxArrayItemsWidth: process.stdout.columns - 1
             };
-
             console.info(`${chalk.yellow("Metadata key:")} ${prettyPrintObject(key)}`);
             console.info(`${chalk.yellow("Metadata:")} ${
                 typeof keyValue === "string"
@@ -220,10 +204,8 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
                 style: "decimal",
                 useGrouping: true
             } as const;
-
             if (parsedMetadata.splicedParts > 1)
                 console.info(`${chalk.yellow("Spliced parts:")} ${parsedMetadata.splicedParts}`);
-
             console.info(`${chalk.yellow("GGUF version:")} ${parsedMetadata.version}`);
             console.info(`${chalk.yellow("Tensor count:")} ${parsedMetadata.totalTensorCount.toLocaleString("en-US", numberLocaleFormattingOptions)}`);
             console.info(`${chalk.yellow("Metadata size:")} ${toBytes(parsedMetadata.totalMetadataSize)}`);
@@ -234,22 +216,17 @@ export const InspectGgufCommand: CommandModule<object, InspectGgufCommand> = {
         }
     }
 };
-
-// these fields are added by the parser for ease of use and are not found in the gguf file itself
 function removeAdditionalTensorInfoFields(tensorInfo?: GgufTensorInfo[]) {
     if (tensorInfo == null)
         return;
-
     for (const tensor of tensorInfo) {
         delete (tensor as {fileOffset?: GgufTensorInfo["fileOffset"]}).fileOffset;
         delete (tensor as {filePart?: GgufTensorInfo["filePart"]}).filePart;
     }
 }
-
 function tryFormattingJinja(template?: string) {
     if (typeof template !== "string")
         return template;
-
     try {
         const parsedTemplate = new Template(template);
         return parsedTemplate.format({

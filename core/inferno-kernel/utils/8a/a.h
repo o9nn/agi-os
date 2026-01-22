@@ -1,18 +1,15 @@
 #include <lib9.h>
 #include <bio.h>
 #include "../8c/8.out.h"
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 typedef	struct	Sym	Sym;
 typedef	struct	Ref	Ref;
 typedef	struct	Gen	Gen;
 typedef	struct	Io	Io;
 typedef	struct	Hist	Hist;
 typedef	struct	Gen2 	Gen2;
-
 #define	MAXALIGN	7
 #define	FPCHIP		1
 #define	NSYMB		500
@@ -26,81 +23,71 @@ typedef	struct	Gen2 	Gen2;
 #define	NHASH		503
 #define	STRINGSZ	200
 #define	NMACRO		10
-
 struct	Sym
 {
-	Sym*	link;
-	Ref*	ref;
-	char*	macro;
-	long	value;
-	ushort	type;
-	char	*name;
-	char	sym;
+Sym*	link;
+Ref*	ref;
+char*	macro;
+long	value;
+ushort	type;
+char	*name;
+char	sym;
 };
 #define	S	((Sym*)0)
-
 struct	Ref
 {
-	int	class;
+int	class;
 };
-
 EXTERN struct
 {
-	char*	p;
-	int	c;
+char*	p;
+int	c;
 } fi;
-
 struct	Io
 {
-	Io*	link;
-	char	b[BUFSIZ];
-	char*	p;
-	short	c;
-	short	f;
+Io*	link;
+char	b[BUFSIZ];
+char*	p;
+short	c;
+short	f;
 };
 #define	I	((Io*)0)
-
 EXTERN struct
 {
-	Sym*	sym;
-	short	type;
+Sym*	sym;
+short	type;
 } h[NSYM];
-
 struct	Gen
 {
-	double	dval;
-	char	sval[8];
-	long	offset;
-	long	offset2;
-	Sym*	sym;
-	short	type;
-	short	index;
-	short	scale;
+double	dval;
+char	sval[8];
+long	offset;
+long	offset2;
+Sym*	sym;
+short	type;
+short	index;
+short	scale;
 };
 struct	Gen2
 {
-	Gen	from;
-	Gen	to;
+Gen	from;
+Gen	to;
 };
-
 struct	Hist
 {
-	Hist*	link;
-	char*	name;
-	long	line;
-	long	offset;
+Hist*	link;
+char*	name;
+long	line;
+long	offset;
 };
 #define	H	((Hist*)0)
-
 enum
 {
-	CLAST,
-	CMACARG,
-	CMACRO,
-	CPREPROC,
+CLAST,
+CMACARG,
+CMACRO,
+CPREPROC,
 };
-
-
 EXTERN	char	debug[256];
 EXTERN	Sym*	hash[NHASH];
 EXTERN	char*	Dlist[30];
@@ -129,7 +116,6 @@ EXTERN	int	thechar;
 EXTERN	char*	thestring;
 EXTERN	long	thunk;
 EXTERN	Biobuf	obuf;
-
 void*	allocn(void*, long, long);
 void	errorexit(void);
 void	pushio(void);
@@ -172,15 +158,11 @@ void	yyerror(char*, ...);
 int	yyparse(void);
 void	setinclude(char*);
 int	assemble(char*);
-
-/*
- *	system-dependent stuff from ../cc/compat.c
- */
-enum	/* keep in synch with ../cc/cc.h */
+enum
 {
-	Plan9	= 1<<0,
-	Unix	= 1<<1,
-	Windows	= 1<<2
+Plan9	= 1<<0,
+Unix	= 1<<1,
+Windows	= 1<<2
 };
 int	mywait(int*);
 int	mycreat(char*, int);

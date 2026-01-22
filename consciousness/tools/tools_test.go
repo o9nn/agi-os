@@ -1,39 +1,31 @@
 package tools
-
 import (
 	"testing"
 	"text/template"
-
 	"github.com/google/go-cmp/cmp"
 	"github.com/EchoCog/echollama/api"
 )
-
 func TestParser(t *testing.T) {
 	qwen, err := template.New("qwen").Parse(`{{if .ToolCalls}}<tool_call>{{range .ToolCalls}}{"name": "{{.Function.Name}}", "arguments": {{.Function.Arguments}}}{{end}}</tool_call>{{end}}`)
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	deepseek, err := template.New("deepseek").Parse("{{if .ToolCalls}}<|tool▁calls▁begin|>{{range .ToolCalls}}<|tool▁call▁begin|>function<|tool▁sep|>get_current_weather\n```json\n{\"location\": \"Tokyo\"}\n```<|tool▁call▁end|>{{end}}<|tool▁calls▁end|><|end▁of▁sentence|>{{end}}")
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	json, err := template.New("json").Parse(`{{if .ToolCalls}}{{range .ToolCalls}}{"name": "{{.Function.Name}}", "arguments": {{.Function.Arguments}}}{{end}}{{end}}`)
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	mistral, err := template.New("mistral").Parse(`{{if .ToolCalls}}[TOOL_CALLS] [{{range .ToolCalls}}{"name": "{{.Function.Name}}", "arguments": {{.Function.Arguments}}}{{end}}][/TOOL_CALLS]{{end}}`)
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	list, err := template.New("list").Parse(`{{if .ToolCalls}}[{{range .ToolCalls}}{"name": "{{.Function.Name}}", "arguments": {{.Function.Arguments}}}{{end}}]{{end}}`)
 	if err != nil {
 		t.Fatalf("Failed to parse template: %v", err)
 	}
-
 	tools := []api.Tool{
 		{
 			Type: "function",
@@ -148,7 +140,6 @@ func TestParser(t *testing.T) {
 			},
 		},
 	}
-
 	tests := []struct {
 		name    string
 		inputs  []string
@@ -757,11 +748,9 @@ func TestParser(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			parser := NewParser(tt.tmpl, tools)
-
 			var calls []api.ToolCall
 			var content string
 			for _, input := range tt.inputs {
@@ -769,15 +758,12 @@ func TestParser(t *testing.T) {
 				calls = append(calls, tcs...)
 				content += c
 			}
-
 			if content != tt.content {
 				t.Errorf("Expected content %q, got %q", tt.content, content)
 			}
-
 			if len(calls) != len(tt.calls) {
 				t.Fatalf("Expected %d tool calls, got %d", len(tt.calls), len(calls))
 			}
-
 			for i, want := range tt.calls {
 				if diff := cmp.Diff(calls[i], want); diff != "" {
 					t.Errorf("Tool call %d mismatch (-got +want):\n%s", i, diff)
@@ -786,7 +772,6 @@ func TestParser(t *testing.T) {
 		})
 	}
 }
-
 func TestDone(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -843,7 +828,6 @@ func TestDone(t *testing.T) {
 			want:   true,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			parser := &Parser{
@@ -857,7 +841,6 @@ func TestDone(t *testing.T) {
 		})
 	}
 }
-
 func TestContent(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -916,7 +899,6 @@ func TestContent(t *testing.T) {
 			n:       0,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			parser := &Parser{
@@ -931,7 +913,6 @@ func TestContent(t *testing.T) {
 		})
 	}
 }
-
 func TestFindTag(t *testing.T) {
 	cases := []struct {
 		name   string
@@ -1032,7 +1013,6 @@ func TestFindTag(t *testing.T) {
 			found:  true,
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			parser := &Parser{
@@ -1050,7 +1030,6 @@ func TestFindTag(t *testing.T) {
 		})
 	}
 }
-
 func TestFindArguments(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -1146,11 +1125,9 @@ func TestFindArguments(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, _ := findArguments(tt.buffer)
-
 			if diff := cmp.Diff(got, tt.want); diff != "" {
 				t.Errorf("scanArguments() args mismatch (-got +want):\n%s", diff)
 			}

@@ -19,19 +19,15 @@ declare module "ml-matrix" {
     static eye(rows: number, columns: number): Matrix;
     static columnVector(array: number[]): Matrix;
     static rowVector(array: number[]): Matrix;
-
-    // Add eigenvalues method
     eigenvalues(): number[] | Array<{ re: number; im: number }>;
   }
 }
-
 declare module "ml-distance" {
   export namespace distance {
     export function euclidean(a: number[], b: number[]): number;
   }
   export const euclidean: (a: number[], b: number[]) => number;
 }
-
 declare module "hnswlib-node" {
   export class HierarchicalNSW {
     constructor(space: string, dimensions: number);

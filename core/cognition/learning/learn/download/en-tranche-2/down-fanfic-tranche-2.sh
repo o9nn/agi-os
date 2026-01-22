@@ -1,7 +1,4 @@
 #! /bin/bash
-# Download a bunch of fanfic.
-# These make up "tranche-2" of the English-learning raw source.
-
 ./process-epub.sh http://archiveofourown.org/downloads/Fa/FayJay/91885/The%20Student%20Prince.epub prince-
 ./process-epub.sh http://archiveofourown.org/downloads/Am/Ames78/10560708/Anger%20Management.epub anger-
 ./process-epub.sh http://archiveofourown.org/downloads/el/ellay_gee/10960476/A%20House%20is%20not%20a%20Home.epub house-
@@ -22,7 +19,6 @@
 ./process-epub.sh http://archiveofourown.org/downloads/Ha/Harte_Roan/10643652/Sweet%20Search.epub sweatsearch-
 ./process-epub.sh http://archiveofourown.org/downloads/ut/utzzer/10991193/All%20your%20wishes.epub allwish-
 ./process-epub.sh http://archiveofourown.org/downloads/Da/Darylfan1969/10990932/Fighting%20for%20Freedom.epub fightfree-
-
 ./process-epub.sh http://archiveofourown.org/downloads/Co/CottonCandyKid/2741999/H%20is%20for%20Hero.epub herocot-
 ./process-epub.sh http://archiveofourown.org/downloads/Sm/Smokeycut/10927701/Have%20A%20Heart.epub havehear-
 ./process-epub.sh http://archiveofourown.org/downloads/ki/kissing2cousins/9373997/Vamplock%20The%20Middle.epub vampmid-
@@ -56,7 +52,6 @@
 ./process-epub.sh http://archiveofourown.org/downloads/Sp/Spiteful_Letters/6820534/Full%20Northern.epub fullnorth-
 ./process-epub.sh http://archiveofourown.org/downloads/Xi/XindraArgos/3394577/The%20support%20group.epub supportgr-
 ./process-epub.sh http://archiveofourown.org/downloads/po/pointlace/4741709/Margaret%20Hale%20with%20less%20pride.epub marghale-
-
 ./process-epub.sh http://archiveofourown.org/downloads/ga/gamerfic/2780816/This%20Secret%20Alchemy.epub gamerf-
 ./process-epub.sh http://archiveofourown.org/downloads/ni/ninemoons42/682752/the%20other%20side%20of%20blue.epub nimemi-
 ./process-epub.sh http://archiveofourown.org/downloads/Fr/FrenchCirce/6524938/Pride%20Narcissism%20and%20Prejudice.epub circenar-

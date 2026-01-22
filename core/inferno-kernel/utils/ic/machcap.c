@@ -1,9 +1,8 @@
 #include "gc.h"
-
 int
 machcap(Node *n)
 {
-	if(n == Z)	/* test */
-		return thechar == 'j';
-	return 0;
+if(n == Z)
+return thechar == 'j';
+return 0;
 }

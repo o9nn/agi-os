@@ -1,10 +1,8 @@
 package main
-
 import (
 	"context"
 	"log"
 	"time"
-
 	"github.com/moeru-ai/inventory/internal/configs"
 	"github.com/moeru-ai/inventory/internal/cron"
 	grpcservers "github.com/moeru-ai/inventory/internal/grpc/servers"
@@ -14,12 +12,10 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 )
-
 var (
 	configFilePath string
 	envFilePath    string
 )
-
 func main() {
 	root := &cobra.Command{
 		Use: "api-server",
@@ -34,23 +30,17 @@ func main() {
 				fx.Invoke(apiserver.RunGatewayServer()),
 				fx.Invoke(cron.RunCron()),
 			)
-
 			app.Run()
-
 			stopCtx, stopCtxCancel := context.WithTimeout(context.Background(), time.Minute*5)
 			defer stopCtxCancel()
-
 			if err := app.Stop(stopCtx); err != nil {
 				return err
 			}
-
 			return nil
 		},
 	}
-
 	root.Flags().StringVarP(&configFilePath, "config", "c", "", "config file path")
 	root.Flags().StringVarP(&envFilePath, "env", "e", "", "env file path")
-
 	if err := root.Execute(); err != nil {
 		log.Fatal(err)
 	}

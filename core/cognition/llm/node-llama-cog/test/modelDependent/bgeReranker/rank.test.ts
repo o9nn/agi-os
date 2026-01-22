@@ -1,23 +1,19 @@
 import {describe, expect, test} from "vitest";
 import {getModelFile} from "../../utils/modelFiles.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
-
 describe("bgeReranker", () => {
     describe("rank", () => {
         test("simple ranking", {timeout: 1000 * 60 * 60 * 2}, async (test) => {
             if (process.platform !== "darwin" && process.arch !== "arm64")
-                test.skip(); // the scores are a bit different on different platforms, so skipping on other platforms due to flakiness
-
+                test.skip(); 
             const modelPath = await getModelFile("bge-reranker-v2-m3-Q8_0.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
             const rankingContext = await model.createRankingContext({
                 contextSize: 512
             });
-
             const documents = [
                 "The sky is clear and blue today",
                 "I love eating pizza with extra cheese",
@@ -30,19 +26,14 @@ describe("bgeReranker", () => {
                 "Not all the things that shine are made of gold",
                 "Cleaning the house is a good way to keep it tidy"
             ];
-
             const query = "Tell me a geographical fact";
-
             const ranks = await Promise.all(
                 documents.map((doc) => rankingContext.rank(query, doc))
             );
-
             const highestRank = ranks.reduce((highest, rank) => Math.max(highest, rank));
             const highestRankIndex = ranks.indexOf(highestRank);
-
             const highestRankDocument = documents[highestRankIndex];
             expect(highestRankDocument).to.eql("Mount Everest is the tallest mountain in the world");
-
             expect(simplifyRanks([highestRank])[0]).toMatchInlineSnapshot("0.014774031693273055");
             expect(simplifyRanks(ranks)).toMatchInlineSnapshot(`
               [
@@ -59,21 +50,17 @@ describe("bgeReranker", () => {
               ]
             `);
         });
-
         test("rank all", {timeout: 1000 * 60 * 60 * 2}, async (test) => {
             if (process.platform !== "darwin" && process.arch !== "arm64")
-                test.skip(); // the scores are a bit different on different platforms, so skipping on other platforms due to flakiness
-
+                test.skip(); 
             const modelPath = await getModelFile("bge-reranker-v2-m3-Q8_0.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
             const rankingContext = await model.createRankingContext({
                 contextSize: 512
             });
-
             const documents = [
                 "The sky is clear and blue today",
                 "I love eating pizza with extra cheese",
@@ -86,17 +73,12 @@ describe("bgeReranker", () => {
                 "Not all the things that shine are made of gold",
                 "Cleaning the house is a good way to keep it tidy"
             ];
-
             const query = "Tell me a geographical fact";
-
             const ranks = await rankingContext.rankAll(query, documents);
-
             const highestRank = ranks.reduce((highest, rank) => Math.max(highest, rank));
             const highestRankIndex = ranks.indexOf(highestRank);
-
             const highestRankDocument = documents[highestRankIndex];
             expect(highestRankDocument).to.eql("Mount Everest is the tallest mountain in the world");
-
             expect(simplifyRanks([highestRank])[0]).toMatchInlineSnapshot("0.014774031693273055");
             expect(simplifyRanks(ranks)).toMatchInlineSnapshot(`
               [
@@ -113,21 +95,17 @@ describe("bgeReranker", () => {
               ]
             `);
         });
-
         test("rank and sort", {timeout: 1000 * 60 * 60 * 2}, async (test) => {
             if (process.platform !== "darwin" && process.arch !== "arm64")
-                test.skip(); // the scores are a bit different on different platforms, so skipping on other platforms due to flakiness
-
+                test.skip(); 
             const modelPath = await getModelFile("bge-reranker-v2-m3-Q8_0.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
             const rankingContext = await model.createRankingContext({
                 contextSize: 512
             });
-
             const documents = [
                 "The sky is clear and blue today",
                 "I love eating pizza with extra cheese",
@@ -138,15 +116,10 @@ describe("bgeReranker", () => {
                 "Not all the things that shine are made of gold",
                 "Cleaning the house is a good way to keep it tidy"
             ];
-
             const query = "Tell me a geographical fact";
-
             const rankedDocuments = await rankingContext.rankAndSort(query, documents);
-
             const topDocument = rankedDocuments[0]!;
-
             expect(topDocument.document).to.eql("Mount Everest is the tallest mountain in the world");
-
             expect(simplifySortedRanks([topDocument])[0]).toMatchInlineSnapshot(`
               {
                 "document": "Mount Everest is the tallest mountain in the world",
@@ -190,18 +163,15 @@ describe("bgeReranker", () => {
               ]
             `);
         });
-
         test("rank and sort without scores", {timeout: 1000 * 60 * 60 * 2}, async () => {
             const modelPath = await getModelFile("bge-reranker-v2-m3-Q8_0.gguf");
             const llama = await getTestLlama();
-
             const model = await llama.loadModel({
                 modelPath
             });
             const rankingContext = await model.createRankingContext({
                 contextSize: 512
             });
-
             const documents = [
                 "The sky is clear and blue today",
                 "I love eating pizza with extra cheese",
@@ -212,15 +182,10 @@ describe("bgeReranker", () => {
                 "Not all the things that shine are made of gold",
                 "Cleaning the house is a good way to keep it tidy"
             ];
-
             const query = "Tell me a geographical fact";
-
             const rankedDocuments = await rankingContext.rankAndSort(query, documents);
-
             const topDocument = rankedDocuments[0]!;
-
             expect(topDocument.document).to.eql("Mount Everest is the tallest mountain in the world");
-
             expect(onlyDocuments([topDocument])[0]).toMatchInlineSnapshot('"Mount Everest is the tallest mountain in the world"');
             expect(onlyDocuments(rankedDocuments)).toMatchInlineSnapshot(`
               [
@@ -237,34 +202,27 @@ describe("bgeReranker", () => {
         });
     });
 });
-
 function simplifyRanks<const T extends number[]>(ranks: T): T {
     return ranks.map((rank) => simplifyScore(rank)) as T;
 }
-
 function simplifySortedRanks<const T extends {document: string, score: number}[]>(values: T): T {
     return values.map((item) => ({
         document: item.document,
         score: simplifyScore(item.score)
     })) as T;
 }
-
 function onlyDocuments(values: {document: string, score: number}[]): string[] {
     return values.map((item) => item.document);
 }
-
 function simplifyScore(score: number) {
     return toSigmoid(parseFloat(roundToPrecision(toLogit(score), 0.6).toFixed(1)));
 }
-
 function roundToPrecision(value: number, precision: number): number {
     return Math.round(value / precision) * precision;
 }
-
 function toLogit(sigmoid: number) {
     return Math.log(sigmoid / (1 - sigmoid));
 }
-
 function toSigmoid(logit: number) {
     return 1 / (1 + Math.exp(-logit));
 }

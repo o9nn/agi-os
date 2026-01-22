@@ -1,6 +1,5 @@
 import { useLocalStorage } from 'foxact/use-local-storage'
 import { useState } from 'react'
-
 export interface ChatProvider {
   apiKey: string
   baseURL: string
@@ -13,7 +12,6 @@ export interface ChatProvider {
     requiredApiKey?: true
   }
 }
-
 export const predefinedChatProviders: ChatProvider[] = [
   {
     apiKey: '',
@@ -46,22 +44,17 @@ export const predefinedChatProviders: ChatProvider[] = [
     },
   },
 ]
-
 export const useChatModel = () => useLocalStorage<string>('moetalk/xsai/chat-model', '')
-
 export const useEmbedModel = () => useLocalStorage<string>('moetalk/xsai/embed-model', '')
-
 export const useChatProvider = () => {
   const [provider, setProvider] = useLocalStorage<ChatProvider>('moetalk/xsai/chat-provider', predefinedChatProviders[0])
   const [lastProvider, setLastProvider] = useState(provider.metadata.id)
   const [,setChatModel] = useChatModel()
   const [,setEmbedModel] = useEmbedModel()
-
   if (lastProvider !== provider.metadata.id) {
     setLastProvider(provider.metadata.id)
     setChatModel('')
     setEmbedModel('')
   }
-
   return [provider, setProvider] as const
 }

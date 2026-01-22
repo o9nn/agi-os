@@ -1,7 +1,5 @@
 #!/bin/bash
-
 set -e -x
-
 ETPAN_VERSION=1.9.1
 ETPAN_SHA256=f5e354ccf1014c6ee313ade1009b8a82f28043d2504655e388bb4c1328700fcd
 curl -L -o libetpan-${ETPAN_VERSION}.tar.gz \

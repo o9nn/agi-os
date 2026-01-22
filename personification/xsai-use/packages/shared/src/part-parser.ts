@@ -1,12 +1,9 @@
 import type { Message, Part } from '@xsai/shared-chat'
 import type { UIMessagePart } from './types/ui'
-
 export type ParseFunc<T extends Part['type']> = (part: Extract<Part, { type: T }>) => UIMessagePart[]
-
 export type ParseMap = {
   [T in Part['type']]?: ParseFunc<T>
 }
-
 const defaultParseMap: ParseMap = {
   text: part => [{
     text: part.text,
@@ -25,15 +22,12 @@ const defaultParseMap: ParseMap = {
     type: 'text',
   }],
 }
-
 export class PartParser {
   #parses: ParseMap = defaultParseMap
-
   register(map: ParseMap) {
     this.#parses = { ...this.#parses, ...map }
     return this
   }
-
   #parsePart(part: Part): UIMessagePart[] {
     const parse = this.#parses[part.type]
     if (parse) {
@@ -44,23 +38,19 @@ export class PartParser {
       type: 'text',
     }]
   }
-
   exec(message: Message) {
     if (message.content === undefined) {
       return []
     }
-
     if (typeof message.content === 'string') {
       return this.#parsePart({
         type: 'text',
         text: message.content,
       })
     }
-
     if (Array.isArray(message.content)) {
       return message.content.flatMap(part => this.#parsePart(part)).filter((part): part is UIMessagePart => part !== null)
     }
-
     return []
   }
 }

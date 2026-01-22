@@ -1,7 +1,3 @@
-/**
- * Twitter website CSS selector constants
- * Used to locate elements on the page
- */
 export const SELECTORS = {
   LOGIN: {
     USERNAME_INPUT: 'input[autocomplete="username"]',

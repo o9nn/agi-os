@@ -1,6 +1,3 @@
-/*
- * PCMCIA support code.
- */
 int	inb(int);
 int	inb(int);
 ulong	inl(int);

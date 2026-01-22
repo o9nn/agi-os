@@ -1,10 +1,3 @@
-;
-; quote-quote.scm
-;
-; Test double-quotes.  The pattern will search for a 
-; quoted expression.
-;
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -12,7 +5,6 @@
 		(ConceptNode "banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -20,7 +12,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -28,7 +19,6 @@
 		(ConceptNode "grape")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -36,7 +26,6 @@
 		(ConceptNode "bad banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -44,7 +33,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -52,7 +40,6 @@
 		(ConceptNode "banana")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "similar")
 	(ListLink
@@ -60,7 +47,6 @@
 		(ConceptNode "apple")
 	)
 )
-
 (define bindy
 	(BindLink
 		(VariableNode "$var-a")
@@ -74,4 +60,3 @@
 		(VariableNode "$var-a")
 	)
 )
-

@@ -1,9 +1,7 @@
 import type { Preset } from 'unocss'
-
 import { presetChromatic } from '@proj-airi/unocss-preset-chromatic'
 import {
   defineConfig,
-
   presetAttributify,
   presetIcons,
   presetTypography,
@@ -12,9 +10,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-
 import { presetWebFontsFonts } from '../../uno.config'
-
 export default defineConfig({
   presets: [
     presetWind3(),

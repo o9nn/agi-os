@@ -1,23 +1,5 @@
 #ifndef _LINUX_SCSI_H
 #define _LINUX_SCSI_H
-
-/*
- * This header file contains public constants and structures used by
- * the scsi code for linux.
- */
-
-/*
-    $Header: cvs/gnumach/linux/src/include/scsi/Attic/scsi.h,v 1.1 1999/04/26 05:58:14 tb Exp $
-
-    For documentation on the OPCODES, MESSAGES, and SENSE values,
-    please consult the SCSI standard.
-
-*/
-
-/*
- *      SCSI opcodes
- */
-
 #define TEST_UNIT_READY       0x00
 #define REZERO_UNIT           0x01
 #define REQUEST_SENSE         0x03
@@ -42,7 +24,6 @@
 #define RECEIVE_DIAGNOSTIC    0x1c
 #define SEND_DIAGNOSTIC       0x1d
 #define ALLOW_MEDIUM_REMOVAL  0x1e
-
 #define SET_WINDOW            0x24
 #define READ_CAPACITY         0x25
 #define READ_10               0x28
@@ -84,11 +65,6 @@
 #define READ_ELEMENT_STATUS   0xb8
 #define SEND_VOLUME_TAG       0xb6
 #define WRITE_LONG_2          0xea
-
-/*
- *  Status codes
- */
-
 #define GOOD                 0x00
 #define CHECK_CONDITION      0x01
 #define CONDITION_GOOD       0x02
@@ -98,13 +74,7 @@
 #define RESERVATION_CONFLICT 0x0c
 #define COMMAND_TERMINATED   0x11
 #define QUEUE_FULL           0x14
-
 #define STATUS_MASK          0x3e
-
-/*
- *  SENSE KEYS
- */
-
 #define NO_SENSE            0x00
 #define RECOVERED_ERROR     0x01
 #define NOT_READY           0x02
@@ -118,33 +88,20 @@
 #define ABORTED_COMMAND     0x0b
 #define VOLUME_OVERFLOW     0x0d
 #define MISCOMPARE          0x0e
-
-
-/*
- *  DEVICE TYPES
- */
-
 #define TYPE_DISK           0x00
 #define TYPE_TAPE           0x01
-#define TYPE_PROCESSOR      0x03    /* HP scanners use this */
-#define TYPE_WORM           0x04    /* Treated as ROM by our system */
+#define TYPE_PROCESSOR      0x03
+#define TYPE_WORM           0x04
 #define TYPE_ROM            0x05
 #define TYPE_SCANNER        0x06
-#define TYPE_MOD            0x07    /* Magneto-optical disk - 
-				     * - treated as TYPE_DISK */
+#define TYPE_MOD            0x07
 #define TYPE_MEDIUM_CHANGER 0x08
 #define TYPE_NO_LUN         0x7f
-
-
-/*
- *  MESSAGE CODES
- */
-
 #define COMMAND_COMPLETE    0x00
 #define EXTENDED_MESSAGE    0x01
 #define     EXTENDED_MODIFY_DATA_POINTER    0x00
 #define     EXTENDED_SDTR                   0x01
-#define     EXTENDED_EXTENDED_IDENTIFY      0x02    /* SCSI-I only */
+#define     EXTENDED_EXTENDED_IDENTIFY      0x02
 #define     EXTENDED_WDTR                   0x03
 #define SAVE_POINTERS       0x02
 #define RESTORE_POINTERS    0x03
@@ -157,49 +114,14 @@
 #define LINKED_CMD_COMPLETE 0x0a
 #define LINKED_FLG_CMD_COMPLETE 0x0b
 #define BUS_DEVICE_RESET    0x0c
-
-#define INITIATE_RECOVERY   0x0f            /* SCSI-II only */
-#define RELEASE_RECOVERY    0x10            /* SCSI-II only */
-
+#define INITIATE_RECOVERY   0x0f
+#define RELEASE_RECOVERY    0x10
 #define SIMPLE_QUEUE_TAG    0x20
 #define HEAD_OF_QUEUE_TAG   0x21
 #define ORDERED_QUEUE_TAG   0x22
-
-/*
- * Here are some scsi specific ioctl commands which are sometimes useful.
- */
-/* These are a few other constants  only used by scsi  devices */
-
 #define SCSI_IOCTL_GET_IDLUN 0x5382
-
-/* Used to turn on and off tagged queuing for scsi devices */
-
 #define SCSI_IOCTL_TAGGED_ENABLE 0x5383
 #define SCSI_IOCTL_TAGGED_DISABLE 0x5384
-
-/* Used to obtain the host number of a device. */
 #define SCSI_IOCTL_PROBE_HOST 0x5385
-
-/* Used to get the bus number for a device */
 #define SCSI_IOCTL_GET_BUS_NUMBER 0x5386
-
-/*
- * Overrides for Emacs so that we follow Linus's tabbing style.
- * Emacs will notice this stuff at the end of the file and automatically
- * adjust the settings for this buffer only.  This must remain at the end
- * of the file.
- * ---------------------------------------------------------------------------
- * Local variables:
- * c-indent-level: 4 
- * c-brace-imaginary-offset: 0
- * c-brace-offset: -4
- * c-argdecl-indent: 4
- * c-label-offset: -4
- * c-continued-statement-offset: 4
- * c-continued-brace-offset: 0
- * indent-tabs-mode: nil
- * tab-width: 8
- * End:
- */
-
 #endif

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <musa_runtime.h>
 #include <musa.h>
 #include <mublas.h>
@@ -82,8 +81,6 @@
 #define cudaStreamWaitEvent musaStreamWaitEvent
 #define cudaStream_t musaStream_t
 #define cudaSuccess musaSuccess
-
-// Additional mappings for MUSA virtual memory pool
 #define CU_DEVICE_ATTRIBUTE_VIRTUAL_MEMORY_MANAGEMENT_SUPPORTED MU_DEVICE_ATTRIBUTE_VIRTUAL_ADDRESS_MANAGEMENT_SUPPORTED
 #define CU_MEM_ACCESS_FLAGS_PROT_READWRITE MU_MEM_ACCESS_FLAGS_PROT_READWRITE
 #define CU_MEM_ALLOC_GRANULARITY_RECOMMENDED MU_MEM_ALLOC_GRANULARITY_RECOMMENDED
@@ -109,8 +106,6 @@
 #define cudaMemcpy3DPeerParms musaMemcpy3DPeerParms
 #define make_cudaExtent make_musaExtent
 #define make_cudaPitchedPtr make_musaPitchedPtr
-
-// Additional mappings for MUSA graphs
 #define CUDA_SUCCESS MUSA_SUCCESS
 #define CUresult MUresult
 #define cuGetErrorString muGetErrorString
@@ -136,6 +131,5 @@
 #define cudaStreamBeginCapture musaStreamBeginCapture
 #define cudaStreamEndCapture musaStreamEndCapture
 #define cudaOccupancyMaxActiveBlocksPerMultiprocessor musaOccupancyMaxActiveBlocksPerMultiprocessor
-
 typedef __mt_bfloat16 nv_bfloat16;
 typedef __mt_bfloat162 nv_bfloat162;

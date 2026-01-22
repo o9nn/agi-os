@@ -1,5 +1,4 @@
 import { join, resolve } from 'node:path'
-
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Vue from '@vitejs/plugin-vue'
 import UnoCss from 'unocss/vite'
@@ -9,12 +8,10 @@ import Yaml from 'unplugin-yaml/vite'
 import Inspect from 'vite-plugin-inspect'
 import VitePluginVueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-layouts'
-
 import { Download } from '@proj-airi/unplugin-fetch'
 import { DownloadLive2DSDK } from '@proj-airi/unplugin-live2d-sdk'
 import { templateCompilerOptions } from '@tresjs/core'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
@@ -23,20 +20,13 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()],
   },
   renderer: {
-    // Thanks to [@Maqsyo](https://github.com/Maqsyo)
-    // https://github.com/alex8088/electron-vite/issues/99#issuecomment-1862671727
     base: './',
     optimizeDeps: {
       exclude: [
-        // Internal Packages
         '@proj-airi/stage-ui/*',
         '@proj-airi/drizzle-duckdb-wasm',
         '@proj-airi/drizzle-duckdb-wasm/*',
-
-        // Static Assets: Models, Images, etc.
         'src/renderer/public/assets/*',
-
-        // Live2D SDK
         '@framework/live2dcubismframework',
         '@framework/math/cubismmatrix44',
         '@framework/type/csmvector',
@@ -70,7 +60,6 @@ export default defineConfig({
         ],
       },
     },
-
     plugins: [
       {
         name: 'proj-airi:defines',
@@ -84,15 +73,11 @@ export default defineConfig({
           if (ctx.mode === 'production') {
             define['import.meta.env.URL_MODE'] = '\'file\''
           }
-
           return { define }
         },
       },
-
       Inspect(),
-
       Yaml(),
-
       VueMacros({
         plugins: {
           vue: Vue({
@@ -103,7 +88,6 @@ export default defineConfig({
         },
         betterDefine: false,
       }),
-
       VueRouter({
         dts: resolve(import.meta.dirname, 'src/renderer/typed-router.d.ts'),
         routesFolder: [
@@ -111,24 +95,17 @@ export default defineConfig({
           resolve(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src', 'pages'),
         ],
       }),
-
       VitePluginVueDevTools(),
-
-      // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
       Layouts({
         layoutsDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'layouts')],
         pagesDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'pages')],
       }),
-
       UnoCss(),
-
-      // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
       VueI18n({
         runtimeOnly: true,
         compositionOnly: true,
         fullInstall: true,
       }),
-
       DownloadLive2DSDK(),
       Download('https://dist.ayaka.moe/live2d-models/hiyori_free_zh.zip', 'hiyori_free_zh.zip', 'assets/live2d/models'),
       Download('https://dist.ayaka.moe/live2d-models/hiyori_pro_zh.zip', 'hiyori_pro_zh.zip', 'assets/live2d/models'),

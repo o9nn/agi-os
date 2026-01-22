@@ -1,16 +1,11 @@
 package hgql
-
 import "github.com/EchoCog/echollama/core/deeptreeecho"
-
-// NewHGQLParser returns a parser instance with initialized collections.
 func NewHGQLParser() *HGQLParser {
 	return &HGQLParser{
 		Rules:           make(map[string]*ParseRule),
 		HyperExtensions: make(map[string]*HyperExtension),
 	}
 }
-
-// NewHyperGraphExecutor wires basic executor dependencies around the provided identity.
 func NewHyperGraphExecutor(identity *deeptreeecho.Identity) *HyperGraphExecutor {
 	return &HyperGraphExecutor{
 		Identity:        identity,
@@ -19,8 +14,6 @@ func NewHyperGraphExecutor(identity *deeptreeecho.Identity) *HyperGraphExecutor 
 		PatternMatcher:  &PatternMatcher{},
 	}
 }
-
-// NewQueryOptimizer constructs a no-op optimizer with empty analytics.
 func NewQueryOptimizer() *QueryOptimizer {
 	return &QueryOptimizer{
 		OptimizationRules: []OptimizationRule{},
@@ -28,8 +21,6 @@ func NewQueryOptimizer() *QueryOptimizer {
 		Statistics:        &QueryStatistics{},
 	}
 }
-
-// NewPatternRecognition returns an initialized pattern recognition pipeline.
 func NewPatternRecognition(identity *deeptreeecho.Identity) *PatternRecognition {
 	return &PatternRecognition{
 		Identity:          identity,
@@ -38,8 +29,6 @@ func NewPatternRecognition(identity *deeptreeecho.Identity) *PatternRecognition 
 		Confidence:        0.0,
 	}
 }
-
-// NewMultiScaleProcessor constructs a processor with default scale tracking.
 func NewMultiScaleProcessor() *MultiScaleProcessor {
 	return &MultiScaleProcessor{
 		Scales:       []ProcessingScale{},
@@ -47,8 +36,6 @@ func NewMultiScaleProcessor() *MultiScaleProcessor {
 		CurrentScale: 0,
 	}
 }
-
-// NewAuthenticationManager returns an authentication manager with no providers configured.
 func NewAuthenticationManager() *AuthenticationManager {
 	return &AuthenticationManager{
 		Providers: make(map[string]*AuthProvider),
@@ -56,8 +43,6 @@ func NewAuthenticationManager() *AuthenticationManager {
 		Config:    &AuthManagerConfig{},
 	}
 }
-
-// NewRateLimiter returns a limiter with empty counters and limits enabled.
 func NewRateLimiter() *RateLimiter {
 	return &RateLimiter{
 		Limits:   make(map[string]*RateLimit),
@@ -65,8 +50,6 @@ func NewRateLimiter() *RateLimiter {
 		Enabled:  true,
 	}
 }
-
-// NewTransformationPipeline returns an empty transformation pipeline.
 func NewTransformationPipeline() *TransformationPipeline {
 	return &TransformationPipeline{
 		Stages:     []TransformStage{},
@@ -75,8 +58,6 @@ func NewTransformationPipeline() *TransformationPipeline {
 		Processors: make(map[string]*Processor),
 	}
 }
-
-// NewConnectionMonitor returns a monitor with default collections.
 func NewConnectionMonitor() *ConnectionMonitor {
 	return &ConnectionMonitor{
 		Connections: make(map[string]*ConnectionStatus),
@@ -84,8 +65,6 @@ func NewConnectionMonitor() *ConnectionMonitor {
 		Thresholds:  &MonitoringThresholds{},
 	}
 }
-
-// NewConnectionPool constructs a pool with empty connection buckets.
 func NewConnectionPool() *ConnectionPool {
 	return &ConnectionPool{
 		Connections: make(map[string][]interface{}),

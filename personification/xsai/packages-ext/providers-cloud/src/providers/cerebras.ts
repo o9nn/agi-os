@@ -1,10 +1,4 @@
 import { createChatProvider, createMetadataProvider, createModelProvider, merge } from '@xsai-ext/shared-providers'
-
-/**
- * [Cerebras.ai](https://cerebras.ai/) provider.
- *
- * @see {@link https://inference-docs.cerebras.ai/api-reference/chat-completions}
- */
 export const createCerebras = (apiKey: string, baseURL = 'https://api.cerebras.ai/v1/') => merge(
   createMetadataProvider('cerebras'),
   createChatProvider<

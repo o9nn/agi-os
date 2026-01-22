@@ -1,6 +1,5 @@
 import type { MaterialMorph, Pmd, PmdMaterialInfo, PmdMorphInfo, Pmx, PmxMaterialInfo, PmxMorphInfo } from '@noname0310/mmd-parser'
 import type { BufferGeometry, LoadingManager, Material, MaterialParameters, Texture, TypedArray } from 'three'
-
 import {
   AddOperation,
   Color,
@@ -22,9 +21,7 @@ import {
   TextureLoader,
 } from 'three'
 import { TGALoader } from 'three/addons/loaders/TGALoader.js'
-
 import { MMDToonMaterial } from '../../materials/mmd-toon-material'
-
 interface MaterialBuilderParameters extends MaterialParameters {
   diffuse?: Color
   emissive: Color
@@ -35,11 +32,9 @@ interface MaterialBuilderParameters extends MaterialParameters {
   map?: LoadingTexture
   matcap: Texture
   matcapCombine: number
-
   name?: string
   opacity: number
   shininess: number
-
   specular: Color
   transparent: boolean
   userData: {
@@ -55,11 +50,6 @@ interface MaterialBuilderParameters extends MaterialParameters {
     }
   }
 }
-
-/*
- * base64 encoded default toon textures toon00.bmp - toon10.bmp.
- * We don't need to request external toon image files.
- */
 const DEFAULT_TOON_TEXTURES = [
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=',
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAN0lEQVRYR+3WQREAMBACsZ5/bWiiMvgEBTt5cW37hjsBBAgQIECAwFwgyfYPCCBAgAABAgTWAh8aBHZBl14e8wAAAABJRU5ErkJggg==',
@@ -73,7 +63,6 @@ const DEFAULT_TOON_TEXTURES = [
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=',
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAL0lEQVRYR+3QQREAAAzCsOFfNJPBJ1XQS9r2hsUAAQIECBAgQIAAAQIECBAgsBZ4MUx/ofm2I/kAAAAASUVORK5CYII=',
 ] as const
-
 const NON_ALPHA_CHANNEL_FORMATS = [
   RGB_S3TC_DXT1_Format,
   RGB_PVRTC_4BPPV1_Format,
@@ -81,28 +70,20 @@ const NON_ALPHA_CHANNEL_FORMATS = [
   RGB_ETC1_Format,
   RGB_ETC2_Format,
 ] as readonly number[]
-
 interface LoadingTexture extends Texture {
   readyCallbacks?: ((texture: Texture) => void)[]
   transparent: boolean
 }
-
 export class MaterialBuilder {
   crossOrigin = 'anonymous'
   manager: LoadingManager
   resourcePath?: string
   textureLoader: TextureLoader
   tgaLoader?: TGALoader = undefined
-
   constructor(manager: LoadingManager) {
     this.manager = manager
     this.textureLoader = new TextureLoader(manager)
   }
-
-  /**
-   * @param data - parsed PMD/PMX data
-   * @param geometry - some properties are depended on geometry
-   */
   public build(
     data: Pmd | Pmx,
     geometry: BufferGeometry,
@@ -110,32 +91,13 @@ export class MaterialBuilder {
     _onError?: (event: ErrorEvent) => void,
   ): MMDToonMaterial[] {
     const materials = []
-
     const textures = {}
-
     this.textureLoader.setCrossOrigin(this.crossOrigin)
-
-    // materials
     for (let i = 0; i < data.metadata.materialCount; i++) {
       const material: Partial<PmdMaterialInfo & PmxMaterialInfo> = data.materials[i]
-
-      // TODO: rewrite this
-      // eslint-disable-next-line ts/no-unsafe-assignment
       const params: MaterialBuilderParameters = { userData: { MMD: {} } } as any
-
       if (material.name !== undefined)
         params.name = material.name
-
-      /*
-       * Color
-       *
-       * MMD         MMDToonMaterial
-       * ambient  -  emissive * a
-       *               (a = 1.0 without map texture or 0.2 with map texture)
-       *
-       * MMDToonMaterial doesn't have ambient. Set it to emissive instead.
-       * It'll be too bright if material has map texture so using coef 0.2.
-       */
       params.diffuse = new Color().setRGB(
         material.diffuse![0],
         material.diffuse![1],
@@ -147,59 +109,37 @@ export class MaterialBuilder {
       params.shininess = material.shininess!
       params.emissive = new Color().setRGB(...material.ambient!, SRGBColorSpace)
       params.transparent = params.opacity !== 1.0
-
-      //
       params.fog = true
-
-      // blend
       params.blending = CustomBlending
       params.blendSrc = SrcAlphaFactor
       params.blendDst = OneMinusSrcAlphaFactor
       params.blendSrcAlpha = SrcAlphaFactor
       params.blendDstAlpha = DstAlphaFactor
-
-      // side
       if (data.metadata.format === 'pmx' && (material.flag! & 0x1) === 1) {
         params.side = DoubleSide
       }
       else {
         params.side = params.opacity === 1.0 ? FrontSide : DoubleSide
       }
-
       if (data.metadata.format === 'pmd') {
-        // map, matcap
-        // TODO: fix this
-        // Changing it to `!= null` will cause the material to fail.
-        // eslint-disable-next-line ts/strict-boolean-expressions
         if (material.fileName) {
           const fileName = material.fileName
           const fileNames = fileName.split('*')
-
-          // fileNames[ 0 ]: mapFileName
-          // fileNames[ 1 ]: matcapFileName( optional )
-
           params.map = this.loadTexture(fileNames[0], textures)
-
           if (fileNames.length > 1) {
             const extension = fileNames[1].slice(-4).toLowerCase()
-
             params.matcap = this.loadTexture(
               fileNames[1],
               textures,
             )
-
             params.matcapCombine = extension === '.sph'
               ? MultiplyOperation
               : AddOperation
           }
         }
-
-        // gradientMap
-
         const toonFileName = (material.toonIndex === -1)
           ? 'toon00.bmp'
           : (data as Pmd).toonTextures[material.toonIndex!].fileName
-
         params.gradientMap = this.loadTexture(
           toonFileName,
           textures,
@@ -208,9 +148,6 @@ export class MaterialBuilder {
             isToonTexture: true,
           },
         )
-
-        // parameters for OutlineEffect
-
         params.userData.outlineParameters = {
           alpha: 1.0,
           color: [0, 0, 0],
@@ -219,39 +156,22 @@ export class MaterialBuilder {
         }
       }
       else {
-        // map
-
         if (material.textureIndex !== -1) {
           params.map = this.loadTexture((data as Pmx).textures[material.textureIndex!], textures)
-
-          // Since PMX spec don't have standard to list map files except color map and env map,
-          // we need to save file name for further mapping, like matching normal map file names after model loaded.
-          // ref: https://gist.github.com/felixjones/f8a06bd48f9da9a4539f#texture
           params.userData.MMD.mapFileName = (data as Pmx).textures[material.textureIndex!]
         }
-
-        // matcap TODO: support m.envFlag === 3
-
         if (material.envTextureIndex !== -1 && (material.envFlag === 1 || material.envFlag === 2)) {
           params.matcap = this.loadTexture(
             (data as Pmx).textures[material.envTextureIndex!],
             textures,
           )
-
-          // Same as color map above, keep file name in userData for further usage.
           params.userData.MMD.matcapFileName = (data as Pmx).textures[material.envTextureIndex!]
-
           params.matcapCombine = material.envFlag === 1
             ? MultiplyOperation
             : AddOperation
         }
-
-        // gradientMap
-
         let isDefaultToon, toonFileName
-
         if (material.toonIndex === -1 || material.toonFlag !== 0) {
-          // eslint-disable-next-line sonarjs/no-nested-template-literals
           toonFileName = `toon${(`0${material.toonIndex! + 1}`).slice(-2)}.bmp`
           isDefaultToon = true
         }
@@ -259,7 +179,6 @@ export class MaterialBuilder {
           toonFileName = (data as Pmx).textures[material.toonIndex!]
           isDefaultToon = false
         }
-
         params.gradientMap = this.loadTexture(
           toonFileName,
           textures,
@@ -268,53 +187,39 @@ export class MaterialBuilder {
             isToonTexture: true,
           },
         )
-
-        // parameters for OutlineEffect
         params.userData.outlineParameters = {
           alpha: material.edgeColor![3],
           color: material.edgeColor!.slice(0, 3),
-          thickness: material.edgeSize! / 300, // TODO: better calculation?
+          thickness: material.edgeSize! / 300, 
           visible: (material.flag! & 0x10) !== 0 && material.edgeSize! > 0.0,
         }
       }
-
       if (params.map !== undefined) {
         if (!params.transparent)
           this.checkImageTransparency(params.map, geometry, i)
-
         params.emissive.multiplyScalar(0.2)
       }
-
       materials.push(new MMDToonMaterial(params))
     }
-
     if (data.metadata.format === 'pmx') {
-      // set transparent true if alpha morph is defined.
       const checkAlphaMorph = (elements: (PmdMorphInfo | PmxMorphInfo)['elements'], materials: Material[]) => {
         for (let i = 0, il = elements.length; i < il; i++) {
           const element = elements[i]
-
           if (element.index === -1)
             continue
-
           const material = materials[element.index]
-
           if (material.opacity !== (element as MaterialMorph).diffuse[3])
             material.transparent = true
         }
       }
-
       for (let i = 0, il = data.morphs.length; i < il; i++) {
         const morph = data.morphs[i]
         const elements = morph.elements
-
         if (morph.type === 0) {
           for (let j = 0, jl = elements.length; j < jl; j++) {
             const morph2 = data.morphs[elements[j].index]
-
             if (morph2.type !== 8)
               continue
-
             checkAlphaMorph(morph2.elements, materials)
           }
         }
@@ -323,110 +228,75 @@ export class MaterialBuilder {
         }
       }
     }
-
     return materials
   }
-
   public setCrossOrigin(crossOrigin: string): this {
     this.crossOrigin = crossOrigin
     return this
   }
-
   public setResourcePath(resourcePath: string): this {
     this.resourcePath = resourcePath
     return this
   }
-
-  // Check if the partial image area used by the texture is transparent.
   private checkImageTransparency(map: LoadingTexture, geometry: BufferGeometry, groupIndex: number) {
     map.readyCallbacks!.push((texture: Texture) => {
-      // Is there any efficient ways?
       const createImageData = (image: HTMLImageElement) => {
         const canvas = document.createElement('canvas')
         canvas.width = image.width
         canvas.height = image.height
-
         const context = canvas.getContext('2d')!
         context.drawImage(image, 0, 0)
-
         return context.getImageData(0, 0, canvas.width, canvas.height)
       }
-
       const detectImageTransparency = (image: ImageData, uvs: TypedArray, indices: TypedArray) => {
         const width = image.width
         const height = image.height
         const data = image.data
         const threshold = 253
-
-        /*
-        * This method expects
-        *   texture.flipY = false
-        *   texture.wrapS = RepeatWrapping
-        *   texture.wrapT = RepeatWrapping
-        * TODO: more precise
-        */
         const getAlphaByUv = (image: ImageData, uv: { x: number, y: number }) => {
           const width = image.width
           const height = image.height
-
           let x = Math.round(uv.x * width) % width
           let y = Math.round(uv.y * height) % height
-
           if (x < 0)
             x += width
           if (y < 0)
             y += height
-
           const index = y * width + x
-
           return image.data[index * 4 + 3]
         }
-
         if (data.length / (width * height) !== 4)
           return false
-
         for (let i = 0; i < indices.length; i += 3) {
           const centerUV = { x: 0.0, y: 0.0 }
-
           for (let j = 0; j < 3; j++) {
             const index = indices[i * 3 + j]
             const uv = { x: uvs[index * 2 + 0], y: uvs[index * 2 + 1] }
-
             if (getAlphaByUv(image, uv) < threshold)
               return true
-
             centerUV.x += uv.x
             centerUV.y += uv.y
           }
-
           centerUV.x /= 3
           centerUV.y /= 3
-
           if (getAlphaByUv(image, centerUV) < threshold)
             return true
         }
-
         return false
       }
-
       if ('isCompressedTexture' in texture && texture.isCompressedTexture === true) {
         if (NON_ALPHA_CHANNEL_FORMATS.includes(texture.format)) {
           map.transparent = false
         }
         else {
-          // any other way to check transparency of CompressedTexture?
           map.transparent = true
         }
-
         return
       }
-
       const imageData: ImageData = ('data' in texture.image && (texture.image as { data: unknown }).data != null)
         ? texture.image as ImageData
         : createImageData(texture.image as HTMLImageElement)
-
       const group = geometry.groups[groupIndex]
-
       if (detectImageTransparency(
         imageData,
         geometry.attributes.uv.array,
@@ -436,105 +306,74 @@ export class MaterialBuilder {
       }
     })
   }
-
   private getRotatedImage(image: HTMLImageElement) {
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')!
-
     const width = image.width
     const height = image.height
-
     canvas.width = width
     canvas.height = height
-
     context.clearRect(0, 0, width, height)
     context.translate(width / 2.0, height / 2.0)
-    context.rotate(0.5 * Math.PI) // 90.0 * Math.PI / 180.0
+    context.rotate(0.5 * Math.PI) 
     context.translate(-width / 2.0, -height / 2.0)
     context.drawImage(image, 0, 0)
-
     return context.getImageData(0, 0, width, height)
   }
-
   private getTGALoader(): TGALoader {
     if (this.tgaLoader == null)
       this.tgaLoader = new TGALoader(this.manager)
-
     return this.tgaLoader
   }
-
   private isDefaultToonTexture(name: string): boolean {
     if (name.length !== 10)
       return false
-
     return /toon(?:10|0\d)\.bmp/.test(name)
   }
-
   private loadTexture(filePath: string, textures: Record<string, LoadingTexture>, params?: { isDefaultToonTexture: boolean, isToonTexture: boolean }, onProgress?: () => void, onError?: () => void): LoadingTexture {
     params = params || {} as MaterialBuilderParameters
-
     let fullPath
-
     if (params.isDefaultToonTexture === true) {
       let index
-
       try {
         index = Number.parseInt(/toon(\d{2})\.bmp$/.exec(filePath)![1])
       }
       catch {
         console.warn(`MMDLoader: ${filePath} seems like a `
           + 'not right default texture path. Using toon00.bmp instead.')
-
         index = 0
       }
-
       fullPath = DEFAULT_TOON_TEXTURES[index]
     }
     else {
       fullPath = this.resourcePath + filePath
     }
-
     if (textures[fullPath] != null)
       return textures[fullPath]
-
     let loader = this.manager.getHandler(fullPath)
-
     if (loader === null) {
       loader = (filePath.slice(-4).toLowerCase() === '.tga')
         ? this.getTGALoader()
         : this.textureLoader
     }
-
-    // TODO: FIXME: rewrite this
-    // @ts-expect-error magic load
     const texture: LoadingTexture = loader.load(fullPath, (t: Texture) => {
-      // MMD toon texture is Axis-Y oriented
-      // but Three.js gradient map is Axis-X oriented.
-      // So here replaces the toon texture image with the rotated one.
       if (params.isToonTexture === true) {
         t.image = this.getRotatedImage(t.image as HTMLImageElement)
-
         t.magFilter = NearestFilter
         t.minFilter = NearestFilter
         t.generateMipmaps = false
       }
-
       t.flipY = false
       t.wrapS = RepeatWrapping
       t.wrapT = RepeatWrapping
       t.colorSpace = SRGBColorSpace
-
       for (let i = 0; i < texture.readyCallbacks!.length; i++) {
         texture.readyCallbacks![i](texture)
       }
-
       delete texture.readyCallbacks
     }, onProgress, onError)
-
     texture.readyCallbacks = []
-
     textures[fullPath] = texture
-
     return texture
   }
 }

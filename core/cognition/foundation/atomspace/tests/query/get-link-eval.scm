@@ -1,16 +1,11 @@
-; https://github.com/opencog/atomspace/issues/211
-
 (use-modules ((opencog exec)))
-
 (EvaluationLink
    (ConceptNode "arkle")
    (ConceptNode "barkle")
    (ConceptNode "curry"))
-
 (EvaluationLink
    (ConceptNode "glib")
    (ConceptNode "blab"))
-
 (define get
 (GetLink
    (VariableList (VariableNode "$a") (VariableNode "$b")

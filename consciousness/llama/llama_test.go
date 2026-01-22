@@ -1,13 +1,10 @@
 package llama
-
 import (
 	"bufio"
 	"bytes"
 	"strings"
 	"testing"
 )
-
-// https://github.com/EchoCog/echollama/issues/7978
 const issue7978JSONSchema = `{
   "type": "object",
   "properties": {
@@ -53,16 +50,13 @@ const issue7978JSONSchema = `{
   "required": ["steps", "final_answer"],
   "additionalProperties": false
 }`
-
 func TestIssue7978(t *testing.T) {
 	g := SchemaToGrammar([]byte(issue7978JSONSchema))
 	if g == nil {
 		t.Fatal("failed to convert JSON schema to grammar")
 	}
-
 	t.Logf("grammar:\n%s", g)
 	t.Log()
-
 	var got string
 	s := bufio.NewScanner(bytes.NewReader(g))
 	for s.Scan() {
@@ -73,24 +67,19 @@ func TestIssue7978(t *testing.T) {
 			got = line
 		}
 	}
-
 	want := `root ::= "{" space steps-kv "," space final-answer-kv ( "," space ( 01-numbered-key-kv 01-numbered-key-rest | numbers-kv numbers-rest | booleans-kv booleans-rest | mixed-kv ) )? "}" space`
 	if got != want {
 		t.Errorf("root =\n%qwant:\n%q", got, want)
 	}
 }
-
 func TestSchemaToGrammer(t *testing.T) {
 	cases := []struct {
 		schema string
-		prefix []byte // nil is check as nil
+		prefix []byte 
 	}{
 		{`invalid`, nil},
-
-		// Simple heuristic/smoke test
 		{`{"type":"object"}`, []byte("root ::= object")},
 	}
-
 	for _, c := range cases {
 		t.Run("x", func(t *testing.T) {
 			g := SchemaToGrammar([]byte(c.schema))

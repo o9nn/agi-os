@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-
 main() {
-    if [[ "$#" -ne 2 ]]; then
+    if [[ "$
         echo "Usage: guard_path.sh <path> <confirmation_prompt>" >&2
         exit 1
     fi
@@ -17,7 +16,6 @@ main() {
         fi
     fi
 }
-
 _to_realpath() {
     path="$1"
     if [[ $OS == "Windows_NT" ]]; then
@@ -56,5 +54,4 @@ BEGIN {
     }
 }'
 }
-
 main "$@"

@@ -1,14 +1,3 @@
-; =====================================================================
-; OrTransformationRule
-;
-; OrLink 
-;    A
-;    B
-; |-
-; (NotLink A) => B
-;----------------------------------------------------------------------
-
-
 (define or-transformation-rule
   (BindLink
    (VariableList
@@ -27,20 +16,15 @@
       (NotLink 
        (VariableNode "$A"))
       (VariableNode "$B"))))))
-
 (define (or-transformation-formula OAB IAB)
   (cog-set-tv!
    IAB
    (or-transformation-side-effect-free-formula OAB IAB))
 )
-
-
 (define (or-transformation-side-effect-free-formula OAB IAB)
   (let 
       ((sOAB (cog-mean OAB))
        (cOAB (cog-confidence OAB)))
     (stv sOAB cOAB)))
-
-; Name the rule
 (define or-transformation-rule-name (DefinedSchemaNode "or-transformation-rule"))
 (DefineLink or-transformation-rule-name or-transformation-rule)

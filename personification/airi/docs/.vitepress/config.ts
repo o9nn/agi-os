@@ -1,17 +1,13 @@
 import type { DefaultTheme } from 'vitepress'
-
 import { join, posix, resolve } from 'node:path'
 import { env } from 'node:process'
-
 import i18n from '@intlify/unplugin-vue-i18n/vite'
 import anchor from 'markdown-it-anchor'
 import unocss from 'unocss/vite'
 import yaml from 'unplugin-yaml/vite'
-
 import { footnote } from '@mdit/plugin-footnote'
 import { tasklist } from '@mdit/plugin-tasklist'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
-
 import { version } from '../../package.json'
 import { teamMembers } from './contributors'
 import {
@@ -26,7 +22,6 @@ import {
   x,
 } from './meta'
 import { frontmatterAssets } from './plugins/vite-frontmatter-assets'
-
 function withBase(url: string) {
   return env.BASE_URL
     ? env.BASE_URL.endsWith('/')
@@ -34,8 +29,6 @@ function withBase(url: string) {
       : posix.join(env.BASE_URL, url)
     : url
 }
-
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: true,
@@ -58,8 +51,6 @@ export default defineConfig({
     ['meta', { name: 'twitter:image', content: ogImage }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['link', { rel: 'mask-icon', href: '/logo.svg', color: '#ffffff' }],
-    // Proxying Plausible through Netlify | Plausible docs
-    // https://plausible.io/docs/proxy/guides/netlify
     ['script', {
       'defer': 'true',
       'data-domain': 'airi.moeru.ai',
@@ -86,7 +77,6 @@ export default defineConfig({
       label: 'English',
       lang: 'en',
       themeConfig: {
-        // https://vitepress.dev/reference/default-theme-config
         nav: [
           { text: 'Docs', link: withBase('/en/docs/overview/') },
           { text: 'Blog', link: withBase('/en/blog/') },
@@ -101,7 +91,6 @@ export default defineConfig({
           level: 'deep',
         },
         logo: withBase('/favicon.svg'),
-
         sidebar: [
           {
             text: 'Overview',
@@ -167,7 +156,6 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-Hans',
       themeConfig: {
-        // https://vitepress.dev/reference/default-theme-config
         nav: [
           { text: '文档', link: withBase('/zh-Hans/docs/overview/') },
           { text: '博客 / 开发日志', link: withBase('/zh-Hans/blog/') },
@@ -182,7 +170,6 @@ export default defineConfig({
           level: 'deep',
         },
         logo: withBase('/favicon.svg'),
-
         sidebar: [
           {
             text: '概览',
@@ -251,7 +238,6 @@ export default defineConfig({
       { icon: 'discord', link: discord },
       { icon: 'github', link: github },
     ],
-
     search: {
       provider: 'local',
     },
@@ -275,7 +261,6 @@ export default defineConfig({
     },
     anchor: {
       callback(token) {
-        // set tw `group` modifier to heading element
         token.attrSet(
           'class',
           'group relative border-none mb-4 lg:-ml-2 lg:pl-2 lg:pr-2',
@@ -286,14 +271,11 @@ export default defineConfig({
           'header-anchor [&_span]:focus:opacity-100 [&_span_>_span]:focus:outline',
         symbol: `<span class="absolute top-0 -ml-8 hidden items-center border-0 opacity-0 group-hover:opacity-100 focus:opacity-100 lg:flex" style="transition: all 0.2s ease-in-out;">&ZeroWidthSpace;<span class="flex h-6 w-6 items-center justify-center rounded-md outline-2 outline-primary text-green-400 shadow-sm  hover:text-green-700 hover:shadow dark:bg-primary/20 dark:text-primary/80 dark:shadow-none dark:hover:bg-primary/40 dark:hover:text-primary"><svg width="12" height="12" fill="none" aria-hidden="true"><path d="M3.75 1v10M8.25 1v10M1 3.75h10M1 8.25h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></span></span>`,
         renderAttrs: (slug, state) => {
-          // From: https://github.com/vuejs/vitepress/blob/256d742b733bfb62d54c78168b0e867b8eb829c9/src/node/markdown/markdown.ts#L263
-          // Find `heading_open` with the id identical to slug
           const idx = state.tokens.findIndex((token) => {
             const attrs = token.attrs
             const id = attrs?.find(attr => attr[0] === 'id')
             return id && slug === id[1]
           })
-          // Get the actual heading content
           const title = state.tokens[idx + 1]!.content
           return {
             'aria-label': `Permalink to "${title}"`,
@@ -305,8 +287,6 @@ export default defineConfig({
   transformPageData(pageData) {
     if (pageData.frontmatter.sidebar != null)
       return
-
-    // hide sidebar on showcase page
     pageData.frontmatter.sidebar = pageData.frontmatter.layout !== 'showcase'
   },
   vite: {
@@ -317,7 +297,6 @@ export default defineConfig({
       },
     },
     plugins: [
-      // Thanks https://github.com/intlify/vue-i18n/issues/1205#issuecomment-2707075660
       i18n({ runtimeOnly: true, compositionOnly: true, fullInstall: true, ssr: true }) as any,
       unocss(),
       yaml(),

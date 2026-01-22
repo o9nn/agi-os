@@ -1,5 +1,4 @@
 package imageproc
-
 import (
 	"image"
 	"image/color"
@@ -7,13 +6,11 @@ import (
 	"reflect"
 	"testing"
 )
-
 func createImage(width, height int, fillCol color.RGBA) image.Image {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	draw.Draw(img, img.Bounds(), &image.Uniform{fillCol}, image.Point{}, draw.Src)
 	return img
 }
-
 func TestComposite(t *testing.T) {
 	tests := []struct {
 		name         string
@@ -31,17 +28,13 @@ func TestComposite(t *testing.T) {
 			expectedRGBA: color.RGBA{255, 0, 0, 255},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			resultImg := Composite(tt.img)
-
-			// Check the pixel values in the resulting image
 			for x := range resultImg.Bounds().Dx() {
 				for y := range resultImg.Bounds().Dy() {
 					r, g, b, a := resultImg.At(x, y).RGBA()
 					expectedR, expectedG, expectedB, expectedA := tt.expectedRGBA.RGBA()
-
 					if r != expectedR || g != expectedG || b != expectedB || a != expectedA {
 						t.Errorf("Pixel mismatch at (%d, %d): got (%d, %d, %d, %d), want (%d, %d, %d, %d)",
 							x, y, r, g, b, a, expectedR, expectedG, expectedB, expectedA)
@@ -51,7 +44,6 @@ func TestComposite(t *testing.T) {
 		})
 	}
 }
-
 func TestResize(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -92,7 +84,6 @@ func TestResize(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			resizedImg := Resize(tt.img, tt.newSize, tt.method)
-
 			if resizedImg.Bounds().Dx() != tt.expected.X || resizedImg.Bounds().Dy() != tt.expected.Y {
 				t.Errorf("Unexpected size for resized image: got (%d, %d), want (%d, %d)",
 					resizedImg.Bounds().Dx(), resizedImg.Bounds().Dy(), tt.expected.X, tt.expected.Y)
@@ -100,18 +91,15 @@ func TestResize(t *testing.T) {
 		})
 	}
 }
-
 func TestResizeInvalidMethod(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
 			t.Errorf("Expected panic for invalid resizing method, but did not panic")
 		}
 	}()
-
 	img := createImage(10, 10, color.RGBA{0, 0, 0, 255})
 	Resize(img, image.Point{5, 5}, -1)
 }
-
 func TestNormalize(t *testing.T) {
 	tests := []struct {
 		name         string
@@ -130,9 +118,9 @@ func TestNormalize(t *testing.T) {
 			rescale:      true,
 			channelFirst: true,
 			expected: []float32{
-				0.003921628, 0.003921628, 0.003921628, 0.003921628, // R values
-				0.003921628, 0.003921628, 0.003921628, 0.003921628, // G values
-				0.003921628, 0.003921628, 0.003921628, 0.003921628, // B values
+				0.003921628, 0.003921628, 0.003921628, 0.003921628, 
+				0.003921628, 0.003921628, 0.003921628, 0.003921628, 
+				0.003921628, 0.003921628, 0.003921628, 0.003921628, 
 			},
 		},
 		{
@@ -164,11 +152,9 @@ func TestNormalize(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := Normalize(tt.img, tt.mean, tt.std, tt.rescale, tt.channelFirst)
-
 			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("Test %s failed: got %v, want %v", tt.name, result, tt.expected)
 			}

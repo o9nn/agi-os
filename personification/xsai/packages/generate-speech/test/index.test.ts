@@ -1,8 +1,6 @@
 import { Buffer } from 'node:buffer'
 import { describe, expect, it } from 'vitest'
-
 import { generateSpeech } from '../src'
-
 describe('@xsai/generate-speech', () => {
   it('basic', async () => {
     const speech = await generateSpeech({
@@ -11,7 +9,6 @@ describe('@xsai/generate-speech', () => {
       model: 'tts-1',
       voice: 'en-US-AnaNeural',
     })
-
     expect(Buffer.from(speech)).toMatchSnapshot()
   })
   it('chinese', async () => {
@@ -21,7 +18,6 @@ describe('@xsai/generate-speech', () => {
       model: 'tts-1',
       voice: 'zh-CN-XiaoyiNeural',
     })
-
     expect(Buffer.from(speech)).toMatchSnapshot()
   })
 })

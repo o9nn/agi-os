@@ -1,16 +1,11 @@
 import { C } from '@deltachat/jsonrpc-client'
-
 import { getLogger } from '../../shared/logger'
 import { BackendRemote } from './backend-com'
-
 const log = getLogger('renderer/stockstrings')
-
 export async function updateCoreStrings() {
   log.info('loading core translations')
   const tx = window.static_translate
   const strings: { [key: number]: string } = {}
-
-  // TODO: Check if we need the uncommented core translations
   strings[C.DC_STR_NOMESSAGES] = tx('chat_no_messages')
   strings[C.DC_STR_SELF] = tx('self')
   strings[C.DC_STR_DRAFT] = tx('draft')
@@ -21,9 +16,6 @@ export async function updateCoreStrings() {
   strings[C.DC_STR_AUDIO] = tx('audio')
   strings[C.DC_STR_FILE] = tx('file')
   strings[C.DC_STR_ENCRYPTEDMSG] = tx('encrypted_message')
-  // strings[C.DC_STR_E2E_AVAILABLE] = tx('DC_STR_E2E_AVAILABLE')
-  // strings[C.DC_STR_ENCR_TRANSP] = tx('DC_STR_ENCR_TRANSP')
-  // strings[C.DC_STR_ENCR_NONE] = tx('DC_STR_ENCR_NONE')
   strings[C.DC_STR_FINGERPRINTS] = tx('qrscan_fingerprint_label')
   strings[C.DC_STR_CANTDECRYPT_MSG_BODY] = tx('systemmsg_cannot_decrypt')
   strings[C.DC_STR_E2E_PREFERRED] = tx('autocrypt_prefer_e2ee')
@@ -49,20 +41,14 @@ export async function updateCoreStrings() {
   strings[C.DC_STR_CONFIGURATION_FAILED] = tx('configuration_failed_with_error')
   strings[C.DC_STR_REPLY_NOUN] = tx('reply_noun')
   strings[C.DC_STR_FORWARDED] = tx('forwarded')
-  //strings[C.DC_STR_MSGLOCATIONENABLED] = tx('')
-  //strings[C.DC_STR_MSGLOCATIONDISABLED] = tx('')
   strings[C.DC_STR_LOCATION] = tx('location')
   strings[C.DC_STR_STICKER] = tx('sticker')
   strings[C.DC_STR_BAD_TIME_MSG_BODY] = tx('devicemsg_bad_time')
   strings[C.DC_STR_UPDATE_REMINDER_MSG_BODY] = tx('devicemsg_update_reminder')
-  //strings[C.DC_STR_ERROR_NO_NETWORK] = tx('')
   strings[C.DC_STR_SELF_DELETED_MSG_BODY] = tx('devicemsg_self_deleted')
-  //strings[C.DC_STR_SERVER_TURNED_OFF] = tx('')
   strings[C.DC_STR_QUOTA_EXCEEDING_MSG_BODY] = tx('devicemsg_storage_exceeding')
   strings[C.DC_STR_PARTIAL_DOWNLOAD_MSG_BODY] = tx('n_bytes_message')
   strings[C.DC_STR_DOWNLOAD_AVAILABILITY] = tx('download_max_available_until')
-  //strings[C.DC_STR_SYNC_MSG_SUBJECT] = tx('')
-  //strings[C.DC_STR_SYNC_MSG_BODY] = tx('')
   strings[C.DC_STR_INCOMING_MESSAGES] = tx('incoming_messages')
   strings[C.DC_STR_OUTGOING_MESSAGES] = tx('outgoing_messages')
   strings[C.DC_STR_STORAGE_ON_DOMAIN] = tx('storage_on_domain')
@@ -183,6 +169,5 @@ export async function updateCoreStrings() {
   strings[C.DC_STR_BACKUP_TRANSFER_QR] = tx('multidevice_qr_subtitle')
   strings[C.DC_STR_YOU_REACTED] = tx('reaction_by_you')
   strings[C.DC_STR_REACTED_BY] = tx('reaction_by_other')
-
   await BackendRemote.rpc.setStockStrings(strings)
 }

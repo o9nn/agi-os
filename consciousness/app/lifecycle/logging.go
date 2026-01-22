@@ -1,24 +1,18 @@
 package lifecycle
-
 import (
 	"fmt"
 	"log/slog"
 	"os"
 	"strconv"
 	"strings"
-
 	"github.com/EchoCog/echollama/envconfig"
 	"github.com/EchoCog/echollama/logutil"
 )
-
 func InitLogging() {
 	var logFile *os.File
 	var err error
-	// Detect if we're a GUI app on windows, and if not, send logs to console
 	if os.Stderr.Fd() != 0 {
-		// Console app detected
 		logFile = os.Stderr
-		// TODO - write one-line to the app.log file saying we're running in console mode to help avoid confusion
 	} else {
 		rotateLogs(AppLogFile)
 		logFile, err = os.OpenFile(AppLogFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0o755)
@@ -27,11 +21,9 @@ func InitLogging() {
 			return
 		}
 	}
-
 	slog.SetDefault(logutil.NewLogger(logFile, envconfig.LogLevel()))
 	slog.Info("ollama app started")
 }
-
 func rotateLogs(logFile string) {
 	if _, err := os.Stat(logFile); os.IsNotExist(err) {
 		return

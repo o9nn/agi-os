@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
-// Spanish
 export const LANG_ES_NAME = 'es';
-
 export const LANG_ES_TRANS = {
   'Play-TT': 'Jugar  (Pausa clave)',
   'Pause-TT': 'Pausa  (Pausa clave)',

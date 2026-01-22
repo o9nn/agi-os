@@ -1,5 +1,3 @@
-// https://github.com/vuejs/repl/blob/f2b38cf978abb9c21c6c788589b4599b4ff85a7d/src/monaco/vue.worker.ts
-
 import type {
   Language,
   LanguageServiceEnvironment,
@@ -9,9 +7,7 @@ import type {
   LanguageService,
 } from '@vue/language-service'
 import type * as monaco from 'monaco-editor-core'
-
 import type { WorkerHost, WorkerMessage } from './env'
-
 import { createNpmFileSystem } from '@volar/jsdelivr'
 import {
   createTypeScriptWorkerLanguageService,
@@ -21,7 +17,6 @@ import {
   generateGlobalTypes,
   getDefaultCompilerOptions,
   getGlobalTypesFileName,
-
   VueVirtualCode,
 } from '@vue/language-core'
 import {
@@ -39,9 +34,7 @@ import { getPropertiesAtLocation } from '@vue/typescript-plugin/lib/requests/get
 import { create as createTypeScriptDirectiveCommentPlugin } from 'volar-service-typescript/lib/plugins/directiveComment'
 import { create as createTypeScriptSemanticPlugin } from 'volar-service-typescript/lib/plugins/semantic'
 import { URI } from 'vscode-uri'
-
 import * as worker from 'monaco-editor-core/esm/vs/editor/editor.worker'
-
 export interface CreateData {
   tsconfig: {
     compilerOptions?: import('typescript').CompilerOptions
@@ -49,23 +42,17 @@ export interface CreateData {
   }
   dependencies: Record<string, string>
 }
-
 const asFileName = (uri: URI) => uri.path
 const asUri = (fileName: string): URI => URI.file(fileName)
-
 let ts: typeof import('typescript')
 let locale: string | undefined
-
-// eslint-disable-next-line no-restricted-globals
 self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
   if (msg.data?.event === 'init') {
     locale = msg.data.tsLocale
     ts = await importTsFromCdn(msg.data.tsVersion)
-    // eslint-disable-next-line no-restricted-globals
     self.postMessage('inited')
     return
   }
-
   worker.initialize(
     (
       ctx: monaco.worker.IWorkerContext<WorkerHost>,
@@ -94,7 +81,6 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
           },
         ),
       }
-
       const { options: compilerOptions } = ts.convertCompilerOptionsFromJson(
         tsconfig?.compilerOptions || {},
         '',
@@ -104,7 +90,6 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
         ...tsconfig.vueCompilerOptions,
       }
       setupGlobalTypes(vueCompilerOptions, env)
-
       const workerService = createTypeScriptWorkerLanguageService({
         typescript: ts,
         compilerOptions,
@@ -127,9 +112,7 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
           ...getVueLanguageServicePlugins(),
         ],
       })
-
       return workerService
-
       function setupGlobalTypes(
         options: VueCompilerOptions,
         env: LanguageServiceEnvironment,
@@ -158,7 +141,6 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
           return readFile(uri)
         }
       }
-
       function getTsLanguageServicePlugins() {
         const semanticPlugin = createTypeScriptSemanticPlugin(ts)
         const { create } = semanticPlugin
@@ -190,7 +172,6 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
         }
         return [semanticPlugin, createTypeScriptDirectiveCommentPlugin()]
       }
-
       function getVueLanguageServicePlugins() {
         const plugins = createVueLanguageServicePlugins(ts, {
           getComponentDirectives(fileName) {
@@ -283,7 +264,6 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
         return plugins.filter(
           plugin => !ignoreVueServicePlugins.has(plugin.name!),
         )
-
         function getVirtualCode(fileName: string) {
           const uri = asUri(fileName)
           const sourceScript
@@ -300,13 +280,11 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
             virtualCode,
           }
         }
-
         function getProgram() {
           const tsService: import('typescript').LanguageService
             = getLanguageService().context.inject('typescript/languageService')
           return tsService.getProgram()!
         }
-
         function getLanguageService() {
           return (workerService as any).languageService as LanguageService
         }
@@ -314,12 +292,11 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
     },
   )
 }
-
 async function importTsFromCdn(tsVersion: string) {
   const _module = globalThis.module
   ;(globalThis as any).module = { exports: {} }
   const tsUrl = `https://cdn.jsdelivr.net/npm/typescript@${tsVersion}/lib/typescript.js`
-  await import(/* @vite-ignore */ tsUrl)
+  await import( tsUrl)
   const ts = globalThis.module.exports
   globalThis.module = _module
   return ts as typeof import('typescript')

@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest'
-
 import { resolveProps } from './props'
-
 describe('resolveProps', () => {
   describe('string type', () => {
     it('should resolve String constructor as string type', () => {
@@ -17,7 +15,6 @@ describe('resolveProps', () => {
         { key: 'name', title: 'name', type: 'string' },
       ])
     })
-
     it('should resolve { type: String } as string type', () => {
       const component = {
         _component: {
@@ -32,7 +29,6 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('number type', () => {
     it('should resolve Number constructor as number type', () => {
       const component = {
@@ -47,7 +43,6 @@ describe('resolveProps', () => {
         { key: 'age', title: 'age', type: 'number' },
       ])
     })
-
     it('should resolve { type: Number } as number type', () => {
       const component = {
         _component: {
@@ -62,7 +57,6 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('boolean type', () => {
     it('should resolve Boolean constructor as boolean type', () => {
       const component = {
@@ -77,7 +71,6 @@ describe('resolveProps', () => {
         { key: 'active', title: 'active', type: 'boolean' },
       ])
     })
-
     it('should resolve { type: Boolean } as boolean type', () => {
       const component = {
         _component: {
@@ -92,7 +85,6 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('array type', () => {
     it('should resolve Array constructor as array type', () => {
       const component = {
@@ -107,7 +99,6 @@ describe('resolveProps', () => {
         { key: 'items', title: 'items', type: 'array' },
       ])
     })
-
     it('should resolve { type: Array } as array type', () => {
       const component = {
         _component: {
@@ -121,7 +112,6 @@ describe('resolveProps', () => {
         { key: 'items', title: 'items', type: 'array' },
       ])
     })
-
     it('should resolve { type: Array, default: () => [] } as array type', () => {
       const component = {
         _component: {
@@ -136,7 +126,6 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('mixed types', () => {
     it('should resolve multiple props with different types', () => {
       const component = {
@@ -157,7 +146,6 @@ describe('resolveProps', () => {
         { key: 'tags', title: 'tags', type: 'array' },
       ])
     })
-
     it('should resolve props from ComponentInternalInstance', () => {
       const component = {
         props: {
@@ -172,7 +160,6 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('unknown type', () => {
     it('should resolve unknown constructor as unknown type', () => {
       const component = {
@@ -188,14 +175,12 @@ describe('resolveProps', () => {
       ])
     })
   })
-
   describe('empty props', () => {
     it('should return empty array when no props defined', () => {
       const component = {}
       const props = resolveProps(component as any)
       expect(props).toEqual([])
     })
-
     it('should return empty array when props is null', () => {
       const component = {
         _component: {

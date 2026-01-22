@@ -220,8 +220,6 @@ ulong		nhgetl(void*);
 ushort		nhgets(void*);
 void*	smalloc(size_t);
 void*	kmalloc(size_t);
-
-/* Namespace Emulation */
 int		kbind(char*, char*, int);
 int		kclose(int);
 int		kcreate(char*, int, ulong);
@@ -243,9 +241,7 @@ int		kdirwstat(char*, Dir*);
 int		kdirfwstat(int, Dir*);
 long		kdirread(int, Dir**);
 int		klisten(char*, char*);
-
 Cname*	addelem(Cname*, char*);
 void		cleancname(Cname*);
 void		cnameclose(Cname*);
-
 #pragma varargck argpos iprint 1

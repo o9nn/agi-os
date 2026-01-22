@@ -1,24 +1,20 @@
 export function useLoop(fn: () => Promise<void> | void, options?: { interval?: number, autoStart?: boolean }) {
   let timer: NodeJS.Timeout | null = null
   let shouldRun = options?.autoStart ?? true
-
   const loopIteration = async () => {
     if (!shouldRun) {
       return
     }
-
     try {
       await fn()
     }
     finally {
-      timer = setTimeout(loopIteration, options?.interval ?? 1000 / 60) // Default to ~60 FPS
+      timer = setTimeout(loopIteration, options?.interval ?? 1000 / 60) 
     }
   }
-
   if (shouldRun) {
     loopIteration()
   }
-
   return {
     start: () => {
       shouldRun = true
@@ -37,7 +33,6 @@ export function useLoop(fn: () => Promise<void> | void, options?: { interval?: n
     },
     stop: () => {
       shouldRun = false
-
       if (timer) {
         clearTimeout(timer)
         timer = null

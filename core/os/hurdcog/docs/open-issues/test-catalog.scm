@@ -1,7 +1,3 @@
-;; Test Catalog for GNU Hurd Issues
-;; Generated from open-issues.md
-;; Integrates with cognitive kernel and ggml shapes
-
 (define-module (test-catalog)
   #:use-module (cogkernel core)
   #:use-module (cogkernel atomspace)
@@ -9,7 +5,6 @@
             get-test-parameters
             cognitive-test-hooks
             ggml-kernel-shapes))
-
 (define test-catalog
   '(
     (major_open_issues
@@ -284,18 +279,15 @@
       (solutions . '()))
      )
     ))
-
 (define (get-test-parameters category)
   "Get test parameters for a specific category"
   (assoc-ref test-catalog category))
-
 (define cognitive-test-hooks
   "Hooks for cognitive kernel integration"
   '((concept-extraction . extract-issue-concepts)
     (attention-allocation . allocate-test-attention)
     (inference-rules . test-inference-rules)
     (learning-feedback . test-result-feedback)))
-
 (define ggml-kernel-shapes
   "GGML kernel shape specifications for test processing"
   '((issue-embedding-shape . (1 384))

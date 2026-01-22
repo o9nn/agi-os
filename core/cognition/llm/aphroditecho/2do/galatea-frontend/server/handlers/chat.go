@@ -1,15 +1,11 @@
 package handlers
-
 import (
 	"context"
 	galateav1 "shared/go/pb/galatea/v1"
-
 	connect "github.com/bufbuild/connect-go"
 )
-
 type Chat struct {
 }
-
 func (c *Chat) ChatAll(context.Context, *connect.Request[galateav1.ChatAllRequest]) (*connect.Response[galateav1.ChatAllResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, ErrNotImplemented)
 }

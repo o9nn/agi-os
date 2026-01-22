@@ -695,7 +695,6 @@ var g = class extends D {
           for (
             this._reconnectAttempts = 0, this._connected = !0;
             this.preopenQueue.length;
-
           )
             this.socket.send(this.preopenQueue.shift())
           this.emit('connect'), t()
@@ -1099,7 +1098,7 @@ let {
     }
     isDroppedFileFromOutside(t) {
       const _ = V(t)
-      return !/DeltaChat\/.+?\.sqlite-blobs\//gi.test(_.replace('\\', '/'))
+      return !/DeltaChat\/.+?\.sqlite-blobs\
     }
     emitUIFullyReady() {
       s.send('frontendReady')
@@ -1315,4 +1314,3 @@ let {
     }
   }
 window.r = new f()
-//# sourceMappingURL=runtime.js.map

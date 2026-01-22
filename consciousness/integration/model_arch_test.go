@@ -1,7 +1,4 @@
-//go:build integration && models
-
 package integration
-
 import (
 	"context"
 	"encoding/json"
@@ -14,11 +11,9 @@ import (
 	"strings"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/format"
 )
-
 func TestModelsGenerate(t *testing.T) {
 	softTimeout, hardTimeout := getTimeouts(t)
 	slog.Info("Setting timeouts", "soft", softTimeout, "hard", hardTimeout)
@@ -26,8 +21,6 @@ func TestModelsGenerate(t *testing.T) {
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
-	// TODO use info API eventually
 	var maxVram uint64
 	var err error
 	if s := os.Getenv("OLLAMA_MAX_VRAM"); s != "" {
@@ -38,14 +31,12 @@ func TestModelsGenerate(t *testing.T) {
 	} else {
 		slog.Warn("No VRAM info available, testing all models, so larger ones might timeout...")
 	}
-
 	var chatModels []string
 	if s := os.Getenv("OLLAMA_NEW_ENGINE"); s != "" {
 		chatModels = ollamaEngineChatModels
 	} else {
 		chatModels = append(ollamaEngineChatModels, llamaRunnerChatModels...)
 	}
-
 	for _, model := range chatModels {
 		t.Run(model, func(t *testing.T) {
 			if time.Now().Sub(started) > softTimeout {
@@ -65,7 +56,6 @@ func TestModelsGenerate(t *testing.T) {
 					}
 				}
 			}
-			// TODO - fiddle with context size
 			req := api.GenerateRequest{
 				Model:  model,
 				Prompt: "why is the sky blue?",
@@ -79,15 +69,12 @@ func TestModelsGenerate(t *testing.T) {
 		})
 	}
 }
-
 func TestModelsEmbed(t *testing.T) {
 	softTimeout, hardTimeout := getTimeouts(t)
 	ctx, cancel := context.WithTimeout(context.Background(), hardTimeout)
 	defer cancel()
 	client, _, cleanup := InitServerConnection(ctx, t)
 	defer cleanup()
-
-	// TODO use info API eventually
 	var maxVram uint64
 	var err error
 	if s := os.Getenv("OLLAMA_MAX_VRAM"); s != "" {
@@ -98,7 +85,6 @@ func TestModelsEmbed(t *testing.T) {
 	} else {
 		slog.Warn("No VRAM info available, testing all models, so larger ones might timeout...")
 	}
-
 	data, err := ioutil.ReadFile(filepath.Join("testdata", "embed.json"))
 	if err != nil {
 		t.Fatalf("failed to open test data file: %s", err)
@@ -109,7 +95,6 @@ func TestModelsEmbed(t *testing.T) {
 		t.Fatalf("failed to load test data: %s", err)
 	}
 	for model, expected := range testCase {
-
 		t.Run(model, func(t *testing.T) {
 			if time.Now().Sub(started) > softTimeout {
 				t.Skip("skipping remaining tests to avoid excessive runtime")
@@ -148,7 +133,6 @@ func TestModelsEmbed(t *testing.T) {
 				for i, v := range resp.Embedding {
 					expStr[i] = fmt.Sprintf("%0.6f", v)
 				}
-				// When adding new models, use this output to populate the testdata/embed.json
 				fmt.Printf("expected\n%s\n", strings.Join(expStr, ", "))
 				t.Fatalf("expected %d, got %d", len(expected), len(resp.Embedding))
 			}
@@ -158,5 +142,4 @@ func TestModelsEmbed(t *testing.T) {
 			}
 		})
 	}
-
 }

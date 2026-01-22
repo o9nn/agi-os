@@ -4,24 +4,16 @@ import {getWindowsProgramFilesPaths} from "./detectAvailableComputeLayers.js";
 import {asyncSome} from "./asyncSome.js";
 import {asyncEvery} from "./asyncEvery.js";
 import {getPlatform} from "./getPlatform.js";
-
-/**
- * On platforms other than Windows, this function will return an empty array
- * @returns Visual Studio edition installation paths - the paths are ordered from the most recent version to the oldest
- */
 export async function getWindowsVisualStudioEditionPaths() {
     const platform = getPlatform();
-
     if (platform !== "win")
         return {
             vsEditionPaths: [],
             programFilesPaths: []
         };
-
     const programFilesPaths = await getWindowsProgramFilesPaths();
     const potentialVisualStudioPaths = programFilesPaths
         .map((programFilesPath) => `${programFilesPath}/Microsoft Visual Studio`);
-
     const versionPaths = (await Promise.all(
         potentialVisualStudioPaths.map(async (vsPath) => {
             if (await fs.pathExists(vsPath)) {
@@ -32,23 +24,19 @@ export async function getWindowsVisualStudioEditionPaths() {
                     .sort((a, b) => {
                         const aNumber = parseInt(a);
                         const bNumber = parseInt(b);
-
                         if (Number.isFinite(aNumber) && Number.isFinite(bNumber))
                             return bNumber - aNumber;
                         else if (Number.isFinite(aNumber))
                             return -1;
                         else if (Number.isFinite(bNumber))
                             return 1;
-
                         return 0;
                     })
                     .map((version) => path.join(vsPath, version));
             }
-
             return [];
         })
     )).flat();
-
     const vsEditionPaths = (await Promise.all(
         versionPaths.map(async (versionPath) => {
             const editions = await fs.readdir(versionPath, {withFileTypes: true});
@@ -57,18 +45,15 @@ export async function getWindowsVisualStudioEditionPaths() {
                 .map((edition) => path.join(versionPath, edition.name));
         })
     )).flat();
-
     return {
         vsEditionPaths,
         programFilesPaths
     };
 }
-
 export async function detectWindowsBuildTools(targetArch: typeof process.arch = process.arch) {
     try {
         const currentArch = process.arch;
         const {vsEditionPaths, programFilesPaths} = await getWindowsVisualStudioEditionPaths();
-
         if (vsEditionPaths.length === 0 && programFilesPaths.length === 0)
             return {
                 hasCmake: false,
@@ -76,38 +61,31 @@ export async function detectWindowsBuildTools(targetArch: typeof process.arch = 
                 hasLlvm: false,
                 hasLibExe: false
             };
-
         const programDataPaths: string[] = [
             process.env["ProgramData"]
         ].filter((programDataPath) => programDataPath != null);
-
         const msvcPaths = (await Promise.all(
             vsEditionPaths.map(async (editionPath) => {
                 const msvcVersionsPath = path.join(editionPath, "VC", "Tools", "MSVC");
-
                 if (await fs.pathExists(msvcVersionsPath)) {
                     const msvcVersions = await fs.readdir(msvcVersionsPath);
                     return msvcVersions
                         .sort((a, b) => {
                             const aNumber = parseInt(a);
                             const bNumber = parseInt(b);
-
                             if (Number.isFinite(aNumber) && Number.isFinite(bNumber))
                                 return bNumber - aNumber;
                             else if (Number.isFinite(aNumber))
                                 return -1;
                             else if (Number.isFinite(bNumber))
                                 return 1;
-
                             return 0;
                         })
                         .map((msvcVersion) => path.join(msvcVersionsPath, msvcVersion));
                 }
-
                 return [];
             })
         )).flat();
-
         const potentialCmakePaths = [
             ...programFilesPaths.map((programFilesPath) => path.join(programFilesPath, "CMake", "bin", "cmake.exe")),
             ...vsEditionPaths.map((editionPath) => (
@@ -127,7 +105,6 @@ export async function detectWindowsBuildTools(targetArch: typeof process.arch = 
                     return path.join(editionPath, "VC", "Tools", "Llvm", "x64", "bin");
                 else if (currentArch === "arm64")
                     return path.join(editionPath, "VC", "Tools", "Llvm", "ARM64", "bin");
-
                 return path.join(editionPath, "VC", "Tools", "Llvm", "bin");
             })
         ];
@@ -142,10 +119,8 @@ export async function detectWindowsBuildTools(targetArch: typeof process.arch = 
                 : targetArch === "arm64"
                     ? "arm64"
                     : "_";
-
             return path.join(msvcPath, "bin", hostArchDirName, targetArchDirName, "lib.exe");
         });
-
         const [
             hasCmake,
             hasNinja,
@@ -157,7 +132,6 @@ export async function detectWindowsBuildTools(targetArch: typeof process.arch = 
             asyncSome(potentialLibExePaths.map((libExePath) => fs.pathExists(libExePath))),
             asyncSome(potentialLlvmPaths.map((llvmPath) => isLlvmPathValid(llvmPath)))
         ]);
-
         return {
             hasCmake,
             hasNinja,
@@ -173,11 +147,9 @@ export async function detectWindowsBuildTools(targetArch: typeof process.arch = 
         };
     }
 }
-
 async function isLlvmPathValid(llvmPath: string): Promise<boolean> {
     if (!(await fs.pathExists(llvmPath)))
         return false;
-
     return await asyncEvery([
         fs.pathExists(path.join(llvmPath, "clang.exe")),
         fs.pathExists(path.join(llvmPath, "clang++.exe")),

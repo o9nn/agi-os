@@ -1,34 +1,26 @@
 package hgql
-
 import (
 	"context"
 	"fmt"
 	"strings"
 	"time"
 )
-
-// Parse converts a raw query string into a minimal traversal description.
 func (p *HGQLParser) Parse(query string) (*GraphTraversal, error) {
 	if p == nil {
 		return nil, fmt.Errorf("parser not initialized")
 	}
-
 	traversal := &GraphTraversal{
 		MaxDepth:    1,
 		Direction:   "bidirectional",
 		EdgeTypes:   []string{},
 		Constraints: []TraversalConstraint{},
 	}
-
 	trimmed := strings.TrimSpace(query)
 	if trimmed != "" {
 		traversal.StartNodes = []string{trimmed}
 	}
-
 	return traversal, nil
 }
-
-// AnalyzeQuery performs lightweight analysis and returns placeholder pattern matches.
 func (p *PatternRecognition) AnalyzeQuery(traversal *GraphTraversal) ([]PatternMatch, error) {
 	if p == nil {
 		return nil, fmt.Errorf("pattern recognition not initialized")
@@ -36,7 +28,6 @@ func (p *PatternRecognition) AnalyzeQuery(traversal *GraphTraversal) ([]PatternM
 	if traversal == nil {
 		return []PatternMatch{}, nil
 	}
-
 	return []PatternMatch{
 		{
 			Pattern:    "basic_traversal",
@@ -46,8 +37,6 @@ func (p *PatternRecognition) AnalyzeQuery(traversal *GraphTraversal) ([]PatternM
 		},
 	}, nil
 }
-
-// OptimizeQuery currently returns the traversal unchanged while ensuring defaults.
 func (q *QueryOptimizer) OptimizeQuery(traversal *GraphTraversal, _ []PatternMatch) (*GraphTraversal, error) {
 	if q == nil {
 		return nil, fmt.Errorf("query optimizer not initialized")
@@ -60,8 +49,6 @@ func (q *QueryOptimizer) OptimizeQuery(traversal *GraphTraversal, _ []PatternMat
 	}
 	return traversal, nil
 }
-
-// Execute simulates traversal execution and returns a synthetic payload.
 func (e *HyperGraphExecutor) Execute(ctx context.Context, traversal *GraphTraversal, schema *HyperGraphSchema) (interface{}, error) {
 	if e == nil {
 		return nil, fmt.Errorf("executor not initialized")
@@ -75,15 +62,12 @@ func (e *HyperGraphExecutor) Execute(ctx context.Context, traversal *GraphTraver
 	if schema == nil {
 		schema = &HyperGraphSchema{}
 	}
-
 	return map[string]interface{}{
 		"schema_version": len(schema.Types),
 		"start_nodes":    traversal.StartNodes,
 		"max_depth":      traversal.MaxDepth,
 	}, nil
 }
-
-// validateDataSourceConfig performs basic validation of incoming data source settings.
 func (e *HGQLEngine) validateDataSourceConfig(config *DataSourceConfig) error {
 	if config == nil {
 		return fmt.Errorf("configuration cannot be nil")
@@ -96,8 +80,6 @@ func (e *HGQLEngine) validateDataSourceConfig(config *DataSourceConfig) error {
 	}
 	return nil
 }
-
-// initializeConnection performs lightweight initialization logic.
 func (e *HGQLEngine) initializeConnection(connection *DataConnection, template *ConnectorTemplate) error {
 	if connection == nil {
 		return fmt.Errorf("connection cannot be nil")
@@ -105,22 +87,17 @@ func (e *HGQLEngine) initializeConnection(connection *DataConnection, template *
 	if template == nil {
 		return fmt.Errorf("connector template required for initialization")
 	}
-
 	connection.Status = "ready"
 	connection.Metrics = &ConnectionMetrics{}
 	connection.LastSync = time.Now()
 	return nil
 }
-
-// monitorConnection currently performs a single health update before exiting.
 func (e *HGQLEngine) monitorConnection(connection *DataConnection) {
 	if connection == nil {
 		return
 	}
 	connection.LastSync = time.Now()
 }
-
-// validateHyperNode ensures the node contains the minimum required attributes.
 func (e *HGQLEngine) validateHyperNode(node *HyperNode) error {
 	if node == nil {
 		return fmt.Errorf("hypernode cannot be nil")
@@ -130,8 +107,6 @@ func (e *HGQLEngine) validateHyperNode(node *HyperNode) error {
 	}
 	return nil
 }
-
-// updateCognitiveMapping registers the node inside the cognitive map for lookup.
 func (e *HGQLEngine) updateCognitiveMapping(node *HyperNode) {
 	if e.Schema == nil || e.Schema.CognitiveMap == nil {
 		return
@@ -145,8 +120,6 @@ func (e *HGQLEngine) updateCognitiveMapping(node *HyperNode) {
 		Attributes: node.Attributes,
 	}
 }
-
-// recordSchemaChange appends metadata about schema evolution events.
 func (e *HGQLEngine) recordSchemaChange(changeType, targetID string) {
 	if e.Schema == nil {
 		return

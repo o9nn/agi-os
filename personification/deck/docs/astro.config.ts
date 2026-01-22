@@ -1,14 +1,10 @@
 import starlight from '@astrojs/starlight'
 import tailwind from '@astrojs/tailwind'
 import markdown from '@astropub/md'
-// @ts-check
 import { defineConfig } from 'astro/config'
 import sidebarTopicsDropdown from 'starlight-sidebar-topics-dropdown'
 import catppuccin from 'starlight-theme-catppuccin'
-
 import { sidebar } from './src/utils/sidebar'
-
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     markdown(),
@@ -32,7 +28,6 @@ export default defineConfig({
           light: 'latte-teal',
         }),
       ],
-      // sidebar: generateSidebar(),
       social: {
         github: 'https://github.com/moeru-ai/deck',
       },

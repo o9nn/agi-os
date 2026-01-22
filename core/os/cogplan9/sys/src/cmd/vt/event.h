@@ -4,10 +4,8 @@
 #define	HOST	2
 #define HOST_BLOCKED	1
 #define KBD_BLOCKED	2
-
 typedef struct IOEvent {
-	short	key;
-	short	size;
-	uchar	data[BSIZE];
+short	key;
+short	size;
+uchar	data[BSIZE];
 } IOEvent;
-

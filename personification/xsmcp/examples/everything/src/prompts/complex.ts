@@ -1,8 +1,6 @@
 import { definePrompt } from '@xsmcp/server-shared'
 import { description, object, optional, pipe, string } from 'valibot'
-
 import { MCP_TINY_IMAGE } from '../assets/mcp-tiny-image'
-
 export const complex = definePrompt({
   description: 'A prompt with arguments',
   execute: ({ style, temperature }) => [

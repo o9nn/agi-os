@@ -1,7 +1,3 @@
-/**
- * Created by tsadik on 11/8/17.
- */
-
 export interface Link {
   id: string;
   name: string;

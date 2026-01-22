@@ -1,20 +1,3 @@
-; =============================================================================
-; OntologicalInheritanceRule
-;
-; AndLink
-;   InheritanceLink
-;       A
-;       B
-;   InheritanceLink
-;       B
-;       A
-; |-
-; OntologicalInheritanceLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define ontological-inheritance-rule
     (BindLink
         (VariableList
@@ -39,14 +22,12 @@
                 (InheritanceLink
                     (VariableNode "$B")
                     (VariableNode "$A"))))))
-
 (define (ontological-inheritance-formula OAB AB BA)
     (cog-set-tv!
         OAB
         (ontological-inheritance-side-effect-free-formula OAB AB BA)
     )
 )
-
 (define (ontological-inheritance-side-effect-free-formula OAB AB BA)
     (let
         ((sAB (cog-mean AB))
@@ -58,9 +39,6 @@
             (<= sAB sBA)
             (stv 0 (min cAB cBA))
             (stv (- sAB sBA) (min cAB cBA)))))
-
-
-; Name the rule
 (define ontological-inheritance-rule-name
   (DefinedSchemaNode "ontological-inheritance-rule"))
 (DefineLink

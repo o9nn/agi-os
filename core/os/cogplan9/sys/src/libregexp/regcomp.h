@@ -1,62 +1,47 @@
-/*
- *  substitution list
- */
 #define NSUBEXP 32
 typedef struct Resublist	Resublist;
 struct	Resublist
 {
-	Resub	m[NSUBEXP];
+Resub	m[NSUBEXP];
 };
-
-/*
- * Actions and Tokens (Reinst types)
- *
- *	02xx are operators, value == precedence
- *	03xx are tokens, i.e. operands for operators
- */
 #define RUNE		0177
-#define	OPERATOR	0200	/* Bitmask of all operators */
-#define	START		0200	/* Start, used for marker on stack */
-#define	RBRA		0201	/* Right bracket, ) */
-#define	LBRA		0202	/* Left bracket, ( */
-#define	OR		0203	/* Alternation, | */
-#define	CAT		0204	/* Concatentation, implicit operator */
-#define	STAR		0205	/* Closure, * */
-#define	PLUS		0206	/* a+ == aa* */
-#define	QUEST		0207	/* a? == a|nothing, i.e. 0 or 1 a's */
-#define	ANY		0300	/* Any character except newline, . */
-#define	ANYNL		0301	/* Any character including newline, . */
-#define	NOP		0302	/* No operation, internal use only */
-#define	BOL		0303	/* Beginning of line, ^ */
-#define	EOL		0304	/* End of line, $ */
-#define	CCLASS		0305	/* Character class, [] */
-#define	NCCLASS		0306	/* Negated character class, [] */
-#define	END		0377	/* Terminate: match found */
-
-/*
- *  regexec execution lists
- */
+#define	OPERATOR	0200
+#define	START		0200
+#define	RBRA		0201
+#define	LBRA		0202
+#define	OR		0203
+#define	CAT		0204
+#define	STAR		0205
+#define	PLUS		0206
+#define	QUEST		0207
+#define	ANY		0300
+#define	ANYNL		0301
+#define	NOP		0302
+#define	BOL		0303
+#define	EOL		0304
+#define	CCLASS		0305
+#define	NCCLASS		0306
+#define	END		0377
 #define LISTSIZE	10
 #define BIGLISTSIZE	(25*LISTSIZE)
 typedef struct Relist	Relist;
 struct Relist
 {
-	Reinst*		inst;		/* Reinstruction of the thread */
-	Resublist	se;		/* matched subexpressions in this thread */
+Reinst*		inst;
+Resublist	se;
 };
 typedef struct Reljunk	Reljunk;
 struct	Reljunk
 {
-	Relist*	relist[2];
-	Relist*	reliste[2];
-	int	starttype;
-	Rune	startchar;
-	char*	starts;
-	char*	eol;
-	Rune*	rstarts;
-	Rune*	reol;
+Relist*	relist[2];
+Relist*	reliste[2];
+int	starttype;
+Rune	startchar;
+char*	starts;
+char*	eol;
+Rune*	rstarts;
+Rune*	reol;
 };
-
 extern Relist*	_renewthread(Relist*, Reinst*, int, Resublist*);
 extern void	_renewmatch(Resub*, int, Resublist*);
 extern Relist*	_renewemptythread(Relist*, Reinst*, int, char*);

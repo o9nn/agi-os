@@ -1,13 +1,4 @@
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
-/**
- * Returns a retirable anonymous function with configured retryLimit and delayInterval
- *
- * @param retryLimit Number of retry attempts
- * @param delayInterval Delay between retries in milliseconds
- * @param func Function to be called
- * @returns A wrapped function with the same signature as func
- */
 export function toRetriable<A, R>(
   retryLimit: number,
   delayInterval: number,
@@ -25,7 +16,6 @@ export function toRetriable<A, R>(
       if (hooks?.onError) {
         hooks.onError(err)
       }
-
       if (retryCount < retryLimit) {
         retryCount++
         await sleep(delayInterval)

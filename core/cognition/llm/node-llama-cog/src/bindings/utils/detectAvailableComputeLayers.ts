@@ -7,8 +7,6 @@ import {BinaryPlatform, getPlatform} from "./getPlatform.js";
 import {hasFileInPath} from "./hasFileInPath.js";
 import {asyncSome} from "./asyncSome.js";
 import {asyncEvery} from "./asyncEvery.js";
-
-
 export async function detectAvailableComputeLayers({
     platform = getPlatform()
 }: {
@@ -23,14 +21,12 @@ export async function detectAvailableComputeLayers({
         detectVulkanSupport({platform}),
         detectMetalSupport({platform})
     ]);
-
     return {
         cuda,
         vulkan,
         metal
     };
 }
-
 async function detectCudaSupport({
     platform
 }: {
@@ -40,7 +36,6 @@ async function detectCudaSupport({
         const librarySearchPaths = (await getCudaInstallationPaths({platform}))
             .flatMap((cudaInstallationPath) => [cudaInstallationPath, path.join(cudaInstallationPath, "bin")]);
         const windir = getWindir();
-
         const [
             hasNvidiaDriver,
             hasCudaRuntime
@@ -54,21 +49,20 @@ async function detectCudaSupport({
                     hasFileInPath("cudart64_110.dll", librarySearchPaths),
                     hasFileInPath("cudart64_11.dll", librarySearchPaths),
                     hasFileInPath("cudart64_12.dll", librarySearchPaths),
-                    hasFileInPath("cudart64_13.dll", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("cudart64_13.dll", librarySearchPaths) 
                 ]),
                 asyncSome([
                     hasFileInPath("cublas64_11.dll", librarySearchPaths),
                     hasFileInPath("cublas64_12.dll", librarySearchPaths),
-                    hasFileInPath("cublas64_13.dll", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("cublas64_13.dll", librarySearchPaths) 
                 ]),
                 asyncSome([
                     hasFileInPath("cublasLt64_11.dll", librarySearchPaths),
                     hasFileInPath("cublasLt64_12.dll", librarySearchPaths),
-                    hasFileInPath("cublasLt64_13.dll", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("cublasLt64_13.dll", librarySearchPaths) 
                 ])
             ])
         ]);
-
         return {
             hasNvidiaDriver,
             hasCudaRuntime
@@ -85,7 +79,6 @@ async function detectCudaSupport({
             "/usr/lib/armv7l-linux-gnu",
             ...cudaLibraryPaths
         ];
-
         const [
             hasNvidiaDriver,
             hasCudaRuntime
@@ -103,35 +96,32 @@ async function detectCudaSupport({
                     hasFileInPath("libcudart.so", librarySearchPaths),
                     hasFileInPath("libcudart.so.11", librarySearchPaths),
                     hasFileInPath("libcudart.so.12", librarySearchPaths),
-                    hasFileInPath("libcudart.so.13", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("libcudart.so.13", librarySearchPaths) 
                 ]),
                 asyncSome([
                     hasFileInPath("libcublas.so", librarySearchPaths),
                     hasFileInPath("libcublas.so.11", librarySearchPaths),
                     hasFileInPath("libcublas.so.12", librarySearchPaths),
-                    hasFileInPath("libcublas.so.13", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("libcublas.so.13", librarySearchPaths) 
                 ]),
                 asyncSome([
                     hasFileInPath("libcublasLt.so", librarySearchPaths),
                     hasFileInPath("libcublasLt.so.11", librarySearchPaths),
                     hasFileInPath("libcublasLt.so.12", librarySearchPaths),
-                    hasFileInPath("libcublasLt.so.13", librarySearchPaths) // for when the next version comes out
+                    hasFileInPath("libcublasLt.so.13", librarySearchPaths) 
                 ])
             ])
         ]);
-
         return {
             hasNvidiaDriver,
             hasCudaRuntime
         };
     }
-
     return {
         hasNvidiaDriver: false,
         hasCudaRuntime: false
     };
 }
-
 async function detectVulkanSupport({
     platform
 }: {
@@ -139,7 +129,6 @@ async function detectVulkanSupport({
 }) {
     if (platform === "win") {
         const windir = getWindir();
-
         return await asyncSome([
             hasFileInPath("vulkan-1.dll"),
             fs.pathExists(path.join(windir, "System32", "vulkan-1.dll")),
@@ -157,7 +146,6 @@ async function detectVulkanSupport({
                 ? `${process.env.PREFIX}/usr/lib`
                 : undefined
         ];
-
         return await asyncSome([
             hasFileInPath("libvulkan.so", librarySearchPaths),
             hasFileInPath("libvulkan.so.1", librarySearchPaths)
@@ -168,10 +156,8 @@ async function detectVulkanSupport({
             hasFileInPath("libvulkan.dylib.1")
         ]);
     }
-
     return false;
 }
-
 async function detectMetalSupport({
     platform
 }: {
@@ -179,16 +165,13 @@ async function detectMetalSupport({
 }) {
     return platform === "mac";
 }
-
 async function getLinuxCudaLibraryPaths() {
     const res: string[] = [];
-
     try {
         for (const cudaInstallationPath of await getCudaInstallationPaths({platform: "linux"})) {
             const cudaTargetsFolder = `${cudaInstallationPath}/targets`;
             if (!(await fs.pathExists(cudaTargetsFolder)))
                 continue;
-
             for (const cudaTargetFolderName of await fs.readdir(cudaTargetsFolder)) {
                 res.push(
                     `${cudaTargetsFolder}/${cudaTargetFolderName}/lib`,
@@ -199,10 +182,8 @@ async function getLinuxCudaLibraryPaths() {
     } catch (err) {
         console.error(getConsoleLogPrefix() + 'Failed to search "/usr/local/" for CUDA library paths', err);
     }
-
     return res;
 }
-
 async function getCudaInstallationPaths({
     platform
 }: {
@@ -211,26 +192,21 @@ async function getCudaInstallationPaths({
     if (platform === "win") {
         try {
             const programFilesPaths = await getWindowsProgramFilesPaths();
-
             const potentialCudaInstallationsContainerPaths = programFilesPaths
                 .map((programFilesPath) => `${programFilesPath}/NVIDIA GPU Computing Toolkit/CUDA`);
-
             const cudaInstallationsContainerPaths = (
                 await Promise.all(
                     potentialCudaInstallationsContainerPaths.map(async (potentialCudaInstallationsContainerPath) => {
                         if (await fs.pathExists(potentialCudaInstallationsContainerPath))
                             return potentialCudaInstallationsContainerPath;
-
                         return null;
                     })
                 )
             ).filter((path): path is string => path != null);
-
             const potentialCudaInstallations = (
                 await Promise.all(
                     cudaInstallationsContainerPaths.map(async (cudaInstallationsContainerPath) => {
                         const cudaFolderPrefix = "v";
-
                         return (
                             await fs.pathExists(cudaInstallationsContainerPath)
                                 ? await fs.readdir(cudaInstallationsContainerPath)
@@ -241,11 +217,9 @@ async function getCudaInstallationPaths({
                             .sort((a, b) => {
                                 const aVersion = a.slice(cudaFolderPrefix.length);
                                 const bVersion = b.slice(cudaFolderPrefix.length);
-
                                 try {
                                     const aVersionValid = semver.valid(semver.coerce(aVersion));
                                     const bVersionValid = semver.valid(semver.coerce(bVersion));
-
                                     if (aVersionValid && bVersionValid)
                                         return semver.compare(aVersionValid, bVersionValid);
                                     else if (aVersionValid)
@@ -263,16 +237,13 @@ async function getCudaInstallationPaths({
                     })
                 )
             ).flat();
-
             if (process.env.CUDA_PATH != null && process.env.CUDA_PATH !== "")
                 potentialCudaInstallations.unshift(process.env.CUDA_PATH);
-
             return (
                 await Promise.all(
                     potentialCudaInstallations.map(async (cudaFolder) => {
                         if (await fs.pathExists(cudaFolder))
                             return cudaFolder;
-
                         return null;
                     })
                 )
@@ -280,7 +251,6 @@ async function getCudaInstallationPaths({
         } catch (err) {
             console.error(getConsoleLogPrefix() + 'Failed to search "Program Files" for CUDA installations', err);
         }
-
         return [];
     } else if (platform === "linux") {
         const res: string[] = [];
@@ -296,11 +266,9 @@ async function getCudaInstallationPaths({
                 .sort((a, b) => {
                     const aVersion = a.slice(cudaFolderPrefix.length);
                     const bVersion = b.slice(cudaFolderPrefix.length);
-
                     try {
                         const aVersionValid = semver.valid(semver.coerce(aVersion));
                         const bVersionValid = semver.valid(semver.coerce(bVersion));
-
                         if (aVersionValid && bVersionValid)
                             return semver.compare(aVersionValid, bVersionValid);
                         else if (aVersionValid)
@@ -315,36 +283,28 @@ async function getCudaInstallationPaths({
                 })
                 .reverse()
                 .map((usrLocalFolderName) => `${usrLocal}/${usrLocalFolderName}`);
-
             potentialCudaFolders.unshift(`${usrLocal}/cuda`);
-
             if (process.env.CUDA_PATH != null && process.env.CUDA_PATH !== "")
                 potentialCudaFolders.unshift(process.env.CUDA_PATH);
-
             for (const cudaFolder of potentialCudaFolders) {
                 const cudaTargetsFolder = `${cudaFolder}/targets`;
                 if (!(await fs.pathExists(cudaTargetsFolder)))
                     continue;
-
                 res.push(cudaFolder);
             }
         } catch (err) {
             console.error(getConsoleLogPrefix() + 'Failed to search "/usr/local/" for CUDA installations', err);
         }
-
         return res;
     }
-
     return [];
 }
-
 export async function getCudaNvccPaths({
     platform = getPlatform()
 }: {
     platform?: BinaryPlatform
 } = {}) {
     const cudaInstallationPaths = await getCudaInstallationPaths({platform});
-
     const nvccPotentialPaths = cudaInstallationPaths
         .map((cudaInstallationPath) => {
             if (platform === "win")
@@ -352,37 +312,29 @@ export async function getCudaNvccPaths({
                     nvccPath: path.join(cudaInstallationPath, "bin", "nvcc.exe"),
                     cudaHomePath: cudaInstallationPath
                 };
-
             return {
                 nvccPath: path.join(cudaInstallationPath, "bin", "nvcc"),
                 cudaHomePath: cudaInstallationPath
             };
         });
-
     try {
         const resolvedPaths = await Promise.all(
             nvccPotentialPaths.map(async ({nvccPath, cudaHomePath}) => {
                 if (await fs.pathExists(nvccPath))
                     return {nvccPath, cudaHomePath};
-
                 return null;
             })
         );
-
         return resolvedPaths.filter((resolvedPath) => resolvedPath != null);
     } catch (err) {
         console.error(getConsoleLogPrefix() + `Failed to search for "nvcc${platform === "win" ? ".exe" : ""}" in CUDA installation paths`, err);
     }
-
     return [];
 }
-
 function getWindir() {
     return process.env.windir || process.env.WINDIR || process.env.SystemRoot || process.env.systemroot || process.env.SYSTEMROOT ||
         "C:\\Windows";
 }
-
-
 export async function getWindowsProgramFilesPaths() {
     const potentialPaths = await Promise.all(
         [
@@ -396,13 +348,10 @@ export async function getWindowsProgramFilesPaths() {
             .map(async (programFilesPath) => {
                 if (programFilesPath == null)
                     return null;
-
                 if (await fs.pathExists(programFilesPath))
                     return programFilesPath;
-
                 return null;
             })
     );
-
     return Array.from(new Set(potentialPaths.filter((potentialPath): potentialPath is string => potentialPath != null)));
 }

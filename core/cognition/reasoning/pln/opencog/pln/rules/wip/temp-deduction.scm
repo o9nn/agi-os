@@ -1,5 +1,3 @@
-; TODO: Replace the following with pln's deduction-inheritance-rule when
-; deduction-formula stops returning (cog-undefined-handle).
 (define (gen-temp-deduction-rule link-type)
     (BindLink
         (VariableList
@@ -22,6 +20,5 @@
             (VariableNode "$A")
             (VariableNode "$C")))
 )
-
 (define temp-deduction-inheritance-rule
     (gen-temp-deduction-rule InheritanceLink))

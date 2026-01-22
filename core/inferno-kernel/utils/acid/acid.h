@@ -1,18 +1,15 @@
-/* acid.h */
 enum
 {
-	Eof		= -1,
-	Strsize		= 4096,
-	Hashsize	= 128,
-	Maxarg		= 512,
-	NFD		= 100,
-	Maxproc		= 50,
-	Maxval		= 10,
-	Mempergc	= 1024*1024,
+Eof		= -1,
+Strsize		= 4096,
+Hashsize	= 128,
+Maxarg		= 512,
+NFD		= 100,
+Maxproc		= 50,
+Maxval		= 10,
+Mempergc	= 1024*1024,
 };
-
 #pragma varargck type "L"	void
-
 typedef struct Node	Node;
 typedef struct String	String;
 typedef struct Lsym	Lsym;
@@ -25,7 +22,6 @@ typedef struct Ptab	Ptab;
 typedef struct Value	Value;
 typedef struct Type	Type;
 typedef struct Frtype	Frtype;
-
 Extern int	kernel;
 Extern int	remote;
 Extern int rdebug;
@@ -62,118 +58,105 @@ Extern int	initialising;
 Extern int	quiet;
 extern void	(*expop[])(Node*, Node*);
 #define expr(n, r) (r)->nstore.comt=0; (*expop[(n)->op])(n, r);
-
 enum
 {
-	TINT,
-	TFLOAT,
-	TSTRING,
-	TLIST,
-	TCODE,
+TINT,
+TFLOAT,
+TSTRING,
+TLIST,
+TCODE,
 };
-
 struct Type
 {
-	Type*	next;
-	int	offset;
-	char	fmt;
-	char	depth;
-	Lsym*	type;
-	Lsym*	tag;
-	Lsym*	base;
+Type*	next;
+int	offset;
+char	fmt;
+char	depth;
+Lsym*	type;
+Lsym*	tag;
+Lsym*	base;
 };
-
 struct Frtype
 {
-	Lsym*	var;
-	Type*	type;
-	Frtype*	next;
+Lsym*	var;
+Type*	type;
+Frtype*	next;
 };
-
 struct Ptab
 {
-	int	pid;
-	int	ctl;
+int	pid;
+int	ctl;
 };
 Extern Ptab	ptab[Maxproc];
-
 struct Rplace
 {
-	jmp_buf	rlab;
-	Node*	stak;
-	Node*	val;
-	Lsym*	local;
-	Lsym**	tail;
+jmp_buf	rlab;
+Node*	stak;
+Node*	val;
+Lsym*	local;
+Lsym**	tail;
 };
-
 struct Gc
 {
-	char	gcmark;
-	Gc*	gclink;
+char	gcmark;
+Gc*	gclink;
 };
-
 struct Store
 {
-	char	fmt;
-	Type*	comt;
-	union {
-		vlong	sival;
-		double	sfval;
-		String*	sstring;
-		List*	sl;
-		Node*	scc;
-	} u0;
+char	fmt;
+Type*	comt;
+union {
+vlong	sival;
+double	sfval;
+String*	sstring;
+List*	sl;
+Node*	scc;
+} u0;
 };
-
 struct List
 {
-	Gc	lgc;
-	List*	next;
-	char	type;
-	Store	lstore;
+Gc	lgc;
+List*	next;
+char	type;
+Store	lstore;
 };
-
 struct Value
 {
-	char	set;
-	char	type;
-	Store	vstore;
-	Value*	pop;
-	Lsym*	scope;
-	Rplace*	ret;
+char	set;
+char	type;
+Store	vstore;
+Value*	pop;
+Lsym*	scope;
+Rplace*	ret;
 };
-
 struct Lsym
 {
-	char*	name;
-	int	lexval;
-	Lsym*	hash;
-	Value*	v;
-	Type*	lt;
-	Node*	proc;
-	Frtype*	local;
-	void	(*builtin)(Node*, Node*);
+char*	name;
+int	lexval;
+Lsym*	hash;
+Value*	v;
+Type*	lt;
+Node*	proc;
+Frtype*	local;
+void	(*builtin)(Node*, Node*);
 };
-
 struct Node
 {
-	Gc	ngc;
-	char	op;
-	char	type;
-	Node*	left;
-	Node*	right;
-	Lsym*	sym;
-	Store	nstore;
+Gc	ngc;
+char	op;
+char	type;
+Node*	left;
+Node*	right;
+Lsym*	sym;
+Store	nstore;
 };
 #define ZN	(Node*)0
-
 struct String
 {
-	Gc	sgc;
-	char	*string;
-	int	len;
+Gc	sgc;
+char	*string;
+int	len;
 };
-
 List*	addlist(List*, List*);
 List*	al(int);
 Node*	an(int, Node*, Node*);
@@ -262,56 +245,55 @@ void	windir(Map*, Node*, Node*, Node*);
 void	yyerror(char*, ...);
 int	yylex(void);
 int	yyparse(void);
-
 enum
 {
-	ONAME,
-	OCONST,
-	OMUL,
-	ODIV,
-	OMOD,
-	OADD,
-	OSUB,
-	ORSH,
-	OLSH,
-	OLT,
-	OGT,
-	OLEQ,
-	OGEQ,
-	OEQ,
-	ONEQ,
-	OLAND,
-	OXOR,
-	OLOR,
-	OCAND,
-	OCOR,
-	OASGN,
-	OINDM,
-	OEDEC,
-	OEINC,
-	OPINC,
-	OPDEC,
-	ONOT,
-	OIF,
-	ODO,
-	OLIST,
-	OCALL,
-	OCTRUCT,
-	OWHILE,
-	OELSE,
-	OHEAD,
-	OTAIL,
-	OAPPEND,
-	ORET,
-	OINDEX,
-	OINDC,
-	ODOT,
-	OLOCAL,
-	OFRAME,
-	OCOMPLEX,
-	ODELETE,
-	OCAST,
-	OFMT,
-	OEVAL,
-	OWHAT,
+ONAME,
+OCONST,
+OMUL,
+ODIV,
+OMOD,
+OADD,
+OSUB,
+ORSH,
+OLSH,
+OLT,
+OGT,
+OLEQ,
+OGEQ,
+OEQ,
+ONEQ,
+OLAND,
+OXOR,
+OLOR,
+OCAND,
+OCOR,
+OASGN,
+OINDM,
+OEDEC,
+OEINC,
+OPINC,
+OPDEC,
+ONOT,
+OIF,
+ODO,
+OLIST,
+OCALL,
+OCTRUCT,
+OWHILE,
+OELSE,
+OHEAD,
+OTAIL,
+OAPPEND,
+ORET,
+OINDEX,
+OINDC,
+ODOT,
+OLOCAL,
+OFRAME,
+OCOMPLEX,
+ODELETE,
+OCAST,
+OFMT,
+OEVAL,
+OWHAT,
 };

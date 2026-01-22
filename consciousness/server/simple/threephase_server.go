@@ -1,56 +1,37 @@
-//go:build simple
-// +build simple
-
 package main
-
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-
 	"github.com/EchoCog/echollama/core/echobeats"
 )
-
 var threePhaseManager *echobeats.ThreePhaseManager
-
 func main() {
 	fmt.Println("🌳 Deep Tree Echo - 3-Phase Concurrent Inference Engine")
 	fmt.Println("========================================================")
-
-	// Create processor and integrator
 	processor := echobeats.NewDefaultPhaseProcessor()
 	integrator := echobeats.NewConsciousnessAdapter(nil)
-
-	// Create 3-phase manager
 	threePhaseManager = echobeats.NewThreePhaseManager(processor, integrator)
-
-	// Start the 3-phase system
 	if err := threePhaseManager.Start(); err != nil {
 		log.Fatalf("Failed to start 3-phase system: %v", err)
 	}
-
-	// Setup HTTP handlers
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/api/status", handleStatus)
 	http.HandleFunc("/api/metrics", handleMetrics)
 	http.HandleFunc("/api/stop", handleStop)
-
-	// Start server
 	port := ":5001"
-	fmt.Printf("\n🚀 Server starting on http://localhost%s\n", port)
+	fmt.Printf("\n🚀 Server starting on http:
 	fmt.Println("\nEndpoints:")
 	fmt.Println("  GET  /              - Dashboard")
 	fmt.Println("  GET  /api/status    - System status")
 	fmt.Println("  GET  /api/metrics   - Detailed metrics")
 	fmt.Println("  POST /api/stop      - Stop system")
 	fmt.Println()
-
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }
-
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	html := `
 <!DOCTYPE html>
@@ -195,7 +176,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
     <div class="container">
         <h1>🌳 Deep Tree Echo - 3-Phase Concurrent Inference Engine</h1>
         <div class="subtitle">Inspired by Kawaii Hexapod System 4 Tripod Gait</div>
-        
         <div class="card">
             <h2>12-Step Cognitive Cycle</h2>
             <div class="step-cycle" id="step-cycle"></div>
@@ -208,7 +188,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 <span class="metric-value" id="cycle-number">-</span>
             </div>
         </div>
-        
         <div class="phase-grid">
             <div class="card">
                 <h2>Phase 0</h2>
@@ -226,7 +205,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="phase-0-reflective">0</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Phase 1</h2>
                 <div class="phase-indicator" id="phase-1-indicator">Idle</div>
@@ -243,7 +221,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="phase-1-reflective">0</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Phase 2</h2>
                 <div class="phase-indicator" id="phase-2-indicator">Idle</div>
@@ -261,7 +238,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 </div>
             </div>
         </div>
-        
         <div class="metrics-grid">
             <div class="card">
                 <h2>System Metrics</h2>
@@ -286,7 +262,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="uptime">-</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Active Couplings</h2>
                 <div id="couplings-container">
@@ -294,13 +269,11 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 </div>
             </div>
         </div>
-        
         <div class="card" style="text-align: center;">
             <button class="button" onclick="refreshStatus()">🔄 Refresh</button>
             <button class="button" onclick="stopSystem()">⏹️ Stop System</button>
         </div>
     </div>
-    
     <script>
         const stepConfigs = [
             {step: 0, phase: 0, term: 'T4', mode: 'E'},
@@ -316,7 +289,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
             {step: 10, phase: 1, term: 'T7', mode: 'R'},
             {step: 11, phase: 2, term: 'T5', mode: 'E'}
         ];
-        
         function initStepCycle() {
             const container = document.getElementById('step-cycle');
             stepConfigs.forEach(config => {
@@ -327,7 +299,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 container.appendChild(step);
             });
         }
-        
         function updateStatus() {
             fetch('/api/status')
                 .then(response => response.json())
@@ -339,8 +310,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     document.getElementById('cognitive-load').textContent = data.cognitive_load.toFixed(3);
                     document.getElementById('coherence').textContent = data.stream_coherence.toFixed(3);
                     document.getElementById('uptime').textContent = data.uptime;
-                    
-                    // Update step cycle
                     for (let i = 0; i < 12; i++) {
                         const stepEl = document.getElementById('step-' + i);
                         if (i === data.current_step) {
@@ -349,14 +318,10 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                             stepEl.classList.remove('step-current');
                         }
                     }
-                    
-                    // Update phases
                     data.phases.forEach((phase, idx) => {
                         document.getElementById('phase-' + idx + '-steps').textContent = phase.steps_processed;
                         document.getElementById('phase-' + idx + '-expressive').textContent = phase.expressive_steps;
                         document.getElementById('phase-' + idx + '-reflective').textContent = phase.reflective_steps;
-                        
-                        // Update phase indicator
                         const indicator = document.getElementById('phase-' + idx + '-indicator');
                         const config = stepConfigs[data.current_step];
                         if (config.phase === idx) {
@@ -367,11 +332,8 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                             indicator.classList.remove('phase-active');
                         }
                     });
-                    
-                    // Update couplings
                     const couplingsContainer = document.getElementById('couplings-container');
                     if (data.active_couplings > 0) {
-                        // In a real implementation, we'd show coupling details
                         couplingsContainer.innerHTML = '<div class="coupling-indicator">🔗 ' + data.active_couplings + ' coupling(s) active</div>';
                     } else {
                         couplingsContainer.innerHTML = '<div style="color: #888;">No active couplings</div>';
@@ -379,11 +341,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 })
                 .catch(error => console.error('Error fetching status:', error));
         }
-        
         function refreshStatus() {
             updateStatus();
         }
-        
         function stopSystem() {
             if (confirm('Stop the 3-phase system?')) {
                 fetch('/api/stop', {method: 'POST'})
@@ -395,12 +355,8 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     .catch(error => console.error('Error stopping system:', error));
             }
         }
-        
-        // Initialize
         initStepCycle();
         updateStatus();
-        
-        // Update every 500ms
         setInterval(updateStatus, 500);
     </script>
 </body>
@@ -409,29 +365,22 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
-
 func handleStatus(w http.ResponseWriter, r *http.Request) {
 	status := threePhaseManager.GetStatus()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(status)
 }
-
 func handleMetrics(w http.ResponseWriter, r *http.Request) {
 	metrics := threePhaseManager.GetMetrics()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(metrics)
 }
-
 func handleStop(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 	threePhaseManager.Stop()
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "3-phase system stopped",

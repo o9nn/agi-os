@@ -1,19 +1,3 @@
-;
-; log-merge.scm
-;
-; Create a log, in the atomspace, of assorted data collected during 
-; the merge.
-;
-; Copyright (c) 2021 Linas Vepstas
-;
-; ---------------------------------------------------------------------
-; OVERVIEW
-; --------
-; Logged data is attached to the wild-card on the indicated matrix.
-; Thus, it will travel with the matrix, if it is ever copied.
-;
-; ---------------------------------------------------------------------
-
 (define-public (get-merge-iteration LLOBJ)
 "
   get-merge-iteration LLOBJ -- return the number of merges done so far.
@@ -21,36 +5,27 @@
 	(define log-anchor (LLOBJ 'wild-wild))
 	(define count-location (Predicate "merge-count"))
 	(define count-log (cog-value log-anchor count-location))
-
-	; Return the logged value.
 	(inexact->exact
 		(if (nil? count-log) 0 (cog-value-ref count-log 0)))
 )
-
 (define-public (update-merge-iteration LLOBJ N)
 "
   update-merge-iteration LLOBJ N -- Set the number of merges to N.
 "
 	(define log-anchor (LLOBJ 'wild-wild))
 	(define count-location (Predicate "merge-count"))
-
 	(cog-set-value! log-anchor count-location (FloatValue N))
 	(store-atom log-anchor)
 )
-
-; ---------------------------------------------------------------------
-
 (define (make-merge-logger LLOBJ)
 "
   make-merge-logger LLOBJ -- create logger to record assorted dataset info
      as the merge progresses. The data is anchored on the wild-card of the
      LLOBJ.
-
-     This is always called before the merge is performed; it records the
+     This is always called before the merge is performed
      state of affairs at that point.
 "
 	(define *-log-anchor-* (LLOBJ 'wild-wild))
-
 	(define log-mmt-q (make-data-logger *-log-anchor-* (Predicate "mmt-q")))
 	(define log-mi (make-data-logger *-log-anchor-* (Predicate "top-pair mi")))
 	(define log-ranked-mi (make-data-logger *-log-anchor-* (Predicate "top-pair ranked-mi")))
@@ -67,48 +42,33 @@
 	(define log-nclasses (make-data-logger *-log-anchor-* (Predicate "num classes")))
 	(define log-nsimil (make-data-logger *-log-anchor-* (Predicate "num sim pairs")))
 	(define log-ortho (make-data-logger *-log-anchor-* (Predicate "orthogonality")))
-
 	(define (log2 x) (if (< 0 x) (/ (log x) (log 2)) -inf.0))
-
 	(define sup (add-support-api LLOBJ))
 	(define tsr (add-transpose-api LLOBJ))
 	(define sap (add-gram-mi-sim-api LLOBJ))
 	(define rpt (add-report-api LLOBJ))
-
 	(define (get-sparsity)
 		(define nrows (sup 'left-dim))
 		(define ncols (sup 'right-dim))
 		(define tot (* nrows ncols))
-		(define lsize (sup 'total-support-left)) ; equal to total-support-right
+		(define lsize (sup 'total-support-left))
 		(log2 (/ tot lsize)))
-
 	(define (get-mmt-entropy)
 		(define mmt-support (tsr 'total-mmt-support))
 		(define mmt-count (tsr 'total-mmt-count))
 		(- (log2 (/ mmt-count (* mmt-support mmt-support)))))
-
 	(define (get-mi PAIR)
 		(define miv (sap 'get-count PAIR))
 		(if miv (cog-value-ref miv 0) -inf.0))
-
 	(define (get-ranked-mi PAIR)
 		(define miv (sap 'get-count PAIR))
 		(if miv (cog-value-ref miv 1) -inf.0))
-
-	; The MI similarity of two words
 	(define (mi-sim WA WB)
 		(define miv (sap 'pair-count WA WB))
 		(if miv (cog-value-ref miv 0) -inf.0))
-
-	; What fraction of all similarities between all word-classes
-	; are zero? Returns a fraction between zero and one.  The
-	; fraction is one, if all similarities are vanishing.
 	(define (orthogonality)
 		(define northo 0)
 		(define ntot 0)
-
-		; Loop over all N(N-1)/2 similarities for N classes.
-		; i.e. not counting self-similarities.
 		(define (count-ortho WLI)
 			(define WCL (car WLI))
 			(define REST (cdr WLI))
@@ -120,57 +80,37 @@
 							(set! northo (+ 1 northo))))
 					REST)
 				(count-ortho REST)))
-
 		(define all-cls (LLOBJ 'get-clusters))
 		(if (not (nil? all-cls)) (count-ortho all-cls))
-
 		(if (< 0 ntot)
 			(exact->inexact (/ northo ntot))
 			1.0))
-
-	; Log some maybe-useful data...
 	(lambda (top-pair)
 		(log-mmt-q ((add-symmetric-mi-compute LLOBJ) 'mmt-q))
 		(log-ranked-mi (get-ranked-mi top-pair))
 		(log-mi (get-mi top-pair))
-
 		(log-sparsity (get-sparsity))
 		(log-entropy (get-mmt-entropy))
-
-		; The left and right count should be always equal,
-		; and should never change.  This is a sanity check.
 		(log-left-cnt (sup 'total-count-left))
 		(log-right-cnt (sup 'total-count-right))
-
-		; left and right dimensions (number of rows, columns)
 		(log-left-dim (sup 'left-dim))
 		(log-right-dim (sup 'right-dim))
-
-		; Total number of non-zero entries
 		(log-size (sup 'total-support-left))
-
-		; word-dj entropies. Logged only when available.
 		(when TRACK-ENTROPY
 			(log-left-entropy (rpt 'left-entropy))
 			(log-right-entropy (rpt 'right-entropy))
 			(log-total-entropy (rpt 'total-entropy)))
-
 		(log-nclasses (cog-count-atoms 'WordClassNode))
 		(log-nsimil (cog-count-atoms 'SimilarityLink))
 		(log-ortho (orthogonality))
-
-		; Save to the DB
 		(store-atom *-log-anchor-*)
 	)
 )
-
 (define (make-class-logger LLOBJ)
 "
   make-class-logger LLOBJ -- create logger to record merge details.
 "
 	(define *-log-anchor-* (LLOBJ 'wild-wild))
-
-	; Record the classes as they are created.
 	(define log-class (make-data-logger *-log-anchor-* (Predicate "class")))
 	(define log-class-name (make-data-logger *-log-anchor-* (Predicate "class name")))
 	(define log-class-size (make-data-logger *-log-anchor-* (Predicate "class size")))
@@ -181,37 +121,25 @@
 	(define log-logli (make-data-logger *-log-anchor-* (Predicate "class logli")))
 	(define log-entropy (make-data-logger *-log-anchor-* (Predicate "class entropy")))
 	(define log-cluster (make-data-logger *-log-anchor-* (Predicate "class cluster entropy")))
-
-	; General setup of things we need
 	(define sup (add-support-api LLOBJ))
 	(define frq (add-pair-freq-api LLOBJ))
 	(define sap (add-gram-mi-sim-api LLOBJ))
-
-	; The MI similarity of two words
 	(define (mi-sim WA WB)
 		(define miv (sap 'pair-count WA WB))
 		(if miv (cog-value-ref miv 0) -inf.0))
-
-	; The ranked MI similarity of two words
 	(define (ranked-mi-sim WA WB)
 		(define miv (sap 'pair-count WA WB))
 		(if miv (cog-value-ref miv 1) -inf.0))
-
-	; sum_i p_i log p_i = sum_i n_i/N log n_i/N
-	; = (1/N) sum_i n_i (log n_i - log N)
-	; = (1/N) sum_i n_i log n_i - ((log N) /N) sum_i n_i
-	; = (1/N) sum_i n_i log n_i -  log N
 	(define (cluster-entropy WCLASS)
 		(define tot (fold (lambda (MEMB SUM) (+ SUM (cog-count MEMB)))
 			0 (cog-incoming-by-type WCLASS 'MemberLink)))
 		(define nlg (fold (lambda (MEMB SUM)
 					(define cnt (cog-count MEMB))
-					(if (< 0 cnt)  ; avoid taking log of zero.
+					(if (< 0 cnt)
 						(+ SUM (* cnt (log cnt)))
 						0))
 				0 (cog-incoming-by-type WCLASS 'MemberLink)))
 		(/ (- (log tot) (/ nlg tot)) (log 2)))
-
 	(lambda (WCLASS)
 		(log-class WCLASS)
 		(log-class-name (cog-name WCLASS))
@@ -227,35 +155,25 @@
 		(store-atom *-log-anchor-*)
 	)
 )
-
-; ---------------------------------------------------------------
-
 (define (print-params LLOBJ PORT)
 "
   print-params LLOBJ PORT -- print parameters header.
 "
 	(define *-log-anchor-* (LLOBJ 'wild-wild))
-
 	(define params (cog-value->list
 		(cog-value *-log-anchor-* (Predicate "quorum-comm-noise"))))
 	(define quorum (list-ref params 0))
 	(define commonality (list-ref params 1))
 	(define noise (list-ref params 2))
 	(define nrank (list-ref params 3))
-
 	(format PORT "# quorum=~6F commonality=~6F noise=~D nrank=~A\n#\n"
 		quorum commonality noise nrank)
-
 	(define in-grp-sim (cog-value-ref
 		(cog-value *-log-anchor-* (Predicate "in-group-sim")) 0))
-
 	(format PORT "# in-group-sim=~A\n" in-grp-sim)
 )
-
-; If nothing, then print zero.
 (define (zlist-ref LST N) (if LST (list-ref LST N) 0))
 (define (fcog-value->list VAL) (if VAL (cog-value->list VAL) #f))
-
 (define-public (print-log LLOBJ PORT)
 "
   print-log LLOBJ PORT -- Dump log contents as CSV
@@ -276,7 +194,6 @@
 	(define key-total-entropy (Predicate "total-entropy"))
 	(define key-nclasses (Predicate "num classes"))
 	(define key-nsimil (Predicate "num sim pairs"))
-
 	(define *-log-anchor-* (LLOBJ 'wild-wild))
 	(define rows (cog-value->list (cog-value *-log-anchor-* key-left-dim)))
 	(define cols (cog-value->list (cog-value *-log-anchor-* key-right-dim)))
@@ -293,9 +210,7 @@
 	(define mmtq (cog-value->list (cog-value *-log-anchor-* key-mmt-q)))
 	(define ncla (cog-value->list (cog-value *-log-anchor-* key-nclasses)))
 	(define nsim (cog-value->list (cog-value *-log-anchor-* key-nsimil)))
-
 	(define len (length rows))
-
 	(format PORT "#\n# Log of dataset merge statistics\n#\n")
 	(print-params LLOBJ PORT)
 	(format PORT "# N,rows,cols,lcnt,rcnt,size,left-entropy,right-entropy,total-entropy,sparsity,mmt-entropy,top-pair-ranked-mi,top-pair-mi,mmt-q,nclasses,nsimilaries\n")
@@ -319,11 +234,8 @@
 			(inexact->exact (list-ref nsim N))
 		))
 		(iota len))
-
-	; Flush port to disk
 	(force-output PORT)
 )
-
 (define-public (print-merges LLOBJ PORT)
 "
   print-merges LLOBJ PORT -- Dump merge log contents as CSV
@@ -339,7 +251,6 @@
 	(define key-logli (Predicate "class logli"))
 	(define key-entropy (Predicate "class entropy"))
 	(define key-cluster (Predicate "class cluster entropy"))
-
 	(define *-log-anchor-* (LLOBJ 'wild-wild))
 	(define classes (cog-value->list (cog-value *-log-anchor-* key-class)))
 	(define class-name (cog-value->list (cog-value *-log-anchor-* key-class-name)))
@@ -351,10 +262,7 @@
 	(define logli (fcog-value->list (cog-value *-log-anchor-* key-logli)))
 	(define entropy (fcog-value->list (cog-value *-log-anchor-* key-entropy)))
 	(define cluster (cog-value->list (cog-value *-log-anchor-* key-cluster)))
-
 	(define len (length classes))
-
-	; Frick-n-frack adjust for stumbles with quotes
 	(define (esc-q STR)
 		(string-concatenate
 			(map (lambda (CHAR)
@@ -363,7 +271,6 @@
 					((equal? CHAR #\\) "U+005C")
 					(else (list->string (list CHAR)))))
 				(string->list STR))))
-
 	(format PORT "#\n# Log of class-related merge statistics\n#\n")
 	(print-params LLOBJ PORT)
 	(format PORT "# N,words,class-size,self-mi,self-rmi,support,count,logli,entropy,cluster\n")
@@ -371,11 +278,6 @@
 		(define cls (list-ref classes N))
 		(format PORT "~D\t\"~A\"\t~D\t~9F\t~9F\t~D\t~D\t~9F\t~9F\t~9F\n"
 			(+ N 1)
-
-			; It commonnly happens that the class has been deleted,
-			; whenever it was fully merged into another class.
-			; Thus, we cannot rely on it being there.
-			; (if (cog-atom? cls) (cog-name cls) "#f")
 			(esc-q (list-ref class-name N))
 			(list-ref class-size N)
 			(list-ref self-mi N)
@@ -387,23 +289,15 @@
 			(list-ref cluster N)
 		))
 		(iota len))
-
-	; Flush port to disk
 	(force-output PORT)
 )
-
-; ---------------------------------------------------------------
-
 (define-public (dump-log LLOBJ PREFIX-DIR PRINTER)
 "
   dump-log LLOBJ PREFIX-DIR PRINTER -- print log file to PREFIX-DIR.
-
   The PREFIX-DIR is used to specify the directory and also the file
   prefix.  Appended to this will be a string recording the quorum,
   commonality and noise for the run.
-
   The PRINTER must be either `print-log` or `print-merges`.
-
   Example: (dump-log star-obj \"/tmp/foo\" print-log)
   Result: \"/tmp/foo-q0.5-c0.2-n4.dat\" where 0.5 is the quorum,
   0.2 the commonality and 4 is the noise.
@@ -416,18 +310,11 @@
 	(define noise (list-ref params 2))
 	(define FILENAME (format #f "~A-q~A-c~A-n~D.dat"
 		PREFIX-DIR quorum commonality (inexact->exact noise)))
-	; (define port (open FILENAME (logior O_CREAT O_WRONLY O_TRUNC)))
 	(define port (open-output-file FILENAME))
 	(PRINTER LLOBJ port)
 	(close port)
 )
-
-; ---------------------------------------------------------------
 #! ========
-;
-; Example usage
-
 (print-log star-obj #t)
 (print-merges star-obj #t)
-
 ==== !#

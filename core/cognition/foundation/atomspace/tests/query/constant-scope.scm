@@ -12,7 +12,6 @@
     (NumberNode "2")
   )
 )
-
 (EvaluationLink
   (PredicateNode "minsup")
   (ListLink
@@ -27,7 +26,6 @@
     (NumberNode "2")
   )
 )
-
 (define query
 (GetLink
   (TypedVariableLink
@@ -50,7 +48,6 @@
   )
 )
 )
-
 (define expected
 (Set
   (LambdaLink

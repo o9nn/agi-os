@@ -1,9 +1,6 @@
 import type { JSONSchema7 } from 'json-schema'
-
 export type ToJsonSchemaFn = (schema: unknown) => JSONSchema7 | Promise<JSONSchema7>
-
 export const missingDependenciesUrl = 'https://xsai.js.org/docs/packages-top/xsschema#missing-dependencies'
-
 export const tryImport = async <T>(result: Promise<T>, name: string): Promise<Awaited<T>> => {
   try {
     return await result
@@ -12,7 +9,6 @@ export const tryImport = async <T>(result: Promise<T>, name: string): Promise<Aw
     throw new Error(`xsschema: Missing dependencies "${name}". see ${missingDependenciesUrl}`)
   }
 }
-
 export const getToJsonSchemaFn = async (vendor: string): Promise<ToJsonSchemaFn> => {
   switch (vendor) {
     case 'arktype':

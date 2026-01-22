@@ -1,6 +1,5 @@
 import { definePreset, LAYER_PREFLIGHTS } from '@unocss/core'
 import { presetWebFonts } from '@unocss/preset-web-fonts'
-
 export default definePreset(() => {
   return {
     name: 'preset-fonts',

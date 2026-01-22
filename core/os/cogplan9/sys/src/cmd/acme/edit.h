@@ -1,82 +1,72 @@
 #pragma	varargck	argpos	editerror	1
-
 typedef struct Addr	Addr;
 typedef struct Address	Address;
 typedef struct Cmd	Cmd;
 typedef struct List	List;
 typedef struct String	String;
-
 struct String
 {
-	int	n;		/* excludes NUL */
-	Rune	*r;		/* includes NUL */
-	int	nalloc;
+int	n;
+Rune	*r;
+int	nalloc;
 };
-
 struct Addr
 {
-	char	type;	/* # (char addr), l (line addr), / ? . $ + - , ; */
-	union{
-		String	*re;
-		Addr	*left;		/* left side of , and ; */
-	};
-	ulong	num;
-	Addr	*next;			/* or right side of , and ; */
+char	type;
+union{
+String	*re;
+Addr	*left;
 };
-
+ulong	num;
+Addr	*next;
+};
 struct Address
 {
-	Range	r;
-	File	*f;
+Range	r;
+File	*f;
 };
-
 struct Cmd
 {
-	Addr	*addr;			/* address (range of text) */
-	String	*re;			/* regular expression for e.g. 'x' */
-	union{
-		Cmd	*cmd;		/* target of x, g, {, etc. */
-		String	*text;		/* text of a, c, i; rhs of s */
-		Addr	*mtaddr;		/* address for m, t */
-	};
-	Cmd	*next;			/* pointer to next element in {} */
-	short	num;
-	ushort	flag;			/* whatever */
-	ushort	cmdc;			/* command character; 'x' etc. */
+Addr	*addr;
+String	*re;
+union{
+Cmd	*cmd;
+String	*text;
+Addr	*mtaddr;
 };
-
+Cmd	*next;
+short	num;
+ushort	flag;
+ushort	cmdc;
+};
 extern struct cmdtab{
-	ushort	cmdc;		/* command character */
-	uchar	text;		/* takes a textual argument? */
-	uchar	regexp;		/* takes a regular expression? */
-	uchar	addr;		/* takes an address (m or t)? */
-	uchar	defcmd;		/* default command; 0==>none */
-	uchar	defaddr;	/* default address */
-	uchar	count;		/* takes a count e.g. s2/// */
-	char	*token;		/* takes text terminated by one of these */
-	int	(*fn)(Text*, Cmd*);	/* function to call with parse tree */
+ushort	cmdc;
+uchar	text;
+uchar	regexp;
+uchar	addr;
+uchar	defcmd;
+uchar	defaddr;
+uchar	count;
+char	*token;
+int	(*fn)(Text*, Cmd*);
 }cmdtab[];
-
-#define	INCR	25	/* delta when growing list */
-
+#define	INCR	25
 struct List
 {
-	int	nalloc;
-	int	nused;
-	union{
-		void	*listptr;
-		void*	*ptr;
-		uchar*	*ucharptr;
-		String*	*stringptr;
-	};
+int	nalloc;
+int	nused;
+union{
+void	*listptr;
+void*	*ptr;
+uchar*	*ucharptr;
+String*	*stringptr;
 };
-
-enum Defaddr{	/* default addresses */
-	aNo,
-	aDot,
-	aAll,
 };
-
+enum Defaddr{
+aNo,
+aDot,
+aAll,
+};
 int	nl_cmd(Text*, Cmd*), a_cmd(Text*, Cmd*), b_cmd(Text*, Cmd*);
 int	c_cmd(Text*, Cmd*), d_cmd(Text*, Cmd*);
 int	B_cmd(Text*, Cmd*), D_cmd(Text*, Cmd*), e_cmd(Text*, Cmd*);
@@ -86,7 +76,6 @@ int	p_cmd(Text*, Cmd*);
 int	s_cmd(Text*, Cmd*), u_cmd(Text*, Cmd*), w_cmd(Text*, Cmd*);
 int	x_cmd(Text*, Cmd*), X_cmd(Text*, Cmd*), pipe_cmd(Text*, Cmd*);
 int	eq_cmd(Text*, Cmd*);
-
 String	*allocstring(int);
 void	freestring(String*);
 String	*getregexp(int);

@@ -1,41 +1,34 @@
 #pragma lib "./lib.$O.a"
-
 enum{
-	PASSLEN		= 10,
-	MAXNETCHAL	= 100000,		/* max securenet challenge */
-	Maxpath		= 256,
+PASSLEN		= 10,
+MAXNETCHAL	= 100000,
+Maxpath		= 256,
 };
-
 #define	KEYDB		"/mnt/keys"
 #define NETKEYDB	"/mnt/netkeys"
-#define KEYDBBUF	(sizeof NETKEYDB)	/* enough for any keydb prefix */
+#define KEYDBBUF	(sizeof NETKEYDB)
 #define AUTHLOG		"auth"
-
 enum
 {
-	Nemail		= 10,
-	Plan9		= 1,
-	Securenet	= 2,
+Nemail		= 10,
+Plan9		= 1,
+Securenet	= 2,
 };
-
 typedef struct
 {
-	char	*user;
-	char	*postid;
-	char	*name;
-	char	*dept;
-	char	*email[Nemail];
+char	*user;
+char	*postid;
+char	*name;
+char	*dept;
+char	*email[Nemail];
 } Acctbio;
-
 typedef struct {
-	char	*keys;
-	char	*msg;
-	char	*who;
-	Biobuf 	*b;
+char	*keys;
+char	*msg;
+char	*who;
+Biobuf 	*b;
 } Fs;
-
 extern Fs fs[3];
-
 void	checksum(char*, char*);
 void	error(char*, ...);
 void	fail(char*);
@@ -64,5 +57,4 @@ int	smartcheck(void*, long, char*);
 void	succeed(char*);
 void	wrbio(char*, Acctbio*);
 int	writefile(char*, char*, int);
-
 #pragma	varargck	type	"K"	char*

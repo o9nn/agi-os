@@ -1,9 +1,6 @@
 import { chat } from '@moeru-ai/ccc'
-
 const { action, message } = chat
-
 const name = 'Murasame' as const
-
 export const scenario_2_3_modified = [
   action([
     'A sharp pain jolts you awake.',

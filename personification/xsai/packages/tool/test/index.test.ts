@@ -1,14 +1,10 @@
 import type { JsonSchema } from 'xsschema'
-
 import { description, object, pipe, string } from 'valibot'
 import { describe, expect, it } from 'vitest'
-
 import { rawTool, tool } from '../src'
-
 describe('@xsai/tool', () => {
   const name = 'weather'
   const desc = 'Get the weather in a location'
-
   it('tool', async () => {
     const weather = await tool({
       description: desc,
@@ -24,7 +20,6 @@ describe('@xsai/tool', () => {
         ),
       }),
     })
-
     expect(weather.type).toBe('function')
     expect(weather.function.name).toBe(name)
     expect(weather.function.description).toBe(desc)
@@ -58,7 +53,6 @@ describe('@xsai/tool', () => {
       ],
       type: 'object',
     } satisfies JsonSchema
-
     const weather = rawTool<{ location: string }>({
       description: desc,
       execute: ({ location }) => JSON.stringify({
@@ -68,7 +62,6 @@ describe('@xsai/tool', () => {
       name,
       parameters,
     })
-
     expect(weather.type).toBe('function')
     expect(weather.function.name).toBe(name)
     expect(weather.function.description).toBe(desc)

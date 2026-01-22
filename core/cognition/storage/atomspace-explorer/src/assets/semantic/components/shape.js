@@ -1,45 +1,27 @@
-/*!
- * # Semantic UI 2.2.10 - Shape
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 $.fn.shape = function(parameters) {
   var
     $allModules     = $(this),
     $body           = $('body'),
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
-
     requestAnimationFrame = window.requestAnimationFrame
       || window.mozRequestAnimationFrame
       || window.webkitRequestAnimationFrame
       || window.msRequestAnimationFrame
       || function(callback) { setTimeout(callback, 0); },
-
     returnedValue
   ;
-
   $allModules
     .each(function() {
       var
@@ -47,41 +29,28 @@ $.fn.shape = function(parameters) {
         settings       = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.shape.settings, parameters)
           : $.extend({}, $.fn.shape.settings),
-
-        // internal aliases
         namespace     = settings.namespace,
         selector      = settings.selector,
         error         = settings.error,
         className     = settings.className,
-
-        // define namespaces for modules
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
-        // selector cache
         $module       = $(this),
         $sides        = $module.find(selector.sides),
         $side         = $module.find(selector.side),
-
-        // private variables
         nextIndex = false,
         $activeSide,
         $nextSide,
-
-        // standard module
         element       = this,
         instance      = $module.data(moduleNamespace),
         module
       ;
-
       module = {
-
         initialize: function() {
           module.verbose('Initializing module for', element);
           module.set.defaultSide();
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of module', module);
           instance = module;
@@ -89,7 +58,6 @@ $.fn.shape = function(parameters) {
             .data(moduleNamespace, instance)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying previous module for', element);
           $module
@@ -97,14 +65,12 @@ $.fn.shape = function(parameters) {
             .off(eventNamespace)
           ;
         },
-
         refresh: function() {
           module.verbose('Refreshing selector cache for', element);
           $module = $(element);
           $sides  = $(this).find(selector.shape);
           $side   = $(this).find(selector.side);
         },
-
         repaint: function() {
           module.verbose('Forcing repaint event');
           var
@@ -112,7 +78,6 @@ $.fn.shape = function(parameters) {
             fakeAssignment = shape.offsetWidth
           ;
         },
-
         animate: function(propertyObject, callback) {
           module.verbose('Animating box with properties', propertyObject);
           callback = callback || function(event) {
@@ -147,7 +112,6 @@ $.fn.shape = function(parameters) {
             callback();
           }
         },
-
         queue: function(method) {
           module.debug('Queueing animation of', method);
           $sides
@@ -159,7 +123,6 @@ $.fn.shape = function(parameters) {
             })
           ;
         },
-
         reset: function() {
           module.verbose('Animating states reset');
           $module
@@ -167,7 +130,6 @@ $.fn.shape = function(parameters) {
             .attr('style', '')
             .removeAttr('style')
           ;
-          // removeAttr style does not consistently work in safari
           $sides
             .attr('style', '')
             .removeAttr('style')
@@ -183,7 +145,6 @@ $.fn.shape = function(parameters) {
             .removeAttr('style')
           ;
         },
-
         is: {
           complete: function() {
             return ($side.filter('.' + className.active)[0] == $nextSide[0]);
@@ -192,9 +153,7 @@ $.fn.shape = function(parameters) {
             return $module.hasClass(className.animating);
           }
         },
-
         set: {
-
           defaultSide: function() {
             $activeSide = $module.find('.' + settings.className.active);
             $nextSide   = ( $activeSide.next(selector.side).length > 0 )
@@ -205,7 +164,6 @@ $.fn.shape = function(parameters) {
             module.verbose('Active side set to', $activeSide);
             module.verbose('Next side set to', $nextSide);
           },
-
           duration: function(duration) {
             duration = duration || settings.duration;
             duration = (typeof duration == 'number')
@@ -225,7 +183,6 @@ $.fn.shape = function(parameters) {
               ;
             }
           },
-
           currentStageSize: function() {
             var
               $activeSide = $module.find('.' + settings.className.active),
@@ -239,7 +196,6 @@ $.fn.shape = function(parameters) {
               })
             ;
           },
-
           stageSize: function() {
             var
               $clone      = $module.clone().addClass(className.loading),
@@ -273,7 +229,6 @@ $.fn.shape = function(parameters) {
               module.verbose('Specifying height during animation', newHeight);
             }
           },
-
           nextSide: function(selector) {
             nextIndex = selector;
             $nextSide = $side.filter(selector);
@@ -284,7 +239,6 @@ $.fn.shape = function(parameters) {
             }
             module.verbose('Next side manually set to', $nextSide);
           },
-
           active: function() {
             module.verbose('Setting new side to active', $nextSide);
             $side
@@ -297,9 +251,7 @@ $.fn.shape = function(parameters) {
             module.set.defaultSide();
           }
         },
-
         flip: {
-
           up: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -318,7 +270,6 @@ $.fn.shape = function(parameters) {
               module.queue('flip up');
             }
           },
-
           down: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -337,7 +288,6 @@ $.fn.shape = function(parameters) {
               module.queue('flip down');
             }
           },
-
           left: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -356,7 +306,6 @@ $.fn.shape = function(parameters) {
               module.queue('flip left');
             }
           },
-
           right: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -375,7 +324,6 @@ $.fn.shape = function(parameters) {
               module.queue('flip right');
             }
           },
-
           over: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -391,7 +339,6 @@ $.fn.shape = function(parameters) {
               module.queue('flip over');
             }
           },
-
           back: function() {
             if(module.is.complete() && !module.is.animating() && !settings.allowRepeats) {
               module.debug('Side already visible', $nextSide);
@@ -407,11 +354,8 @@ $.fn.shape = function(parameters) {
               module.queue('flip back');
             }
           }
-
         },
-
         get: {
-
           transform: {
             up: function() {
               var
@@ -424,7 +368,6 @@ $.fn.shape = function(parameters) {
                 transform: 'translateY(' + translate.y + 'px) translateZ('+ translate.z + 'px) rotateX(-90deg)'
               };
             },
-
             down: function() {
               var
                 translate = {
@@ -436,7 +379,6 @@ $.fn.shape = function(parameters) {
                 transform: 'translateY(' + translate.y + 'px) translateZ('+ translate.z + 'px) rotateX(90deg)'
               };
             },
-
             left: function() {
               var
                 translate = {
@@ -448,7 +390,6 @@ $.fn.shape = function(parameters) {
                 transform: 'translateX(' + translate.x + 'px) translateZ(' + translate.z + 'px) rotateY(90deg)'
               };
             },
-
             right: function() {
               var
                 translate = {
@@ -460,7 +401,6 @@ $.fn.shape = function(parameters) {
                 transform: 'translateX(' + translate.x + 'px) translateZ(' + translate.z + 'px) rotateY(-90deg)'
               };
             },
-
             over: function() {
               var
                 translate = {
@@ -471,7 +411,6 @@ $.fn.shape = function(parameters) {
                 transform: 'translateX(' + translate.x + 'px) rotateY(180deg)'
               };
             },
-
             back: function() {
               var
                 translate = {
@@ -483,7 +422,6 @@ $.fn.shape = function(parameters) {
               };
             }
           },
-
           transitionEvent: function() {
             var
               element     = document.createElement('element'),
@@ -501,18 +439,14 @@ $.fn.shape = function(parameters) {
               }
             }
           },
-
           nextSide: function() {
             return ( $activeSide.next(selector.side).length > 0 )
               ? $activeSide.next(selector.side)
               : $module.find(selector.side).first()
             ;
           }
-
         },
-
         stage: {
-
           above: function() {
             var
               box = {
@@ -542,7 +476,6 @@ $.fn.shape = function(parameters) {
               })
             ;
           },
-
           below: function() {
             var
               box = {
@@ -572,7 +505,6 @@ $.fn.shape = function(parameters) {
               })
             ;
           },
-
           left: function() {
             var
               height = {
@@ -606,7 +538,6 @@ $.fn.shape = function(parameters) {
               })
             ;
           },
-
           right: function() {
             var
               height = {
@@ -640,7 +571,6 @@ $.fn.shape = function(parameters) {
               })
             ;
           },
-
           behind: function() {
             var
               height = {
@@ -834,7 +764,6 @@ $.fn.shape = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -849,73 +778,38 @@ $.fn.shape = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.fn.shape.settings = {
-
-  // module info
   name : 'Shape',
-
-  // hide all debug content
   silent     : false,
-
-  // debug content outputted to console
   debug      : false,
-
-  // verbose debug output
   verbose    : false,
-
-  // fudge factor in pixels when swapping from 2d to 3d (can be useful to correct rounding errors)
   jitter     : 0,
-
-  // performance data output
   performance: true,
-
-  // event namespace
   namespace  : 'shape',
-
-  // width during animation, can be set to 'auto', initial', 'next' or pixel amount
   width: 'initial',
-
-  // height during animation, can be set to 'auto', 'initial', 'next' or pixel amount
   height: 'initial',
-
-  // callback occurs on side change
   beforeChange : function() {},
   onChange     : function() {},
-
-  // allow animation to same side
   allowRepeats: false,
-
-  // animation duration
   duration   : false,
-
-  // possible errors
   error: {
     side   : 'You tried to switch to a side that does not exist.',
     method : 'The method you called is not defined'
   },
-
-  // classnames used
   className   : {
     animating : 'animating',
     hidden    : 'hidden',
     loading   : 'loading',
     active    : 'active'
   },
-
-  // selectors used
   selector    : {
     sides : '.sides',
     side  : '.side'
   }
-
 };
-
-
 })( jQuery, window, document );

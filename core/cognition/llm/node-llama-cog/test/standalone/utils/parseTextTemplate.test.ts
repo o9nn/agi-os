@@ -1,7 +1,5 @@
 import {describe, expect, test} from "vitest";
 import {parseTextTemplate} from "../../../src/utils/parseTextTemplate.js";
-
-
 describe("utils", () => {
     describe("parseTextTemplate", () => {
         test("normal", async () => {
@@ -26,7 +24,6 @@ describe("utils", () => {
                 }
             });
         });
-
         test("optional param", async () => {
             const res2 = parseTextTemplate(
                 "What is the {{thing}}?",
@@ -47,7 +44,6 @@ describe("utils", () => {
                 }
             });
         });
-
         test("throws when missing a part at the beginning", () => {
             try {
                 parseTextTemplate(
@@ -65,7 +61,6 @@ describe("utils", () => {
                 expect(String(err)).to.eql('Error: Template must contain "{{name}}" at the beginning');
             }
         });
-
         test("throws when missing a part after a found part", () => {
             try {
                 parseTextTemplate(
@@ -83,7 +78,6 @@ describe("utils", () => {
                 expect(String(err)).to.eql('Error: Template must contain "{{thing}}" after "{{name}}"');
             }
         });
-
         test("throws when no parts are found", () => {
             try {
                 parseTextTemplate(

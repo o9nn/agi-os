@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-
-# Usage: ./run-agent.sh <agent-name> <agent-func> <agent-data>
-
 set -e
-
 main() {
     root_dir="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd)"
     self_name=run-agent.sh
@@ -12,7 +8,6 @@ main() {
     tools_path="$root_dir/agents/$agent_name/tools.sh"
     run 
 }
-
 parse_argv() {
     if [[ "$0" == *"$self_name" ]]; then
         agent_name="$1"
@@ -24,13 +19,12 @@ parse_argv() {
         agent_data="$2"
     fi
     if [[ "$agent_name" == *.sh ]]; then
-        agent_name="${agent_name:0:$((${#agent_name}-3))}"
+        agent_name="${agent_name:0:$((${
     fi
     if [[ -z "$agent_data" ]] || [[ -z "$agent_func" ]] || [[ -z "$agent_name" ]]; then
         die "usage: ./run-agent.sh <agent-name> <agent-func> <agent-data>"
     fi
 }
-
 setup_env() {
     load_env "$root_dir/.env" 
     export LLM_ROOT_DIR="$root_dir"
@@ -39,12 +33,11 @@ setup_env() {
     export LLM_AGENT_ROOT_DIR="$LLM_ROOT_DIR/agents/$agent_name"
     export LLM_AGENT_CACHE_DIR="$LLM_ROOT_DIR/cache/$agent_name"
 }
-
 load_env() {
     local env_file="$1" env_vars
     if [[ -f "$env_file" ]]; then
         while IFS='=' read -r key value; do
-            if [[ "$key" == $'#'* ]] || [[ -z "$key" ]]; then
+            if [[ "$key" == $'
                 continue
             fi
             if [[ -z "${!key+x}" ]]; then
@@ -56,18 +49,15 @@ load_env() {
         fi
     fi
 }
-
 run() {
     if [[ -z "$agent_data" ]]; then
         die "error: no JSON data"
     fi
-
     if [[ "$OS" == "Windows_NT" ]]; then
         set -o igncr
         tools_path="$(cygpath -w "$tools_path")"
         tool_data="$(echo "$tool_data" | sed 's/\\/\\\\/g')"
     fi
-
     jq_script="$(cat <<-'EOF'
 def escape_shell_word:
   tostring
@@ -90,7 +80,6 @@ EOF
     args="$(echo "$agent_data" | jq -r "$jq_script" 2>/dev/null)" || {
         die "error: invalid JSON data"
     }
-
     if [[ -z "$LLM_OUTPUT" ]]; then
         is_temp_llm_output=1
         export LLM_OUTPUT="$(mktemp)"
@@ -102,7 +91,6 @@ EOF
         dump_result "${LLM_AGENT_NAME}:${LLM_AGENT_FUNC}"
     fi
 }
-
 dump_result() {
     if [[ "$LLM_OUTPUT" == "/dev/stdout" ]] || [[ -z "$LLM_DUMP_RESULTS" ]] ||  [[ ! -t 1 ]]; then
         return;
@@ -115,11 +103,8 @@ $(cat "$LLM_OUTPUT")
 EOF
     fi
 }
-
 die() {
     echo "$*" >&2
     exit 1
 }
-
 main "$@"
-

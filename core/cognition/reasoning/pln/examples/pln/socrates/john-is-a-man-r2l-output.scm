@@ -1,14 +1,6 @@
-;; Obtained from running
-;;
-;; (mock-pln-input "John is a man")
-;;
-;; then TVs have been edited at hand so that abduction and deduction
-;; work as they should.
-
 (define true-stv (stv 1 1))
 (define man-stv (stv 0.01 0.1))
 (define john-stv (stv 0.001 0.1))
-
 (InheritanceLink true-stv
    (ConceptNode "man@5d693a26-661d-4c15-844c-c1c7c34281c4" man-stv)
    (ConceptNode "man" man-stv)

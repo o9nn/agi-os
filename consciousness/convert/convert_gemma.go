@@ -1,14 +1,10 @@
 package convert
-
 import (
 	"strings"
-
 	"github.com/pdevine/tensor"
 	"github.com/pdevine/tensor/native"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type gemmaModel struct {
 	ModelParameters
 	MaxPositionEmbeddings uint32  `json:"max_position_embeddings"`
@@ -20,9 +16,7 @@ type gemmaModel struct {
 	RMSNormEPS            float32 `json:"rms_norm_eps"`
 	HeadDim               uint32  `json:"head_dim"`
 }
-
 var _ ModelConverter = (*gemmaModel)(nil)
-
 func (p *gemmaModel) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "gemma"
@@ -41,14 +35,12 @@ func (p *gemmaModel) KV(t *Tokenizer) ggml.KV {
 	kv["tokenizer.ggml.suffix_token_id"] = uint32(69)
 	return kv
 }
-
 func (p *gemmaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
 	for _, t := range ts {
 		if !strings.HasPrefix(t.Name(), "v.") && strings.HasSuffix(t.Name(), "_norm.weight") {
 			t.SetRepacker(p.addOne)
 		}
-
 		out = append(out, &ggml.Tensor{
 			Name:     t.Name(),
 			Kind:     t.Kind(),
@@ -56,10 +48,8 @@ func (p *gemmaModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			WriterTo: t,
 		})
 	}
-
 	return out
 }
-
 func (p *gemmaModel) Replacements() []string {
 	return []string{
 		"model.embed_tokens", "token_embd",
@@ -76,25 +66,20 @@ func (p *gemmaModel) Replacements() []string {
 		"post_attention_layernorm", "ffn_norm",
 	}
 }
-
 func (*gemmaModel) addOne(_ string, data []float32, shape []uint64) ([]float32, error) {
 	n := tensor.New(tensor.WithShape(int(shape[0])), tensor.WithBacking(data))
 	ones := tensor.Ones(tensor.Float32, int(shape[0]))
-
 	n, err := n.Add(ones)
 	if err != nil {
 		return nil, err
 	}
-
 	ts, err := native.SelectF32(n, 0)
 	if err != nil {
 		return nil, err
 	}
-
 	var f32s []float32
 	for _, t := range ts {
 		f32s = append(f32s, t...)
 	}
-
 	return f32s, nil
 }

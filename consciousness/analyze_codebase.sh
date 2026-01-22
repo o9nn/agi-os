@@ -1,9 +1,6 @@
 #!/bin/bash
-# Echo9llama Codebase Analysis Script
-
 echo "=== ECHO9LLAMA CODEBASE ANALYSIS ==="
 echo ""
-
 echo "1. Core Components Structure:"
 echo "   - Autonomous Echoself:"
 find core/ -name "*autonomous*" -type f | wc -l
@@ -18,19 +15,15 @@ find core/echodream/ -type f -name "*.go" | wc -l
 echo "   - Goals:"
 find core/goals/ -type f -name "*.go" 2>/dev/null | wc -l
 echo ""
-
 echo "2. Backup/WIP Files (potential cleanup needed):"
 find . -name "*.bak" -o -name "*.wip" -o -name "*.backup" | wc -l
 echo ""
-
 echo "3. Test Files:"
 find . -name "test_*.go" -type f | wc -l
 echo ""
-
 echo "4. Server Implementations:"
 find server/simple/ -name "*.go" -type f | wc -l
 echo ""
-
 echo "5. Check for compilation issues in key files:"
 echo "   Checking autonomous_echoself_v2.go..."
 export PATH=$PATH:/usr/local/go/bin

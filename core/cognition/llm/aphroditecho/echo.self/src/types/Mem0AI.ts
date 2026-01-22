@@ -10,23 +10,20 @@ export interface Mem0ry {
   type?: Mem0ryType;
   embedding?: number[];
 }
-
 export type Mem0ryType =
-  | "episodic" // Personal experiences and events
-  | "semantic" // Facts, concepts, and general knowledge
-  | "procedural" // Skills and how to perform tasks
-  | "declarative" // Explicit knowledge that can be verbalized
-  | "implicit" // Unconscious, automatic knowledge
-  | "associative" // Connected ideas and concepts
-  | "memory"; // Default type
-
+  | "episodic" 
+  | "semantic" 
+  | "procedural" 
+  | "declarative" 
+  | "implicit" 
+  | "associative" 
+  | "memory"; 
 export interface Mem0rySearchResult {
   id: string;
   content: string;
   metadata?: Record<string, unknown>;
   similarity: number;
 }
-
 export interface Mem0ryQueryOptions {
   threshold?: number;
   limit?: number;
@@ -38,7 +35,6 @@ export interface Mem0ryQueryOptions {
     end?: Date;
   };
 }
-
 export interface Mem0ryStats {
   total: number;
   byType: Record<Mem0ryType, number>;
@@ -46,7 +42,6 @@ export interface Mem0ryStats {
   recentlyAdded: number;
   recentlyAccessed: number;
 }
-
 export interface Mem0AISummary {
   insights: string[];
   frequentConcepts: string[];

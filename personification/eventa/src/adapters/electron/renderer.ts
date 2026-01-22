@@ -1,28 +1,22 @@
 import type { IpcRenderer, IpcRendererListener } from '@electron-toolkit/preload'
-
 import type { EventContext } from '../../context'
 import type { DirectionalEventa, Eventa } from '../../eventa'
-
 import { createContext as createBaseContext } from '../../context'
 import { and, defineInboundEventa, defineOutboundEventa, EventaFlowDirection, matchBy } from '../../eventa'
 import { generatePayload, parsePayload } from './internal'
 import { errorEvent } from './shared'
-
 export function createContext(ipcRenderer: IpcRenderer, options?: {
   messageEventName?: string | false
   errorEventName?: string | false
   extraListeners?: Record<string, IpcRendererListener>
 }) {
   const ctx = createBaseContext() as EventContext<any, { raw: { ipcRendererEvent: Electron.IpcRendererEvent, event: Event | unknown } }>
-
   const {
     messageEventName = 'eventa-message',
     errorEventName = 'eventa-error',
     extraListeners = {},
   } = options || {}
-
   const cleanupRemoval: Array<{ remove: () => void }> = []
-
   ctx.on(and(
     matchBy((e: DirectionalEventa<any>) => e._flowDirection === EventaFlowDirection.Outbound || !e._flowDirection),
     matchBy('*'),
@@ -39,7 +33,6 @@ export function createContext(ipcRenderer: IpcRenderer, options?: {
       }
     }
   })
-
   if (messageEventName) {
     ipcRenderer.on(messageEventName, (ipcRendererEvent, event) => {
       try {
@@ -52,17 +45,14 @@ export function createContext(ipcRenderer: IpcRenderer, options?: {
       }
     })
   }
-
   if (errorEventName) {
     ipcRenderer.on(errorEventName, (ipcRendererEvent, error) => {
       ctx.emit(errorEvent, { error }, { raw: { ipcRendererEvent, event: error } })
     })
   }
-
   for (const [eventName, listener] of Object.entries(extraListeners)) {
     ipcRenderer.on(eventName, listener)
   }
-
   return {
     context: ctx,
     dispose: () => {
@@ -70,5 +60,4 @@ export function createContext(ipcRenderer: IpcRenderer, options?: {
     },
   }
 }
-
 export type * from './shared'

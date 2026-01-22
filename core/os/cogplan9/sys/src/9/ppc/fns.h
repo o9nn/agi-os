@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 ulong	cankaddr(ulong);
 int	cistrcmp(char*, char*);
 int	cistrncmp(char*, char*, int);
@@ -47,7 +46,7 @@ void	hwintrinit(void);
 void	icacheenb(void);
 void	icflush(void*, ulong);
 void	idle(void);
-#define	idlehands()		/* nothing to do in the runproc */
+#define	idlehands()
 void	imiss(void);
 int	inb(int);
 void	intr(Ureg*);
@@ -118,7 +117,6 @@ void	validalign(uintptr, unsigned);
 Pcidev* pcimatch(Pcidev*, int, int);
 Pcidev* pcimatchtbdf(int);
 void	procrestore(Proc*);
-
 #ifdef ucuconf
 extern ulong getpll(void);
 extern ulong getl2cr(void);

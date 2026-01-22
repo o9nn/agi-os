@@ -1,5 +1,4 @@
 import {createBirpc} from "birpc";
-
 export function createRendererSideBirpc<
     const RendererFunction = Record<string, never>,
     const ElectronFunctions extends object = Record<string, never>
@@ -17,4 +16,3 @@ export function createRendererSideBirpc<
         deserialize: (value) => JSON.parse(value)
     });
 }
-

@@ -1,38 +1,30 @@
 import type { PGLiteMethods } from '@deditor-app/shared'
-
 import { ref } from 'vue'
-
 import { defineClientMethod } from '../../define-client-method'
-
 export function useLocalPGLite() {
   const methods = <TMethod extends keyof PGLiteMethods>(method: TMethod) => defineClientMethod<PGLiteMethods, TMethod>('databaseLocalPGLite', method)
   const databaseSessionId = ref<string>()
-
   return {
     connect: async (dsn: string) => {
       const id = await methods('connect').call({ dsn })
       databaseSessionId.value = id.databaseSessionId
-
       return id
     },
     execute: async <R = Record<string, unknown>>(statement: string, parameters: any[] = []): Promise<R[]> => {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('query').call({
         databaseSessionId: databaseSessionId.value!,
         statement,
         parameters,
       })
-
       return res.results as R[]
     },
     listTables: async () => {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('listTables').call({ databaseSessionId: databaseSessionId.value! })
       return res.results
     },
@@ -40,7 +32,6 @@ export function useLocalPGLite() {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('listColumns').call({ databaseSessionId: databaseSessionId.value!, tableName, schema })
       return res.results
     },
@@ -48,7 +39,6 @@ export function useLocalPGLite() {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('listIndexes').call({ databaseSessionId: databaseSessionId.value!, tableName, schema })
       return res.results
     },
@@ -56,7 +46,6 @@ export function useLocalPGLite() {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('listColumnsWithTypes').call({ databaseSessionId: databaseSessionId.value!, tableName, schema })
       return res.results
     },
@@ -64,7 +53,6 @@ export function useLocalPGLite() {
       if (!databaseSessionId.value) {
         throw new Error('Database session ID is not set. Please connect to a database first.')
       }
-
       const res = await methods('listUserDefinedTypes').call({ databaseSessionId: databaseSessionId.value! })
       return res.results
     },

@@ -1,9 +1,6 @@
 import type { CompletionStep, CompletionToolCall, CompletionToolResult, FinishReason, Message, StreamTextEvent, StreamTextOptions, StreamTextResult, ToolCall, Usage, WithUnknown } from 'xsai'
-
 import { chat, DelayedPromise, determineStepType, executeTool, objCamelToSnake, trampoline } from 'xsai'
-
 import type { WithTelemetry } from '../types/options'
-
 import { commonAttributes, idAttributes, metadataAttributes } from './attributes'
 import { getTracer } from './get-tracer'
 import { now } from './now'
@@ -11,49 +8,32 @@ import { recordSpan, recordSpanSync } from './record-span'
 import { transformChunk } from './stream-text-internal'
 import { stringifyTool } from './stringify-tool'
 import { wrapTool } from './wrap-tool'
-
-/**
- * @experimental
- * Streaming Text with Telemetry.
- */
 export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>>) => {
   const tracer = getTracer()
-
-  // state
   const steps: CompletionStep[] = []
   const messages: Message[] = structuredClone(options.messages)
   const maxSteps = options.maxSteps ?? 1
   let usage: undefined | Usage
   let totalUsage: undefined | Usage
-
-  // result state
   const resultSteps = new DelayedPromise<CompletionStep[]>()
   const resultMessages = new DelayedPromise<Message[]>()
   const resultUsage = new DelayedPromise<undefined | Usage>()
   const resultTotalUsage = new DelayedPromise<undefined | Usage>()
-
-  // output
   let eventCtrl: ReadableStreamDefaultController<StreamTextEvent> | undefined
   let textCtrl: ReadableStreamDefaultController<string> | undefined
   const eventStream = new ReadableStream<StreamTextEvent>({ start: controller => eventCtrl = controller })
   const textStream = new ReadableStream<string>({ start: controller => textCtrl = controller })
-
   const pushEvent = (stepEvent: StreamTextEvent) => {
     eventCtrl?.enqueue(stepEvent)
-    // eslint-disable-next-line sonarjs/void-use
     void options.onEvent?.(stepEvent)
   }
-
   const pushStep = (step: CompletionStep) => {
     steps.push(step)
-    // eslint-disable-next-line sonarjs/void-use
     void options.onStepFinish?.(step)
   }
-
   const tools = options.tools != null && options.tools.length > 0
     ? options.tools.map(tool => wrapTool(tool, tracer))
     : undefined
-
   const doStream = async () => recordSpan({
     attributes: {
       ...idAttributes(),
@@ -74,7 +54,6 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
     tracer,
   }, async (span) => {
     const startMs = now()
-
     const { body: stream } = await chat({
       ...options,
       maxSteps: undefined,
@@ -85,8 +64,6 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
         : undefined,
       tools,
     })
-
-    // let stepUsage: undefined | Usage
     const pushUsage = (u: Usage) => {
       usage = u
       totalUsage = totalUsage
@@ -96,21 +73,17 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
             total_tokens: totalUsage.total_tokens + u.total_tokens,
           }
         : { ...u }
-      // stepUsage = u
     }
-
     let text: string = ''
     const pushText = (content?: string) => {
       textCtrl?.enqueue(content)
       text += content
     }
-
     const tool_calls: ToolCall[] = []
     const toolCalls: CompletionToolCall[] = []
     const toolResults: CompletionToolResult[] = []
     let finishReason: FinishReason = 'other'
     let firstChunk = true
-
     await stream!
       .pipeThrough(transformChunk())
       .pipeTo(new WritableStream({
@@ -119,9 +92,7 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
           textCtrl?.error(reason)
         },
         close: () => {},
-        // eslint-disable-next-line sonarjs/cognitive-complexity
         write: (chunk) => {
-          // Telemetry
           if (firstChunk) {
             const msToFirstChunk = now() - startMs
             span.addEvent('ai.stream.firstChunk', {
@@ -132,22 +103,15 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
             })
             firstChunk = false
           }
-
           if (chunk.usage)
             pushUsage(chunk.usage)
-
-          // skip if no choices
           if (chunk.choices == null || chunk.choices.length === 0)
             return
-
           const choice = chunk.choices[0]
-
           if (choice.delta.reasoning_content != null)
             pushEvent({ text: choice.delta.reasoning_content, type: 'reasoning-delta' })
-
           if (choice.finish_reason != null)
             finishReason = choice.finish_reason
-
           if (choice.delta.tool_calls?.length === 0 || choice.delta.tool_calls == null) {
             if (choice.delta.content != null) {
               pushEvent({ text: choice.delta.content, type: 'text-delta' })
@@ -161,10 +125,8 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
             }
           }
           else {
-            // https://platform.openai.com/docs/guides/function-calling?api-mode=chat&lang=javascript#streaming
             for (const toolCall of choice.delta.tool_calls) {
               const { index } = toolCall
-
               if (!tool_calls.at(index)) {
                 tool_calls[index] = toolCall
                 pushEvent({ toolCallId: toolCall.id, toolName: toolCall.function.name, type: 'tool-call-streaming-start' })
@@ -177,9 +139,7 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
           }
         },
       }))
-
     messages.push({ content: text, role: 'assistant', tool_calls })
-
     if (tool_calls.length !== 0) {
       for (const toolCall of tool_calls) {
         if (toolCall == null)
@@ -190,24 +150,20 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
           toolCall,
           tools,
         })
-
         toolCalls.push(completionToolCall)
         toolResults.push(completionToolResult)
         messages.push(message)
-
         pushEvent({ ...completionToolCall, type: 'tool-call' })
         pushEvent({ ...completionToolResult, type: 'tool-result' })
       }
     }
     else {
-      // TODO: should we add this on tool calls finish?
       pushEvent({
         finishReason,
         type: 'finish',
         usage,
       })
     }
-
     const step = {
       finishReason,
       stepType: determineStepType({ finishReason, maxSteps, stepsLength: steps.length, toolCallsLength: toolCalls.length }),
@@ -217,8 +173,6 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
       usage,
     }
     pushStep(step)
-
-    // Telemetry
     const msToFinish = now() - startMs
     span.addEvent('ai.stream.finish')
     span.setAttributes({
@@ -236,11 +190,9 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
         'gen_ai.usage.output_tokens': step.usage.completion_tokens,
       },
     })
-
     if (toolCalls.length !== 0 && steps.length < maxSteps)
       return async () => doStream()
   })
-
   return recordSpanSync<StreamTextResult>({
     attributes: {
       ...commonAttributes('ai.streamText', options.model),
@@ -254,14 +206,12 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
     void (async () => {
       try {
         await trampoline(async () => doStream())
-
         eventCtrl?.close()
         textCtrl?.close()
       }
       catch (err) {
         eventCtrl?.error(err)
         textCtrl?.error(err)
-
         resultSteps.reject(err)
         resultMessages.reject(err)
         resultUsage.reject(err)
@@ -272,9 +222,7 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
         resultMessages.resolve(messages)
         resultUsage.resolve(usage)
         resultTotalUsage.resolve(totalUsage)
-
         const finishStep = steps.at(-1)
-
         if (finishStep) {
           rootSpan.setAttributes({
             ...(finishStep.toolCalls.length > 0 && { 'ai.response.toolCalls': JSON.stringify(finishStep.toolCalls) }),
@@ -282,7 +230,6 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
             'ai.response.text': finishStep.text != null ? finishStep.text : '',
           })
         }
-
         if (totalUsage) {
           rootSpan.setAttributes({
             'ai.usage.inputTokens': totalUsage.prompt_tokens,
@@ -290,14 +237,10 @@ export const streamText = (options: WithUnknown<WithTelemetry<StreamTextOptions>
             'ai.usage.totalTokens': totalUsage.total_tokens,
           })
         }
-
-        // eslint-disable-next-line sonarjs/void-use
         void options.onFinish?.(finishStep)
-
         rootSpan.end()
       }
     })()
-
     return {
       fullStream: eventStream,
       messages: resultMessages.promise,

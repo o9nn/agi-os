@@ -8,12 +8,8 @@ import {getBinariesGithubRelease} from "./bindings/utils/binariesGithubRelease.j
 import {
     nodeLlamaCppGpuOptions, LlamaLogLevel, LlamaLogLevelValues, parseNodeLlamaCppGpuOption, nodeLlamaCppGpuOffStringOptions
 } from "./bindings/types.js";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const env = envVar.from(process.env);
-
-
 export const llamaDirectory = path.join(__dirname, "..", "llama");
 export const llamaToolchainsDirectory = path.join(llamaDirectory, "toolchains");
 export const llamaPrebuiltBinsDirectory = path.join(__dirname, "..", "bins");
@@ -38,7 +34,6 @@ export const buildMetadataFileName = "_nlcBuildMetadata.json";
 export const xpmVersion = "^0.16.3";
 export const builtinLlamaCppGitHubRepo = "ggml-org/llama.cpp";
 export const builtinLlamaCppRelease = await getBinariesGithubRelease();
-
 export const isCI = env.get("CI")
     .default("false")
     .asBool();
@@ -85,13 +80,7 @@ export const defaultChatSystemPrompt = "You are a helpful, respectful and honest
     "If you don't know the answer to a question, don't share false information.";
 export const cliBinName = "node-llama-cpp";
 export const npxRunPrefix = "npx --no ";
-
-// No need for that at the moment.
-// Disabled due to a recursive clone of the llama.cpp repo taking up a lot of space (in the embedded bundle)
-// and due to making the clone significantly slower.
-// The submodules of the repo are not being used for the compilation for the supported backends, so there's no need to clone them.
 export const enableRecursiveClone = false;
-
 const documentationUrl = "https://node-llama-cpp.withcat.ai";
 const documentationCliUrl = documentationUrl + "/cli";
 export const documentationPageUrls = {
@@ -125,4 +114,4 @@ export const documentationPageUrls = {
 export const newGithubIssueUrl = "https://github.com/withcatai/node-llama-cpp/issues";
 export const recommendedBaseDockerImage = "node:20";
 export const minAllowedContextSizeInCalculations = 24;
-export const contextSizePad = 256; // source: `GGML_PAD` usage in `llama_context::llama_context` in `llama-context.cpp`
+export const contextSizePad = 256; 

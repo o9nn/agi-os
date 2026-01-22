@@ -1,10 +1,6 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-
-/*
- * lucm/latin1.9, in uncompressed form
- */
 uchar
 defontdata[] =
 {
@@ -382,21 +378,18 @@ defontdata[] =
 0x02,0x0f,0x00,0x09,0xee,0x08,0x03,0x0f,0x00,0x09,0xf7,0x08,0x02,0x0f,0x00,0x09,
 0x00,0x09,0x00,0x00,0x00,0x00,
 };
-
 int	sizeofdefont = sizeof defontdata;
-
 void
 _unpackinfo(Fontchar *fc, uchar *p, int n)
 {
-	int j;
-
-	for(j=0;  j<=n;  j++){
-		fc->x = p[0]|(p[1]<<8);
-		fc->top = p[2];
-		fc->bottom = p[3];
-		fc->left = p[4];
-		fc->width = p[5];
-		fc++;
-		p += 6;
-	}
+int j;
+for(j=0;  j<=n;  j++){
+fc->x = p[0]|(p[1]<<8);
+fc->top = p[2];
+fc->bottom = p[3];
+fc->left = p[4];
+fc->width = p[5];
+fc++;
+p += 6;
+}
 }

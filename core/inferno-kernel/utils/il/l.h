@@ -2,13 +2,10 @@
 #include	<bio.h>
 #include	"../ic/i.out.h"
 #include	"../ld/elf.h"
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 typedef vlong xlong;
-
 typedef	struct	Adr	Adr;
 typedef	struct	Sym	Sym;
 typedef	struct	Autom	Auto;
@@ -17,191 +14,174 @@ typedef	struct	Optab	Optab;
 typedef	struct	Oprang	Oprang;
 typedef	uchar	Opcross[32][32];
 typedef	struct	Count	Count;
-
 #define	P		((Prog*)0)
 #define	S		((Sym*)0)
 #define	TNAME		(curtext&&curtext->from.sym?curtext->from.sym->name:noname)
-
 struct	Adr
 {
-	union
-	{
-		long	u0offset;
-		char*	u0sval;
-		Ieee*	u0ieee;
-		vlong*	u0vval;
-	} u0;
-	union
-	{
-		Auto*	u1autom;
-		Sym*	u1sym;
-	} u1;
-	char	type;
-	char	reg;
-	char	name;
-	char	class;
+union
+{
+long	u0offset;
+char*	u0sval;
+Ieee*	u0ieee;
+vlong*	u0vval;
+} u0;
+union
+{
+Auto*	u1autom;
+Sym*	u1sym;
+} u1;
+char	type;
+char	reg;
+char	name;
+char	class;
 };
-
 #define	offset	u0.u0offset
 #define	sval	u0.u0sval
 #define	ieee	u0.u0ieee
 #define	vval	u0.u0vval
-
 #define	autom	u1.u1autom
 #define	sym	u1.u1sym
-
 struct	Prog
 {
-	Adr	from;
-	Adr	to;
-	union
-	{
-		long	u0regused;
-		Prog*	u0forwd;
-	} u0;
-	Prog*	cond;
-	Prog*	link;
-	long	pc;
-	long	line;
-	uchar	mark;
-	uchar	optab;
-	char	as;
-	char	reg;
+Adr	from;
+Adr	to;
+union
+{
+long	u0regused;
+Prog*	u0forwd;
+} u0;
+Prog*	cond;
+Prog*	link;
+long	pc;
+long	line;
+uchar	mark;
+uchar	optab;
+char	as;
+char	reg;
 };
 #define	regused	u0.u0regused
 #define	forwd	u0.u0forwd
-
 struct	Sym
 {
-	char	*name;
-	short	type;
-	short	version;
-	short	become;
-	short	frame;
-	ushort	file;
-	long	value;
-	long	sig;
-	Sym*	link;
+char	*name;
+short	type;
+short	version;
+short	become;
+short	frame;
+ushort	file;
+long	value;
+long	sig;
+Sym*	link;
 };
 struct	Autom
 {
-	Sym*	asym;
-	Auto*	link;
-	long	aoffset;
-	short	type;
+Sym*	asym;
+Auto*	link;
+long	aoffset;
+short	type;
 };
 struct	Optab
 {
-	char	as;
-	char	a1;
-	char	a3;
-	char	type;
-	char	ctype;
-	char	size;
-	char	op;
-	char	func3;
-	short	param;
+char	as;
+char	a1;
+char	a3;
+char	type;
+char	ctype;
+char	size;
+char	op;
+char	func3;
+short	param;
 };
 struct	Oprang
 {
-	Optab*	start;
-	Optab*	stop;
+Optab*	start;
+Optab*	stop;
 };
 struct	Count
 {
-	long	count;
-	long	outof;
+long	count;
+long	outof;
 };
-
 enum
 {
-	STEXT		= 1,
-	SDATA,
-	SBSS,
-	SDATA1,
-	SXREF,
-	SLEAF,
-	SFILE,
-	SCONST,
-	SSTRING,
-
-	C_NONE		= 0,
-	C_REG,
-	C_CTLREG,
-	C_FREG,
-	C_ZREG,
-	C_ZCON,
-	C_SCON,
-	C_UCON,
-	C_LCON,
-	C_VCON,
-	C_FCON,
-	C_SACON,
-	C_SECON,
-	C_LACON,
-	C_LECON,
-	C_SRCON,
-	C_LRCON,
-	C_SBRA,
-	C_LBRA,
-	C_SAUTO,
-	C_ZOREG,
-	C_SOREG,
-	C_LOREG,
-	C_LAUTO,
-	C_SEXT,
-	C_LEXT,
-	C_GOK,
-
-	NSCHED		= 20,
-
-/* mark flags */
-	FOLL		= 1<<0,
-	LABEL		= 1<<1,
-	LEAF		= 1<<2,
-	SYNC		= 1<<3,
-	BRANCH		= 1<<4,
-	COMPR		= 1<<5,
-	SPASS		= 1<<6,
-
-	BIG		= 2048,
-	STRINGSZ	= 200,
-	NHASH		= 10007,
-	NHUNK		= 100000,
-	MINSIZ		= 64,
-	NENT		= 100,
-	MAXIO		= 8192,
-	MAXHIST		= 20,				/* limit of path elements for history symbols */
+STEXT		= 1,
+SDATA,
+SBSS,
+SDATA1,
+SXREF,
+SLEAF,
+SFILE,
+SCONST,
+SSTRING,
+C_NONE		= 0,
+C_REG,
+C_CTLREG,
+C_FREG,
+C_ZREG,
+C_ZCON,
+C_SCON,
+C_UCON,
+C_LCON,
+C_VCON,
+C_FCON,
+C_SACON,
+C_SECON,
+C_LACON,
+C_LECON,
+C_SRCON,
+C_LRCON,
+C_SBRA,
+C_LBRA,
+C_SAUTO,
+C_ZOREG,
+C_SOREG,
+C_LOREG,
+C_LAUTO,
+C_SEXT,
+C_LEXT,
+C_GOK,
+NSCHED		= 20,
+FOLL		= 1<<0,
+LABEL		= 1<<1,
+LEAF		= 1<<2,
+SYNC		= 1<<3,
+BRANCH		= 1<<4,
+COMPR		= 1<<5,
+SPASS		= 1<<6,
+BIG		= 2048,
+STRINGSZ	= 200,
+NHASH		= 10007,
+NHUNK		= 100000,
+MINSIZ		= 64,
+NENT		= 100,
+MAXIO		= 8192,
+MAXHIST		= 20,
 };
-
-/* Major opcodes */
 enum {
-	OLOAD,	 OLOAD_FP,  Ocustom_0,	OMISC_MEM, OOP_IMM, OAUIPC, OOP_IMM_32,	O48b,
-	OSTORE,	 OSTORE_FP, Ocustom_1,	OAMO,	   OOP,	    OLUI,   OOP_32,	O64b,
-	OMADD,	 OMSUB,	    ONMSUB,	ONMADD,	   OOP_FP,  Ores_0, Ocustom_2,	O48b_2,
-	OBRANCH, OJALR,	    Ores_1,	OJAL,	   OSYSTEM, Ores_2, Ocustom_3,	O80b
+OLOAD,	 OLOAD_FP,  Ocustom_0,	OMISC_MEM, OOP_IMM, OAUIPC, OOP_IMM_32,	O48b,
+OSTORE,	 OSTORE_FP, Ocustom_1,	OAMO,	   OOP,	    OLUI,   OOP_32,	O64b,
+OMADD,	 OMSUB,	    ONMSUB,	ONMADD,	   OOP_FP,  Ores_0, Ocustom_2,	O48b_2,
+OBRANCH, OJALR,	    Ores_1,	OJAL,	   OSYSTEM, Ores_2, Ocustom_3,	O80b
 };
-
 EXTERN union
 {
-	struct
-	{
-		uchar	obuf[MAXIO];			/* output buffer */
-		uchar	ibuf[MAXIO];			/* input buffer */
-	} u;
-	char	dbuf[1];
+struct
+{
+uchar	obuf[MAXIO];
+uchar	ibuf[MAXIO];
+} u;
+char	dbuf[1];
 } buf;
-
 #define	cbuf	u.obuf
 #define	xbuf	u.ibuf
-
-EXTERN	long	HEADR;			/* length of header */
-EXTERN	int	HEADTYPE;		/* type of header */
-EXTERN	xlong	INITDAT;		/* data location */
-EXTERN	xlong	INITRND;		/* data round above text location */
-EXTERN	xlong	INITTEXT;		/* text location */
-EXTERN	xlong	INITTEXTP;		/* text location (physical) */
-EXTERN	char*	INITENTRY;		/* entry point */
+EXTERN	long	HEADR;
+EXTERN	int	HEADTYPE;
+EXTERN	xlong	INITDAT;
+EXTERN	xlong	INITRND;
+EXTERN	xlong	INITTEXT;
+EXTERN	xlong	INITTEXTP;
+EXTERN	char*	INITENTRY;
 EXTERN	long	autosize;
 EXTERN	Biobuf	bso;
 EXTERN	long	bsssize;
@@ -217,7 +197,7 @@ EXTERN	long	datsize;
 EXTERN	char	debug[128];
 EXTERN	Prog*	etextp;
 EXTERN	Prog*	firstp;
-EXTERN	char	fnuxi4[4];	/* for 3l [sic] */
+EXTERN	char	fnuxi4[4];
 EXTERN	char	fnuxi8[8];
 EXTERN	char*	noname;
 EXTERN	Sym*	hash[NHASH];
@@ -256,29 +236,24 @@ EXTERN	char	xcmp[32][32];
 EXTERN	Prog	zprg;
 EXTERN	int	dtype;
 EXTERN	int	little;
-
 EXTERN	struct
 {
-	Count	branch;
-	Count	fcmp;
-	Count	load;
-	Count	mfrom;
-	Count	page;
-	Count	jump;
+Count	branch;
+Count	fcmp;
+Count	load;
+Count	mfrom;
+Count	page;
+Count	jump;
 } nop;
-
 extern	char*	anames[];
 extern	Optab	optab[];
 extern	char	thechar;
-
 #pragma	varargck	type	"A"	int
 #pragma	varargck	type	"D"	Adr*
 #pragma	varargck	type	"N"	Adr*
 #pragma	varargck	type	"P"	Prog*
 #pragma	varargck	type	"S"	char*
-
 #pragma	varargck	argpos	diag 1
-
 int	Aconv(Fmt*);
 int	Dconv(Fmt*);
 int	Nconv(Fmt*);

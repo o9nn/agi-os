@@ -5,7 +5,6 @@ import { AtomService } from './atom.service';
 import { VisualizerService } from './visualizer/visualizer.service';
 import { InitializeDropdown } from './directives/intialize-dropdown.directive';
 import { TranslateModule } from './translate/translate.module';
-
 @NgModule({
   imports: [
     CommonModule,

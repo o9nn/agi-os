@@ -1,89 +1,74 @@
 #include	<u.h>
 #include	<libc.h>
 #include	<bio.h>
-
 #ifndef	EXTERN
 #define	EXTERN	extern
 #endif
-
 typedef	struct	Re	Re;
 typedef	struct	Re2	Re2;
 typedef	struct	State	State;
-
 struct	State
 {
-	int	count;
-	int	match;
-	Re**	re;
-	State*	linkleft;
-	State*	linkright;
-	State*	next[256];
+int	count;
+int	match;
+Re**	re;
+State*	linkleft;
+State*	linkright;
+State*	next[256];
 };
 struct	Re2
 {
-	Re*	beg;
-	Re*	end;
+Re*	beg;
+Re*	end;
 };
 struct	Re
 {
-	uchar	type;
-	ushort	gen;
-	union
-	{
-		Re*	alt;	/* Talt */
-		Re**	cases;	/* case */
-		struct		/* class */
-		{
-			Rune	lo;
-			Rune	hi;
-		};	
-		Rune	val;	/* char */
-	};
-	Re*	next;
+uchar	type;
+ushort	gen;
+union
+{
+Re*	alt;
+Re**	cases;
+struct
+{
+Rune	lo;
+Rune	hi;
 };
-
+Rune	val;
+};
+Re*	next;
+};
 enum
 {
-	Talt		= 1,
-	Tbegin,
-	Tcase,
-	Tclass,
-	Tend,
-	Tor,
-
-	Caselim		= 7,
-	Nhunk		= 1<<16,
-	Cbegin		= Runemax+1,
-	Flshcnt		= (1<<9)-1,
-
-	Cflag		= 1<<0,
-	Hflag		= 1<<1,
-	Iflag		= 1<<2,
-	Llflag		= 1<<3,
-	LLflag		= 1<<4,
-	Nflag		= 1<<5,
-	Sflag		= 1<<6,
-	Vflag		= 1<<7,
-	Bflag		= 1<<8
+Talt		= 1,
+Tbegin,
+Tcase,
+Tclass,
+Tend,
+Tor,
+Caselim		= 7,
+Nhunk		= 1<<16,
+Cbegin		= Runemax+1,
+Flshcnt		= (1<<9)-1,
+Cflag		= 1<<0,
+Hflag		= 1<<1,
+Iflag		= 1<<2,
+Llflag		= 1<<3,
+LLflag		= 1<<4,
+Nflag		= 1<<5,
+Sflag		= 1<<6,
+Vflag		= 1<<7,
+Bflag		= 1<<8
 };
-
 EXTERN	union
 {
-	char	string[16*1024];
-	struct
-	{
-		/*
-		 * if a line requires multiple reads, we keep shifting
-		 * buf down into pre and then do another read into
-		 * buf.  so you'll get the last 16-32k of the matching line.
-		 * if pre were smaller than buf you'd get a suffix of the
-		 * line with a hole cut out.
-		 */
-		uchar	pre[16*1024];	/* to save to previous '\n' */
-		uchar	buf[16*1024];	/* input buffer */
-	};
+char	string[16*1024];
+struct
+{
+uchar	pre[16*1024];
+uchar	buf[16*1024];
+};
 } u;
-
 EXTERN	char	*filename;
 EXTERN	char	*pattern;
 EXTERN	Biobuf	bout;
@@ -100,11 +85,10 @@ EXTERN	int	peekc;
 EXTERN	Biobuf*	rein;
 EXTERN	State*	state0;
 EXTERN	Re2	topre;
-
 extern	Re*	addcase(Re*);
 extern	void	appendnext(Re*, Re*);
 extern	void	error(char*);
-extern	int	fcmp(void*, void*); 	/* (Re**, Re**) */
+extern	int	fcmp(void*, void*);
 extern	void	fol1(Re*, int);
 extern	int	getrec(void);
 extern	void	increment(State*, int);

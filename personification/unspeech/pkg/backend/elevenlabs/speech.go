@@ -1,12 +1,10 @@
 package elevenlabs
-
 import (
 	"bytes"
 	"log/slog"
 	"net/http"
 	"net/url"
 	"strings"
-
 	"github.com/labstack/echo/v4"
 	"github.com/moeru-ai/unspeech/pkg/apierrors"
 	"github.com/moeru-ai/unspeech/pkg/backend/types"
@@ -15,13 +13,10 @@ import (
 	"github.com/samber/lo"
 	"github.com/samber/mo"
 )
-
 func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions]) mo.Result[any] {
-	reqURL := lo.Must(url.Parse("https://api.elevenlabs.io/v1/text-to-speech")).
+	reqURL := lo.Must(url.Parse("https:
 		JoinPath(options.MustGet().Voice).
 		String()
-
-	// https://elevenlabs.io/docs/api-reference/text-to-speech/convert#request
 	patchedPayload := jsonpatch.ApplyPatches(
 		options.MustGet().AsBuffer().OrElse(new(bytes.Buffer)).Bytes(),
 		mo.Some(jsonpatch.ApplyOptions{AllowMissingPathOnRemove: true}),
@@ -43,7 +38,6 @@ func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions])
 	if patchedPayload.IsError() {
 		return mo.Err[any](apierrors.NewErrInternal().WithDetail(patchedPayload.Error().Error()).WithCaller())
 	}
-
 	req, err := http.NewRequestWithContext(
 		c.Request().Context(),
 		http.MethodPost,
@@ -53,22 +47,16 @@ func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions])
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrInternal().WithCaller())
 	}
-
-	// Rewrite the Authorization header
-	//nolint:canonicalheader
 	req.Header.Set("xi-api-key", strings.TrimPrefix(
 		c.Request().Header.Get("Authorization"),
 		"Bearer ",
 	))
 	req.Header.Set("Content-Type", "application/json")
-
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return mo.Err[any](apierrors.NewErrBadGateway().WithDetail(err.Error()).WithError(err).WithCaller())
 	}
-
 	defer func() { _ = res.Body.Close() }()
-
 	if res.StatusCode >= 400 && res.StatusCode < 600 {
 		switch {
 		case strings.HasPrefix(res.Header.Get("Content-Type"), "application/json"):
@@ -87,6 +75,5 @@ func HandleSpeech(c echo.Context, options mo.Option[types.SpeechRequestOptions])
 			)
 		}
 	}
-
 	return mo.Ok[any](c.Stream(http.StatusOK, "audio/mp3", res.Body))
 }

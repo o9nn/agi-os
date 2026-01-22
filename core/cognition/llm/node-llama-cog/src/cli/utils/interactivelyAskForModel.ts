@@ -23,7 +23,6 @@ import {consolePromptQuestion} from "./consolePromptQuestion.js";
 import {renderInfoLine} from "./printInfoLine.js";
 import {renderModelCompatibilityPercentageWithColors} from "./renderModelCompatibilityPercentageWithColors.js";
 import {toBytes} from "./toBytes.js";
-
 type ModelOption = {
     type: "localModel",
     title: string | (() => string),
@@ -53,7 +52,6 @@ type ModelOption = {
     key: string
 };
 const vramStateUpdateInterval = 1000;
-
 export async function interactivelyAskForModel({
     llama,
     modelsDirectory,
@@ -77,15 +75,12 @@ export async function interactivelyAskForModel({
     let scheduledTitleRerenderTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
     let vramState = await llama.getVramState();
     const canUseGpu = vramState.total > 0;
-
     if (allowLocalModels && modelsDirectory != null && await fs.existsSync(modelsDirectory)) {
         const ggufFileNames = (await fs.readdir(modelsDirectory))
             .filter((fileName) => {
                 if (!fileName.endsWith(".gguf"))
                     return false;
-
                 const partsInfo = getGgufSplitPartsInfo(fileName);
-
                 return partsInfo == null || partsInfo.part === 1;
             });
         let readItems = 0;
@@ -93,7 +88,6 @@ export async function interactivelyAskForModel({
             "(" + String(readItems)
                 .padStart(String(ggufFileNames.length).length, "0") + "/" + ggufFileNames.length + ")"
         );
-
         if (ggufFileNames.length > 0)
             await withProgressLog({
                 loadingText: "Reading local models directory",
@@ -105,7 +99,6 @@ export async function interactivelyAskForModel({
                 localModelFileOptions = await Promise.all(
                     ggufFileNames.map(async (fileName) => {
                         const filePath = path.join(modelsDirectory, fileName);
-
                         let ggufInsights: GgufInsights | undefined = undefined;
                         try {
                             const ggufFileInfo = await readGgufFileInfo(filePath, {
@@ -114,18 +107,14 @@ export async function interactivelyAskForModel({
                             });
                             ggufInsights = await GgufInsights.from(ggufFileInfo, llama);
                         } catch (err) {
-                            // do nothing
                         }
-
                         readItems++;
                         progressUpdater.setProgress(readItems / ggufFileNames.length, renderProgress());
-
                         const compatibilityScore = await ggufInsights?.configurationResolver.scoreModelConfigurationCompatibility({
                             flashAttention: flashAttention && ggufInsights?.flashAttentionSupported,
                             swaFullCache,
                             useMmap
                         });
-
                         return {
                             type: "localModel",
                             title: fileName,
@@ -138,7 +127,6 @@ export async function interactivelyAskForModel({
                         } satisfies ModelOption;
                     })
                 );
-
                 localModelFileOptions = localModelFileOptions.sort((a, b) => {
                     if (a.compatibilityScore == null && b.compatibilityScore == null)
                         return b.addedDate - a.addedDate;
@@ -150,19 +138,14 @@ export async function interactivelyAskForModel({
                         b.compatibilityBonusScore != null && a.compatibilityBonusScore != null
                     )
                         return b.compatibilityBonusScore - a.compatibilityBonusScore;
-
                     return b.compatibilityScore - a.compatibilityScore;
                 });
             });
     }
-
     try {
-        // if this file gets very big, we don't want to load it on every CLI usage
         const {recommendedModels} = await import("../recommendedModels.js");
-
         for (const recommendedModel of recommendedModels) {
             const potentialUris = resolveModelRecommendationFileOptions(recommendedModel);
-
             if (potentialUris.length > 0)
                 recommendedModelOptions.push({
                     type: "recommendedModel",
@@ -172,10 +155,8 @@ export async function interactivelyAskForModel({
                 });
         }
     } catch (err) {
-        // do nothing
     }
-
-    let initialFocusIndex = 3; // first model option
+    let initialFocusIndex = 3; 
     const options: ModelOption[] = [
         {
             type: "action",
@@ -219,14 +200,12 @@ export async function interactivelyAskForModel({
                 ] satisfies ModelOption[]
         )
     ];
-
     try {
         while (true) {
             const minWidth = Math.min(80 + (flashAttention ? 26 : 0), process.stdout.columns - 1);
             const selectedItem = await basicChooseFromListConsoleInteraction({
                 title(item, rerender) {
                     const title = chalk.bold("Select a model:") + "  ";
-
                     const vramStateText = vramState.total === 0
                         ? chalk.bgGray(
                             " " +
@@ -259,9 +238,7 @@ export async function interactivelyAskForModel({
                                     )
                             )
                         );
-
                     const pad = Math.max(0, minWidth - (stripAnsi(title).length + stripAnsi(vramStateText).length));
-
                     clearTimeout(scheduledTitleRerenderTimeout);
                     scheduledTitleRerenderTimeout = setTimeout(async () => {
                         const newVramState = await llama.getVramState();
@@ -270,7 +247,6 @@ export async function interactivelyAskForModel({
                             rerender();
                         }
                     }, vramStateUpdateInterval);
-
                     return [
                         title,
                         " ".repeat(pad),
@@ -280,11 +256,9 @@ export async function interactivelyAskForModel({
                 footer(item) {
                     if (item.type !== "recommendedModel" || item.description == null)
                         return undefined;
-
                     const leftPad = 3;
                     const maxWidth = Math.max(1, process.stdout.columns - 2 - leftPad);
                     const lines = splitAnsiToLines(item.description, maxWidth);
-
                     return " \n" +
                         " ".repeat(leftPad) + chalk.bold.gray("Model description") + "\n" +
                         lines.map((line) => (" ".repeat(leftPad) + line))
@@ -305,7 +279,6 @@ export async function interactivelyAskForModel({
                 canSelectItem(item) {
                     if (item.type === "recommendedModel")
                         return item.selectedUri != null;
-
                     return item.type === "localModel" || item.type === "action";
                 },
                 initialFocusIndex: Math.min(initialFocusIndex, options.length - 1),
@@ -318,22 +291,18 @@ export async function interactivelyAskForModel({
                         const modelTitle = item.title instanceof Function
                             ? item.title()
                             : item.title;
-
                         return logSymbols.success + " Selected model " + chalk.blue(modelTitle);
                     } else if (item.type === "recommendedModel") {
                         const modelTitle = item.title instanceof Function
                             ? item.title()
                             : item.title;
-
                         return logSymbols.success + " Selected model " + chalk.blue(modelTitle);
                     }
-
                     void (item satisfies never);
                     return "";
                 },
                 exitOnCtrlC: true
             });
-
             if (selectedItem == null || selectedItem.type === "separator")
                 continue;
             else if (selectedItem.type === "localModel")
@@ -344,10 +313,8 @@ export async function interactivelyAskForModel({
                 if (selectedItem.key === "getPath") {
                     initialFocusIndex = 0;
                     const selectedModelUriOrPath = await askForModelUriOrPath(allowLocalModels);
-
                     if (selectedModelUriOrPath == null)
                         continue;
-
                     return selectedModelUriOrPath;
                 }
             }
@@ -356,7 +323,6 @@ export async function interactivelyAskForModel({
         activeInteractionController.abort();
     }
 }
-
 async function askForModelUriOrPath(allowLocalModels: boolean): Promise<string | null> {
     return await consolePromptQuestion(
         allowLocalModels
@@ -371,10 +337,8 @@ async function askForModelUriOrPath(allowLocalModels: boolean): Promise<string |
                     } catch (err) {
                         return "Invalid URL";
                     }
-
                     return null;
                 }
-
                 try {
                     if (parseModelUri(input) != null)
                         return null;
@@ -383,14 +347,11 @@ async function askForModelUriOrPath(allowLocalModels: boolean): Promise<string |
                         ? (err?.message || "Invalid model URI")
                         : "Invalid model URI";
                 }
-
                 if (!allowLocalModels)
                     return "Only URIs are allowed";
-
                 try {
                     if (await fs.pathExists(input))
                         return null;
-
                     return "File does not exist";
                 } catch (err) {
                     return "Invalid path";
@@ -399,7 +360,6 @@ async function askForModelUriOrPath(allowLocalModels: boolean): Promise<string |
             renderSummaryOnExit(item) {
                 if (item == null)
                     return "";
-
                 if (isUrl(item, false))
                     return logSymbols.success + " Entered model URL " + chalk.blue(item);
                 else if (isModelUri(item)) {
@@ -410,7 +370,6 @@ async function askForModelUriOrPath(allowLocalModels: boolean): Promise<string |
         }
     );
 }
-
 function renderSelectionItem(
     item: ModelOption, focused: boolean, rerender: () => void, abortSignal: AbortSignal, llama: Llama, flashAttention: boolean,
     swaFullCache: boolean, useMmap?: boolean
@@ -419,18 +378,15 @@ function renderSelectionItem(
         let modelText = item.title instanceof Function
             ? item.title()
             : item.title;
-
         if (item.ggufInsights != null)
             modelText += "  " + renderModelCompatibility(item.ggufInsights, item.compatibilityScore, item.compatibilityContextSize);
         else
             modelText += " " + chalk.bgGray.yellow(" Cannot read metadata ");
-
         return renderSelectableItem(modelText, focused);
     } else if (item.type === "recommendedModel") {
         let modelText = item.title instanceof Function
             ? item.title()
             : item.title;
-
         if (item.selectedUri == null) {
             if (item.uriSelectionLoadingState == null) {
                 item.uriSelectionLoadingState = "loading";
@@ -444,7 +400,6 @@ function renderSelectionItem(
                     useMmap
                 });
             }
-
             if (item.uriSelectionLoadingState === "loading")
                 modelText += " " + chalk.bgGray.yellow(" Loading info ");
             else if (item.uriSelectionLoadingState === "done")
@@ -457,7 +412,6 @@ function renderSelectionItem(
                 item.selectedUri.compatibilityScore.compatibilityScore,
                 item.selectedUri.compatibilityScore.resolvedValues.contextSize
             );
-
         return renderSelectableItem(modelText, focused);
     } else if (item.type === "separator") {
         return item.text instanceof Function
@@ -467,26 +421,20 @@ function renderSelectionItem(
         const actionText = item.text instanceof Function
             ? item.text()
             : item.text;
-
         return renderSelectableItem(actionText, focused);
     }
-
     void (item satisfies never);
     return "";
 }
-
 function renderSelectableItem(text: string, focused: boolean) {
     if (focused)
         return " " + chalk.cyan(arrowChar) + " " + chalk.cyan(text);
-
     return " * " + text;
 }
-
 function renderModelCompatibility(
     ggufInsights: GgufInsights, compatibilityScore: number | undefined, compatibilityContextSize: number | undefined
 ) {
     const info: string[] = [];
-
     if (compatibilityScore != null)
         info.push(
             renderModelCompatibilityPercentageWithColors(compatibilityScore * 100) + chalk.whiteBright(" compatibility")
@@ -496,14 +444,11 @@ function renderModelCompatibility(
                     : (chalk.gray(" | ") + chalk.yellow(getReadableContextSize(compatibilityContextSize)) + chalk.whiteBright(" context"))
             )
         );
-
     info.push(chalk.yellow("Size:") + " " + chalk.whiteBright(toBytes(ggufInsights.modelSize)));
-
     return info
         .map((item) => chalk.bgGray(" " + item + " "))
         .join(" ");
 }
-
 function renderRecommendedModelTechnicalInfo(
     modelSelectedUri: (ModelOption & {type: "recommendedModel"})["selectedUri"],
     maxWidth: number,
@@ -511,10 +456,8 @@ function renderRecommendedModelTechnicalInfo(
 ) {
     if (modelSelectedUri == null)
         return " \n" + chalk.bgGray.yellow(" Loading info ") + "\n ";
-
     const ggufInsights = modelSelectedUri.ggufInsights;
     const compatibilityScore = modelSelectedUri.compatibilityScore;
-
     const longestTitle = Math.max("Model info".length, "Resolved config".length) + 1;
     return " \n" + [
         renderInfoLine({
@@ -561,7 +504,6 @@ function renderRecommendedModelTechnicalInfo(
         })
     ].join("\n");
 }
-
 async function selectFileForModelRecommendation({
     recommendedModelOption, llama, abortSignal, rerenderOption, flashAttention, swaFullCache, useMmap
 }: {
@@ -576,27 +518,22 @@ async function selectFileForModelRecommendation({
     try {
         let bestScore: number | undefined = undefined;
         let bestScoreSelectedUri: (ModelOption & {type: "recommendedModel"})["selectedUri"] | undefined = undefined;
-
         for (const potentialUri of recommendedModelOption.potentialUris) {
             if (abortSignal.aborted)
                 return;
-
             try {
                 const ggufFileInfo = await readGgufFileInfo(potentialUri, {
                     sourceType: "network",
                     signal: abortSignal
                 });
                 const ggufInsights = await GgufInsights.from(ggufFileInfo, llama);
-
                 if (abortSignal.aborted)
                     return;
-
                 const compatibilityScore = await ggufInsights.configurationResolver.scoreModelConfigurationCompatibility({
                     flashAttention,
                     swaFullCache,
                     useMmap
                 });
-
                 if (bestScore == null || compatibilityScore.compatibilityScore > bestScore) {
                     bestScore = compatibilityScore.compatibilityScore;
                     bestScoreSelectedUri = {
@@ -604,15 +541,12 @@ async function selectFileForModelRecommendation({
                         ggufInsights,
                         compatibilityScore
                     };
-
                     if (bestScore === 1)
                         break;
                 }
             } catch (err) {
-                // do nothing
             }
         }
-
         recommendedModelOption.selectedUri = bestScoreSelectedUri;
         recommendedModelOption.uriSelectionLoadingState = "done";
         rerenderOption();

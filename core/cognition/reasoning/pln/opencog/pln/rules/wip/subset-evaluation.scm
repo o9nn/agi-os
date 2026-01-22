@@ -1,20 +1,3 @@
-; =============================================================================
-; SubsetEvaluationRule
-;
-; AndLink
-;   MemberLink
-;       C
-;       A
-;   MemberLink
-;       C
-;       B
-; |-
-; SubsetLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define subset-evaluation-rule
     (BindLink
         (VariableList
@@ -40,11 +23,9 @@
                 (MemberLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (subset-evaluation-formula AB CA CB)
     (cog-set-tv!
         AB (subset-evaluation-side-effect-free-formula AB CA CB)))
-
 (define (subset-evaluation-side-effect-free-formula AB CA CB)
     (let 
         ((sCA (cog-mean CA))
@@ -58,7 +39,5 @@
                 (< sCB 0.5)
                 (stv 1 0)
                 (stv 1 1)))))
-
-; Name the rule
 (define subset-evaluation-rule-name (DefinedSchemaNode "subset-evaluation-rule"))
 (DefineLink subset-evaluation-rule-name subset-evaluation-rule)

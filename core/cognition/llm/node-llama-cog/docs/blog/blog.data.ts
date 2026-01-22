@@ -1,7 +1,6 @@
 import {createContentLoader} from "vitepress";
 import {ensureLocalImage} from "../../.vitepress/utils/ensureLocalImage.js";
 import {htmlEscape} from "../../.vitepress/utils/htmlEscape.js";
-
 const loader = {
     async load() {
         const blogPosts = await createContentLoader("blog/*.md", {
@@ -9,7 +8,6 @@ const loader = {
             render: true
         })
             .load();
-
         return {
             entries: await Promise.all(
                 blogPosts
@@ -37,12 +35,8 @@ const loader = {
         } as const;
     }
 } as const;
-
 export default loader;
-
-// purely for type checking
 export const data: Awaited<ReturnType<(typeof loader)["load"]>> = undefined as any;
-
 async function getImage(
     imageUrl: string | undefined,
     baseDestLocation: string[],
@@ -50,13 +44,11 @@ async function getImage(
 ): Promise<BlogImage> {
     if (imageUrl == null)
         return {};
-
     const {
         urlPath, previewUrlPath, width, height
     } = await ensureLocalImage(imageUrl, "cover", {
         baseDestLocation
     });
-
     return {
         url: urlPath.absolute,
         lowResUrl: previewUrlPath.absolute,
@@ -65,7 +57,6 @@ async function getImage(
         alt: imageFrontmatter?.alt as string | undefined
     };
 }
-
 type BlogImage = {
     url?: string,
     lowResUrl?: string,

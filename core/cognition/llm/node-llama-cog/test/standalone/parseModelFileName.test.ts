@@ -1,6 +1,5 @@
 import {describe, expect, test} from "vitest";
 import {parseModelFileName} from "../../src/utils/parseModelFileName.js";
-
 describe("parseModelFileName", () => {
     test("orca-2-13b.Q4_K_M.gguf", () => {
         expect(parseModelFileName("orca-2-13b.Q4_K_M.gguf"))
@@ -14,7 +13,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("orca-2-13b-v2.Q4_K_M.gguf", () => {
         expect(parseModelFileName("orca-2-13b-v2.Q4_K_M.gguf"))
             .toEqual({
@@ -27,7 +25,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("codellama-7b.Q5_K_M.gguf", () => {
         expect(parseModelFileName("codellama-7b.Q5_K_M.gguf"))
             .toEqual({
@@ -39,7 +36,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("phind-codellama-34b-v2.Q4_K_M.gguf", () => {
         expect(parseModelFileName("phind-codellama-34b-v2.Q4_K_M.gguf"))
             .toEqual({
@@ -52,7 +48,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("yarn-llama-2-13b-64k.Q5_K_S.gguf", () => {
         expect(parseModelFileName("yarn-llama-2-13b-64k.Q5_K_S.gguf"))
             .toEqual({
@@ -65,7 +60,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("functionary-small-v2.2.q4_0.gguf", () => {
         expect(parseModelFileName("functionary-small-v2.2.q4_0.gguf"))
             .toEqual({
@@ -76,7 +70,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("functionary-small-v2.5.Q4_0.gguf", () => {
         expect(parseModelFileName("functionary-small-v2.5.Q4_0.gguf"))
             .toEqual({
@@ -87,7 +80,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("claude2-alpaca-13b.Q5_K_M.gguf", () => {
         expect(parseModelFileName("claude2-alpaca-13b.Q5_K_M.gguf"))
             .toEqual({
@@ -99,7 +91,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("dolphin-2.1-mistral-7b.Q4_K_M.gguf", () => {
         expect(parseModelFileName("dolphin-2.1-mistral-7b.Q4_K_M.gguf"))
             .toEqual({
@@ -111,7 +102,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("gemma-7b-it-Q5_K_M.gguf", () => {
         expect(parseModelFileName("gemma-7b-it-Q5_K_M.gguf"))
             .toEqual({
@@ -123,7 +113,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["it"]
             });
     });
-
     test("llama-2-7b-chat.Q4_0.gguf", () => {
         expect(parseModelFileName("llama-2-7b-chat.Q4_0.gguf"))
             .toEqual({
@@ -135,7 +124,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["chat"]
             });
     });
-
     test("rpguild-chatml-13b.Q4_K_M.gguf", () => {
         expect(parseModelFileName("rpguild-chatml-13b.Q4_K_M.gguf"))
             .toEqual({
@@ -147,7 +135,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("neuralbeagle14-7b.Q4_K_M.gguf", () => {
         expect(parseModelFileName("neuralbeagle14-7b.Q4_K_M.gguf"))
             .toEqual({
@@ -159,7 +146,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("QVQ-72B-Preview-Q6_K-00001-of-00002.gguf", () => {
         expect(parseModelFileName("QVQ-72B-Preview-Q6_K-00001-of-00002.gguf"))
             .toEqual({
@@ -175,7 +161,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["Preview"]
             });
     });
-
     test("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf", () => {
         expect(parseModelFileName("Meta-Llama-3.1-8B-Instruct.Q4_K_M.gguf"))
             .toEqual({
@@ -187,7 +172,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["Instruct"]
             });
     });
-
     test("Rombo-LLM-V2.5-Qwen-14b.i1-Q3_K_M.gguf", () => {
         expect(parseModelFileName("Rombo-LLM-V2.5-Qwen-14b.i1-Q3_K_M.gguf"))
             .toEqual({
@@ -199,7 +183,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["i1"]
             });
     });
-
     test("DeepSeek-R1-Distill-Qwen-14B-f32-00001-of-00002.gguf", () => {
         expect(parseModelFileName("DeepSeek-R1-Distill-Qwen-14B-f32-00001-of-00002.gguf"))
             .toEqual({
@@ -215,7 +198,6 @@ describe("parseModelFileName", () => {
                 otherInfo: []
             });
     });
-
     test("DeepSeek-R1-Distill-Qwen-14B.f32-00001-of-00002.gguf", () => {
         expect(parseModelFileName("DeepSeek-R1-Distill-Qwen-14B.f32-00001-of-00002.gguf"))
             .toEqual({
@@ -231,7 +213,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["f32"]
             });
     });
-
     test("hf_mradermacher_Llama-3.2-3B-Instruct.Q4_K_S.gguf", () => {
         expect(parseModelFileName("hf_mradermacher_Llama-3.2-3B-Instruct.Q4_K_S.gguf"))
             .toEqual({
@@ -243,7 +224,6 @@ describe("parseModelFileName", () => {
                 otherInfo: ["Instruct"]
             });
     });
-
     test("hf_mradermacher_Llama-3.2-3B-Instruct.Q4_K_S-00001-of-00002.gguf", () => {
         expect(parseModelFileName("hf_mradermacher_Llama-3.2-3B-Instruct.Q4_K_S-00001-of-00002.gguf"))
             .toEqual({

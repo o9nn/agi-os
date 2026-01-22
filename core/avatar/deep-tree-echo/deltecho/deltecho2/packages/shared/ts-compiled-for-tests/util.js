@@ -32,4 +32,3 @@ export function throttle(fn, wait) {
   };
   return ret;
 }
-//# sourceMappingURL=util.js.map

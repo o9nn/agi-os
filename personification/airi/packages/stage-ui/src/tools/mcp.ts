@@ -1,7 +1,6 @@
 import { callTool, connectServer, disconnectServer, listTools } from '@proj-airi/tauri-plugin-mcp'
 import { tool } from '@xsai/tool'
 import { z } from 'zod'
-
 const tools = [
   tool({
     name: 'mcp_list_tools',
@@ -55,5 +54,4 @@ const tools = [
     }),
   }),
 ]
-
 export const mcp = async () => Promise.all(tools)

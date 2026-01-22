@@ -5,7 +5,6 @@ import {findCharacterRemovalCountToFitChatHistoryInContext} from "../../../../ut
 import {truncateLlamaTextAndRoundToWords, truncateTextAndRoundToWords} from "../../../../utils/truncateTextAndRoundToWords.js";
 import {ChatWrapper} from "../../../../ChatWrapper.js";
 import {LlamaText} from "../../../../utils/LlamaText.js";
-
 export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrategy({
     chatHistory,
     maxTokensCount,
@@ -25,7 +24,6 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
     let initialCharactersRemovalCount = 0;
     if (isCalculationMetadata(lastShiftMetadata))
         initialCharactersRemovalCount = lastShiftMetadata.removedCharactersNumber;
-
     const {removedCharactersCount, compressedChatHistory} = await findCharacterRemovalCountToFitChatHistoryInContext({
         chatHistory,
         tokensCountToFit: maxTokensCount,
@@ -37,28 +35,20 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
         compressChatHistory({chatHistory, charactersToRemove, estimatedCharactersPerToken}) {
             const res = chatHistory.map((item) => structuredClone(item));
             let charactersLeftToRemove = charactersToRemove;
-
             function compressFunctionCalls() {
                 for (let i = res.length - 1; i >= 0 && charactersLeftToRemove > 0; i--) {
                     const historyItem = res[i]!;
-
                     if (historyItem.type !== "model")
                         continue;
-
                     for (let t = historyItem.response.length - 1; t >= 0 && charactersLeftToRemove > 0; t--) {
                         const item = historyItem.response[t]!;
-
                         if (typeof item === "string" || item.type !== "functionCall")
                             continue;
-
                         if (item.rawCall == null)
                             continue;
-
                         const originalRawCallTokensLength = LlamaText.fromJSON(item.rawCall).tokenize(tokenizer, "trimLeadingSpace").length;
-
                         const newRawCallText = chatWrapper.generateFunctionCall(item.name, item.params);
                         const newRawCallTextTokensLength = newRawCallText.tokenize(tokenizer, "trimLeadingSpace").length;
-
                         if (newRawCallTextTokensLength < originalRawCallTokensLength) {
                             item.rawCall = newRawCallText.toJSON();
                             charactersLeftToRemove -= (
@@ -68,22 +58,16 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                     }
                 }
             }
-
             function removeHistoryThatLedToModelResponseAtIndex(index: number) {
                 let removedItems = 0;
-
                 for (let i = index - 1; i >= 0; i--) {
                     const historyItem = res[i];
-
                     if (historyItem == null)
                         continue;
-
                     if (historyItem.type === "model")
-                        break; // stop removing history items if we reach another model response
-
+                        break; 
                     if (i === 0 && historyItem.type === "system")
-                        break; // keep the first system message
-
+                        break; 
                     if (historyItem.type === "user" || historyItem.type === "system") {
                         const newText = truncateLlamaTextAndRoundToWords(
                             LlamaText.fromJSON(historyItem.text),
@@ -93,7 +77,6 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         );
                         const newTextString = newText.toString();
                         const historyItemString = LlamaText.fromJSON(historyItem.text).toString();
-
                         if (newText.values.length === 0) {
                             res.splice(i, 1);
                             i++;
@@ -110,52 +93,40 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         void (historyItem satisfies never);
                     }
                 }
-
                 return removedItems;
             }
-
             function compressHistoryThatLedToModelResponseAtIndex(index: number, keepTokensCount: number = 0) {
                 let removedItems = 0;
                 let promptStartIndex: number | undefined = undefined;
-
                 for (let i = index - 1; i >= 0; i--) {
                     const historyItem = res[i];
-
                     if (historyItem == null)
                         continue;
-
                     if (historyItem.type === "model") {
                         promptStartIndex = i + 1;
                         break;
                     }
-
                     if (i === 0 && historyItem.type === "system") {
                         promptStartIndex = i + 1;
-                        break; // keep the first system message
+                        break; 
                     }
                 }
-
                 if (promptStartIndex == null || promptStartIndex >= index)
                     return 0;
-
                 for (let i = promptStartIndex; i < index && charactersLeftToRemove > 0; i++) {
                     const historyItem = res[i];
-
                     if (historyItem == null || historyItem.type !== "user")
                         continue;
-
                     let removeChars = Math.min(charactersLeftToRemove, historyItem.text.length);
                     if (keepTokensCount > 0) {
                         removeChars -= Math.floor(keepTokensCount * estimatedCharactersPerToken);
                         if (removeChars < 0)
                             removeChars = 0;
-
                         keepTokensCount -= Math.min(
                             keepTokensCount,
                             Math.max(0, historyItem.text.length - removeChars) / estimatedCharactersPerToken
                         );
                     }
-
                     const newText = truncateTextAndRoundToWords(historyItem.text, removeChars, undefined, false);
                     if (newText.length === 0) {
                         res.splice(i, 1);
@@ -168,35 +139,27 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         historyItem.text = newText;
                     }
                 }
-
                 return removedItems;
             }
-
             function removeEmptySegmentsFromModelResponse(modelResponse: ChatModelResponse["response"]) {
                 const stack: Array<{
                     type: string,
                     startIndex: number,
                     canRemove: boolean
                 }> = [];
-
                 for (let t = 0; t < modelResponse.length && charactersLeftToRemove > 0; t++) {
                     const item = modelResponse[t]!;
                     const isLastItem = t === modelResponse.length - 1;
-
                     if (!isChatModelResponseSegment(item))
                         continue;
-
                     const type = item.segmentType;
                     const topStack = stack.at(-1);
-
                     if (topStack?.type === type) {
                         if (item.ended && item.text === "" && topStack.canRemove) {
                             modelResponse.splice(t, 1);
                             t--;
-
                             modelResponse.splice(topStack.startIndex, 1);
                             t--;
-
                             stack.pop();
                         } else if (!item.ended && item.text === "" && !isLastItem) {
                             modelResponse.splice(t, 1);
@@ -213,25 +176,19 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         });
                 }
             }
-
             function compressFirstModelResponse() {
                 for (let i = 0; i < res.length && charactersLeftToRemove > 0; i++) {
                     const historyItem = res[i]!;
                     const isLastHistoryItem = i === res.length - 1;
-
                     if (historyItem.type !== "model")
                         continue;
-
                     for (let t = 0; t < historyItem.response.length && charactersLeftToRemove > 0; t++) {
                         const item = historyItem.response[t]!;
                         const isLastText = t === historyItem.response.length - 1;
-
                         if (isLastHistoryItem && isLastText)
                             continue;
-
                         if (typeof item === "string") {
                             const newText = truncateTextAndRoundToWords(item, charactersLeftToRemove, undefined, true);
-
                             if (newText === "") {
                                 historyItem.response.splice(t, 1);
                                 t--;
@@ -243,7 +200,6 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         } else if (isChatModelResponseFunctionCall(item)) {
                             historyItem.response.splice(t, 1);
                             t--;
-
                             const functionCallAndResultTokenUsage = chatWrapper.generateFunctionCallsAndResults([item], true)
                                 .tokenize(tokenizer, "trimLeadingSpace").length;
                             charactersLeftToRemove -= functionCallAndResultTokenUsage * estimatedCharactersPerToken;
@@ -253,7 +209,6 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                                 if (newText === "" && item.ended) {
                                     const emptySegmentTokenUsage = chatWrapper.generateModelResponseText([{...item, text: ""}], true)
                                         .tokenize(tokenizer, "trimLeadingSpace").length;
-
                                     historyItem.response.splice(t, 1);
                                     t--;
                                     charactersLeftToRemove -= item.text.length + emptySegmentTokenUsage * estimatedCharactersPerToken;
@@ -265,83 +220,59 @@ export async function eraseFirstResponseAndKeepFirstSystemChatContextShiftStrate
                         } else
                             void (item satisfies never);
                     }
-
                     removeEmptySegmentsFromModelResponse(historyItem.response);
-
                     if (historyItem.response.length === 0) {
-                        // if the model response is removed from the history,
-                        // the things that led to it are not important anymore
                         i -= removeHistoryThatLedToModelResponseAtIndex(i);
                         res.splice(i, 1);
                         i--;
                     }
                 }
             }
-
             function compressLastModelResponse(minCharactersToKeep: number = 60) {
                 const lastHistoryItem = res[res.length - 1];
-
                 if (lastHistoryItem == null || lastHistoryItem.type !== "model")
                     return;
-
                 const lastResponseItem = lastHistoryItem.response[lastHistoryItem.response.length - 1];
-
                 if (lastResponseItem == null || typeof lastResponseItem !== "string")
                     return;
-
                 compressHistoryThatLedToModelResponseAtIndex(res.length - 1, maxTokensCount / 4);
-
                 if (charactersLeftToRemove <= 0)
                     return;
-
                 const nextTextLength = Math.max(
                     Math.min(lastResponseItem.length, minCharactersToKeep),
                     lastResponseItem.length - charactersLeftToRemove
                 );
                 const charactersToRemoveFromText = lastResponseItem.length - nextTextLength;
                 const newText = truncateTextAndRoundToWords(lastResponseItem, charactersToRemoveFromText, undefined, true);
-
                 if (newText.length < lastResponseItem.length) {
                     lastHistoryItem.response[lastHistoryItem.response.length - 1] = newText;
                     charactersLeftToRemove -= lastResponseItem.length - newText.length;
                 }
-
                 if (charactersLeftToRemove <= 0)
                     return;
-
                 compressHistoryThatLedToModelResponseAtIndex(res.length - 1);
             }
-
             compressFunctionCalls();
-
             if (charactersLeftToRemove <= 0)
                 return res;
-
             compressFirstModelResponse();
-
             if (charactersLeftToRemove <= 0)
                 return res;
-
             compressLastModelResponse();
-
             return res;
         }
     });
-
     const newMetadata: CalculationMetadata = {
         removedCharactersNumber: removedCharactersCount
     };
-
     return {
         chatHistory: compressedChatHistory,
         metadata: newMetadata
     };
 }
-
 type CalculationMetadata = {
     removedCharactersNumber: number
 };
-
 function isCalculationMetadata(metadata: any): metadata is CalculationMetadata {
     return metadata != null && typeof metadata === "object" && typeof metadata.removedCharactersNumber === "number";
 }

@@ -6,8 +6,6 @@ import {
   createTranscriptionProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://www.stepfun.com} */
 export const createStepfun = (apiKey: string, baseURL = 'https://api.stepfun.com/v1/') => merge(
   createMetadataProvider('stepfun'),
   createChatProvider<

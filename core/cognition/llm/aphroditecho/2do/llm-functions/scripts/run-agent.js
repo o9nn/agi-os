@@ -1,27 +1,19 @@
 #!/usr/bin/env node
-
-// Usage: ./run-agent.js <agent-name> <agent-func> <agent-data>
-
 const path = require("path");
 const { readFile, writeFile } = require("fs/promises");
 const os = require("os");
-
 async function main() {
   const [agentName, agentFunc, rawData] = parseArgv("run-agent.js");
   const agentData = parseRawData(rawData);
-
   const rootDir = path.resolve(__dirname, "..");
   await setupEnv(rootDir, agentName, agentFunc);
-
   const agentToolsPath = path.resolve(rootDir, `agents/${agentName}/tools.js`);
   await run(agentName, agentToolsPath, agentFunc, agentData);
 }
-
 function parseArgv(thisFileName) {
   let agentName = process.argv[1];
   let agentFunc = "";
   let agentData = null;
-
   if (agentName.endsWith(thisFileName)) {
     agentName = process.argv[2];
     agentFunc = process.argv[3];
@@ -31,19 +23,15 @@ function parseArgv(thisFileName) {
     agentFunc = process.argv[2];
     agentData = process.argv[3];
   }
-
   if (agentName && agentName.endsWith(".js")) {
     agentName = agentName.slice(0, -3);
   }
-
   if (!agentData || !agentFunc || !agentName) {
     console.log(`Usage: ./run-agent.js <agent-name> <agent-func> <agent-data>`);
     process.exit(1);
   }
-
   return [agentName, agentFunc, agentData];
 }
-
 function parseRawData(data) {
   if (!data) {
     throw new Error("No JSON data");
@@ -54,7 +42,6 @@ function parseRawData(data) {
     throw new Error("Invalid JSON data");
   }
 }
-
 async function setupEnv(rootDir, agentName, agentFunc) {
   await loadEnv(path.resolve(rootDir, ".env"));
   process.env["LLM_ROOT_DIR"] = rootDir;
@@ -71,7 +58,6 @@ async function setupEnv(rootDir, agentName, agentFunc) {
     agentName,
   );
 }
-
 async function loadEnv(filePath) {
   let lines = [];
   try {
@@ -80,17 +66,13 @@ async function loadEnv(filePath) {
   } catch {
     return;
   }
-
   const envVars = new Map();
-
   for (const line of lines) {
     if (line.trim().startsWith("#") || line.trim() === "") {
       continue;
     }
-
     const [key, ...valueParts] = line.split("=");
     const envName = key.trim();
-
     if (!process.env[envName]) {
       let envValue = valueParts.join("=").trim();
       if ((envValue.startsWith('"') && envValue.endsWith('"')) || (envValue.startsWith("'") && envValue.endsWith("'"))) {
@@ -99,12 +81,10 @@ async function loadEnv(filePath) {
       envVars.set(envName, envValue);
     }
   }
-
   for (const [envName, envValue] of envVars.entries()) {
     process.env[envName] = envValue;
   }
 }
-
 async function run(agentName, agentPath, agentFunc, agentData) {
   if (os.platform() === "win32") {
     agentPath = `file://${agentPath}`;
@@ -117,7 +97,6 @@ async function run(agentName, agentPath, agentFunc, agentData) {
   await returnToLLM(value);
   await dumpResult(`${agentName}:${agentFunc}`);
 }
-
 async function returnToLLM(value) {
   if (value === null || value === undefined) {
     return;
@@ -141,7 +120,6 @@ async function returnToLLM(value) {
     }
   }
 }
-
 async function dumpResult(name) {
   if (!process.env["LLM_DUMP_RESULTS"] || !process.env["LLM_OUTPUT"] || !process.stdout.isTTY) {
     return;
@@ -152,11 +130,9 @@ async function dumpResult(name) {
       showResult = true;
     }
   } catch { }
-
   if (!showResult) {
     return;
   }
-
   let data = "";
   try {
     data = await readFile(process.env["LLM_OUTPUT"], "utf-8");
@@ -165,7 +141,6 @@ async function dumpResult(name) {
   }
   process.stdout.write(`\x1b[2m----------------------\n${data}\n----------------------\x1b[0m\n`);
 }
-
 main().catch((err) => {
   console.error(err);
   process.exit(1);

@@ -23,13 +23,11 @@ char *estrdup(char*);
 void	button3menu(void);
 void	button2menu(Window*);
 void	cvttorunes(char*, int, Rune*, int*, int*, int*);
-/* was (byte*,int)	runetobyte(Rune*, int); */
 char* runetobyte(Rune*, int, int*);
 void	putsnarf(void);
 void	getsnarf(void);
 void	timerinit(void);
 int	goodrect(Rectangle);
-
 #define	runemalloc(n)		malloc((n)*sizeof(Rune))
 #define	runerealloc(a, n)	realloc(a, (n)*sizeof(Rune))
 #define	runemove(a, b, n)	memmove(a, b, (n)*sizeof(Rune))

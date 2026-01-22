@@ -1,4 +1,3 @@
- ;; Test temporal deduction
 (BackPredictiveImplicationScopeLink (stv 0.345 0.91941)
     (VariableNode "$X")
     (SLink (ZLink))
@@ -8,7 +7,6 @@
   (EvaluationLink
     (PredicateNode "Q")
     (VariableNode "$X")))
-
 (BackPredictiveImplicationScopeLink (stv 0.5 0.91941)
   (VariableNode "$X")
   (SLink (SLink
@@ -22,7 +20,6 @@
   (EvaluationLink
     (PredicateNode "R")
     (VariableNode "$X")))
-
 (BackPredictiveImplicationScopeLink (stv 0.345 0.91941)
     (VariableNode "$X")
     (SLink (ZLink))
@@ -35,7 +32,6 @@
   (EvaluationLink
     (PredicateNode "Q")
     (VariableNode "$X")))
-
 (define target
   (Quote (BackPredictiveImplicationScopeLink
     (Unquote (Variable "$v"))

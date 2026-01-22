@@ -1,37 +1,34 @@
 enum
 {
-	Qdir,
-	Qacme,
-	Qcons,
-	Qconsctl,
-	Qdraw,
-	Qeditout,
-	Qindex,
-	Qlabel,
-	Qnew,
-
-	QWaddr,
-	QWbody,
-	QWctl,
-	QWdata,
-	QWeditout,
-	QWerrors,
-	QWevent,
-	QWrdsel,
-	QWwrsel,
-	QWtag,
-	QWxdata,
-	QMAX,
+Qdir,
+Qacme,
+Qcons,
+Qconsctl,
+Qdraw,
+Qeditout,
+Qindex,
+Qlabel,
+Qnew,
+QWaddr,
+QWbody,
+QWctl,
+QWdata,
+QWeditout,
+QWerrors,
+QWevent,
+QWrdsel,
+QWwrsel,
+QWtag,
+QWxdata,
+QMAX,
 };
-
 enum
 {
-	Blockincr =	256,
-	Maxblock = 	8*1024,
-	NRange =		10,
-	Infinity = 		0x7FFFFFFF,	/* huge value for regexp address */
+Blockincr =	256,
+Maxblock = 	8*1024,
+NRange =		10,
+Infinity = 		0x7FFFFFFF,
 };
-
 typedef	struct	Block Block;
 typedef	struct	Buffer Buffer;
 typedef	struct	Command Command;
@@ -53,53 +50,47 @@ typedef	struct	Text Text;
 typedef	struct	Timer Timer;
 typedef	struct	Window Window;
 typedef	struct	Xfid Xfid;
-
 struct Runestr
 {
-	Rune	*r;
-	int	nr;
+Rune	*r;
+int	nr;
 };
-
 struct Range
 {
-	int	q0;
-	int	q1;
+int	q0;
+int	q1;
 };
-
 struct Block
 {
-	uint		addr;	/* disk address in bytes */
-	union
-	{
-		uint	n;		/* number of used runes in block */
-		Block	*next;	/* pointer to next in free list */
-	};
+uint		addr;
+union
+{
+uint	n;
+Block	*next;
 };
-
+};
 struct Disk
 {
-	int		fd;
-	uint		addr;	/* length of temp file */
-	Block	*free[Maxblock/Blockincr+1];
+int		fd;
+uint		addr;
+Block	*free[Maxblock/Blockincr+1];
 };
-
 Disk*	diskinit(void);
 Block*	disknewblock(Disk*, uint);
 void		diskrelease(Disk*, Block*);
 void		diskread(Disk*, Block*, Rune*, uint);
 void		diskwrite(Disk*, Block**, Rune*, uint);
-
 struct Buffer
 {
-	uint	nc;
-	Rune	*c;			/* cache */
-	uint	cnc;			/* bytes in cache */
-	uint	cmax;		/* size of allocated cache */
-	uint	cq;			/* position of cache */
-	int		cdirty;	/* cache needs to be written */
-	uint	cbi;			/* index of cache Block */
-	Block	**bl;		/* array of blocks */
-	uint	nbl;			/* number of blocks */
+uint	nc;
+Rune	*c;
+uint	cnc;
+uint	cmax;
+uint	cq;
+int		cdirty;
+uint	cbi;
+Block	**bl;
+uint	nbl;
 };
 void		bufinsert(Buffer*, uint, Rune*, uint);
 void		bufdelete(Buffer*, uint, uint);
@@ -107,14 +98,13 @@ uint		bufload(Buffer*, uint, int, int*);
 void		bufread(Buffer*, uint, Rune*, uint);
 void		bufclose(Buffer*);
 void		bufreset(Buffer*);
-
 struct Elog
 {
-	short	type;		/* Delete, Insert, Filename */
-	uint		q0;		/* location of change (unused in f) */
-	uint		nd;		/* number of deleted characters */
-	uint		nr;		/* # runes in string or file name */
-	Rune		*r;
+short	type;
+uint		q0;
+uint		nd;
+uint		nr;
+Rune		*r;
 };
 void	elogterm(File*);
 void	elogclose(File*);
@@ -122,28 +112,26 @@ void	eloginsert(File*, int, Rune*, int);
 void	elogdelete(File*, int, int);
 void	elogreplace(File*, int, int, Rune*, int);
 void	elogapply(File*);
-
 struct File
 {
-	Buffer;			/* the data */
-	Buffer	delta;	/* transcript of changes */
-	Buffer	epsilon;	/* inversion of delta for redo */
-	Buffer	*elogbuf;	/* log of pending editor changes */
-	Elog		elog;		/* current pending change */
-	Rune		*name;	/* name of associated file */
-	int		nname;	/* size of name */
-	uvlong	qidpath;	/* of file when read */
-	uint		mtime;	/* of file when read */
-	int		dev;		/* of file when read */
-	int		unread;	/* file has not been read from disk */
-	int		editclean;	/* mark clean after edit command */
-
-	int		seq;		/* if seq==0, File acts like Buffer */
-	int		mod;
-	Text		*curtext;	/* most recently used associated text */
-	Text		**text;	/* list of associated texts */
-	int		ntext;
-	int		dumpid;	/* used in dumping zeroxed windows */
+Buffer;
+Buffer	delta;
+Buffer	epsilon;
+Buffer	*elogbuf;
+Elog		elog;
+Rune		*name;
+int		nname;
+uvlong	qidpath;
+uint		mtime;
+int		dev;
+int		unread;
+int		editclean;
+int		seq;
+int		mod;
+Text		*curtext;
+Text		**text;
+int		ntext;
+int		dumpid;
 };
 File*		fileaddtext(File*, Text*);
 void		fileclose(File*);
@@ -159,40 +147,36 @@ void		fileuninsert(File*, Buffer*, uint, uint);
 void		fileunsetname(File*, Buffer*);
 void		fileundo(File*, int, uint*, uint*);
 uint		fileredoseq(File*);
-
-enum	/* Text.what */
+enum
 {
-	Columntag,
-	Rowtag,
-	Tag,
-	Body,
+Columntag,
+Rowtag,
+Tag,
+Body,
 };
-
 struct Text
 {
-	File		*file;
-	Frame;
-	Reffont	*reffont;
-	uint	org;
-	uint	q0;
-	uint	q1;
-	int	what;
-	int	tabstop;
-	Window	*w;
-	Rectangle scrollr;
-	Rectangle lastsr;
-	Rectangle all;
-	Row		*row;
-	Column	*col;
-
-	uint	eq0;	/* start of typing for ESC */
-	uint	cq0;	/* cache position */
-	int		ncache;	/* storage for insert */
-	int		ncachealloc;
-	Rune	*cache;
-	int	nofill;
+File		*file;
+Frame;
+Reffont	*reffont;
+uint	org;
+uint	q0;
+uint	q1;
+int	what;
+int	tabstop;
+Window	*w;
+Rectangle scrollr;
+Rectangle lastsr;
+Rectangle all;
+Row		*row;
+Column	*col;
+uint	eq0;
+uint	cq0;
+int		ncache;
+int		ncachealloc;
+Rune	*cache;
+int	nofill;
 };
-
 uint		textbacknl(Text*, uint, uint);
 uint		textbsinsert(Text*, uint, Rune*, uint, int, int*);
 int		textbswidth(Text*, Rune);
@@ -222,49 +206,47 @@ void		textsetorigin(Text*, uint, int);
 void		textsetselect(Text*, uint, uint);
 void		textshow(Text*, uint, uint, int);
 void		texttype(Text*, Rune);
-
 struct Window
 {
-		QLock;
-		Ref;
-	Text		tag;
-	Text		body;
-	Rectangle	r;
-	uchar	isdir;
-	uchar	isscratch;
-	uchar	filemenu;
-	uchar	dirty;
-	uchar	autoindent;
-	int		id;
-	Range	addr;
-	Range	limit;
-	uchar	nopen[QMAX];
-	uchar	nomark;
-	uchar	noscroll;
-	Range	wrselrange;
-	int		rdselfd;
-	Column	*col;
-	Xfid		*eventx;
-	char		*events;
-	int		nevents;
-	int		owner;
-	int		maxlines;
-	Dirlist	**dlp;
-	int		ndl;
-	int		putseq;
-	int		nincl;
-	Rune		**incl;
-	Reffont	*reffont;
-	QLock	ctllock;
-	uint		ctlfid;
-	char		*dumpstr;
-	char		*dumpdir;
-	int		dumpid;
-	int		utflastqid;
-	int		utflastboff;
-	int		utflastq;
+QLock;
+Ref;
+Text		tag;
+Text		body;
+Rectangle	r;
+uchar	isdir;
+uchar	isscratch;
+uchar	filemenu;
+uchar	dirty;
+uchar	autoindent;
+int		id;
+Range	addr;
+Range	limit;
+uchar	nopen[QMAX];
+uchar	nomark;
+uchar	noscroll;
+Range	wrselrange;
+int		rdselfd;
+Column	*col;
+Xfid		*eventx;
+char		*events;
+int		nevents;
+int		owner;
+int		maxlines;
+Dirlist	**dlp;
+int		ndl;
+int		putseq;
+int		nincl;
+Rune		**incl;
+Reffont	*reffont;
+QLock	ctllock;
+uint		ctlfid;
+char		*dumpstr;
+char		*dumpdir;
+int		dumpid;
+int		utflastqid;
+int		utflastboff;
+int		utflastq;
 };
-
 void	wininit(Window*, Window*, Rectangle);
 void	winlock(Window*, int);
 void	winlock1(Window*, int);
@@ -285,17 +267,15 @@ void	winmousebut(Window*);
 void	winaddincl(Window*, Rune*, int);
 void	wincleartag(Window*);
 char	*winctlprint(Window*, char*, int);
-
 struct Column
 {
-	Rectangle r;
-	Text	tag;
-	Row		*row;
-	Window	**w;
-	int		nw;
-	int		safe;
+Rectangle r;
+Text	tag;
+Row		*row;
+Window	**w;
+int		nw;
+int		safe;
 };
-
 void		colinit(Column*, Rectangle);
 Window*	coladd(Column*, Window*, Window*, int);
 void		colclose(Column*, Window*, int);
@@ -307,17 +287,14 @@ void		colgrow(Column*, Window*, int);
 int		colclean(Column*);
 void		colsort(Column*);
 void		colmousebut(Column*);
-
 struct Row
 {
-	QLock;
-	Rectangle r;
-	Text	tag;
-	Column	**col;
-	int		ncol;
-
+QLock;
+Rectangle r;
+Text	tag;
+Column	**col;
+int		ncol;
 };
-
 void		rowinit(Row*, Rectangle);
 Column*	rowadd(Row*, Column *c, int);
 void		rowclose(Row*, Column*, int);
@@ -330,73 +307,64 @@ int		rowclean(Row*);
 void		rowdump(Row*, char*);
 int		rowload(Row*, char*, int);
 void		rowloadfonts(char*);
-
 struct Timer
 {
-	int		dt;
-	int		cancel;
-	Channel	*c;	/* chan(int) */
-	Timer	*next;
+int		dt;
+int		cancel;
+Channel	*c;
+Timer	*next;
 };
-
 struct Command
 {
-	int		pid;
-	Rune		*name;
-	int		nname;
-	char		*text;
-	char		**av;
-	int		iseditcmd;
-	Mntdir	*md;
-	Command	*next;
+int		pid;
+Rune		*name;
+int		nname;
+char		*text;
+char		**av;
+int		iseditcmd;
+Mntdir	*md;
+Command	*next;
 };
-
 struct Dirtab
 {
-	char	*name;
-	uchar	type;
-	uint	qid;
-	uint	perm;
+char	*name;
+uchar	type;
+uint	qid;
+uint	perm;
 };
-
 struct Mntdir
 {
-	int		id;
-	int		ref;
-	Rune		*dir;
-	int		ndir;
-	Mntdir	*next;
-	int		nincl;
-	Rune		**incl;
+int		id;
+int		ref;
+Rune		*dir;
+int		ndir;
+Mntdir	*next;
+int		nincl;
+Rune		**incl;
 };
-
 struct Fid
 {
-	int		fid;
-	int		busy;
-	int		open;
-	Qid		qid;
-	Window	*w;
-	Dirtab	*dir;
-	Fid		*next;
-	Mntdir	*mntdir;
-	int		nrpart;
-	uchar	rpart[UTFmax];
+int		fid;
+int		busy;
+int		open;
+Qid		qid;
+Window	*w;
+Dirtab	*dir;
+Fid		*next;
+Mntdir	*mntdir;
+int		nrpart;
+uchar	rpart[UTFmax];
 };
-
-
 struct Xfid
 {
-	void		*arg;	/* args to xfidinit */
-	Fcall;
-	Xfid	*next;
-	Channel	*c;		/* chan(void(*)(Xfid*)) */
-	Fid	*f;
-	uchar	*buf;
-	int	flushed;
-
+void		*arg;
+Fcall;
+Xfid	*next;
+Channel	*c;
+Fid	*f;
+uchar	*buf;
+int	flushed;
 };
-
 void		xfidctl(void *);
 void		xfidflush(Xfid*);
 void		xfidopen(Xfid*);
@@ -409,89 +377,76 @@ void		xfideventwrite(Xfid*, Window*);
 void		xfidindexread(Xfid*);
 void		xfidutfread(Xfid*, Text*, uint, int);
 int		xfidruneread(Xfid*, Text*, uint, uint);
-
 struct Reffont
 {
-	Ref;
-	Font		*f;
-
+Ref;
+Font		*f;
 };
 Reffont	*rfget(int, int, int, char*);
 void		rfclose(Reffont*);
-
 struct Rangeset
 {
-	Range	r[NRange];
+Range	r[NRange];
 };
-
 struct Dirlist
 {
-	Rune	*r;
-	int		nr;
-	int		wid;
+Rune	*r;
+int		nr;
+int		wid;
 };
-
 struct Expand
 {
-	uint	q0;
-	uint	q1;
-	Rune	*name;
-	int	nname;
-	char	*bname;
-	int	jump;
-	union{
-		Text	*at;
-		Rune	*ar;
-	};
-	int	(*agetc)(void*, uint);
-	int	a0;
-	int	a1;
+uint	q0;
+uint	q1;
+Rune	*name;
+int	nname;
+char	*bname;
+int	jump;
+union{
+Text	*at;
+Rune	*ar;
 };
-
+int	(*agetc)(void*, uint);
+int	a0;
+int	a1;
+};
 enum
 {
-	/* fbufalloc() guarantees room off end of BUFSIZE */
-	BUFSIZE = Maxblock+IOHDRSZ,	/* size from fbufalloc() */
-	RBUFSIZE = BUFSIZE/sizeof(Rune),
-	EVENTSIZE = 256,
-	Scrollwid = 12,	/* width of scroll bar */
-	Scrollgap = 4,	/* gap right of scroll bar */
-	Margin = 4,	/* margin around text */
-	Border = 2,	/* line between rows, cols, windows */
+BUFSIZE = Maxblock+IOHDRSZ,
+RBUFSIZE = BUFSIZE/sizeof(Rune),
+EVENTSIZE = 256,
+Scrollwid = 12,
+Scrollgap = 4,
+Margin = 4,
+Border = 2,
 };
-
 #define	QID(w,q)	((w<<8)|(q))
 #define	WIN(q)	((((ulong)(q).path)>>8) & 0xFFFFFF)
 #define	FILE(q)	((q).path & 0xFF)
-
 enum
 {
-	FALSE,
-	TRUE,
-	XXX,
+FALSE,
+TRUE,
+XXX,
 };
-
 enum
 {
-	Empty	= 0,
-	Null		= '-',
-	Delete	= 'd',
-	Insert	= 'i',
-	Replace	= 'r',
-	Filename	= 'f',
+Empty	= 0,
+Null		= '-',
+Delete	= 'd',
+Insert	= 'i',
+Replace	= 'r',
+Filename	= 'f',
 };
-
-enum	/* editing */
+enum
 {
-	Inactive	= 0,
-	Inserting,
-	Collecting,
+Inactive	= 0,
+Inserting,
+Collecting,
 };
-
 uint		globalincref;
 uint		seq;
-uint		maxtab;	/* size of a tab, in units of the '0' character */
-
+uint		maxtab;
 Display		*display;
 Image		*screen;
 Font			*font;
@@ -510,9 +465,9 @@ int			timerpid;
 Disk			*disk;
 Text			*seltext;
 Text			*argtext;
-Text			*mousetext;	/* global because Text.close needs to clear it */
-Text			*typetext;		/* global because Text.close needs to clear it */
-Text			*barttext;		/* shared between mousetask and keyboardthread */
+Text			*mousetext;
+Text			*typetext;
+Text			*barttext;
 int			bartflag;
 Window		*activewin;
 Column		*activecol;
@@ -530,27 +485,24 @@ int			plumbsendfd;
 int			plumbeditfd;
 char			wdir[];
 int			editing;
-int			messagesize;		/* negotiated in 9P version setup */
+int			messagesize;
 int			globalautoindent;
-
 enum
 {
-	Kscrolloneup		= KF|0x20,
-	Kscrollonedown	= KF|0x21,
+Kscrolloneup		= KF|0x20,
+Kscrollonedown	= KF|0x21,
 };
-
-Channel	*cplumb;		/* chan(Plumbmsg*) */
-Channel	*cwait;		/* chan(Waitmsg) */
-Channel	*ccommand;	/* chan(Command*) */
-Channel	*ckill;		/* chan(Rune*) */
-Channel	*cxfidalloc;	/* chan(Xfid*) */
-Channel	*cxfidfree;	/* chan(Xfid*) */
-Channel	*cnewwindow;	/* chan(Channel*) */
-Channel	*mouseexit0;	/* chan(int) */
-Channel	*mouseexit1;	/* chan(int) */
-Channel	*cexit;		/* chan(int) */
-Channel	*cerr;		/* chan(char*) */
-Channel	*cedit;		/* chan(int) */
-Channel	*cwarn;		/* chan(void*)[1] (really chan(unit)[1]) */
-
+Channel	*cplumb;
+Channel	*cwait;
+Channel	*ccommand;
+Channel	*ckill;
+Channel	*cxfidalloc;
+Channel	*cxfidfree;
+Channel	*cnewwindow;
+Channel	*mouseexit0;
+Channel	*mouseexit1;
+Channel	*cexit;
+Channel	*cerr;
+Channel	*cedit;
+Channel	*cwarn;
 #define	STACK	8192

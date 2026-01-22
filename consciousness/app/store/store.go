@@ -1,5 +1,4 @@
 package store
-
 import (
 	"encoding/json"
 	"errors"
@@ -8,20 +7,16 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
-
 	"github.com/google/uuid"
 )
-
 type Store struct {
 	ID           string `json:"id"`
 	FirstTimeRun bool   `json:"first-time-run"`
 }
-
 var (
 	lock  sync.Mutex
 	store Store
 )
-
 func GetID() string {
 	lock.Lock()
 	defer lock.Unlock()
@@ -30,7 +25,6 @@ func GetID() string {
 	}
 	return store.ID
 }
-
 func GetFirstTimeRun() bool {
 	lock.Lock()
 	defer lock.Unlock()
@@ -39,7 +33,6 @@ func GetFirstTimeRun() bool {
 	}
 	return store.FirstTimeRun
 }
-
 func SetFirstTimeRun(val bool) {
 	lock.Lock()
 	defer lock.Unlock()
@@ -49,8 +42,6 @@ func SetFirstTimeRun(val bool) {
 	store.FirstTimeRun = val
 	writeStore(getStorePath())
 }
-
-// lock must be held
 func initStore() {
 	storeFile, err := os.Open(getStorePath())
 	if err == nil {
@@ -67,7 +58,6 @@ func initStore() {
 	store.ID = uuid.NewString()
 	writeStore(getStorePath())
 }
-
 func writeStore(storeFilename string) {
 	ollamaDir := filepath.Dir(storeFilename)
 	_, err := os.Stat(ollamaDir)

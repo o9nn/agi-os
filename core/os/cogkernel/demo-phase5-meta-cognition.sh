@@ -1,9 +1,5 @@
 #!/bin/bash
-# Phase 5 Meta-Cognition Demonstration Script
-# Demonstrates the recursive meta-cognition and evolutionary optimization capabilities
-
 set -e
-
 echo "═══════════════════════════════════════════════════════════════════"
 echo "🧠 Phase 5: Recursive Meta-Cognition & Evolutionary Optimization"
 echo "═══════════════════════════════════════════════════════════════════"
@@ -14,27 +10,20 @@ echo "  • Recursive self-improvement"
 echo "  • Evolutionary optimization"
 echo "  • Safe self-modification"
 echo ""
-
-# Navigate to cogkernel directory
 cd "$(dirname "$0")"
-
 echo "📚 Available Components:"
 echo "  ✅ recursive-optimization.scm (700+ lines)"
 echo "  ✅ test-meta-cognition.scm (33 tests)"
 echo "  ✅ test-phase5-meta-cognition-integration.scm (15 tests)"
 echo "  ✅ PHASE5_META_COGNITION_DOCUMENTATION.md"
 echo ""
-
 echo "🧪 Running Test Suite..."
 echo "─────────────────────────────────────────────────────────────────"
 echo ""
-
-# Run Python test runner (faster for demonstration)
 if command -v python3 &> /dev/null; then
     echo "▶ Running comprehensive test suite..."
     python3 run-meta-cognition-tests.py
     TEST_RESULT=$?
-    
     if [ $TEST_RESULT -eq 0 ]; then
         echo ""
         echo "═══════════════════════════════════════════════════════════════════"
@@ -72,7 +61,6 @@ else
     echo "   guile test-meta-cognition.scm"
     echo "   guile test-phase5-meta-cognition-integration.scm"
 fi
-
 echo "═══════════════════════════════════════════════════════════════════"
 echo "📖 For more information:"
 echo "  • Documentation: meta-cognition/PHASE5_META_COGNITION_DOCUMENTATION.md"

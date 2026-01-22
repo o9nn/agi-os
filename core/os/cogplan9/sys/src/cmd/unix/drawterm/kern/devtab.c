@@ -3,7 +3,6 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-
 extern Dev consdevtab;
 extern Dev rootdevtab;
 extern Dev pipedevtab;
@@ -16,20 +15,18 @@ extern Dev fsdevtab;
 extern Dev mntdevtab;
 extern Dev lfddevtab;
 extern Dev audiodevtab;
-
 Dev *devtab[] = {
-	&rootdevtab,
-	&consdevtab,
-	&pipedevtab,
-	&ssldevtab,
-	&tlsdevtab,
-	&mousedevtab,
-	&drawdevtab,
-	&ipdevtab,
-	&fsdevtab,
-	&mntdevtab,
-	&lfddevtab,
-	&audiodevtab,
-	0
+&rootdevtab,
+&consdevtab,
+&pipedevtab,
+&ssldevtab,
+&tlsdevtab,
+&mousedevtab,
+&drawdevtab,
+&ipdevtab,
+&fsdevtab,
+&mntdevtab,
+&lfddevtab,
+&audiodevtab,
+0
 };
-

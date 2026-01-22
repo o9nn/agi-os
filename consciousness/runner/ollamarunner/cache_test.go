@@ -1,15 +1,12 @@
 package ollamarunner
-
 import (
 	"errors"
 	"fmt"
 	"testing"
 	"time"
-
 	"github.com/EchoCog/echollama/ml"
 	"github.com/EchoCog/echollama/model/input"
 )
-
 func TestCountCommon(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -60,7 +57,6 @@ func TestCountCommon(t *testing.T) {
 			expected: 0,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := countCommonPrefix(tt.t1, tt.t2)
@@ -70,13 +66,11 @@ func TestCountCommon(t *testing.T) {
 		})
 	}
 }
-
 func TestFindCacheSlot(t *testing.T) {
 	type expected struct {
 		result int
 		len    int32
 	}
-
 	tests := []struct {
 		name    string
 		cache   InputCache
@@ -207,7 +201,6 @@ func TestFindCacheSlot(t *testing.T) {
 			best:    expected{result: 1, len: 2},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run("Longest-"+tt.name, func(t *testing.T) {
 			result, resultLen, err := tt.cache.findLongestCacheSlot(tt.prompt)
@@ -219,7 +212,6 @@ func TestFindCacheSlot(t *testing.T) {
 			}
 		})
 	}
-
 	for _, tt := range tests {
 		t.Run("Best-"+tt.name, func(t *testing.T) {
 			result, resultLen, err := tt.cache.findBestCacheSlot(tt.prompt)
@@ -232,7 +224,6 @@ func TestFindCacheSlot(t *testing.T) {
 		})
 	}
 }
-
 func TestShiftDiscard(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -284,7 +275,6 @@ func TestShiftDiscard(t *testing.T) {
 			expected: 0,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := InputCache{numCtx: tt.numCtx}
@@ -295,7 +285,6 @@ func TestShiftDiscard(t *testing.T) {
 		})
 	}
 }
-
 func TestLoadCacheSlot(t *testing.T) {
 	tests := []struct {
 		name           string
@@ -303,7 +292,7 @@ func TestLoadCacheSlot(t *testing.T) {
 		prompt         []input.Input
 		wantErr        bool
 		expectedSlotId int
-		expectedPrompt int // expected length of remaining prompt
+		expectedPrompt int 
 	}{
 		{
 			name: "Basic cache hit - single user",
@@ -327,7 +316,7 @@ func TestLoadCacheSlot(t *testing.T) {
 			prompt:         []input.Input{{Token: 1}, {Token: 2}, {Token: 3}},
 			wantErr:        false,
 			expectedSlotId: 0,
-			expectedPrompt: 1, // Only token 3 remains
+			expectedPrompt: 1, 
 		},
 		{
 			name: "Basic cache hit - multi user",
@@ -351,7 +340,7 @@ func TestLoadCacheSlot(t *testing.T) {
 			prompt:         []input.Input{{Token: 1}, {Token: 2}, {Token: 3}},
 			wantErr:        false,
 			expectedSlotId: 0,
-			expectedPrompt: 1, // Only token 3 remains
+			expectedPrompt: 1, 
 		},
 		{
 			name: "Exact match - leave one input",
@@ -369,7 +358,7 @@ func TestLoadCacheSlot(t *testing.T) {
 			prompt:         []input.Input{{Token: 1}, {Token: 2}},
 			wantErr:        false,
 			expectedSlotId: 0,
-			expectedPrompt: 1, // Should leave 1 token for sampling
+			expectedPrompt: 1, 
 		},
 		{
 			name: "No available slots",
@@ -390,32 +379,22 @@ func TestLoadCacheSlot(t *testing.T) {
 			expectedPrompt: -1,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			slot, remainingPrompt, err := tt.cache.LoadCacheSlot(tt.prompt)
-
-			// Check error state
 			if (err != nil) != tt.wantErr {
 				t.Errorf("LoadCacheSlot() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-
 			if tt.wantErr {
-				return // Skip further checks if we expected an error
+				return 
 			}
-
-			// Verify slot ID
 			if slot.Id != tt.expectedSlotId {
 				t.Errorf("LoadCacheSlot() slot ID = %v, expected %v", slot.Id, tt.expectedSlotId)
 			}
-
-			// Verify slot is now marked in use
 			if !slot.InUse {
 				t.Errorf("LoadCacheSlot() slot not marked InUse")
 			}
-
-			// Verify remaining prompt length
 			if len(remainingPrompt) != tt.expectedPrompt {
 				t.Errorf("LoadCacheSlot() remaining prompt length = %v, expected %v",
 					len(remainingPrompt), tt.expectedPrompt)
@@ -423,21 +402,15 @@ func TestLoadCacheSlot(t *testing.T) {
 		})
 	}
 }
-
-// Mock implementation of the Cache interface
 type mockCache struct {
 	shouldFail bool
 }
-
-// Implement only the methods needed for the test
 func (m *mockCache) Remove(seq int, beginIndex, endIndex int32) error {
 	if m.shouldFail {
 		return fmt.Errorf("mock cache removal error")
 	}
 	return nil
 }
-
-// Stub implementations for other interface methods
 func (m *mockCache) SetLayer(layer int)                                                            {}
 func (m *mockCache) Get(ctx ml.Context) (ml.Tensor, ml.Tensor, ml.Tensor)                          { return nil, nil, nil }
 func (m *mockCache) Put(ctx ml.Context, key, value ml.Tensor)                                      {}
@@ -447,7 +420,6 @@ func (m *mockCache) StartForward(ctx ml.Context, batch input.Batch, reserve bool
 func (m *mockCache) CopyPrefix(srcSeq, dstSeq int, len int32)                                      {}
 func (m *mockCache) SetConfig(ml.CacheConfig)                                                      {}
 func (m *mockCache) CanResume(seq int, pos int32) bool                                             { return true }
-
 func TestShiftCacheSlot(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -463,9 +435,9 @@ func TestShiftCacheSlot(t *testing.T) {
 			numCtx:        10,
 			inputs:        []input.Input{{Token: 1}, {Token: 2}, {Token: 3}, {Token: 4}, {Token: 5}, {Token: 6}, {Token: 7}, {Token: 8}, {Token: 9}, {Token: 10}},
 			numKeep:       2,
-			cacheErr:      false, // No error
+			cacheErr:      false, 
 			wantErr:       nil,
-			wantInputsLen: 6, // After discarding 4 tokens
+			wantInputsLen: 6, 
 		},
 		{
 			name:          "Cache removal fails",
@@ -474,10 +446,9 @@ func TestShiftCacheSlot(t *testing.T) {
 			numKeep:       2,
 			cacheErr:      true,
 			wantErr:       &ErrReprocessInputs{},
-			wantInputsLen: 0, // Original inputs should be cleared
+			wantInputsLen: 0, 
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mock := &mockCache{shouldFail: tt.cacheErr}
@@ -490,22 +461,18 @@ func TestShiftCacheSlot(t *testing.T) {
 				Inputs: make([]input.Input, len(tt.inputs)),
 			}
 			copy(slot.Inputs, tt.inputs)
-
 			err := c.ShiftCacheSlot(slot, tt.numKeep)
-
 			if tt.wantErr != nil {
 				if err == nil {
 					t.Errorf("Expected error but got nil")
 					return
 				}
-
 				if !errors.As(err, &tt.wantErr) {
 					t.Errorf("Expected error of type %T but got %T: %v", tt.wantErr, err, err)
 				}
 			} else if err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
-
 			if len(slot.Inputs) != tt.wantInputsLen {
 				t.Errorf("Slot inputs length after operation: got %v, want %v", len(slot.Inputs), tt.wantInputsLen)
 			}

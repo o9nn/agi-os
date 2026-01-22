@@ -1,17 +1,5 @@
-/*!
- * # Semantic UI 2.2.10 - API
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 var
   window = (typeof window != 'undefined' && window.Math == Math)
     ? window
@@ -19,75 +7,54 @@ var
       ? self
       : Function('return this')()
 ;
-
 $.api = $.fn.api = function(parameters) {
-
   var
-    // use window context if none specified
     $allModules     = $.isFunction(this)
         ? $(window)
         : $(this),
     moduleSelector = $allModules.selector || '',
     time           = new Date().getTime(),
     performance    = [],
-
     query          = arguments[0],
     methodInvoked  = (typeof query == 'string'),
     queryArguments = [].slice.call(arguments, 1),
-
     returnedValue
   ;
-
   $allModules
     .each(function() {
       var
         settings          = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.api.settings, parameters)
           : $.extend({}, $.fn.api.settings),
-
-        // internal aliases
         namespace       = settings.namespace,
         metadata        = settings.metadata,
         selector        = settings.selector,
         error           = settings.error,
         className       = settings.className,
-
-        // define namespaces for modules
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
-        // element that creates request
         $module         = $(this),
         $form           = $module.closest(selector.form),
-
-        // context used for state
         $context        = (settings.stateContext)
           ? $(settings.stateContext)
           : $module,
-
-        // request details
         ajaxSettings,
         requestSettings,
         url,
         data,
         requestStartTime,
-
-        // standard module
         element         = this,
         context         = $context[0],
         instance        = $module.data(moduleNamespace),
         module
       ;
-
       module = {
-
         initialize: function() {
           if(!methodInvoked) {
             module.bind.events();
           }
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of module', module);
           instance = module;
@@ -95,7 +62,6 @@ $.api = $.fn.api = function(parameters) {
             .data(moduleNamespace, instance)
           ;
         },
-
         destroy: function() {
           module.verbose('Destroying previous module for', element);
           $module
@@ -103,7 +69,6 @@ $.api = $.fn.api = function(parameters) {
             .off(eventNamespace)
           ;
         },
-
         bind: {
           events: function() {
             var
@@ -121,7 +86,6 @@ $.api = $.fn.api = function(parameters) {
             }
           }
         },
-
         decode: {
           json: function(response) {
             if(response !== undefined && typeof response == 'string') {
@@ -129,13 +93,11 @@ $.api = $.fn.api = function(parameters) {
                response = JSON.parse(response);
               }
               catch(e) {
-                // isnt json string
               }
             }
             return response;
           }
         },
-
         read: {
           cachedResponse: function(url) {
             var
@@ -168,14 +130,11 @@ $.api = $.fn.api = function(parameters) {
             module.verbose('Storing cached response for url', url, response);
           }
         },
-
         query: function() {
-
           if(module.is.disabled()) {
             module.debug('Element is disabled API request aborted');
             return;
           }
-
           if(module.is.loading()) {
             if(settings.interruptRequests) {
               module.debug('Interrupting previous request');
@@ -186,21 +145,13 @@ $.api = $.fn.api = function(parameters) {
               return;
             }
           }
-
-          // pass element metadata to url (value, text)
           if(settings.defaultData) {
             $.extend(true, settings.urlData, module.get.defaultData());
           }
-
-          // Add form content
           if(settings.serializeForm) {
             settings.data = module.add.formData(settings.data);
           }
-
-          // call beforesend and get any settings changes
           requestSettings = module.get.settings();
-
-          // check if before send cancelled request
           if(requestSettings === false) {
             module.cancelled = true;
             module.error(error.beforeSend);
@@ -209,25 +160,16 @@ $.api = $.fn.api = function(parameters) {
           else {
             module.cancelled = false;
           }
-
-          // get url
           url = module.get.templatedURL();
-
           if(!url && !module.is.mocked()) {
             module.error(error.missingURL);
             return;
           }
-
-          // replace variables
           url = module.add.urlData( url );
-          // missing url parameters
           if( !url && !module.is.mocked()) {
             return;
           }
-
           requestSettings.url = settings.base + url;
-
-          // look for jQuery ajax parameters in settings
           ajaxSettings = $.extend(true, {}, settings, {
             type       : settings.method || settings.type,
             data       : data,
@@ -237,7 +179,6 @@ $.api = $.fn.api = function(parameters) {
             failure    : function() {},
             complete   : function() {}
           });
-
           module.debug('Querying URL', ajaxSettings.url);
           module.verbose('Using AJAX settings', ajaxSettings);
           if(settings.cache === 'local' && module.read.cachedResponse(url)) {
@@ -246,7 +187,6 @@ $.api = $.fn.api = function(parameters) {
             module.request.resolveWith(context, [ module.read.cachedResponse(url) ]);
             return;
           }
-
           if( !settings.throttle ) {
             module.debug('Sending request', data, ajaxSettings.method);
             module.send.request();
@@ -269,15 +209,12 @@ $.api = $.fn.api = function(parameters) {
               }, settings.throttle);
             }
           }
-
         },
-
         should: {
           removeError: function() {
             return ( settings.hideError === true || (settings.hideError === 'auto' && !module.is.form()) );
           }
         },
-
         is: {
           disabled: function() {
             return ($module.filter(selector.disabled).length > 0);
@@ -326,7 +263,6 @@ $.api = $.fn.api = function(parameters) {
             }
           }
         },
-
         was: {
           cancelled: function() {
             return (module.cancelled || false);
@@ -341,7 +277,6 @@ $.api = $.fn.api = function(parameters) {
             return (module.request && (module.request.state() == 'resolved' || module.request.state() == 'rejected') );
           }
         },
-
         add: {
           urlData: function(url, urlData) {
             var
@@ -356,7 +291,6 @@ $.api = $.fn.api = function(parameters) {
                 module.debug('Looking for required URL variables', requiredVariables);
                 $.each(requiredVariables, function(index, templatedString) {
                   var
-                    // allow legacy {$var} style
                     variable = (templatedString.indexOf('$') !== -1)
                       ? templatedString.substr(2, templatedString.length - 3)
                       : templatedString.substr(1, templatedString.length - 2),
@@ -368,7 +302,6 @@ $.api = $.fn.api = function(parameters) {
                           ? $context.data(variable)
                           : urlData[variable]
                   ;
-                  // remove value
                   if(value === undefined) {
                     module.error(error.requiredParameter, variable, url);
                     url = false;
@@ -388,7 +321,6 @@ $.api = $.fn.api = function(parameters) {
                 module.debug('Looking for optional URL variables', requiredVariables);
                 $.each(optionalVariables, function(index, templatedString) {
                   var
-                    // allow legacy {/$var} style
                     variable = (templatedString.indexOf('$') !== -1)
                       ? templatedString.substr(3, templatedString.length - 4)
                       : templatedString.substr(2, templatedString.length - 3),
@@ -400,14 +332,12 @@ $.api = $.fn.api = function(parameters) {
                           ? $context.data(variable)
                           : urlData[variable]
                   ;
-                  // optional replacement
                   if(value !== undefined) {
                     module.verbose('Optional variable Found', variable, value);
                     url = url.replace(templatedString, value);
                   }
                   else {
                     module.verbose('Optional variable not found', variable);
-                    // remove preceding slash if set
                     if(url.indexOf('/' + templatedString) !== -1) {
                       url = url.replace('/' + templatedString, '');
                     }
@@ -430,7 +360,6 @@ $.api = $.fn.api = function(parameters) {
             ;
             data         = data || settings.data;
             hasOtherData = $.isPlainObject(data);
-
             if(hasOtherData) {
               if(canSerialize) {
                 module.debug('Extending existing data with form data', data, formData);
@@ -449,7 +378,6 @@ $.api = $.fn.api = function(parameters) {
             return data;
           }
         },
-
         send: {
           request: function() {
             module.set.loading();
@@ -463,7 +391,6 @@ $.api = $.fn.api = function(parameters) {
             settings.onRequest.call(context, module.request, module.xhr);
           }
         },
-
         event: {
           trigger: function(event) {
             module.query();
@@ -473,7 +400,6 @@ $.api = $.fn.api = function(parameters) {
           },
           xhr: {
             always: function() {
-              // nothing special
             },
             done: function(response, textStatus, xhr) {
               var
@@ -543,7 +469,6 @@ $.api = $.fn.api = function(parameters) {
                 xhr,
                 response
               ;
-              // have to guess callback parameters based on request success
               if( module.was.succesful() ) {
                 response = firstParameter;
                 xhr      = secondParameter;
@@ -557,7 +482,6 @@ $.api = $.fn.api = function(parameters) {
             },
             fail: function(xhr, status, httpMessage) {
               var
-                // pull response from xhr if available
                 response     = module.get.responseFromXHR(xhr),
                 errorMessage = module.get.errorFromRequest(response, status, httpMessage)
               ;
@@ -572,14 +496,12 @@ $.api = $.fn.api = function(parameters) {
               else if(status == 'error') {
                 if(xhr !== undefined) {
                   module.debug('XHR produced a server error', status, httpMessage);
-                  // make sure we have an error to display to console
                   if( xhr.status != 200 && httpMessage !== undefined && httpMessage !== '') {
                     module.error(error.statusMessage + httpMessage, ajaxSettings.url);
                   }
                   settings.onError.call(context, errorMessage, $module, xhr);
                 }
               }
-
               if(settings.errorDuration && status !== 'aborted') {
                 module.debug('Adding error state');
                 module.set.error();
@@ -592,21 +514,16 @@ $.api = $.fn.api = function(parameters) {
             }
           }
         },
-
         create: {
-
           request: function() {
-            // api request promise
             return $.Deferred()
               .always(module.event.request.complete)
               .done(module.event.request.done)
               .fail(module.event.request.fail)
             ;
           },
-
           mockedXHR: function () {
             var
-              // xhr does not simulate these properties of xhr but must return them
               textStatus     = false,
               status         = false,
               httpMessage    = false,
@@ -616,13 +533,11 @@ $.api = $.fn.api = function(parameters) {
               response,
               mockedXHR
             ;
-
             mockedXHR = $.Deferred()
               .always(module.event.xhr.complete)
               .done(module.event.xhr.done)
               .fail(module.event.xhr.fail)
             ;
-
             if(responder) {
               if( $.isFunction(responder) ) {
                 module.debug('Using specified synchronous callback', responder);
@@ -632,13 +547,11 @@ $.api = $.fn.api = function(parameters) {
                 module.debug('Using settings specified response', responder);
                 response = responder;
               }
-              // simulating response
               mockedXHR.resolveWith(context, [ response, textStatus, { responseText: response }]);
             }
             else if( $.isFunction(asyncResponder) ) {
               asyncCallback = function(response) {
                 module.debug('Async callback returned response', response);
-
                 if(response) {
                   mockedXHR.resolveWith(context, [ response, textStatus, { responseText: response }]);
                 }
@@ -651,12 +564,10 @@ $.api = $.fn.api = function(parameters) {
             }
             return mockedXHR;
           },
-
           xhr: function() {
             var
               xhr
             ;
-            // ajax request promise
             xhr = $.ajax(ajaxSettings)
               .always(module.event.xhr.always)
               .done(module.event.xhr.done)
@@ -666,7 +577,6 @@ $.api = $.fn.api = function(parameters) {
             return xhr;
           }
         },
-
         set: {
           error: function() {
             module.verbose('Adding error state to element', $context);
@@ -678,7 +588,6 @@ $.api = $.fn.api = function(parameters) {
             requestStartTime = new Date().getTime();
           }
         },
-
         remove: {
           error: function() {
             module.verbose('Removing error state from element', $context);
@@ -689,7 +598,6 @@ $.api = $.fn.api = function(parameters) {
             $context.removeClass(className.loading);
           }
         },
-
         get: {
           responseFromXHR: function(xhr) {
             return $.isPlainObject(xhr)
@@ -701,8 +609,8 @@ $.api = $.fn.api = function(parameters) {
           },
           errorFromRequest: function(response, status, httpMessage) {
             return ($.isPlainObject(response) && response.error !== undefined)
-              ? response.error // use json error message
-              : (settings.error[status] !== undefined) // use server error message
+              ? response.error 
+              : (settings.error[status] !== undefined) 
                 ? settings.error[status]
                 : httpMessage
             ;
@@ -768,7 +676,6 @@ $.api = $.fn.api = function(parameters) {
                 data.value = $module.val();
               }
               else if( module.is.form() ) {
-
               }
               else {
                 data.text = $module.text();
@@ -823,7 +730,6 @@ $.api = $.fn.api = function(parameters) {
             return url;
           }
         },
-
         abort: function() {
           var
             xhr = module.get.xhr()
@@ -833,13 +739,10 @@ $.api = $.fn.api = function(parameters) {
             xhr.abort();
           }
         },
-
-        // reset state
         reset: function() {
           module.remove.error();
           module.remove.loading();
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -911,7 +814,6 @@ $.api = $.fn.api = function(parameters) {
               performance.push({
                 'Name'           : message[0],
                 'Arguments'      : [].slice.call(message, 1) || '',
-                //'Element'        : element,
                 'Execution Time' : executionTime
               });
             }
@@ -1002,7 +904,6 @@ $.api = $.fn.api = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -1017,112 +918,51 @@ $.api = $.fn.api = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.api.settings = {
-
   name              : 'API',
   namespace         : 'api',
-
   debug             : false,
   verbose           : false,
   performance       : true,
-
-  // object containing all templates endpoints
   api               : {},
-
-  // whether to cache responses
   cache             : true,
-
-  // whether new requests should abort previous requests
   interruptRequests : true,
-
-  // event binding
   on                : 'auto',
-
-  // context for applying state classes
   stateContext      : false,
-
-  // duration for loading state
   loadingDuration   : 0,
-
-  // whether to hide errors after a period of time
   hideError         : 'auto',
-
-  // duration for error state
   errorDuration     : 2000,
-
-  // whether parameters should be encoded with encodeURIComponent
   encodeParameters  : true,
-
-  // API action to use
   action            : false,
-
-  // templated URL to use
   url               : false,
-
-  // base URL to apply to all endpoints
   base              : '',
-
-  // data that will
   urlData           : {},
-
-  // whether to add default data to url data
   defaultData          : true,
-
-  // whether to serialize closest form
   serializeForm        : false,
-
-  // how long to wait before request should occur
   throttle             : 0,
-
-  // whether to throttle first request or only repeated
   throttleFirstRequest : true,
-
-  // standard ajax settings
   method            : 'get',
   data              : {},
   dataType          : 'json',
-
-  // mock response
   mockResponse      : false,
   mockResponseAsync : false,
-
-  // aliases for mock
   response          : false,
   responseAsync     : false,
-
-  // callbacks before request
   beforeSend  : function(settings) { return settings; },
   beforeXHR   : function(xhr) {},
   onRequest   : function(promise, xhr) {},
-
-  // after request
-  onResponse  : false, // function(response) { },
-
-  // response was successful, if JSON passed validation
+  onResponse  : false, 
   onSuccess   : function(response, $module) {},
-
-  // request finished without aborting
   onComplete  : function(response, $module) {},
-
-  // failed JSON success test
   onFailure   : function(response, $module) {},
-
-  // server error
   onError     : function(errorMessage, $module) {},
-
-  // request aborted
   onAbort     : function(errorMessage, $module) {},
-
   successTest : false,
-
-  // errors
   error : {
     beforeSend        : 'The before send function has aborted the request',
     error             : 'There was an error with your request',
@@ -1140,28 +980,21 @@ $.api.settings = {
     statusMessage     : 'Server gave an error: ',
     timeout           : 'Your request timed out'
   },
-
   regExp  : {
     required : /\{\$*[A-z0-9]+\}/g,
     optional : /\{\/\$*[A-z0-9]+\}/g,
   },
-
   className: {
     loading : 'loading',
     error   : 'error'
   },
-
   selector: {
     disabled : '.disabled',
     form      : 'form'
   },
-
   metadata: {
     action  : 'action',
     url     : 'url'
   }
 };
-
-
-
 })( jQuery, window, document );

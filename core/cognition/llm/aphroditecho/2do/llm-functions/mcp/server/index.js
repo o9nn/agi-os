@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import * as path from "node:path";
 import * as fs from "node:fs";
 import * as os from "node:os";
@@ -11,14 +10,12 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-
 let [rootDir, agentName] = process.argv.slice(2);
 if (!rootDir) {
   console.error("Usage: mcp-llm-functions <llm-functions-dir> [<agent-name>]");
   process.exit(1);
 }
 rootDir = path.resolve(rootDir);
-
 let functionsJsonPath = path.join(rootDir, "functions.json");
 if (agentName) {
   functionsJsonPath = path.join(rootDir, "agents", agentName, "functions.json");
@@ -42,11 +39,9 @@ functions = functions.filter(f => {
     return true;
   }
 });
-
 const env = Object.assign({}, process.env, {
   PATH: `${path.join(rootDir, "bin")}:${process.env.PATH}`
 });
-
 const server = new Server(
   {
     name: `llm-functions/${agentName || "common-tools"}`,
@@ -58,7 +53,6 @@ const server = new Server(
     },
   },
 );
-
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: functions.map((f) => ({
@@ -68,7 +62,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     })),
   };
 });
-
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const functionObj = functions.find((f) => f.name === request.params.name);
   if (!functionObj) {
@@ -97,33 +90,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
   }
 });
-
 function runCommand(command, args, env) {
   return new Promise(resolve => {
     const child = spawn(command, args, {
       stdio: ['ignore', 'ignore', 'pipe'],
       env,
     });
-
     let stderr = '';
-
     child.stderr.on('data', (data) => {
       stderr += data.toString();
     });
-
     child.on('close', (exitCode) => {
       resolve({ exitCode, stderr });
     });
-
     child.on('error', (err) => {
       resolve({ exitCode: 1, stderr: `Command execution failed: ${err.message}` });
     });
   });
 }
-
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
-
 runServer().catch(console.error);

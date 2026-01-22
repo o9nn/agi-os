@@ -1,5 +1,4 @@
 package discover
-
 import (
 	"bufio"
 	"errors"
@@ -14,58 +13,37 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
 	"github.com/EchoCog/echollama/envconfig"
 	"github.com/EchoCog/echollama/format"
 )
-
-// Discovery logic for AMD/ROCm GPUs
-
 const (
 	DriverVersionFile     = "/sys/module/amdgpu/version"
 	AMDNodesSysfsDir      = "/sys/class/kfd/kfd/topology/nodes/"
 	GPUPropertiesFileGlob = AMDNodesSysfsDir + "*/properties"
-
-	// Prefix with the node dir
-	GPUTotalMemoryFileGlob = "mem_banks/*/properties" // size_in_bytes line
-
-	// Direct Rendering Manager sysfs location
-	DRMDeviceDirGlob   = "/sys/class/drm/card*/device"
+	GPUTotalMemoryFileGlob = "mem_banksdevice"
 	DRMTotalMemoryFile = "mem_info_vram_total"
 	DRMUsedMemoryFile  = "mem_info_vram_used"
-
-	// In hex; properties file is in decimal
 	DRMUniqueIDFile = "unique_id"
 	DRMVendorFile   = "vendor"
 	DRMDeviceFile   = "device"
 )
-
 var (
-	// Used to validate if the given ROCm lib is usable
-	ROCmLibGlobs          = []string{"libhipblas.so.2*", "rocblas"} // TODO - probably include more coverage of files here...
+	ROCmLibGlobs          = []string{"libhipblas.so.2*", "rocblas"} 
 	RocmStandardLocations = []string{"/opt/rocm/lib", "/usr/lib64"}
 )
-
-// Gather GPU information from the amdgpu driver if any supported GPUs are detected
-// Only called once during bootstrap
 func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 	resp := []RocmGPUInfo{}
 	if !AMDDetected() {
 		return resp, fmt.Errorf("AMD GPUs not detected")
 	}
-
-	// Opportunistic logging of driver version to aid in troubleshooting
 	driverMajor, driverMinor, err := AMDDriverVersion()
 	if err != nil {
-		// TODO - if we see users crash and burn with the upstreamed kernel this can be adjusted to hard-fail rocm support and fallback to CPU
-		slog.Warn("ollama recommends running the https://www.amd.com/en/support/download/linux-drivers.html", "error", err)
+		slog.Warn("ollama recommends running the https:
 	}
-
-	// Determine if the user has already pre-selected which GPUs to look at, then ignore the others
 	var visibleDevices []string
-	hipVD := envconfig.HipVisibleDevices()   // zero based index only
-	rocrVD := envconfig.RocrVisibleDevices() // zero based index or UUID
-	gpuDO := envconfig.GpuDeviceOrdinal()    // zero based index
+	hipVD := envconfig.HipVisibleDevices()   
+	rocrVD := envconfig.RocrVisibleDevices() 
+	gpuDO := envconfig.GpuDeviceOrdinal()    
 	switch {
 	case rocrVD != "":
 		visibleDevices = strings.Split(rocrVD, ",")
@@ -74,16 +52,11 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 	case gpuDO != "":
 		visibleDevices = strings.Split(gpuDO, ",")
 	}
-
 	gfxOverride := envconfig.HsaOverrideGfxVersion()
 	var supported []string
 	var libDir string
-
-	// The amdgpu driver always exposes the host CPU(s) first, but we have to skip them and subtract
-	// from the other IDs to get alignment with the HIP libraries expectations (zero is the first GPU, not the CPU)
 	matches, _ := filepath.Glob(GPUPropertiesFileGlob)
 	sort.Slice(matches, func(i, j int) bool {
-		// /sys/class/kfd/kfd/topology/nodes/<number>/properties
 		a, err := strconv.ParseInt(filepath.Base(filepath.Dir(matches[i])), 10, 64)
 		if err != nil {
 			slog.Debug("parse err", "error", err, "match", matches[i])
@@ -105,27 +78,21 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 			continue
 		}
 		defer fp.Close()
-
 		scanner := bufio.NewScanner(fp)
 		isCPU := false
 		var major, minor, patch uint64
 		var vendor, device, uniqueID uint64
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
-			// Note: we could also use "cpu_cores_count X" where X is greater than zero to detect CPUs
 			if strings.HasPrefix(line, "gfx_target_version") {
 				ver := strings.Fields(line)
-
-				// Detect CPUs
 				if len(ver) == 2 && ver[1] == "0" {
 					slog.Debug("detected CPU " + match)
 					isCPU = true
 					break
 				}
-
 				if len(ver) != 2 || len(ver[1]) < 5 {
 					slog.Warn("malformed "+match, "gfx_target_version", line)
-					// If this winds up being a CPU, our offsets may be wrong
 					continue
 				}
 				l := len(ver[1])
@@ -168,30 +135,16 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 					slog.Debug("malformed", "unique_id", line, "error", err)
 				}
 			}
-			// TODO - any other properties we want to extract and record?
-			// vendor_id + device_id -> pci lookup for "Name"
-			// Other metrics that may help us understand relative performance between multiple GPUs
 		}
-
-		// Note: while ./mem_banks/*/used_memory exists, it doesn't appear to take other VRAM consumers
-		// into consideration, so we instead map the device over to the DRM driver sysfs nodes which
-		// do reliably report VRAM usage.
-
 		if isCPU {
 			continue
 		}
-
-		// Skip over any GPUs that are masked
 		if major == 0 && minor == 0 && patch == 0 {
 			slog.Debug("skipping gpu with gfx000")
 			continue
 		}
-
-		// Keep track of numeric IDs based on valid GPUs
 		gpuID := gpuCount
 		gpuCount += 1
-
-		// Look up the memory for the current node
 		totalMemory := uint64(0)
 		usedMemory := uint64(0)
 		var usedFile string
@@ -201,16 +154,14 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 		}{
 			{vendor, DRMVendorFile},
 			{device, DRMDeviceFile},
-			{uniqueID, DRMUniqueIDFile}, // Not all devices will report this
+			{uniqueID, DRMUniqueIDFile}, 
 		}
 		slog.Debug("mapping amdgpu to drm sysfs nodes", "amdgpu", match, "vendor", vendor, "device", device, "unique_id", uniqueID)
-		// Map over to DRM location to find the total/free memory
 		drmMatches, _ := filepath.Glob(DRMDeviceDirGlob)
 		for _, devDir := range drmMatches {
 			matched := true
 			for _, m := range mapping {
 				if m.id == 0 {
-					// Null ID means it didn't populate, so we can't use it to match
 					continue
 				}
 				filename := filepath.Join(devDir, m.filename)
@@ -220,7 +171,6 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 					matched = false
 					break
 				}
-				// values here are in hex, strip off the lead 0x and parse so we can compare the numeric (decimal) values in amdgpu
 				cmp, err := strconv.ParseUint(strings.TrimPrefix(strings.TrimSpace(string(buf)), "0x"), 16, 64)
 				if err != nil {
 					slog.Debug("failed to parse sysfs node", "file", filename, "error", err)
@@ -235,8 +185,6 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 			if !matched {
 				continue
 			}
-
-			// Found the matching DRM directory
 			slog.Debug("matched", "amdgpu", match, "drm", devDir)
 			totalFile := filepath.Join(devDir, DRMTotalMemoryFile)
 			buf, err := os.ReadFile(totalFile)
@@ -249,7 +197,6 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 				slog.Debug("failed to parse sysfs node", "file", totalFile, "error", err)
 				break
 			}
-
 			usedFile = filepath.Join(devDir, DRMUsedMemoryFile)
 			usedMemory, err = getFreeMemory(usedFile)
 			if err != nil {
@@ -257,21 +204,16 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 			}
 			break
 		}
-
 		var name string
-		// TODO - PCI ID lookup
 		if vendor > 0 && device > 0 {
 			name = fmt.Sprintf("%04x:%04x", vendor, device)
 		}
-
-		// Favor UUIDs if available to reduce possibility of getting the numeric IDs wrong
 		var ID string
 		if uniqueID != 0 {
 			ID = fmt.Sprintf("GPU-%016x", uniqueID)
 		} else {
 			ID = strconv.Itoa(gpuID)
 		}
-
 		gpuInfo := RocmGPUInfo{
 			GpuInfo: GpuInfo{
 				Library: "rocm",
@@ -289,8 +231,6 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 			usedFilepath: usedFile,
 			index:        gpuID,
 		}
-
-		// iGPU detection, remove this check once we can support an iGPU variant of the rocm library
 		if totalMemory < IGPUMemLimit {
 			reason := "unsupported Radeon iGPU detected skipping"
 			slog.Info(reason, "id", gpuID, "total", format.HumanBytes2(totalMemory))
@@ -311,14 +251,10 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 				GpuInfo: gpuInfo.GpuInfo,
 				Reason:  reason,
 			})
-
 			continue
 		}
-
 		slog.Debug("amdgpu memory", "gpu", gpuID, "total", format.HumanBytes2(totalMemory))
 		slog.Debug("amdgpu memory", "gpu", gpuID, "available", format.HumanBytes2(totalMemory-usedMemory))
-
-		// If the user wants to filter to a subset of devices, filter out if we aren't a match
 		if len(visibleDevices) > 0 {
 			include := false
 			for _, visible := range visibleDevices {
@@ -334,13 +270,9 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 					GpuInfo: gpuInfo.GpuInfo,
 					Reason:  reason,
 				})
-
 				continue
 			}
 		}
-
-		// Final validation is gfx compatibility - load the library if we haven't already loaded it
-		// even if the user overrides, we still need to validate the library
 		if libDir == "" {
 			libDir, err = AMDValidateLibDir()
 			if err != nil {
@@ -354,9 +286,7 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 			}
 		}
 		gpuInfo.DependencyPath = []string{libDir}
-
 		if gfxOverride == "" {
-			// Only load supported list once
 			if len(supported) == 0 {
 				supported, err = GetSupportedGFX(libDir)
 				if err != nil {
@@ -378,9 +308,7 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 					GpuInfo: gpuInfo.GpuInfo,
 					Reason:  reason,
 				})
-
-				// TODO - consider discrete markdown just for ROCM troubleshooting?
-				slog.Warn("See https://github.com/EchoCog/echollama/blob/main/docs/gpu.md#overrides for HSA_OVERRIDE_GFX_VERSION usage")
+				slog.Warn("See https:
 				continue
 			} else {
 				slog.Info("amdgpu is supported", "gpu", gpuInfo.ID, "gpu_type", gfx)
@@ -388,13 +316,9 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 		} else {
 			slog.Info("skipping rocm gfx compatibility check", "HSA_OVERRIDE_GFX_VERSION", gfxOverride)
 		}
-
-		// Check for env var workarounds
-		if name == "1002:687f" { // Vega RX 56
+		if name == "1002:687f" { 
 			gpuInfo.EnvWorkarounds = append(gpuInfo.EnvWorkarounds, [2]string{"HSA_ENABLE_SDMA", "0"})
 		}
-
-		// The GPU has passed all the verification steps and is supported
 		resp = append(resp, gpuInfo)
 	}
 	if len(resp) == 0 {
@@ -409,10 +333,7 @@ func AMDGetGPUInfo() ([]RocmGPUInfo, error) {
 	}
 	return resp, nil
 }
-
-// Quick check for AMD driver so we can skip amdgpu discovery if not present
 func AMDDetected() bool {
-	// Some driver versions (older?) don't have a version file, so just lookup the parent dir
 	sysfsDir := filepath.Dir(DriverVersionFile)
 	_, err := os.Stat(sysfsDir)
 	if errors.Is(err, os.ErrNotExist) {
@@ -424,26 +345,18 @@ func AMDDetected() bool {
 	}
 	return true
 }
-
-// Prefer to use host installed ROCm, as long as it meets our minimum requirements
-// failing that, tell the user how to download it on their own
 func AMDValidateLibDir() (string, error) {
 	libDir, err := commonAMDValidateLibDir()
 	if err == nil {
 		return libDir, nil
 	}
-
-	// Well known ollama installer path
 	installedRocmDir := "/usr/share/ollama/lib/rocm"
 	if rocmLibUsable(installedRocmDir) {
 		return installedRocmDir, nil
 	}
-
-	// If we still haven't found a usable rocm, the user will have to install it on their own
-	slog.Warn("amdgpu detected, but no compatible rocm library found.  Either install rocm v6, or follow manual install instructions at https://github.com/EchoCog/echollama/blob/main/docs/linux.md#manual-install")
+	slog.Warn("amdgpu detected, but no compatible rocm library found.  Either install rocm v6, or follow manual install instructions at https:
 	return "", errors.New("no suitable rocm found, falling back to CPU")
 }
-
 func AMDDriverVersion() (driverMajor, driverMinor int, err error) {
 	_, err = os.Stat(DriverVersionFile)
 	if err != nil {
@@ -458,7 +371,6 @@ func AMDDriverVersion() (driverMajor, driverMinor int, err error) {
 	if err != nil {
 		return 0, 0, err
 	}
-
 	pattern := `\A(\d+)\.(\d+).*`
 	regex := regexp.MustCompile(pattern)
 	match := regex.FindStringSubmatch(string(verString))
@@ -475,7 +387,6 @@ func AMDDriverVersion() (driverMajor, driverMinor int, err error) {
 	}
 	return driverMajor, driverMinor, nil
 }
-
 func (gpus RocmGPUInfoList) RefreshFreeMemory() error {
 	if len(gpus) == 0 {
 		return nil
@@ -490,7 +401,6 @@ func (gpus RocmGPUInfoList) RefreshFreeMemory() error {
 	}
 	return nil
 }
-
 func getFreeMemory(usedFile string) (uint64, error) {
 	buf, err := os.ReadFile(usedFile)
 	if err != nil {
@@ -503,15 +413,12 @@ func getFreeMemory(usedFile string) (uint64, error) {
 	}
 	return usedMemory, nil
 }
-
 func verifyKFDDriverAccess() error {
-	// Verify we have permissions - either running as root, or we have group access to the driver
 	fd, err := os.OpenFile("/dev/kfd", os.O_RDWR, 0o666)
 	if err != nil {
 		if errors.Is(err, fs.ErrPermission) {
 			return fmt.Errorf("permissions not set up properly.  Either run ollama as root, or add you user account to the render group. %w", err)
 		} else if errors.Is(err, fs.ErrNotExist) {
-			// Container runtime failure?
 			return fmt.Errorf("kfd driver not loaded.  If running in a container, remember to include '--device /dev/kfd --device /dev/dri'")
 		}
 		return fmt.Errorf("failed to check permission on /dev/kfd: %w", err)
@@ -519,20 +426,14 @@ func verifyKFDDriverAccess() error {
 	fd.Close()
 	return nil
 }
-
 func rocmGetVisibleDevicesEnv(gpuInfo []GpuInfo) (string, string) {
 	ids := []string{}
 	for _, info := range gpuInfo {
 		if info.Library != "rocm" {
-			// TODO shouldn't happen if things are wired correctly...
 			slog.Debug("rocmGetVisibleDevicesEnv skipping over non-rocm device", "library", info.Library)
 			continue
 		}
 		ids = append(ids, info.ID)
 	}
-	// There are 3 potential env vars to use to select GPUs.
-	// ROCR_VISIBLE_DEVICES supports UUID or numeric so is our preferred on linux
-	// GPU_DEVICE_ORDINAL supports numeric IDs only
-	// HIP_VISIBLE_DEVICES supports numeric IDs only
 	return "ROCR_VISIBLE_DEVICES", strings.Join(ids, ",")
 }

@@ -1,20 +1,3 @@
-; =============================================================================
-; IntensionalSimilarityEvaluationRule
-;
-; AndLink
-;   AttractionLink
-;       C
-;       A
-;   AttractionLink
-;       C
-;       B
-; |-
-; IntensionalSimilarityLink
-;   A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define intensional-similarity-evaluation-rule
     (BindLink
         (VariableList
@@ -40,11 +23,9 @@
                 (AttractionLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (intensional-similarity-evaluation-formula AB CA CB)
     (cog-set-tv!
         AB (intensional-similarity-evaluation-side-effect-free-formula AB CA CB)))
-
 (define (intensional-similarity-evaluation-side-effect-free-formula AB CA CB)
     (let 
         ((sCA (cog-mean CA))
@@ -58,8 +39,6 @@
                 (and (>= sCA 0.5) (>= sCB 0.5))
                 (stv 1 1)
                 (stv 0 1)))))
-
-; Name the rule
 (define intensional-similarity-evaluation-rule-name
   (DefinedSchemaNode "intensional-similarity-evaluation-rule"))
 (DefineLink

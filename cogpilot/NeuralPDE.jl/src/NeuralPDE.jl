@@ -1,5 +1,4 @@
 module NeuralPDE
-
 using ADTypes: ADTypes, AutoForwardDiff, AutoZygote
 using Adapt: Adapt
 using ArrayInterface: ArrayInterface
@@ -28,70 +27,54 @@ using RecursiveArrayTools: DiffEqArray
 using Reexport: @reexport
 using RuntimeGeneratedFunctions: RuntimeGeneratedFunctions, @RuntimeGeneratedFunction
 using SciMLBase: SciMLBase, BatchIntegralFunction, IntegralProblem, NoiseProblem,
-                 OptimizationFunction, OptimizationProblem, ReturnCode, discretize,
-                 isinplace, solve, symbolic_discretize, ODEProblem, ODESolution
+OptimizationFunction, OptimizationProblem, ReturnCode, discretize,
+isinplace, solve, symbolic_discretize, ODEProblem, ODESolution
 using Statistics: Statistics, mean
 using QuasiMonteCarlo: QuasiMonteCarlo, LatinHypercubeSample
 using WeightInitializers: glorot_uniform, zeros32
 using Zygote: Zygote
-
 # Symbolic Stuff
 using ModelingToolkit: ModelingToolkit, PDESystem, Differential, toexpr
 using Symbolics: Symbolics, unwrap, arguments, operation, build_expr, Num,
-                 expand_derivatives
+expand_derivatives
 using SymbolicUtils: SymbolicUtils
 using SymbolicIndexingInterface: SymbolicIndexingInterface
-
 # Needed for the Bayesian Stuff
 using AdvancedHMC: AdvancedHMC, DiagEuclideanMetric, HMC, HMCDA, Hamiltonian,
-                   JitteredLeapfrog, Leapfrog, MassMatrixAdaptor, NUTS, StanHMCAdaptor,
-                   StepSizeAdaptor, TemperedLeapfrog, find_good_stepsize
+JitteredLeapfrog, Leapfrog, MassMatrixAdaptor, NUTS, StanHMCAdaptor,
+StepSizeAdaptor, TemperedLeapfrog, find_good_stepsize
 using Distributions: Distributions, Distribution, MvNormal, Normal, dim, logpdf
 using LogDensityProblems: LogDensityProblems
 using MCMCChains: MCMCChains, Chains, sample
 using MonteCarloMeasurements: Particles
-
 import LuxCore: initialparameters, initialstates, parameterlength
-
 @reexport using SciMLBase, ModelingToolkit
-
 RuntimeGeneratedFunctions.init(@__MODULE__)
-
 abstract type AbstractPINN end
-
 abstract type AbstractTrainingStrategy end
-
 const cdev = CPUDevice()
-
 @inline safe_get_device(x) = safe_get_device(get_device(x), x)
 @inline safe_get_device(::Nothing, x) = cdev
 @inline safe_get_device(dev, _) = dev
-
 @inline safe_expand(dev, x) = dev(x)
 @inline safe_expand(::CPUDevice, x::AbstractRange) = x
 @inline safe_collect(dev, x::AbstractRange) = dev(collect(x))
-
 include("eltype_matching.jl")
-
 include("pinn_types.jl")
 include("symbolic_utilities.jl")
 include("training_strategies.jl")
 include("adaptive_losses.jl")
-
 include("ode_solve.jl")
 include("dae_solve.jl")
 include("pino_ode_solve.jl")
 include("transform_inf_integral.jl")
 include("discretize.jl")
-
 include("neural_adapter.jl")
 include("advancedHMC_MCMC.jl")
 include("BPINN_ode.jl")
 include("PDE_BPINN.jl")
-
 include("dgm.jl")
 include("NN_SDE_solve.jl")
-
 export PINOODE
 export NNODE, NNDAE
 export BNNODE, ahmc_bayesian_pinn_ode, ahmc_bayesian_pinn_pde
@@ -99,19 +82,13 @@ export NNSDE
 export PhysicsInformedNN, discretize
 export BPINNsolution, BayesianPINN
 export DeepGalerkin
-
 export neural_adapter
-
 export GridTraining, StochasticTraining, QuadratureTraining, QuasiRandomTraining,
-       WeightedIntervalTraining
-
+WeightedIntervalTraining
 export build_loss_function, get_loss_function,
-       generate_training_sets, get_variables, get_argument, get_bounds,
-       get_numeric_integral, symbolic_discretize, vector_to_parameters
-
+generate_training_sets, get_variables, get_argument, get_bounds,
+get_numeric_integral, symbolic_discretize, vector_to_parameters
 export AbstractAdaptiveLoss, NonAdaptiveLoss, GradientScaleAdaptiveLoss,
-       MiniMaxAdaptiveLoss
-
+MiniMaxAdaptiveLoss
 export LogOptions
-
 end # module

@@ -22,7 +22,6 @@ import {withCliCommandDescriptionDocsUrl} from "../utils/withCliCommandDescripti
 import {documentationPageUrls} from "../../config.js";
 import {ConsoleInteraction, ConsoleInteractionKey} from "../utils/ConsoleInteraction.js";
 import {DraftSequenceTokenPredictor} from "../../evaluator/LlamaContext/tokenPredictors/DraftSequenceTokenPredictor.js";
-
 type CompleteCommand = {
     modelPath?: string,
     header?: string[],
@@ -56,7 +55,6 @@ type CompleteCommand = {
     noMmap: boolean,
     printTimings: boolean
 };
-
 export const CompleteCommand: CommandModule<object, CompleteCommand> = {
     command: "complete [modelPath]",
     describe: withCliCommandDescriptionDocsUrl(
@@ -78,13 +76,10 @@ export const CompleteCommand: CommandModule<object, CompleteCommand> = {
             })
             .option("gpu", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: nodeLlamaCppGpuOptions as any as Exclude<typeof nodeLlamaCppGpuOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return undefined;
-
                     return parseNodeLlamaCppGpuOption(value);
                 },
                 defaultDescription: "Uses the latest local build, and fallbacks to \"auto\"",
@@ -222,13 +217,10 @@ export const CompleteCommand: CommandModule<object, CompleteCommand> = {
             })
             .option("numa", {
                 type: "string",
-
-                // yargs types don't support passing `false` as a choice, although it is supported by yargs
                 choices: llamaNumaOptions as any as Exclude<typeof llamaNumaOptions[number], false>[],
                 coerce: (value) => {
                     if (value == null || value == "")
                         return false;
-
                     return parseNumaOption(value);
                 },
                 defaultDescription: "false",
@@ -271,14 +263,12 @@ export const CompleteCommand: CommandModule<object, CompleteCommand> = {
                 tokenPredictionDraftModel, tokenPredictionModelContextSize, debug, numa, meter, timing, noMmap, printTimings
             });
         } catch (err) {
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+            await new Promise((accept) => setTimeout(accept, 0)); 
             console.error(err);
             process.exit(1);
         }
     }
 };
-
-
 async function RunCompletion({
     modelPath: modelArg, header: headerArg, gpu, systemInfo, text, textFile, contextSize, batchSize, flashAttention, swaFullCache,
     threads, temperature, minP, topK, topP, seed, gpuLayers,
@@ -287,12 +277,9 @@ async function RunCompletion({
 }: CompleteCommand) {
     if (contextSize === -1) contextSize = undefined;
     if (gpuLayers === -1) gpuLayers = undefined;
-
     const headers = resolveHeaderFlag(headerArg);
-
     if (debug)
         console.info(`${chalk.yellow("Log level:")} debug`);
-
     const llamaLogLevel = debug
         ? LlamaLogLevel.debug
         : LlamaLogLevel.warn;
@@ -308,7 +295,6 @@ async function RunCompletion({
         });
     const logBatchSize = batchSize != null;
     const useMmap = !noMmap && llama.supportsMmap;
-
     const resolvedModelPath = await resolveCommandGgufPath(modelArg, llama, headers, {
         flashAttention,
         swaFullCache,
@@ -322,22 +308,17 @@ async function RunCompletion({
             consoleTitle: "Draft model file"
         })
         : undefined;
-
     if (systemInfo)
         console.log(llama.systemInfo);
-
     if (textFile != null && textFile !== "") {
         if (text != null && text !== "")
             console.warn(chalk.yellow("Both `text` and `textFile` were specified. `textFile` will be used."));
-
         text = await fs.readFile(path.resolve(process.cwd(), textFile), "utf8");
     }
-
     if (batchSize != null && contextSize != null && batchSize > contextSize) {
         console.warn(chalk.yellow("Batch size is greater than the context size. Batch size will be set to the context size."));
         batchSize = contextSize;
     }
-
     let initialText = text ?? null;
     const model = await withProgressLog({
         loadingText: chalk.blue.bold("Loading model"),
@@ -367,11 +348,10 @@ async function RunCompletion({
         } catch (err) {
             if (err === progressUpdater.abortSignal?.reason)
                 process.exit(0);
-
             throw err;
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
@@ -400,16 +380,14 @@ async function RunCompletion({
             } catch (err) {
                 if (err === progressUpdater.abortSignal?.reason)
                     process.exit(0);
-
                 throw err;
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
         });
-
     const draftContext = draftModel == null
         ? undefined
         : await withOra({
@@ -424,7 +402,7 @@ async function RunCompletion({
                 });
             } finally {
                 if (llama.logLevel === LlamaLogLevel.debug) {
-                    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                    await new Promise((accept) => setTimeout(accept, 0)); 
                     console.info();
                 }
             }
@@ -445,12 +423,11 @@ async function RunCompletion({
             });
         } finally {
             if (llama.logLevel === LlamaLogLevel.debug) {
-                await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
+                await new Promise((accept) => setTimeout(accept, 0)); 
                 console.info();
             }
         }
     });
-
     const draftContextSequence = draftContext?.getSequence();
     const contextSequence = draftContextSequence != null
         ? context.getSequence({
@@ -463,9 +440,7 @@ async function RunCompletion({
     let lastDraftTokenMeterState = draftContextSequence?.tokenMeter.getState();
     let lastTokenMeterState = contextSequence.tokenMeter.getState();
     let lastTokenPredictionsStats = contextSequence.tokenPredictions;
-
-    await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+    await new Promise((accept) => setTimeout(accept, 0)); 
     const padTitle = await printCommonInfoLines({
         context,
         draftContext,
@@ -498,50 +473,37 @@ async function RunCompletion({
             value: "enabled"
         }]
     });
-
-    // this is for ora to not interfere with readline
     await new Promise((resolve) => setTimeout(resolve, 1));
-
     const replHistory: string[] = [];
-
     async function getPrompt() {
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
             history: replHistory.slice()
         });
-
         const res: string = await new Promise((accept) => rl.question(chalk.yellow("> "), accept));
         rl.close();
-
         return res;
     }
-
     while (true) {
         const input = initialText != null
             ? initialText
             : await getPrompt();
-
         if (initialText != null) {
             console.log(chalk.green("> ") + initialText);
             initialText = null;
         } else
             await replHistory.push(input);
-
         if (input === ".exit")
             break;
-
         process.stdout.write(chalk.yellow("Completion: "));
-
         const [startColor, endColor] = chalk.blue("MIDDLE").split("MIDDLE");
-
         const abortController = new AbortController();
         const consoleInteraction = new ConsoleInteraction();
         consoleInteraction.onKey(ConsoleInteractionKey.ctrlC, async () => {
             abortController.abort();
             consoleInteraction.stop();
         });
-
         const timeBeforePrompt = Date.now();
         try {
             process.stdout.write(startColor!);
@@ -574,26 +536,20 @@ async function RunCompletion({
                 throw err;
         } finally {
             consoleInteraction.stop();
-
             if (abortController.signal.aborted)
                 process.stdout.write(endColor! + chalk.yellow("[generation aborted by user]"));
             else
                 process.stdout.write(endColor!);
-
             console.log();
         }
         const timeAfterPrompt = Date.now();
-
         if (printTimings) {
             if (LlamaLogLevelGreaterThan(llama.logLevel, LlamaLogLevel.info))
                 llama.logLevel = LlamaLogLevel.info;
-
             await context.printTimings();
-            await new Promise((accept) => setTimeout(accept, 0)); // wait for logs to finish printing
-
+            await new Promise((accept) => setTimeout(accept, 0)); 
             llama.logLevel = llamaLogLevel;
         }
-
         if (timing)
             console.info(
                 chalk.dim("Response duration: ") +
@@ -604,21 +560,17 @@ async function RunCompletion({
                     compact: false
                 })
             );
-
         if (meter) {
             const newTokenMeterState = contextSequence.tokenMeter.getState();
             const tokenMeterDiff = TokenMeter.diff(newTokenMeterState, lastTokenMeterState);
             lastTokenMeterState = newTokenMeterState;
-
             const showDraftTokenMeterDiff = lastDraftTokenMeterState != null && draftContextSequence != null;
-
             const tokenPredictionsStats = contextSequence.tokenPredictions;
             const validatedTokenPredictions = tokenPredictionsStats.validated - lastTokenPredictionsStats.validated;
             const refutedTokenPredictions = tokenPredictionsStats.refuted - lastTokenPredictionsStats.refuted;
             const usedTokenPredictions = tokenPredictionsStats.used - lastTokenPredictionsStats.used;
             const unusedTokenPredictions = tokenPredictionsStats.unused - lastTokenPredictionsStats.unused;
             lastTokenPredictionsStats = tokenPredictionsStats;
-
             console.info([
                 showDraftTokenMeterDiff && (
                     chalk.yellow("Main".padEnd("Drafter".length))
@@ -638,12 +590,10 @@ async function RunCompletion({
                     chalk.dim("Unused predictions:") + " " + String(unusedTokenPredictions).padEnd(5, " ")
                 )
             ].filter(Boolean).join("  "));
-
             if (lastDraftTokenMeterState != null && draftContextSequence != null) {
                 const newDraftTokenMeterState = draftContextSequence.tokenMeter.getState();
                 const draftTokenMeterDiff = TokenMeter.diff(newDraftTokenMeterState, lastDraftTokenMeterState);
                 lastDraftTokenMeterState = newDraftTokenMeterState;
-
                 console.info([
                     chalk.yellow("Drafter"),
                     chalk.dim("Input tokens:") + " " + String(draftTokenMeterDiff.usedInputTokens).padEnd(5, " "),

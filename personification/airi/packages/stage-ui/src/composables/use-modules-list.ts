@@ -1,6 +1,5 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-
 import { useBeatSyncStore } from '../stores/beat-sync'
 import { useConsciousnessStore } from '../stores/modules/consciousness'
 import { useDiscordStore } from '../stores/modules/discord'
@@ -8,7 +7,6 @@ import { useFactorioStore } from '../stores/modules/gaming-factorio'
 import { useMinecraftStore } from '../stores/modules/gaming-minecraft'
 import { useSpeechStore } from '../stores/modules/speech'
 import { useTwitterStore } from '../stores/modules/twitter'
-
 export interface Module {
   id: string
   name: string
@@ -20,11 +18,8 @@ export interface Module {
   configured: boolean
   category: string
 }
-
 export function useModulesList() {
   const { t } = useI18n()
-
-  // Initialize stores
   const consciousnessStore = useConsciousnessStore()
   const speechStore = useSpeechStore()
   const discordStore = useDiscordStore()
@@ -32,7 +27,6 @@ export function useModulesList() {
   const minecraftStore = useMinecraftStore()
   const factorioStore = useFactorioStore()
   const beatSyncStore = useBeatSyncStore()
-
   const modulesList = computed<Module[]>(() => [
     {
       id: 'consciousness',
@@ -142,7 +136,6 @@ export function useModulesList() {
       category: 'essential',
     },
   ])
-
   const categorizedModules = computed(() => {
     return modulesList.value.reduce((categories, module) => {
       const { category } = module
@@ -153,14 +146,11 @@ export function useModulesList() {
       return categories
     }, {} as Record<string, Module[]>)
   })
-
-  // Define category display names
   const categoryNames = computed(() => ({
     essential: t('settings.pages.modules.categories.essential'),
     messaging: t('settings.pages.modules.categories.messaging'),
     gaming: t('settings.pages.modules.categories.gaming'),
   }))
-
   return {
     modulesList,
     categorizedModules,

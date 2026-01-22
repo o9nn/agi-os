@@ -1,6 +1,5 @@
 import type { Card } from '../define'
 import type { CharacterCardV3 } from './types/character_card_v3'
-
 export const exportToJSON = (data: Card): CharacterCardV3 => ({
   data: {
     alternate_greetings: data.greetings?.slice(1) ?? [],
@@ -8,7 +7,7 @@ export const exportToJSON = (data: Card): CharacterCardV3 => ({
     creator: data.creator ?? '',
     creator_notes: data.notes ?? '',
     creator_notes_multilingual: data.notesMultilingual,
-    description: data.description ?? '', // TODO: improve description // FIXME: important
+    description: data.description ?? '', 
     extensions: {
       depth_prompt: {
         depth: 4,
@@ -28,11 +27,11 @@ export const exportToJSON = (data: Card): CharacterCardV3 => ({
       : '',
     name: data.name,
     nickname: data.nickname,
-    personality: '', // TODO: add personality
-    post_history_instructions: '', // TODO: add post_history_instructions
-    scenario: '', // TODO: add scenario
-    system_prompt: '', // TODO: add system_prompt
-    tags: [], // TODO: add tags
+    personality: '', 
+    post_history_instructions: '', 
+    scenario: '', 
+    system_prompt: '', 
+    tags: [], 
   },
   spec: 'chara_card_v3',
   spec_version: '3.0',

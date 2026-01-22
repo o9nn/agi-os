@@ -1,19 +1,13 @@
 import type { Bot } from 'mineflayer'
 import type { Block } from 'prismarine-block'
-
 import type { Mineflayer } from '../../libs/mineflayer'
-
 import pathfinder from 'mineflayer-pathfinder'
-
 import { sleep } from '@moeru/std'
 import { Vec3 } from 'vec3'
-
 import { useLogger } from '../../utils/logger'
 import { getNearestBlock, makeItem } from '../../utils/mcdata'
 import { goToPosition } from '../movement'
-
 const logger = useLogger()
-
 export async function placeBlock(
   mineflayer: Mineflayer,
   blockType: string,
@@ -22,37 +16,27 @@ export async function placeBlock(
   z: number,
   placeOn: string = 'bottom',
 ): Promise<boolean> {
-  // if (!gameData.getBlockId(blockType)) {
-  //   logger.log(`Invalid block type: ${blockType}.`);
-  //   return false;
-  // }
-
   const targetDest = new Vec3(Math.floor(x), Math.floor(y), Math.floor(z))
-
   let block = mineflayer.bot.inventory
     .items()
     .find(item => item.name.includes(blockType))
   if (!block && mineflayer.bot.game.gameMode === 'creative') {
-    // TODO: Rework
-    await mineflayer.bot.creative.setInventorySlot(36, makeItem(blockType, 1)) // 36 is first hotbar slot
+    await mineflayer.bot.creative.setInventorySlot(36, makeItem(blockType, 1)) 
     block = mineflayer.bot.inventory.items().find(item => item.name.includes(blockType))
   }
   if (!block) {
     logger.log(`Don't have any ${blockType} to place.`)
     return false
   }
-
   const targetBlock = mineflayer.bot.blockAt(targetDest)
   if (!targetBlock) {
     logger.log(`No block found at ${targetDest}.`)
     return false
   }
-
   if (targetBlock.name === blockType) {
     logger.log(`${blockType} already at ${targetBlock.position}.`)
     return false
   }
-
   const emptyBlocks = [
     'air',
     'water',
@@ -74,10 +58,8 @@ export async function placeBlock(
       )
       return false
     }
-    await new Promise(resolve => setTimeout(resolve, 200)) // Wait for block to break
+    await new Promise(resolve => setTimeout(resolve, 200)) 
   }
-
-  // Determine the build-off block and face vector
   const dirMap: { [key: string]: Vec3 } = {
     top: new Vec3(0, 1, 0),
     bottom: new Vec3(0, -1, 0),
@@ -86,7 +68,6 @@ export async function placeBlock(
     east: new Vec3(1, 0, 0),
     west: new Vec3(-1, 0, 0),
   }
-
   const dirs: Vec3[] = []
   if (placeOn === 'side') {
     dirs.push(dirMap.north, dirMap.south, dirMap.east, dirMap.west)
@@ -98,30 +79,23 @@ export async function placeBlock(
     dirs.push(dirMap.bottom)
     logger.log(`Unknown placeOn value "${placeOn}". Defaulting to bottom.`)
   }
-
-  // Add remaining directions
   dirs.push(...Object.values(dirMap).filter(d => !dirs.includes(d)))
-
   let buildOffBlock: Block | null = null
   let faceVec: Vec3 | null = null
-
   for (const d of dirs) {
     const adjacentBlock = mineflayer.bot.blockAt(targetDest.plus(d))
     if (adjacentBlock && !emptyBlocks.includes(adjacentBlock.name)) {
       buildOffBlock = adjacentBlock
-      faceVec = d.scaled(-1) // Invert direction
+      faceVec = d.scaled(-1) 
       break
     }
   }
-
   if (!buildOffBlock || !faceVec) {
     logger.log(
       `Cannot place ${blockType} at ${targetBlock.position}: nothing to place on.`,
     )
     return false
   }
-
-  // Move away if too close
   const pos = mineflayer.bot.entity.position
   const posAbove = pos.offset(0, 1, 0)
   const dontMoveFor = [
@@ -151,11 +125,8 @@ export async function placeBlock(
         2,
       ),
     )
-    // bot.pathfinder.setMovements(new pf.Movements(bot));
     await mineflayer.bot.pathfinder.goto(goal)
   }
-
-  // Move closer if too far
   if (mineflayer.bot.entity.position.distanceTo(targetBlock.position) > 4.5) {
     await goToPosition(
       mineflayer,
@@ -165,11 +136,9 @@ export async function placeBlock(
       4,
     )
   }
-
   await mineflayer.bot.equip(block, 'hand')
   await mineflayer.bot.lookAt(buildOffBlock.position)
   await sleep(500)
-
   try {
     await mineflayer.bot.placeBlock(buildOffBlock, faceVec)
     logger.log(`Placed ${blockType} at ${targetDest}.`)
@@ -190,7 +159,6 @@ export async function placeBlock(
     return false
   }
 }
-
 export async function breakBlockAt(
   mineflayer: Mineflayer,
   x: number,
@@ -222,7 +190,7 @@ export async function breakBlockAt(
       logger.log(`Cannot break ${block.name} at ${blockPos}.`)
       return false
     }
-    await mineflayer.bot.lookAt(block.position, true) // Ensure the bot has finished turning
+    await mineflayer.bot.lookAt(block.position, true) 
     await sleep(500)
     try {
       await mineflayer.bot.dig(block, true)
@@ -247,16 +215,7 @@ export async function breakBlockAt(
     return false
   }
 }
-
 export async function activateNearestBlock(mineflayer: Mineflayer, type: string) {
-  /**
-   * Activate the nearest block of the given type.
-   * @param {string} type, the type of block to activate.
-   * @returns {Promise<boolean>} true if the block was activated, false otherwise.
-   * @example
-   * await skills.activateNearestBlock( "lever");
-   *
-   */
   const block = getNearestBlock(mineflayer.bot, type, 16)
   if (!block) {
     logger.log(`Could not find any ${type} to activate.`)
@@ -264,7 +223,6 @@ export async function activateNearestBlock(mineflayer: Mineflayer, type: string)
   }
   if (mineflayer.bot.entity.position.distanceTo(block.position) > 4.5) {
     const pos = block.position
-    // bot.pathfinder.setMovements(new pf.Movements(bot));
     await mineflayer.bot.pathfinder.goto(new pathfinder.goals.GoalNear(pos.x, pos.y, pos.z, 4))
   }
   await mineflayer.bot.activateBlock(block)
@@ -275,7 +233,6 @@ export async function activateNearestBlock(mineflayer: Mineflayer, type: string)
   )
   return true
 }
-
 export async function tillAndSow(
   mineflayer: Mineflayer,
   x: number,
@@ -305,7 +262,6 @@ export async function tillAndSow(
     logger.log(`Cannot till, there is ${above.name} above the block.`)
     return false
   }
-  // Move closer if too far
   if (mineflayer.bot.entity.position.distanceTo(block.position) > 4.5) {
     await goToPosition(mineflayer, x, y, z, 4)
   }
@@ -321,10 +277,9 @@ export async function tillAndSow(
       `Tilled block x:${x.toFixed(1)}, y:${y.toFixed(1)}, z:${z.toFixed(1)}.`,
     )
   }
-
   if (seedType) {
     if (seedType.endsWith('seed') && !seedType.endsWith('seeds'))
-      seedType += 's' // Fixes common mistake
+      seedType += 's' 
     const seeds = mineflayer.bot.inventory
       .items()
       .find(item => item.name.includes(seedType || 'seed'))
@@ -342,7 +297,6 @@ export async function tillAndSow(
   }
   return true
 }
-
 export async function pickupNearbyItems(
   mineflayer: Mineflayer,
   distance = 8,
@@ -355,10 +309,8 @@ export async function pickupNearbyItems(
         && bot.entity.position.distanceTo(entity.position) < distance,
     )
   let nearestItem = getNearestItem(mineflayer.bot)
-
   let pickedUp = 0
   while (nearestItem) {
-    // bot.pathfinder.setMovements(new pf.Movements(bot));
     await mineflayer.bot.pathfinder.goto(
       new pathfinder.goals.GoalFollow(nearestItem, 0.8),
       () => {},

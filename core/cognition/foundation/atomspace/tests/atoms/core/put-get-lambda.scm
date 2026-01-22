@@ -1,6 +1,5 @@
 (Inheritance (Concept "B") (Concept "Parent"))
 (Inheritance (Concept "C") (Concept "Parent"))
-
 (define put-get-lambda
  (PutLink
   (LambdaLink
@@ -12,7 +11,6 @@
      (ConceptNode "A"))))
   (GetLink
    (Inheritance (Variable "$X") (Concept "Parent")))))
-
 (define expected-put-get-lambda
  (SetLink
   (EvaluationLink

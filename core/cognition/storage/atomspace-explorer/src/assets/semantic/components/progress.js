@@ -1,24 +1,11 @@
-/*!
- * # Semantic UI 2.2.10 - Progress
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 window = (typeof window != 'undefined' && window.Math == Math)
   ? window
   : (typeof self != 'undefined' && self.Math == Math)
     ? self
     : Function('return this')()
 ;
-
 var
   global = (typeof window != 'undefined' && window.Math == Math)
     ? window
@@ -26,66 +13,49 @@ var
       ? self
       : Function('return this')()
 ;
-
 $.fn.progress = function(parameters) {
   var
     $allModules    = $(this),
-
     moduleSelector = $allModules.selector || '',
-
     time           = new Date().getTime(),
     performance    = [],
-
     query          = arguments[0],
     methodInvoked  = (typeof query == 'string'),
     queryArguments = [].slice.call(arguments, 1),
-
     returnedValue
   ;
-
   $allModules
     .each(function() {
       var
         settings          = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.progress.settings, parameters)
           : $.extend({}, $.fn.progress.settings),
-
         className       = settings.className,
         metadata        = settings.metadata,
         namespace       = settings.namespace,
         selector        = settings.selector,
         error           = settings.error,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
         $module         = $(this),
         $bar            = $(this).find(selector.bar),
         $progress       = $(this).find(selector.progress),
         $label          = $(this).find(selector.label),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
-
         animating = false,
         transitionEnd,
         module
       ;
-
       module = {
-
         initialize: function() {
           module.debug('Initializing progress bar', settings);
-
           module.set.duration();
           module.set.transitionEvent();
-
           module.read.metadata();
           module.read.settings();
-
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of progress', module);
           instance = module;
@@ -100,19 +70,16 @@ $.fn.progress = function(parameters) {
           $module.removeData(moduleNamespace);
           instance = undefined;
         },
-
         reset: function() {
           module.remove.nextValue();
           module.update.progress(0);
         },
-
         complete: function() {
           if(module.percent === undefined || module.percent < 100) {
             module.remove.progressPoll();
             module.set.percent(100);
           }
         },
-
         read: {
           metadata: function() {
             var
@@ -152,7 +119,6 @@ $.fn.progress = function(parameters) {
             }
           }
         },
-
         bind: {
           transitionEnd: function(callback) {
             var
@@ -170,7 +136,6 @@ $.fn.progress = function(parameters) {
             module.verbose('Adding fail safe timer', module.timer);
           }
         },
-
         increment: function(incrementValue) {
           var
             maxValue,
@@ -185,7 +150,6 @@ $.fn.progress = function(parameters) {
           else {
             startValue     = module.get.percent();
             incrementValue = incrementValue || module.get.randomValue();
-
             newValue       = startValue + incrementValue;
             maxValue       = 100;
             module.debug('Incrementing percentage by', startValue, newValue);
@@ -214,7 +178,6 @@ $.fn.progress = function(parameters) {
           newValue = module.get.normalizedValue(newValue);
           module.set.progress(newValue);
         },
-
         has: {
           progressPoll: function() {
             return module.progressPoll;
@@ -223,7 +186,6 @@ $.fn.progress = function(parameters) {
             return (module.get.total() !== false);
           }
         },
-
         get: {
           text: function(templateText) {
             var
@@ -246,7 +208,6 @@ $.fn.progress = function(parameters) {
             module.verbose('Adding variables to progress bar text', templateText);
             return templateText;
           },
-
           normalizedValue: function(value) {
             if(value < 0) {
               module.debug('Value cannot decrement below 0');
@@ -264,19 +225,16 @@ $.fn.progress = function(parameters) {
             }
             return value;
           },
-
           updateInterval: function() {
             if(settings.updateInterval == 'auto') {
               return settings.duration;
             }
             return settings.updateInterval;
           },
-
           randomValue: function() {
             module.debug('Generating random increment percentage');
             return Math.floor((Math.random() * settings.random.max) + settings.random.min);
           },
-
           numericValue: function(value) {
             return (typeof value === 'string')
               ? (value.replace(/[^\d.]/g, '') !== '')
@@ -285,7 +243,6 @@ $.fn.progress = function(parameters) {
               : value
             ;
           },
-
           transitionEnd: function() {
             var
               element     = document.createElement('element'),
@@ -303,8 +260,6 @@ $.fn.progress = function(parameters) {
               }
             }
           },
-
-          // gets current displayed percentage (if animating values this is the intermediary value)
           displayPercent: function() {
             var
               barWidth       = $bar.width(),
@@ -319,7 +274,6 @@ $.fn.progress = function(parameters) {
               : Math.round(displayPercent)
             ;
           },
-
           percent: function() {
             return module.percent || 0;
           },
@@ -330,7 +284,6 @@ $.fn.progress = function(parameters) {
             return module.total || false;
           }
         },
-
         create: {
           progressPoll: function() {
             module.progressPoll = setTimeout(function() {
@@ -339,7 +292,6 @@ $.fn.progress = function(parameters) {
             }, module.get.updateInterval());
           },
         },
-
         is: {
           complete: function() {
             return module.is.success() || module.is.warning() || module.is.error();
@@ -360,7 +312,6 @@ $.fn.progress = function(parameters) {
             return $module.is(':visible');
           }
         },
-
         remove: {
           progressPoll: function() {
             module.verbose('Removing progress poll timer');
@@ -396,7 +347,6 @@ $.fn.progress = function(parameters) {
             $module.removeClass(className.error);
           }
         },
-
         set: {
           barWidth: function(value) {
             if(value > 100) {
@@ -432,7 +382,6 @@ $.fn.progress = function(parameters) {
               ? +(percent.replace('%', ''))
               : percent
             ;
-            // round display percentage
             percent = (settings.precision > 0)
               ? Math.round(percent * (10 * settings.precision)) / (10 * settings.precision)
               : Math.round(percent)
@@ -624,7 +573,6 @@ $.fn.progress = function(parameters) {
             module.nextValue = value;
           }
         },
-
         update: {
           toNextValue: function() {
             var
@@ -658,7 +606,6 @@ $.fn.progress = function(parameters) {
             }
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -821,7 +768,6 @@ $.fn.progress = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -836,47 +782,34 @@ $.fn.progress = function(parameters) {
       }
     })
   ;
-
   return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
 };
-
 $.fn.progress.settings = {
-
   name         : 'Progress',
   namespace    : 'progress',
-
   silent       : false,
   debug        : false,
   verbose      : false,
   performance  : true,
-
   random       : {
     min : 2,
     max : 5
   },
-
   duration       : 300,
-
   updateInterval : 'auto',
-
   autoSuccess    : true,
   showActivity   : true,
   limitValues    : true,
-
   label          : 'percent',
   precision      : 0,
-  framerate      : (1000 / 30), /// 30 fps
-
+  framerate      : (1000 / 30), 
   percent        : false,
   total          : false,
   value          : false,
-
-  // delay in ms for fail safe animation callback
   failSafeDelay : 100,
-
   onLabelUpdate : function(state, text, value, total){
     return text;
   },
@@ -885,30 +818,25 @@ $.fn.progress.settings = {
   onActive      : function(value, total){},
   onError       : function(value, total){},
   onWarning     : function(value, total){},
-
   error    : {
     method     : 'The method you called is not defined.',
     nonNumeric : 'Progress value is non numeric',
     tooHigh    : 'Value specified is above 100%',
     tooLow     : 'Value specified is below 0%'
   },
-
   regExp: {
     variable: /\{\$*[A-z0-9]+\}/g
   },
-
   metadata: {
     percent : 'percent',
     total   : 'total',
     value   : 'value'
   },
-
   selector : {
     bar      : '> .bar',
     label    : '> .label',
     progress : '.bar > .progress'
   },
-
   text : {
     active  : false,
     error   : false,
@@ -917,15 +845,11 @@ $.fn.progress.settings = {
     percent : '{percent}%',
     ratio   : '{value} of {total}'
   },
-
   className : {
     active  : 'active',
     error   : 'error',
     success : 'success',
     warning : 'warning'
   }
-
 };
-
-
 })( jQuery, window, document );

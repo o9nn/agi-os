@@ -1,29 +1,11 @@
 #!/usr/bin/env bash
-
 set -e
-
-# @describe Utils for declarations json file
-
-# @cmd Pretty print declarations
-#
-# Examples:
-#   ./scripts/declarations.sh pretty-print functions.json
-#   cat functions.json | ./scripts/declarations.sh pretty-print functions.json
-# @flag --no-type Do not to display param type info
-# @arg json-file The json file, Read stdin if omitted
 pretty-print() {
     _run _pretty_print
 }
-
-# @cmd Generate placeholder json according to declarations
-# Examples:
-#   ./scripts/declarations.sh generate-json functions.json
-#   cat functions.json | ./scripts/declarations.sh generate-json functions.json
-# @arg json-file The json file, Read stdin if omitted
 generate-json() {
     _run _generate_json
 }
-
 _run() {
     func="$1"
     _get_declarations_data
@@ -35,7 +17,6 @@ _run() {
         done
     fi
 }
-
 _get_declarations_data() {
     if [[ -f "$argc_json_file" ]]; then
         json_data="$(cat "$argc_json_file")"
@@ -56,7 +37,7 @@ end
     if [[ "$json_type" == *object* ]]; then
         :;
     elif [[ "$json_type" == *array* ]]; then
-        json_array_len="${json_type#*;}"
+        json_array_len="${json_type
         json_type="${json_type%%;*}"
         if [[ ! "$json_array_len" -gt 0 ]]; then
             json_type=""
@@ -67,7 +48,6 @@ end
         exit 1
     fi
 }
-
 _pretty_print() {
     jq --arg no_type "$argc_no_type" -r '
 def get_type:
@@ -81,35 +61,28 @@ def get_type:
         { condition: true, result: $type }
     ] | map(select(.condition) | .result) | first) as $kind |
     if $kind != "" then "(\($kind))\($symbol)" else $symbol end;
-
 def oneline_description: split("\n")[0];
-
 def parse_property:
     .key as $key |
     (.value.description | oneline_description) as $description |
     (if $no_type != "1" then (. | get_type) else "" end) as $type |
     "  \($key)\($type): \($description)";
-
 def print_params:
     .parameters | 
     .required as $requiredProperties |
     .properties | to_entries[] | 
     .key as $key | .+ { "required": ($requiredProperties | index($key) != null) } |
     parse_property;
-
 def print_title:
     (.description | oneline_description) as $description |
     "\(.name): \($description)";
-
 print_title, print_params
 '
 }
-
 _generate_json() {
     jq -r -c '
 def convert_string:
     if has("enum") then .enum[0] else "foo" end;
-
 def parse_property:
     .key as $key |
     .value.type as $type |
@@ -120,7 +93,6 @@ def parse_property:
         { condition: ($type == "number"), result: { $key: 3.14 }},
         { condition: ($type == "array"), result: { $key: [ "v1" ] } }
     ] | map(select(.condition) | .result) | first;
-
 .name,
 (
     .parameters |
@@ -130,6 +102,4 @@ def parse_property:
 )
 '
 }
-
-# See more details at https://github.com/sigoden/argc
 eval "$(argc --argc-eval "$0" "$@")"

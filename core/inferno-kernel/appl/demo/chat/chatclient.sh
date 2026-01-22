@@ -2,9 +2,7 @@
 load std
 autoload=std
 ndb/cs
-
 chatroom=$1
-
 fn ck {
 	or {$*} {
 		echo chatclient: exiting >[1=2]
@@ -12,7 +10,6 @@ fn ck {
 	}
 }
 user="{cat /dev/user}
-
 ck mount -A 'tcp!$registry!registry' /mnt/registry
 ck /dis/grid/remotelogon wm/wm {
 	k = /usr/$user/keyring/default

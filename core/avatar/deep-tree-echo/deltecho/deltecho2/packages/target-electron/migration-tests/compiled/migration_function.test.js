@@ -16,15 +16,9 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-
-// ../../node_modules/.pnpm/stackframe@1.3.4/node_modules/stackframe/stackframe.js
 var require_stackframe = __commonJS({
   "../../node_modules/.pnpm/stackframe@1.3.4/node_modules/stackframe/stackframe.js"(exports, module) {
     (function(root, factory) {
@@ -125,7 +119,7 @@ var require_stackframe = __commonJS({
       };
       for (var i = 0; i < booleanProps.length; i++) {
         StackFrame.prototype["get" + _capitalize(booleanProps[i])] = _getter(booleanProps[i]);
-        StackFrame.prototype["set" + _capitalize(booleanProps[i])] = /* @__PURE__ */ function(p) {
+        StackFrame.prototype["set" + _capitalize(booleanProps[i])] =  function(p) {
           return function(v) {
             this[p] = Boolean(v);
           };
@@ -133,7 +127,7 @@ var require_stackframe = __commonJS({
       }
       for (var j = 0; j < numericProps.length; j++) {
         StackFrame.prototype["get" + _capitalize(numericProps[j])] = _getter(numericProps[j]);
-        StackFrame.prototype["set" + _capitalize(numericProps[j])] = /* @__PURE__ */ function(p) {
+        StackFrame.prototype["set" + _capitalize(numericProps[j])] =  function(p) {
           return function(v) {
             if (!_isNumber(v)) {
               throw new TypeError(p + " must be a Number");
@@ -144,7 +138,7 @@ var require_stackframe = __commonJS({
       }
       for (var k = 0; k < stringProps.length; k++) {
         StackFrame.prototype["get" + _capitalize(stringProps[k])] = _getter(stringProps[k]);
-        StackFrame.prototype["set" + _capitalize(stringProps[k])] = /* @__PURE__ */ function(p) {
+        StackFrame.prototype["set" + _capitalize(stringProps[k])] =  function(p) {
           return function(v) {
             this[p] = String(v);
           };
@@ -154,8 +148,6 @@ var require_stackframe = __commonJS({
     });
   }
 });
-
-// ../../node_modules/.pnpm/error-stack-parser@2.1.4/node_modules/error-stack-parser/error-stack-parser.js
 var require_error_stack_parser = __commonJS({
   "../../node_modules/.pnpm/error-stack-parser@2.1.4/node_modules/error-stack-parser/error-stack-parser.js"(exports, module) {
     (function(root, factory) {
@@ -173,12 +165,6 @@ var require_error_stack_parser = __commonJS({
       var CHROME_IE_STACK_REGEXP = /^\s*at .*(\S+:\d+|\(native\))/m;
       var SAFARI_NATIVE_CODE_REGEXP = /^(eval@)?(\[native code])?$/;
       return {
-        /**
-         * Given an Error object, extract the most information from it.
-         *
-         * @param {Error} error object
-         * @return {Array} of StackFrames
-         */
         parse: function ErrorStackParser$$parse(error) {
           if (typeof error.stacktrace !== "undefined" || typeof error["opera#sourceloc"] !== "undefined") {
             return this.parseOpera(error);
@@ -190,7 +176,6 @@ var require_error_stack_parser = __commonJS({
             throw new Error("Cannot parse given Error object");
           }
         },
-        // Separate line and column numbers from a string of the form: (URI:Line:Column)
         extractLocation: function ErrorStackParser$$extractLocation(urlLike) {
           if (urlLike.indexOf(":") === -1) {
             return [urlLike];
@@ -293,7 +278,6 @@ var require_error_stack_parser = __commonJS({
           }
           return result;
         },
-        // Opera 10.65+ Error.stack very similar to FF/Safari
         parseOpera11: function ErrorStackParser$$parseOpera11(error) {
           var filtered = error.stack.split("\n").filter(function(line) {
             return !!line.match(FIREFOX_SAFARI_STACK_REGEXP) && !line.match(/^Error created at/);
@@ -322,8 +306,6 @@ var require_error_stack_parser = __commonJS({
     });
   }
 });
-
-// migration-tests/migration_function.test.ts
 import { describe } from "mocha";
 import { expect } from "chai";
 import { existsSync as existsSync2, mkdtempSync } from "fs";
@@ -332,8 +314,6 @@ import { fileURLToPath } from "url";
 import AdmZip from "adm-zip";
 import { tmpdir } from "os";
 import { readdir as readdir2 } from "fs/promises";
-
-// src/deltachat/migration.ts
 import { startDeltaChat } from "@deltachat/stdio-rpc-server";
 import { existsSync, lstatSync } from "fs";
 import { join } from "path";
@@ -466,8 +446,6 @@ async function migrateAccountsIfNeeded(cwd, log3, treatFailedMigrationAsError = 
     throw err;
   }
 }
-
-// ../shared/logger.ts
 var import_error_stack_parser = __toESM(require_error_stack_parser(), 1);
 var startTime = Date.now();
 var colorize = (light, code) => (str) => "\x1B[" + light + ";" + code + "m" + str + "\x1B[0m";
@@ -481,31 +459,31 @@ var emojiFontCss = 'font-family: Roboto, "Apple Color Emoji", NotoEmoji, "Helvet
 var LoggerVariants = [
   {
     log: console.debug,
-    level: "DEBUG" /* DEBUG */,
+    level: "DEBUG" ,
     emoji: "\u{1F578}\uFE0F",
     symbol: "[D]"
   },
   {
     log: console.info,
-    level: "INFO" /* INFO */,
+    level: "INFO" ,
     emoji: "\u2139\uFE0F",
     symbol: blue("[i]")
   },
   {
     log: console.warn,
-    level: "WARNING" /* WARNING */,
+    level: "WARNING" ,
     emoji: "\u26A0\uFE0F",
     symbol: yellow("[w]")
   },
   {
     log: console.error,
-    level: "ERROR" /* ERROR */,
+    level: "ERROR" ,
     emoji: "\u{1F6A8}",
     symbol: red("[E]")
   },
   {
     log: console.error,
-    level: "CRITICAL" /* CRITICAL */,
+    level: "CRITICAL" ,
     emoji: "\u{1F6A8}\u{1F6A8}",
     symbol: red("[C]")
   }
@@ -553,7 +531,6 @@ ${s.toString()}`).join() : stacktrace
 var Logger = class {
   constructor(channel) {
     this.channel = channel;
-    //@ts-ignore
     this.isMainProcess = typeof window === "undefined";
     if (channel === "core/event") {
       this.getStackTrace = () => "";
@@ -581,7 +558,6 @@ ${s.toString()}`).join();
   error(...args) {
     log(this, 3, this.getStackTrace(), args);
   }
-  /** use this when you know that the stacktrace is not relevant */
   errorWithoutStackTrace(...args) {
     log(this, 3, [], args);
   }
@@ -604,8 +580,6 @@ if (!("toJSON" in Error.prototype))
     configurable: true,
     writable: true
   });
-
-// migration-tests/migration_function.test.ts
 import { startDeltaChat as startDeltaChat2 } from "@deltachat/stdio-rpc-server";
 var __dirname = dirname(fileURLToPath(import.meta.url));
 var log2 = getLogger("test");
@@ -672,4 +646,3 @@ describe("/electron/main/account-migration", async () => {
     });
   }
 });
-//# sourceMappingURL=migration_function.test.js.map

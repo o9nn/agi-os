@@ -1,11 +1,8 @@
 import type { PartialDeep } from 'type-fest/source/partial-deep'
-
 import { parse } from 'best-effort-json-parser'
-
 export const toElementStream = <T>(stream: ReadableStream<string>): ReadableStream<T> => {
   let partialObjectData = ''
   let index = 0
-
   return stream.pipeThrough(new TransformStream<string, T>({
     flush: (controller) => {
       const data = parse(partialObjectData) as PartialDeep<T>

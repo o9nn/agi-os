@@ -1,5 +1,3 @@
-// This needs to be injected / imported before the frontend script
-
 import {
   AutostartState,
   DcNotification,
@@ -11,39 +9,31 @@ import {
   Theme,
 } from '@deltachat-desktop/shared/shared-types.js'
 import '@deltachat-desktop/shared/global.d.ts'
-
 import {
   MediaAccessStatus,
   MediaType,
   Runtime,
 } from '@deltachat-desktop/runtime-interface'
 import { BaseDeltaChat, yerpc } from '@deltachat/jsonrpc-client'
-
 import type { dialog, app, IpcRenderer, webUtils } from 'electron'
 import type { LocaleData } from '@deltachat-desktop/shared/localize.js'
 import type { getLogger as getLoggerFunction } from '@deltachat-desktop/shared/logger.js'
 import type { setLogHandler as setLogHandlerFunction } from '@deltachat-desktop/shared/logger.js'
-
 const {
   app_getPath,
   ipcRenderer: ipcBackend,
   getPathForFile,
 } = (window as any).get_electron_functions() as {
-  // see static/preload.js
   ipcRenderer: IpcRenderer
   app_getPath: typeof app.getPath
   getPathForFile: typeof webUtils.getPathForFile
 }
-
 const { BaseTransport } = yerpc
-
 let logJsonrpcConnection = false
-
 const idToRequestMap = new Map<
   yerpc.Message['id'],
   { message: yerpc.Message; sentAt: number }
 >()
-
 class ElectronTransport extends BaseTransport {
   constructor(private callCounterFunction: (label: string) => void) {
     super()
@@ -53,26 +43,18 @@ class ElectronTransport extends BaseTransport {
         const responseAt = performance.now()
         const request = idToRequestMap.get(message.id)
         idToRequestMap.delete(message.id)
-
         const duration =
           request != undefined
             ? (responseAt - request.sentAt).toFixed(3)
             : undefined
-
         let requestToLog = undefined
         const responseToLog = { ...message }
         delete responseToLog.jsonrpc
         if (request != undefined) {
           delete responseToLog.id
-
           requestToLog = { ...request.message }
           delete requestToLog.jsonrpc
-          // Let's keep the ID so that the respective console log
-          // for the "request sent" can be found.
-          // delete requestToLog.id
         }
-
-        /* ignore-console-log */
         console.debug(
           '%c▼ %c[JSONRPC]',
           'color: red',
@@ -94,13 +76,9 @@ class ElectronTransport extends BaseTransport {
     if (logJsonrpcConnection) {
       const sentAt = performance.now()
       idToRequestMap.set(message.id, { message, sentAt })
-      // Just in case we don't receive the response within 60 seconds,
-      // to avoid a memory leak.
       setTimeout(() => {
         idToRequestMap.delete(message.id)
       }, 60000)
-
-      /* ignore-console-log */
       console.debug('%c▲ %c[JSONRPC]', 'color: green', 'color:grey', message)
       if ((message as any)['method']) {
         this.callCounterFunction((message as any).method)
@@ -109,16 +87,13 @@ class ElectronTransport extends BaseTransport {
     }
   }
 }
-
 class ElectronDeltachat extends BaseDeltaChat<ElectronTransport> {
   close() {
-    /** noop */
   }
   constructor(callCounterFunction: (label: string) => void) {
     super(new ElectronTransport(callCounterFunction), true)
   }
 }
-
 class ElectronRuntime implements Runtime {
   onResumeFromSleep: (() => void) | undefined
   onWebxdcSendToChat:
@@ -137,7 +112,7 @@ class ElectronRuntime implements Runtime {
   }
   isDroppedFileFromOutside(file: File): boolean {
     const path = getPathForFile(file)
-    const forbiddenPathRegEx = /DeltaChat\/.+?\.sqlite-blobs\//gi
+    const forbiddenPathRegEx = /DeltaChat\/.+?\.sqlite-blobs\
     return !forbiddenPathRegEx.test(path.replace('\\', '/'))
   }
   onThemeUpdate: (() => void) | undefined
@@ -177,7 +152,6 @@ class ElectronRuntime implements Runtime {
   notifyWebxdcStatusUpdate(accountId: number, instanceId: number): void {
     ipcBackend.invoke('webxdc:status-update', accountId, instanceId)
   }
-
   notifyWebxdcRealtimeData(
     accountId: number,
     instanceId: number,
@@ -185,7 +159,6 @@ class ElectronRuntime implements Runtime {
   ): void {
     ipcBackend.invoke('webxdc:realtime-data', accountId, instanceId, payload)
   }
-
   notifyWebxdcMessageChanged(accountId: number, instanceId: number): void {
     ipcBackend.invoke('webxdc:message-changed', accountId, instanceId)
   }
@@ -244,7 +217,6 @@ class ElectronRuntime implements Runtime {
   removeTempFile(path: string): Promise<void> {
     return ipcBackend.invoke('app.removeTempFile', path)
   }
-
   private notificationCallback: (data: {
     accountId: number
     chatId: number
@@ -320,29 +292,18 @@ class ElectronRuntime implements Runtime {
     }
     const path_components = blob.replace(/\\/g, '/').split('/')
     const filename2 = path_components[path_components.length - 1]
-
     if (decodeURIComponent(filename2) === filename2) {
-      // if it is not already encoded then encode it.
       return blob.replace(filename2, encodeURIComponent(filename2))
     } else {
       return blob
     }
   }
   transformStickerURL(sticker_path: string): string {
-    /**
-     * Some entities that are valid path parts but would be decoded by the browser (like %, #, ? ) etc.
-     * so we need to be encode them before passing the path to the browser:
-     * a path like "folder%20name/file" would be decoded to "folder name/file"
-     *
-     * Since Window paths have backslashes these will be encoded to %5C but since the browser on windows
-     * does not decode them back we have to decode those before passing the path to the browser
-     */
     const a = encodeURI(`file://${sticker_path}`)
     return a
-      .replace(/[?#]/g, encodeURIComponent) // special case # and ? are not encoded by encodeURI but "ignored" in URLs
-      .replace(/%5C/g, decodeURIComponent) // restore encoded backslashes (for Windows)
+      .replace(/[?#]/g, encodeURIComponent) 
+      .replace(/%5C/g, decodeURIComponent) 
   }
-
   async showOpenFileDialog(
     options: RuntimeOpenDialogOptions
   ): Promise<string[]> {
@@ -374,32 +335,22 @@ class ElectronRuntime implements Runtime {
     }
     return this.runtime_info
   }
-
   private log!: ReturnType<typeof getLoggerFunction>
-  // we need to get them from outside,
-  // because its a different bundle otherwise we would create a disconnected instance of the logging system
   initialize(
     setLogHandler: typeof setLogHandlerFunction,
     getLogger: typeof getLoggerFunction
   ): Promise<void> {
     this.log = getLogger('runtime/electron')
-
-    // fetch vars
     const config = (this.rc_config = ipcBackend.sendSync('get-rc-config'))
     this.runtime_info = ipcBackend.sendSync('get-runtime-info')
-
     if (config['log-debug']) {
       logJsonrpcConnection = true
     }
-
-    // set log handler
     setLogHandler((...args: any[]) => {
       ipcBackend.send(
         'handleLogMessage',
         ...args.map(arg => {
-          // filter args to be make sure electron doesn't give an object clone error (Error: An object could not be cloned)
           if (typeof arg === 'object') {
-            // make sure objects are clean of unsupported types
             return JSON.parse(JSON.stringify(arg))
           } else if (typeof arg === 'function') {
             return arg.toString()
@@ -434,7 +385,6 @@ class ElectronRuntime implements Runtime {
       ) => this.onWebxdcSendToChat?.(file, text, account)
     )
     ipcBackend.on('onResumeFromSleep', () => this.onResumeFromSleep?.())
-
     return Promise.resolve()
   }
   openHelpWindow(anchor?: string): void {
@@ -453,7 +403,6 @@ class ElectronRuntime implements Runtime {
     return ipcBackend.sendSync('get-config-path')
   }
   getAutostartState(): Promise<AutostartState> {
-    // TODO - see https://github.com/deltachat/deltachat-desktop/issues/2518
     return Promise.resolve({
       isSupported: false,
       isRegistered: false,
@@ -462,10 +411,8 @@ class ElectronRuntime implements Runtime {
   checkMediaAccess(mediaType: MediaType): Promise<MediaAccessStatus> {
     return ipcBackend.invoke('checkMediaAccess', mediaType)
   }
-  // undefined is returned if the platform does not support askForMediaAccess
   askForMediaAccess(mediaType: MediaType): Promise<boolean | undefined> {
     return ipcBackend.invoke('askForMediaAccess', mediaType)
   }
 }
-
 ;(window as any).r = new ElectronRuntime()

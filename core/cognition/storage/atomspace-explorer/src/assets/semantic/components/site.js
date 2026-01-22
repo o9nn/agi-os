@@ -1,48 +1,29 @@
-/*!
- * # Semantic UI 2.2.10 - Site
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 $.site = $.fn.site = function(parameters) {
   var
     time           = new Date().getTime(),
     performance    = [],
-
     query          = arguments[0],
     methodInvoked  = (typeof query == 'string'),
     queryArguments = [].slice.call(arguments, 1),
-
     settings        = ( $.isPlainObject(parameters) )
       ? $.extend(true, {}, $.site.settings, parameters)
       : $.extend({}, $.site.settings),
-
     namespace       = settings.namespace,
     error           = settings.error,
-
     eventNamespace  = '.' + namespace,
     moduleNamespace = 'module-' + namespace,
-
     $document       = $(document),
     $module         = $document,
     element         = this,
     instance        = $module.data(moduleNamespace),
-
     module,
     returnedValue
   ;
   module = {
-
     initialize: function() {
       module.instantiate();
     },
-
     instantiate: function() {
       module.verbose('Storing instance of site', module);
       instance = module;
@@ -50,12 +31,10 @@ $.site = $.fn.site = function(parameters) {
         .data(moduleNamespace, module)
       ;
     },
-
     normalize: function() {
       module.fix.console();
       module.fix.requestAnimationFrame();
     },
-
     fix: {
       console: function() {
         module.debug('Normalizing window.console');
@@ -91,11 +70,9 @@ $.site = $.fn.site = function(parameters) {
         }
       }
     },
-
     moduleExists: function(name) {
       return ($.fn[name] !== undefined && $.fn[name].settings !== undefined);
     },
-
     enabled: {
       modules: function(modules) {
         var
@@ -110,7 +87,6 @@ $.site = $.fn.site = function(parameters) {
         return enabledModules;
       }
     },
-
     disabled: {
       modules: function(modules) {
         var
@@ -125,7 +101,6 @@ $.site = $.fn.site = function(parameters) {
         return disabledModules;
       }
     },
-
     change: {
       setting: function(setting, value, modules, modifyExisting) {
         modules = (typeof modules === 'string')
@@ -185,7 +160,6 @@ $.site = $.fn.site = function(parameters) {
         });
       }
     },
-
     enable: {
       console: function() {
         module.console(true);
@@ -216,7 +190,6 @@ $.site = $.fn.site = function(parameters) {
         module.change.setting('verbose', false, modules, modifyExisting);
       }
     },
-
     console: function(enable) {
       if(enable) {
         if(instance.cache.console === undefined) {
@@ -242,16 +215,13 @@ $.site = $.fn.site = function(parameters) {
         };
       }
     },
-
     destroy: function() {
       module.verbose('Destroying previous site for', $module);
       $module
         .removeData(moduleNamespace)
       ;
     },
-
     cache: {},
-
     setting: function(name, value) {
       if( $.isPlainObject(name) ) {
         $.extend(true, settings, name);
@@ -403,7 +373,6 @@ $.site = $.fn.site = function(parameters) {
       return found;
     }
   };
-
   if(methodInvoked) {
     if(instance === undefined) {
       module.initialize();
@@ -421,21 +390,16 @@ $.site = $.fn.site = function(parameters) {
     : this
   ;
 };
-
 $.site.settings = {
-
   name        : 'Site',
   namespace   : 'site',
-
   error : {
     console : 'Console cannot be restored, most likely it was overwritten outside of module',
     method : 'The method you called is not defined.'
   },
-
   debug       : false,
   verbose     : false,
   performance : true,
-
   modules: [
     'accordion',
     'api',
@@ -457,7 +421,6 @@ $.site.settings = {
     'visit',
     'visibility'
   ],
-
   siteNamespace   : 'site',
   namespaceStub   : {
     cache     : {},
@@ -466,10 +429,7 @@ $.site.settings = {
     section   : {},
     utilities : {}
   }
-
 };
-
-// allows for selection of elements with data attributes
 $.extend($.expr[ ":" ], {
   data: ($.expr.createPseudo)
     ? $.expr.createPseudo(function(dataName) {
@@ -478,10 +438,7 @@ $.extend($.expr[ ":" ], {
         };
       })
     : function(elem, i, match) {
-      // support: jQuery < 1.8
       return !!$.data(elem, match[ 3 ]);
     }
 });
-
-
 })( jQuery, window, document );

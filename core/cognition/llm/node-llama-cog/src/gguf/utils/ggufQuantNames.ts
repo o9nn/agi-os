@@ -1,5 +1,4 @@
 import {GgufFileType} from "../types/GgufMetadataTypes.js";
-
 export const ggufQuantNames = new Map<string, GgufFileType>([
     ["Q4_0", GgufFileType.MOSTLY_Q4_0],
     ["Q4_1", GgufFileType.MOSTLY_Q4_1],

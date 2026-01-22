@@ -3,13 +3,11 @@ export interface AtomBase {
     name?: string;
     outgoing?: AtomBase[];
 }
-
 interface ValueNode {
     name?: string;
     type: string;
     value: ValueNode | Array<any> | string | number;
 }
-
 interface AtomKeyValuePair {
     key: AtomBase;
     value: ValueNode;
@@ -30,18 +28,12 @@ export enum APICommands {
     GetLinks = "GET_LINKS",
     GetTypes = "GET_TYPES",
 }
-
 export class OpenCogAPI {
     private websocket:  WebSocket;
-    //private scmWebsocket: WebSocket;
     static api: OpenCogAPI;
-
     constructor() {
-        // this.websocket = new WebSocket('ws://192.168.10.2:18080/json');
         this.websocket = new WebSocket('ws://localhost:18080/json')
-        // this.scmWebsocket = new WebSocket('ws://localhost:18080/scm')
     }
-
     static getSocket() {
         if(OpenCogAPI.api){
             return OpenCogAPI.api.websocket;
@@ -50,11 +42,9 @@ export class OpenCogAPI {
             return OpenCogAPI.api.websocket;
         }
     }
-
     private static sendMessage = (sendMessage: string) => {
         OpenCogAPI.getSocket().send(sendMessage);
     }
-
     static async sendRawString(
         consoleCallback: (newLine: string) => void,
         rawString: string
@@ -69,7 +59,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(rawString);
         });
     }
-
     static async getAllAtoms(
         consoleCallback: (newLine: string)=>void
     ): Promise<AtomBase[]> {
@@ -86,7 +75,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async makeAtom(
         consoleCallback: (newLine: string)=>void,
         newAtom: AtomBase
@@ -107,7 +95,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async addLink(
         consoleCallback: (newLine: string)=>void,
         linkType: string,
@@ -130,7 +117,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async loadAtoms(
         consoleCallback: (newLine: string)=>void,
         newAtoms: AtomBase[]
@@ -151,7 +137,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async haveAtom(
         consoleCallback: (newLine: string)=>void,
         atomToCheck: AtomBase
@@ -172,7 +157,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async haveNode(
         consoleCallback: (newLine: string)=>void,
         nodeToCheck: AtomBase
@@ -193,10 +177,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
-    //NOTE: Have link is not the same request syntax as HaveAtom or HaveNode
-    //A) The haveNode function takes an Atom object, the haveLink takes a string for the link type and array of Atoms
-    //B) The Link type needs to have the keyword 'Link' removed for the match to occur properly
     static async haveLink(
         consoleCallback: (newLine: string)=>void,
         linkToCheck: AtomBase
@@ -226,7 +206,6 @@ export class OpenCogAPI {
             }
         });
     }
-
     static async getIncoming(
         consoleCallback: (newLine:string)=>void,
         atomToQuery: AtomBase
@@ -244,7 +223,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async getValues(
         consoleCallback: (newLine:string)=>void,
         atomToQuery: AtomBase
@@ -262,7 +240,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-    
     static async setValue(
         consoleCallback: (newLine:string)=>void,
         atomToEdit: AtomBase,
@@ -286,7 +263,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async getTruthValue(
         consoleCallback: (newLine:string)=>void,
         atomToQuery: AtomBase
@@ -304,7 +280,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async setTruthValue(
         consoleCallback: (newLine:string)=>void,
         atomToEdit: AtomBase,
@@ -325,7 +300,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async executeAtom(
         consoleCallback: (newLine:string)=>void,
         executableAtom: AtomBase
@@ -343,7 +317,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async getSubTypes(
         consoleCallback: (newLine:string)=>void,
         baseType: string,
@@ -369,7 +342,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async getSupertypes(
         consoleCallback: (newLine:string)=>void,
         baseType: string,
@@ -395,7 +367,6 @@ export class OpenCogAPI {
             OpenCogAPI.sendMessage(requestString);
         });
     }
-
     static async getJsonVersion(
         consoleCallback: (newLine:string)=>void
     ): Promise<string> {
@@ -412,7 +383,6 @@ export class OpenCogAPI {
         });
     }
 }
-
 const trimTrailJson = (res: string) => {
     let trailingString = res.substring(res.length-6);
     if(trailingString.includes("json")) {
@@ -420,7 +390,6 @@ const trimTrailJson = (res: string) => {
         return res.substring(0, res.length - 6)
     }
     else {
-        //console.log("No trim")
         return res
     }
 }

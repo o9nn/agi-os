@@ -1,9 +1,7 @@
 import errorStackParser from 'error-stack-parser'
 import StackFrame from 'stackframe'
 import { RC_Config } from './shared-types.js'
-
 const startTime = Date.now()
-
 export const colorize = (light: number, code: number) => (str: string) =>
   '\x1B[' + light + ';' + code + 'm' + str + '\x1b[0m'
 export const blue = colorize(1, 34)
@@ -12,10 +10,8 @@ export const yellow = colorize(1, 33)
 export const grey = colorize(0, 37)
 export const green = colorize(1, 37)
 export const cyan = colorize(1, 36)
-
 const emojiFontCss =
   'font-family: Roboto, "Apple Color Emoji", NotoEmoji, "Helvetica Neue", Arial, Helvetica, NotoMono, sans-serif !important;'
-
 export const enum LogLevelString {
   DEBUG = 'DEBUG',
   WARNING = 'WARNING',
@@ -23,7 +19,6 @@ export const enum LogLevelString {
   ERROR = 'ERROR',
   CRITICAL = 'CRITICAL',
 }
-
 const LoggerVariants = [
   {
     log: console.debug,
@@ -56,25 +51,19 @@ const LoggerVariants = [
     symbol: red('[C]'),
   },
 ]
-
 export function printProcessLogLevelInfo() {
-  /* ignore-console-log */
   console.info(
     `%cLogging Levels:\n${LoggerVariants.map(v => `${v.emoji} ${v.level}`).join(
       '\n'
     )}`,
     emojiFontCss
   )
-  /* ignore-console-log */
   console.info(
     `# Tips and Tricks for using the search filter in the browser console:
-
 • Use space to separate search terms
 • Exclude search terms using -
 • If the search term contains spaces you should escape it with ""
-
 Examples:
-
 🕸️          only show debug messages
 -🕸️         don't show debug messages
 ℹ️          only show info messages
@@ -85,23 +74,19 @@ Examples:
 -📡         don't show any events
 [JSONRPC]   only show jsonrpc messages
 -[JSONRPC]  don't show jsonrpc messages
-
 Start deltachat with --devmode (or --log-debug and --log-to-console) argument to show full log output.
 If the log seems quiet, make sure the 'All levels' drop down has 'Verbose' checked.
   `
   )
 }
-
 export type LogHandlerFunction = (
   channel: string,
   level: LogLevelString,
   stacktrace: ReturnType<typeof getStackTrace>,
   ...args: any[]
 ) => void
-
 let handler: LogHandlerFunction
 let rc: RC_Config = {} as any
-
 export function setLogHandler(
   LogHandler: LogHandlerFunction,
   rcObject: RC_Config
@@ -109,7 +94,6 @@ export function setLogHandler(
   handler = LogHandler
   rc = rcObject
 }
-
 function log(
   { channel, isMainProcess }: Logger,
   level: number,
@@ -118,9 +102,7 @@ function log(
 ) {
   const variant = LoggerVariants[level]
   if (!handler) {
-    /* ignore-console-log */
     console.log('Failed to log message - Handler not initialized yet')
-    /* ignore-console-log */
     console.log(`Log Message: ${channel} ${level} ${args.join(' ')}`)
     throw Error('Failed to log message - Handler not initialized yet')
   }
@@ -146,7 +128,6 @@ function log(
     } else {
       const prefix = `%c${variant.emoji}%c${channel}`
       const prefixStyle = [emojiFontCss, 'color:blueviolet;']
-
       if (stacktrace) {
         variant.log(prefix, ...prefixStyle, stacktrace, ...args)
       } else {
@@ -155,7 +136,6 @@ function log(
     }
   }
 }
-
 function getStackTrace(): StackFrame[] | string {
   const rawStack: StackFrame[] = errorStackParser.parse(
     new Error('Get Stacktrace')
@@ -165,18 +145,13 @@ function getStackTrace(): StackFrame[] | string {
     ? stack
     : stack.map(s => `\n${s.toString()}`).join()
 }
-
 export class Logger {
-  //@ts-ignore
   isMainProcess = typeof window === 'undefined'
   constructor(public readonly channel: string) {
     if (channel === 'core/event') {
-      // disable js stacktrace for core events
-      // as it is useless information (always pointing to the event emitter)
       this.getStackTrace = () => ''
     }
   }
-
   private getStackTrace(): StackFrame[] | string {
     const rawStack: StackFrame[] = errorStackParser.parse(
       new Error('Get Stacktrace')
@@ -186,46 +161,34 @@ export class Logger {
       ? stack
       : stack.map(s => `\n${s.toString()}`).join()
   }
-
   debug(...args: any[]) {
     if (!rc['log-debug']) return
     log(this, 0, '', args)
   }
-
   info(...args: any[]) {
     log(this, 1, '', args)
   }
-
   warn(...args: any[]) {
     log(this, 2, this.getStackTrace(), args)
   }
-
   error(...args: any[]) {
     log(this, 3, this.getStackTrace(), args)
   }
-
-  /** use this when you know that the stacktrace is not relevant */
   errorWithoutStackTrace(...args: any[]) {
     log(this, 3, [], args)
   }
-
   critical(...args: any[]) {
     log(this, 4, this.getStackTrace(), args)
   }
 }
-
 export function getLogger(channel: string) {
   return new Logger(channel)
 }
-
-// Fix for error not being able to be converted into json
-// From https://stackoverflow.com/a/18391400
 if (!('toJSON' in Error.prototype))
   Object.defineProperty(Error.prototype, 'toJSON', {
     value: function () {
       const alt = {}
       Object.getOwnPropertyNames(this).forEach(function (key) {
-        //@ts-ignore
         alt[key] = this[key]
       }, this)
       return alt

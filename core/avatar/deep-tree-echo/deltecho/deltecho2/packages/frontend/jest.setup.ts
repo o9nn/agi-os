@@ -1,6 +1,4 @@
 import '@testing-library/jest-dom'
-
-// Set up global type definitions for testing
 declare global {
   namespace jest {
     interface Matchers<R> {
@@ -11,8 +9,6 @@ declare global {
     }
   }
 }
-
-// Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
   return {
@@ -28,14 +24,9 @@ const localStorageMock = (() => {
     }),
   }
 })()
-
 Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-
-// Mock window functions
 window.confirm = jest.fn()
 window.alert = jest.fn()
-
-// Initialize logger for tests
 jest.mock('@deltachat-desktop/shared/logger', () => ({
   getLogger: jest.fn(() => ({
     info: jest.fn(),
@@ -45,13 +36,10 @@ jest.mock('@deltachat-desktop/shared/logger', () => ({
   })),
   setLogHandler: jest.fn(),
 }))
-
-// Mock runtime interface
 jest.mock('@deltachat-desktop/runtime-interface', () => ({
   runtime: {
     createDeltaChatConnection: jest.fn(() => ({
       rpc: {
-        // Add any other RPC methods as needed
       },
     })),
     getDesktopSettings: jest.fn().mockResolvedValue({
@@ -63,7 +51,6 @@ jest.mock('@deltachat-desktop/runtime-interface', () => ({
       deepTreeEchoBotVisionEnabled: false,
       deepTreeEchoBotWebAutomationEnabled: false,
       deepTreeEchoBotEmbodimentEnabled: false,
-      // Add other required properties with defaults
       bounds: {},
       HTMLEmailWindowBounds: undefined,
       enableAVCalls: true,
@@ -91,8 +78,6 @@ jest.mock('@deltachat-desktop/runtime-interface', () => ({
     }),
   },
 }))
-
-// Reset all mocks after each test
 afterEach(() => {
   jest.clearAllMocks()
 })

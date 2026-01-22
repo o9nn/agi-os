@@ -1,10 +1,7 @@
 #pragma	varargck	argpos	warning	2
-
 void	warning(Mntdir*, char*, ...);
-
 #define	fbufalloc()	emalloc(BUFSIZE)
 #define	fbuffree(x)	free(x)
-
 void	plumblook(Plumbmsg*m);
 void	plumbshow(Plumbmsg*m);
 void	putsnarf(void);
@@ -24,7 +21,6 @@ void	clearmouse(void);
 void	allwindows(void(*)(Window*, void*), void*);
 uint loadfile(int, uint, int*, int(*)(void*, uint, Rune*, int), void*);
 void	movetodel(Window*);
-
 Window*	errorwin(Mntdir*, int);
 Window*	errorwinforwin(Window*);
 Runestr cleanrname(Runestr);
@@ -87,7 +83,6 @@ Rune*	skipbl(Rune*, int, int*);
 Rune*	findbl(Rune*, int, int*);
 char*	edittext(Window*, int, Rune*, int);
 void		flushwarnings(void);
-
 #define	runemalloc(a)		(Rune*)emalloc((a)*sizeof(Rune))
 #define	runerealloc(a, b)	(Rune*)erealloc((a), (b)*sizeof(Rune))
 #define	runemove(a, b, c)	memmove((a), (b), (c)*sizeof(Rune))

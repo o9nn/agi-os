@@ -1,8 +1,6 @@
 import { command } from 'cleye'
 import { env } from 'node:process'
-
 import { flags } from '../flags'
-
 export const serve = command({
   alias: ['s', 'server', 'start'],
   flags: {

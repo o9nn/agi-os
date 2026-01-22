@@ -1,8 +1,6 @@
 import type { BrowserWindow } from 'electron'
-
 export function createReusableWindow(setupFn: () => BrowserWindow | Promise<BrowserWindow>): { getWindow: () => Promise<BrowserWindow> } {
   let window: BrowserWindow | undefined
-
   return {
     getWindow: async () => {
       if (!window) {
@@ -13,7 +11,6 @@ export function createReusableWindow(setupFn: () => BrowserWindow | Promise<Brow
         window = await setupFn()
         return window
       }
-
       return window
     },
   }

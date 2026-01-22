@@ -1,12 +1,3 @@
-;; Use temporal deduction (specialized for cognitive schematics) to
-;; infer
-;;
-;; outside(house) ∧ exec(go_to_key) ↝ hold(key)
-;; hold(key) ∧ exec(go_to_house) ↝ inside(house)
-;; ⊢
-;; (outside(house) ∧ exec(go_to_key)) ≺ exec(go_to_house) ↝ inside(house)
-
-;; outside(house) ∧ exec(go_to_key) ↝ hold(key)
 (BackPredictiveImplicationScopeLink (stv 1 0.00990099)
   (VariableSet)
   (SLink
@@ -24,8 +15,6 @@
     (ListLink
       (ConceptNode "self")
       (ConceptNode "key"))))
-
-;; hold(key) ∧ exec(go_to_house) ↝ inside(house)
 (BackPredictiveImplicationScopeLink (stv 1 0.00621118)
   (VariableSet)
   (SLink

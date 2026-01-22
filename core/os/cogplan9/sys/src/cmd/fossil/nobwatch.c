@@ -2,38 +2,31 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-
 void
 bwatchReset(uchar score[VtScoreSize])
 {
-	USED(score);
+USED(score);
 }
-
 void
 bwatchInit(void)
 {
 }
-
 void
 bwatchSetBlockSize(uint)
 {
 }
-
 void
 bwatchDependency(Block *b)
 {
-	USED(b);
+USED(b);
 }
-
 void
 bwatchLock(Block *b)
 {
-	USED(b);
+USED(b);
 }
-
 void
 bwatchUnlock(Block *b)
 {
-	USED(b);
+USED(b);
 }
-

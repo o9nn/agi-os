@@ -1,10 +1,6 @@
 #ifndef __ARCH_I386_IOCTLS_H__
 #define __ARCH_I386_IOCTLS_H__
-
 #include <asm/ioctl.h>
-
-/* 0x54 is just a magic number to make these relatively unique ('T') */
-
 #define TCGETS		0x5401
 #define TCSETS		0x5402
 #define TCSETSW		0x5403
@@ -42,9 +38,9 @@
 #define TIOCNOTTY	0x5422
 #define TIOCSETD	0x5423
 #define TIOCGETD	0x5424
-#define TCSBRKP		0x5425	/* Needed for POSIX tcsendbreak() */
-#define TIOCTTYGSTRUCT	0x5426  /* For debugging only */
-#define FIONCLEX	0x5450  /* these numbers need to be adjusted. */
+#define TCSBRKP		0x5425
+#define TIOCTTYGSTRUCT	0x5426
+#define FIONCLEX	0x5450
 #define FIOCLEX		0x5451
 #define FIOASYNC	0x5452
 #define TIOCSERCONFIG	0x5453
@@ -52,15 +48,12 @@
 #define TIOCSERSWILD	0x5455
 #define TIOCGLCKTRMIOS	0x5456
 #define TIOCSLCKTRMIOS	0x5457
-#define TIOCSERGSTRUCT	0x5458 /* For debugging only */
-#define TIOCSERGETLSR   0x5459 /* Get line status register */
-#define TIOCSERGETMULTI 0x545A /* Get multiport config  */
-#define TIOCSERSETMULTI 0x545B /* Set multiport config */
-
-#define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
-#define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
-
-/* Used for packet mode */
+#define TIOCSERGSTRUCT	0x5458
+#define TIOCSERGETLSR   0x5459
+#define TIOCSERGETMULTI 0x545A
+#define TIOCSERSETMULTI 0x545B
+#define TIOCMIWAIT	0x545C
+#define TIOCGICOUNT	0x545D
 #define TIOCPKT_DATA		 0
 #define TIOCPKT_FLUSHREAD	 1
 #define TIOCPKT_FLUSHWRITE	 2
@@ -68,7 +61,5 @@
 #define TIOCPKT_START		 8
 #define TIOCPKT_NOSTOP		16
 #define TIOCPKT_DOSTOP		32
-
-#define TIOCSER_TEMT    0x01	/* Transmitter physically empty */
-
+#define TIOCSER_TEMT    0x01
 #endif

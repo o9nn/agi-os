@@ -1,5 +1,4 @@
 #define nil		((void*)0)
-
 typedef	unsigned short	ushort;
 typedef	unsigned char	uchar;
 typedef	unsigned long	ulong;
@@ -13,14 +12,12 @@ typedef long	jmp_buf[2];
 #define	JMPBUFSP	0
 #define	JMPBUFPC	1
 #define	JMPBUFDPC	0
-typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
+typedef unsigned int	mpdigit;
 typedef unsigned char u8int;
 typedef unsigned short u16int;
 typedef unsigned int	u32int;
 typedef unsigned long long u64int;
 typedef unsigned long uintptr;
-
-/* FCR */
 #define	FPINEX	(1<<20)
 #define	FPUNFL	(1<<19)
 #define	FPOVFL	(1<<18)
@@ -35,7 +32,6 @@ typedef unsigned long uintptr;
 #define	FPPSGL	0
 #define	FPPDBL	0
 #define	FPPMASK	0
-/* FSR */
 #define	FPAINEX	(1<<4)
 #define	FPAUNFL	(1<<3)
 #define	FPAOVFL	(1<<2)
@@ -43,23 +39,22 @@ typedef unsigned long uintptr;
 #define	FPAINVAL	(1<<0)
 union FPdbleword
 {
-	double	x;
-	struct {	/* big endian (on 7500) */
-		ulong hi;
-		ulong lo;
-	};
+double	x;
+struct {
+ulong hi;
+ulong lo;
 };
-
+};
 typedef	char*	va_list;
 #define va_start(list, start) list =\
-	(sizeof(start) < 4?\
-		(char*)((int*)&(start)+1):\
-		(char*)(&(start)+1))
+(sizeof(start) < 4?\
+(char*)((int*)&(start)+1):\
+(char*)(&(start)+1))
 #define va_end(list)\
-	USED(list)
+USED(list)
 #define va_arg(list, mode)\
-	((sizeof(mode) == 1)?\
-		((mode*)(list += 4))[-4]:\
-	(sizeof(mode) == 2)?\
-		((mode*)(list += 4))[-2]:\
-		((mode*)(list += sizeof(mode)))[-1])
+((sizeof(mode) == 1)?\
+((mode*)(list += 4))[-4]:\
+(sizeof(mode) == 2)?\
+((mode*)(list += 4))[-2]:\
+((mode*)(list += sizeof(mode)))[-1])

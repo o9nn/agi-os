@@ -15,7 +15,6 @@
     (Inheritance (Concept "A") (Variable "$X"))
     (Inheritance (Concept "$X") (Variable "$Y"))))
 )
-
 (define put-quoted-conjuction-lambda-result
 (LambdaLink
    (VariableList

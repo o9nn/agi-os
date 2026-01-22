@@ -1,38 +1,10 @@
-/*
- * Copyright (c) 2023-2024 Free Software Foundation.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
 #ifndef _MACH_MACH_AARCH64_TYPES_H_
 #define _MACH_MACH_AARCH64_TYPES_H_
-
-/* The currently defined number of hwcap values.
-   More ones could be added in future versions.  */
 #define HWCAPS_COUNT	2
-
 #ifndef __ASSEMBLER__
 #include <stdint.h>
 typedef uint64_t *hwcaps_t;
 #endif
-
-/* These definitions are meant to match those in
-   linux:arch/arm64/include/uapi/asm/hwcap.h and
-   glibc:sysdeps/unix/sysv/linux/aarch64/bits/hwcap.h,
-   but this is not strictly required for anything.  */
-
 #define HWCAP_FP		(1 << 0)
 #define HWCAP_ASIMD		(1 << 1)
 #define HWCAP_EVTSTRM		(1 << 2)
@@ -65,7 +37,6 @@ typedef uint64_t *hwcaps_t;
 #define HWCAP_SB		(1 << 29)
 #define HWCAP_PACA		(1 << 30)
 #define HWCAP_PACG		(1UL << 31)
-
 #define HWCAP2_DCPODP		(1 << 0)
 #define HWCAP2_SVE2		(1 << 1)
 #define HWCAP2_SVEAES		(1 << 2)
@@ -114,5 +85,4 @@ typedef uint64_t *hwcaps_t;
 #define HWCAP2_SVE_B16B16	(1UL << 45)
 #define HWCAP2_LRCPC3		(1UL << 46)
 #define HWCAP2_LSE128		(1UL << 47)
-
 #endif

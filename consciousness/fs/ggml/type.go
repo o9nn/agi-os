@@ -1,22 +1,18 @@
 package ggml
-
 import (
 	"fmt"
 	"log/slog"
 	"strings"
 )
-
-// FileType is the Go equivalent to llama_ftype used for gguf file typing
 type FileType uint32
-
 const (
 	FileTypeF32 FileType = iota
 	FileTypeF16
 	fileTypeQ4_0
 	fileTypeQ4_1
-	fileTypeMXFP4 // originally fileTypeQ4_1_F16 // unused by GGML
-	fileTypeQ4_2  // unused by GGML
-	fileTypeQ4_3  // unused by GGML
+	fileTypeMXFP4 
+	fileTypeQ4_2  
+	fileTypeQ4_3  
 	FileTypeQ8_0
 	fileTypeQ5_0
 	fileTypeQ5_1
@@ -43,17 +39,13 @@ const (
 	fileTypeIQ4_XS
 	fileTypeIQ1_M
 	FileTypeBF16
-	fileTypeQ4_0_4_4 // unused by GGML
-	fileTypeQ4_0_4_8 // unused by GGML
-	fileTypeQ4_0_8_8 // unused by GGML
+	fileTypeQ4_0_4_4 
+	fileTypeQ4_0_4_8 
+	fileTypeQ4_0_8_8 
 	fileTypeTQ1_0
 	fileTypeTQ2_0
-
 	FileTypeUnknown = 1024
 )
-
-// ParseFileType parses the provided GGUF file type
-// Only Ollama supported types are considered valid
 func ParseFileType(s string) (FileType, error) {
 	switch s {
 	case "F32":
@@ -75,19 +67,15 @@ func ParseFileType(s string) (FileType, error) {
 			FileTypeQ4_K_S,
 			FileTypeQ4_K_M,
 			FileTypeQ8_0,
-			// fsggml.FileTypeBF16, // TODO
 		}
 		strs := make([]string, len(supportedFileTypes))
 		for i := range supportedFileTypes {
 			strs[i] = supportedFileTypes[i].String()
 		}
-
 		return FileTypeUnknown, fmt.Errorf("unsupported quantization type %s - supported types are %s", s, strings.Join(strs, ", "))
 	}
 }
-
 func (t FileType) String() string {
-	// Note: this routine will return a broader set of file types for existing models
 	switch t {
 	case FileTypeF32:
 		return "F32"
@@ -131,11 +119,9 @@ func (t FileType) String() string {
 		return "unknown"
 	}
 }
-
 func (t FileType) Value() uint32 {
 	return uint32(t)
 }
-
 func (ftype FileType) ToTensorType() TensorType {
 	switch ftype {
 	case FileTypeF32:
@@ -147,7 +133,7 @@ func (ftype FileType) ToTensorType() TensorType {
 	case fileTypeQ4_1:
 		return TensorTypeQ4_1
 	case fileTypeMXFP4:
-		return TensorTypeMXFP4 // Formerly unused tensorTypeQ4_2
+		return TensorTypeMXFP4 
 	case FileTypeQ8_0:
 		return TensorTypeQ8_0
 	case fileTypeQ5_0:
@@ -178,21 +164,17 @@ func (ftype FileType) ToTensorType() TensorType {
 		return TensorTypeBF16
 	default:
 		slog.Warn("unsupported file type", "type", ftype)
-		return 0 // F32
+		return 0 
 	}
 }
-
-// TensorType is equivalent to ggml_type for individual tensor types
-// Note: these are not the same as FileType
 type TensorType uint32
-
 const (
 	TensorTypeF32 TensorType = iota
 	TensorTypeF16
 	TensorTypeQ4_0
 	TensorTypeQ4_1
-	TensorTypeMXFP4 // Formerly unused tensorTypeQ4_2
-	tensorTypeQ4_3  // unused by GGML
+	TensorTypeMXFP4 
+	tensorTypeQ4_3  
 	TensorTypeQ5_0
 	TensorTypeQ5_1
 	TensorTypeQ8_0
@@ -203,33 +185,30 @@ const (
 	TensorTypeQ5_K
 	TensorTypeQ6_K
 	TensorTypeQ8_K
-	tensorTypeIQ2_XXS // not supported by ollama
-	tensorTypeIQ2_XS  // not supported by ollama
-	tensorTypeIQ3_XXS // not supported by ollama
-	tensorTypeIQ1_S   // not supported by ollama
-	tensorTypeIQ4_NL  // not supported by ollama
-	tensorTypeIQ3_S   // not supported by ollama
-	tensorTypeIQ2_S   // not supported by ollama
-	tensorTypeIQ4_XS  // not supported by ollama
+	tensorTypeIQ2_XXS 
+	tensorTypeIQ2_XS  
+	tensorTypeIQ3_XXS 
+	tensorTypeIQ1_S   
+	tensorTypeIQ4_NL  
+	tensorTypeIQ3_S   
+	tensorTypeIQ2_S   
+	tensorTypeIQ4_XS  
 	TensorTypeI8
 	TensorTypeI16
 	TensorTypeI32
 	TensorTypeI64
 	TensorTypeF64
-	tensorTypeIQ1_M // not supported by ollama
+	tensorTypeIQ1_M 
 	TensorTypeBF16
-	tensorTypeQ4_0_4_4   // unused by GGML
-	tensorTypeQ4_0_4_8   // unused by GGML
-	tensorTypeQ4_0_8_8   // unused by GGML
-	tensorTypeTQ1_0      // not supported by ollama
-	tensorTypeTQ2_0      // not supported by ollama
-	tensorTypeIQ4_NL_4_4 // unused by GGML
-	tensorTypeIQ4_NL_4_8 // unused by GGML
-	tensorTypeIQ4_NL_8_8 // unused by GGML
+	tensorTypeQ4_0_4_4   
+	tensorTypeQ4_0_4_8   
+	tensorTypeQ4_0_8_8   
+	tensorTypeTQ1_0      
+	tensorTypeTQ2_0      
+	tensorTypeIQ4_NL_4_4 
+	tensorTypeIQ4_NL_4_8 
+	tensorTypeIQ4_NL_8_8 
 )
-
-// ParseFileType parses the provided GGUF file type
-// Only Ollama supported types are considered valid
 func ParseTensorType(s string) (TensorType, error) {
 	switch s {
 	case "F32":
@@ -270,7 +249,6 @@ func ParseTensorType(s string) (TensorType, error) {
 		return 0, fmt.Errorf("unsupported quantization type %s", s)
 	}
 }
-
 func (t TensorType) IsQuantized() bool {
 	switch t {
 	case TensorTypeF32, TensorTypeF16, TensorTypeBF16:
@@ -279,11 +257,9 @@ func (t TensorType) IsQuantized() bool {
 		return true
 	}
 }
-
 func (t TensorType) RowSize(ne uint64) uint64 {
 	return t.TypeSize() * ne / t.BlockSize()
 }
-
 func (t TensorType) String() string {
 	switch t {
 	case TensorTypeF32:

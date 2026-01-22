@@ -4,8 +4,6 @@ import {
   createTranscriptionProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://speaches.ai} */
 export const createSpeaches = (apiKey?: string, baseURL = 'http://localhost:8000/v1/') => merge(
   createMetadataProvider('litellm'),
   createSpeechProvider<

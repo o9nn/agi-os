@@ -12,7 +12,6 @@
    (Inheritance
       (Variable "$X")
       (Concept "Frog")))
-
 (ImplicationScope (stv 1.0 1.0)
    (TypedVariable
       (Variable "$X")
@@ -27,7 +26,6 @@
    (Inheritance
       (Variable "$X")
       (Concept "Canary")))
-
 (ImplicationScope (stv 1.0 1.0)
    (TypedVariable
       (Variable "$X")
@@ -38,7 +36,6 @@
    (Inheritance
       (Variable "$X")
       (Concept "green")))
-
 (ImplicationScope (stv 1.0 1.0)
    (TypedVariable
       (Variable "$X")
@@ -49,23 +46,18 @@
    (Inheritance
       (Variable "$X")
       (Concept "yellow")))
-
 (Evaluation (stv 1.0 1.0)
    (Predicate "croaks")
    (Concept "Fritz"))
-
 (Evaluation (stv 1.0 1.0)
    (Predicate "chirps")
    (Concept "Tweety"))
-
 (Inheritance (stv 1.0 1.0)
    (Concept "Tweety")
    (Concept "yellow"))
-
 (Evaluation (stv 1.0 1.0)
    (Predicate "eats_flies")
    (Concept "Tweety"))
-
 (Evaluation (stv 1.0 1.0)
    (Predicate "eats_flies")
    (Concept "Fritz"))

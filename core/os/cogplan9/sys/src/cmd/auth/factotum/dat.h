@@ -5,32 +5,25 @@
 #include <mp.h>
 #include <libsec.h>
 #include <String.h>
-#include <thread.h>	/* only for 9p.h */
+#include <thread.h>
 #include <fcall.h>
 #include <9p.h>
-
 #pragma varargck type "N" Attr*
-
 enum
 {
-	Maxname = 128,
-	Maxrpc = 4096,
-
-	/* common protocol phases; proto-specific phases start at 0 */
-	Notstarted = -3,
-	Broken = -2,
-	Established = -1,
-
-	/* rpc read/write return values */
-	RpcFailure = 0,
-	RpcNeedkey,
-	RpcOk,
-	RpcErrstr,
-	RpcToosmall,
-	RpcPhase,
-	RpcConfirm,
+Maxname = 128,
+Maxrpc = 4096,
+Notstarted = -3,
+Broken = -2,
+Established = -1,
+RpcFailure = 0,
+RpcNeedkey,
+RpcOk,
+RpcErrstr,
+RpcToosmall,
+RpcPhase,
+RpcConfirm,
 };
-
 typedef struct Domain Domain;
 typedef struct Fsstate Fsstate;
 typedef struct Key Key;
@@ -39,100 +32,81 @@ typedef struct Keyring Keyring;
 typedef struct Logbuf Logbuf;
 typedef struct Proto Proto;
 typedef struct State State;
-
 #pragma incomplete State
-
-
 struct Fsstate
 {
-	char *sysuser;	/* user according to system */
-
-	/* keylist, protolist */
-	int listoff;
-
-	/* per-rpc transient information */
-	int pending;
-	struct {
-		char *arg, buf[Maxrpc], *verb;
-		int iverb, narg, nbuf, nwant;
-	} rpc;
-	
-	/* persistent (cross-rpc) information */
-	char err[ERRMAX];
-	char keyinfo[3*Maxname];	/* key request */
-	char **phasename;
-	int haveai, maxphase, phase, seqnum, started;
-	Attr *attr;
-	AuthInfo ai;
-	Proto *proto;
-	State *ps;
-	struct {		/* pending or finished key confirmations */
-		Key *key;
-		int canuse;
-		ulong tag;
-	} *conf;
-	int nconf;
+char *sysuser;
+int listoff;
+int pending;
+struct {
+char *arg, buf[Maxrpc], *verb;
+int iverb, narg, nbuf, nwant;
+} rpc;
+char err[ERRMAX];
+char keyinfo[3*Maxname];
+char **phasename;
+int haveai, maxphase, phase, seqnum, started;
+Attr *attr;
+AuthInfo ai;
+Proto *proto;
+State *ps;
+struct {
+Key *key;
+int canuse;
+ulong tag;
+} *conf;
+int nconf;
 };
-
 struct Key
 {
-	int ref;
-	Attr *attr;
-	Attr *privattr;	/* private attributes, like *data */
-	Proto *proto;
-
-	void *priv;	/* protocol-specific; a parsed key, perhaps */
-	ulong successes;
+int ref;
+Attr *attr;
+Attr *privattr;
+Proto *proto;
+void *priv;
+ulong successes;
 };
-
-struct Keyinfo	/* for findkey */
+struct Keyinfo
 {
-	Fsstate *fss;
-	char *user;
-	int noconf;
-	int skip;
-	int usedisabled;
-	Attr *attr;
+Fsstate *fss;
+char *user;
+int noconf;
+int skip;
+int usedisabled;
+Attr *attr;
 };
-
 struct Keyring
 {
-	Key **key;
-	int nkey;
+Key **key;
+int nkey;
 };
-
 struct Logbuf
 {
-	Req *wait;
-	Req **waitlast;
-	int rp;
-	int wp;
-	char *msg[128];
+Req *wait;
+Req **waitlast;
+int rp;
+int wp;
+char *msg[128];
 };
-
 struct Proto
 {
-	char *name;
-	int (*init)(Proto*, Fsstate*);
-	int (*addkey)(Key*, int);
-	void (*closekey)(Key*);
-	int (*write)(Fsstate*, void*, uint);
-	int (*read)(Fsstate*, void*, uint*);
-	void (*close)(Fsstate*);
-	char *keyprompt;
+char *name;
+int (*init)(Proto*, Fsstate*);
+int (*addkey)(Key*, int);
+void (*closekey)(Key*);
+int (*write)(Fsstate*, void*, uint);
+int (*read)(Fsstate*, void*, uint*);
+void (*close)(Fsstate*);
+char *keyprompt;
 };
-
 extern char *invoker;
 extern char *owner;
 extern char *authdom;
-
 extern char Easproto[];
 extern char Ebadarg[];
 extern char Ebadkey[];
 extern char Enegotiation[];
 extern char Etoolarge[];
-
-/* confirm.c */
 void confirmread(Req*);
 void confirmflush(Req*);
 int confirmwrite(char*);
@@ -141,8 +115,6 @@ void needkeyread(Req*);
 void needkeyflush(Req*);
 int needkeywrite(char*);
 int needkeyqueue(Req*, Fsstate*);
-
-/* fs.c */
 extern	int		askforkeys;
 extern	char		*authaddr;
 extern	int		*confirminuse;
@@ -156,8 +128,6 @@ extern	char		*mtpt;
 extern	char		*service;
 extern	Proto 	*prototab[];
 extern	Keyring	*ring;
-
-/* log.c */
 void flog(char*, ...);
 #pragma varargck argpos flog 1
 void logread(Req*);
@@ -170,26 +140,19 @@ void needkeyread(Req*);
 void needkeyflush(Req*);
 int needkeywrite(char*);
 int needkeyqueue(Req*, Fsstate*);
-
-/* rpc.c */
 int ctlwrite(char*, int);
 void rpcrdwrlog(Fsstate*, char*, uint, int, int);
 void rpcstartlog(Attr*, Fsstate*, int);
 void rpcread(Req*);
 void rpcwrite(Req*);
-
-/* secstore.c */
 int havesecstore(void);
 int secstorefetch(char*);
-
-/* util.c */
 #define emalloc emalloc9p
 #define estrdup estrdup9p
 #define erealloc erealloc9p
 #pragma varargck argpos failure 2
 #pragma varargck argpos findkey 3
 #pragma varargck argpos setattr 2
-
 int		_authdial(char*, char*);
 void		askuser(char*);
 int		attrnamefmt(Fmt *fmt);
@@ -225,14 +188,11 @@ int		smatch(char*, char*);
 Attr		*sortattr(Attr*);
 int		toosmall(Fsstate*, uint);
 void		writehostowner(char*);
-
-/* protocols */
-extern Proto apop, cram;		/* apop.c */
-extern Proto p9any, p9sk1, p9sk2;	/* p9sk.c */
-extern Proto chap, mschap;		/* chap.c */
-extern Proto p9cr, vnc;			/* p9cr.c */
-extern Proto pass;			/* pass.c */
-extern Proto rsa;			/* rsa.c */
-extern Proto wep;			/* wep.c */
-/* extern Proto srs;			/* srs.c */
-extern Proto httpdigest;		/* httpdigest.c */
+extern Proto apop, cram;
+extern Proto p9any, p9sk1, p9sk2;
+extern Proto chap, mschap;
+extern Proto p9cr, vnc;
+extern Proto pass;
+extern Proto rsa;
+extern Proto wep;
+extern Proto httpdigest;

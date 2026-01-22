@@ -1,16 +1,12 @@
 package convert
-
 import (
 	"cmp"
 	"slices"
 	"strings"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type qwen25VLModel struct {
 	qwen2Model
-
 	VisionModel struct {
 		Depth               uint32  `json:"depth"`
 		HiddenSize          uint32  `json:"hidden_size"`
@@ -26,23 +22,18 @@ type qwen25VLModel struct {
 		TemporalPatchSize   uint32  `json:"temporal_patch_size"`
 	} `json:"vision_config"`
 }
-
 var _ ModelConverter = (*qwen25VLModel)(nil)
-
 func (q *qwen25VLModel) KV(t *Tokenizer) ggml.KV {
 	kv := q.ModelParameters.KV(t)
 	kv["general.architecture"] = "qwen25vl"
-
 	for k, v := range q.qwen2Model.KV(t) {
 		if strings.HasPrefix(k, "qwen2.") {
 			kv[strings.Replace(k, "qwen2.", "qwen25vl.", 1)] = v
 		}
 	}
-
 	if q.VisionModel.FullAttentionBlocks == nil {
 		kv["qwen25vl.vision.fullatt_block_indexes"] = []int32{7, 15, 23, 31}
 	}
-
 	kv["qwen25vl.vision.block_count"] = cmp.Or(q.VisionModel.Depth, 32)
 	kv["qwen25vl.vision.embedding_length"] = q.VisionModel.HiddenSize
 	kv["qwen25vl.vision.attention.head_count"] = cmp.Or(q.VisionModel.NumHeads, 16)
@@ -55,13 +46,10 @@ func (q *qwen25VLModel) KV(t *Tokenizer) ggml.KV {
 	kv["qwen25vl.vision.rope.freq_base"] = cmp.Or(q.VisionModel.RopeTheta, 1e4)
 	kv["qwen25vl.vision.fullatt_block_indexes"] = q.VisionModel.FullAttentionBlocks
 	kv["qwen25vl.vision.temporal_patch_size"] = cmp.Or(q.VisionModel.TemporalPatchSize, 2)
-
 	return kv
 }
-
 func (q *qwen25VLModel) Tensors(ts []Tensor) []*ggml.Tensor {
 	var out []*ggml.Tensor
-
 	for _, t := range ts {
 		if strings.Contains(t.Name(), "patch_embed.proj") {
 			for t := range splitDim(t, 2,
@@ -86,10 +74,8 @@ func (q *qwen25VLModel) Tensors(ts []Tensor) []*ggml.Tensor {
 			})
 		}
 	}
-
 	return out
 }
-
 func (p *qwen25VLModel) Replacements() []string {
 	return append(
 		p.qwen2Model.Replacements(),

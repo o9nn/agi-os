@@ -4,10 +4,8 @@ import type {
   ResolveRenderComponentInputProps,
 } from '@velin-dev/core'
 import type { ComponentPropsOptions, Reactive, Ref } from 'vue'
-
 import { renderComponent } from '@velin-dev/core/browser'
 import { isReactive, isRef, ref, toRef, watch, watchEffect } from 'vue'
-
 export function usePrompt<
   RawProps = any,
   ComponentProps = ComponentPropsOptions<RawProps>,
@@ -18,21 +16,16 @@ export function usePrompt<
 ) {
   const prompt = ref('')
   const rendering = ref(false)
-
   const onPromptedCallbacks = ref<(() => Promise<void> | void)[]>([])
   const onUnPromptedCallbacks = ref<(() => Promise<void> | void)[]>([])
-
   function onPrompted(cb: () => Promise<void> | void) {
     onPromptedCallbacks.value.push(cb)
   }
-
   function onUnprompted(cb: () => Promise<void> | void) {
     onUnPromptedCallbacks.value.push(cb)
   }
-
   function renderEffect() {
     rendering.value = true
-
     renderComponent(promptComponent, props).then((md) => {
       prompt.value = md
       onPromptedCallbacks.value.forEach(cb => cb())
@@ -40,11 +33,9 @@ export function usePrompt<
       rendering.value = false
     })
   }
-
   function dispose() {
     onUnPromptedCallbacks.value.forEach(cb => cb())
   }
-
   if (isReactive(props)) {
     watch(props as unknown as Reactive<ResolvedProps>, renderEffect)
   }
@@ -67,10 +58,7 @@ export function usePrompt<
   else {
     watchEffect(renderEffect)
   }
-
-  // immediate: true
   renderEffect()
-
   return {
     prompt,
     rendering,

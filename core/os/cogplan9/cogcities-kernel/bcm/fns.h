@@ -1,7 +1,6 @@
 #include "../port/portfns.h"
-
-Dirtab*	addarchfile(char*, int, long(*)(Chan*, void*, long, vlong), 
-	long(*)(Chan*, void*, long, vlong));
+Dirtab*	addarchfile(char*, int, long(*)(Chan*, void*, long, vlong),
+long(*)(Chan*, void*, long, vlong));
 extern void archreboot(void);
 extern void archreset(void);
 extern void armtimerset(int);
@@ -74,10 +73,6 @@ extern int userureg(Ureg*);
 extern void vectors(void);
 extern void vtable(void);
 extern void wdogoff(void);
-
-/*
- * floating point emulation
- */
 extern int fpiarm(Ureg*);
 extern int fpudevprocio(Proc*, void*, long, uintptr, int);
 extern void fpuinit(void);
@@ -89,32 +84,23 @@ extern void fpusysprocsetup(Proc*);
 extern void fpusysrfork(Ureg*);
 extern void fpusysrforkchild(Proc*, Ureg*, Proc*);
 extern int fpuemu(Ureg*);
-/*
- * Things called from port.
- */
-extern void delay(int);				/* only scheddump() */
+extern void delay(int);
 extern int islo(void);
-extern void microdelay(int);			/* only edf.c */
+extern void microdelay(int);
 extern void evenaddr(uintptr);
 extern void idlehands(void);
-extern void setkernur(Ureg*, Proc*);		/* only devproc.c */
+extern void setkernur(Ureg*, Proc*);
 extern void* sysexecregs(uintptr, ulong, int);
 extern void sysprocsetup(Proc*);
-
 extern void kexit(Ureg*);
-
 #define	getpgcolor(a)	0
 #define	kmapinval()
 #define countpagerefs(a, b)
-
 #define PTR2UINT(p)	((uintptr)(p))
 #define UINT2PTR(i)	((void*)(i))
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-
 #define KADDR(pa)	UINT2PTR(KZERO    | ((uintptr)(pa) & ~KSEGM))
 #define PADDR(va)	PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
 #define DMAADDR(va)	PTR2UINT(BUSDRAM  | ((uintptr)(va) & ~KSEGM))
 #define DMAIO(va)	PTR2UINT(BUSIO    | ((uintptr)(va) & ~VIRTIO))
-
-#define MASK(v)	((1UL << (v)) - 1)	/* mask `v' bits wide */
+#define MASK(v)	((1UL << (v)) - 1)

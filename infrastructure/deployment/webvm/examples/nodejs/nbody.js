@@ -1,7 +1,6 @@
 const PI = Math.PI;
 const SOLAR_MASS = 4 * PI * PI;
 const DAYS_PER_YEAR = 365.24;
-
 function Body(x, y, z, vx, vy, vz, mass) {
     this.x = x;
     this.y = y;
@@ -11,7 +10,6 @@ function Body(x, y, z, vx, vy, vz, mass) {
     this.vz = vz;
     this.mass = mass;
 }
-
 function Jupiter() {
     return new Body(
         4.84143144246472090e+00,
@@ -23,7 +21,6 @@ function Jupiter() {
         9.54791938424326609e-04 * SOLAR_MASS
     );
 }
-
 function Saturn() {
     return new Body(
         8.34336671824457987e+00,
@@ -35,7 +32,6 @@ function Saturn() {
         2.85885980666130812e-04 * SOLAR_MASS
     );
 }
-
 function Uranus() {
     return new Body(
         1.28943695621391310e+01,
@@ -47,7 +43,6 @@ function Uranus() {
         4.36624404335156298e-05 * SOLAR_MASS
     );
 }
-
 function Neptune() {
     return new Body(
         1.53796971148509165e+01,
@@ -59,13 +54,10 @@ function Neptune() {
         5.15138902046611451e-05 * SOLAR_MASS
     );
 }
-
 function Sun() {
     return new Body(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, SOLAR_MASS);
 }
-
 const bodies = Array(Sun(), Jupiter(), Saturn(), Uranus(), Neptune());
-
 function offsetMomentum() {
     let px = 0;
     let py = 0;
@@ -78,16 +70,13 @@ function offsetMomentum() {
         py += body.vy * mass;
         pz += body.vz * mass;
     }
-
     const body = bodies[0];
     body.vx = -px / SOLAR_MASS;
     body.vy = -py / SOLAR_MASS;
     body.vz = -pz / SOLAR_MASS;
 }
-
 function advance(dt) {
     const size = bodies.length;
-
     for (let i = 0; i < size; i++) {
         const bodyi = bodies[i];
         let vxi = bodyi.vx;
@@ -98,15 +87,12 @@ function advance(dt) {
             const dx = bodyi.x - bodyj.x;
             const dy = bodyi.y - bodyj.y;
             const dz = bodyi.z - bodyj.z;
-
             const d2 = dx * dx + dy * dy + dz * dz;
             const mag = dt / (d2 * Math.sqrt(d2));
-
             const massj = bodyj.mass;
             vxi -= dx * massj * mag;
             vyi -= dy * massj * mag;
             vzi -= dz * massj * mag;
-
             const massi = bodyi.mass;
             bodyj.vx += dx * massi * mag;
             bodyj.vy += dy * massi * mag;
@@ -116,7 +102,6 @@ function advance(dt) {
         bodyi.vy = vyi;
         bodyi.vz = vzi;
     }
-
     for (let i = 0; i < size; i++) {
         const body = bodies[i];
         body.x += dt * body.vx;
@@ -124,33 +109,25 @@ function advance(dt) {
         body.z += dt * body.vz;
     }
 }
-
 function energy() {
     let e = 0;
     const size = bodies.length;
-
     for (let i = 0; i < size; i++) {
         const bodyi = bodies[i];
-
         e += 0.5 * bodyi.mass * ( bodyi.vx * bodyi.vx + bodyi.vy * bodyi.vy + bodyi.vz * bodyi.vz );
-
         for (let j = i + 1; j < size; j++) {
             const bodyj = bodies[j];
             const dx = bodyi.x - bodyj.x;
             const dy = bodyi.y - bodyj.y;
             const dz = bodyi.z - bodyj.z;
-
             const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
             e -= (bodyi.mass * bodyj.mass) / distance;
         }
     }
     return e;
 }
-
 const n = +50000000;
-
 offsetMomentum();
-
 console.log(energy().toFixed(9));
 const start = Date.now();
 for (let i = 0; i < n; i++) {

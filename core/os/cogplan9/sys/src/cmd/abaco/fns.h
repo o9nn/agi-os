@@ -1,15 +1,12 @@
 #define	runemalloc(a)		emalloc((a)*sizeof(Rune))
 #define	runerealloc(a, b)	erealloc(a, (b)*sizeof(Rune))
 #define	runemove(a, b, c)	memmove(a, b, (c)*sizeof(Rune))
-
 #define	hasbrk(x)	((x)&IFbrk || (x)&IFbrksp)
 #define	istrue(x)	((x) ? "true" : "false")
-
 void plumblook(Plumbmsg*m);
 int plumbrunestr(Runestr *, char *);
 void putsnarf(Runestr *);
 void getsnarf(Runestr *);
-
 void tablesize(Table *, int);
 void drawtable(Box *, Page *, Image *);
 void laytable(Itable *, Rectangle);
@@ -19,18 +16,15 @@ Timer* timerstart(int);
 void timerstop(Timer*);
 void timercancel(Timer*);
 void timerinit(void);
-
 void cut(Text *, Text *, int, int, Rune *, int);
 void get(Text *, Text *, int, int, Rune *, int);
 void paste(Text *, Text *, int, int, Rune *, int);
 void execute(Text *, uint, uint, Text *);
 void look3(Text *, uint, uint);
 int search(Text *, Rune *, uint);
-
 void scrsleep(uint);
 void scrlresize(void);
 void tmpresize(void);
-
 void	initfontpaths(void);
 void cvttorunes(char*, int, Rune*, int*, int*, int*);
 void error(char *);
@@ -78,8 +72,6 @@ void restoremouse(Window *);
 void clearmouse(void);
 void bytetorunestr(char *, Runestr *);
 Window* makenewwindow(Page *);
-
 Line* linewhich(Lay *, Point);
 Box* pttobox(Line *, Point);
 Box* boxwhich(Lay *, Point);
-

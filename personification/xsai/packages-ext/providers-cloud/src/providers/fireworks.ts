@@ -5,8 +5,6 @@ import {
   createModelProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
-/** @see {@link https://docs.fireworks.ai/getting-started/introduction} */
 export const createFireworks = (apiKey: string, baseURL = 'https://api.fireworks.ai/inference/v1/') => merge(
   createMetadataProvider('fireworks'),
   createChatProvider<

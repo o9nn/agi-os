@@ -1,6 +1,3 @@
-// Claude Connector: A Masterpiece of Constitutional AI Integration
-// Connects to Anthropic's Claude for thoughtful, ethical AI conversations
-
 import {
   BaseConnector,
   AIConnectorConfig,
@@ -9,10 +6,7 @@ import {
   FunctionDefinition,
   AIResponse,
 } from './BaseConnector'
-
-// Claude-specific configuration options
 export interface ClaudeConfig extends AIConnectorConfig {
-  // Anthropic-specific parameters
   apiVersion?: string
   modelName:
     | 'claude-3-opus-20240229'
@@ -27,7 +21,6 @@ export interface ClaudeConfig extends AIConnectorConfig {
   systemPrompt?: string
   constitutionalPrinciples?: string[]
 }
-
 interface ClaudeRequestMessage {
   role: 'user' | 'assistant' | 'system'
   content:
@@ -42,7 +35,6 @@ interface ClaudeRequestMessage {
         }
       }>
 }
-
 interface ClaudeCompletionRequest {
   model: string
   messages: ClaudeRequestMessage[]
@@ -53,7 +45,6 @@ interface ClaudeCompletionRequest {
   anthropic_version?: string
   stream?: boolean
 }
-
 interface ClaudeCompletionResponse {
   id: string
   type: 'message'
@@ -69,16 +60,10 @@ interface ClaudeCompletionResponse {
     output_tokens: number
   }
 }
-
-/**
- * Claude Connector: Masterpiece of AI integration that connects to Anthropic's Claude API
- */
 export class ClaudeConnector extends BaseConnector {
   private apiVersion: string
   private claudeConfig: ClaudeConfig
-
   constructor(config: ClaudeConfig) {
-    // Set default values for Claude-specific configuration
     const defaultConfig: Partial<ClaudeConfig> = {
       apiVersion: '2023-06-01',
       modelName: 'claude-3-sonnet-20240229',
@@ -99,25 +84,16 @@ export class ClaudeConnector extends BaseConnector {
         ethics: 0.95,
       },
     }
-
-    // Merge with provided config
     const mergedConfig = { ...defaultConfig, ...config } as ClaudeConfig
-
     super(mergedConfig)
     this.claudeConfig = mergedConfig
     this.apiVersion = mergedConfig.apiVersion || '2023-06-01'
   }
-
-  /**
-   * Authenticate with Anthropic API
-   */
   async authenticate(): Promise<boolean> {
     try {
       if (!this.claudeConfig.apiKey) {
         throw new Error('Claude API key is required')
       }
-
-      // Make a small test request to verify API key works
       const testResponse = await fetch(
         'https://api.anthropic.com/v1/messages',
         {
@@ -135,7 +111,6 @@ export class ClaudeConnector extends BaseConnector {
           }),
         }
       )
-
       if (!testResponse.ok) {
         const errorData = await testResponse.json()
         throw new Error(
@@ -144,7 +119,6 @@ export class ClaudeConnector extends BaseConnector {
           }`
         )
       }
-
       this.authenticated = true
       this.emit('authenticated')
       return true
@@ -155,35 +129,19 @@ export class ClaudeConnector extends BaseConnector {
       return false
     }
   }
-
-  /**
-   * Format conversation context for Claude API
-   */
   private formatClaudeMessages(
     context: ConversationContext
   ): ClaudeRequestMessage[] {
-    // Filter out only the messages we want to send to Claude
-    // Note: Claude has different conversation format requirements than some other models
     const messages: ClaudeRequestMessage[] = []
-
-    // Handle system prompt if it exists
     if (this.claudeConfig.systemPrompt) {
       messages.push({
         role: 'system',
         content: this.claudeConfig.systemPrompt,
       })
     }
-
-    // Add conversation messages
-    // Claude API requires alternating user/assistant messages
-    // So we need to carefully format this conversation history
     let lastRole: 'user' | 'assistant' | null = null
-
     for (const msg of context.messages) {
-      // Skip function messages as Claude doesn't support them directly
       if (msg.role === 'function') continue
-
-      // Handle system messages properly
       if (msg.role === 'system') {
         messages.push({
           role: 'system',
@@ -191,16 +149,12 @@ export class ClaudeConnector extends BaseConnector {
         })
         continue
       }
-
-      // Ensure we have alternating user/assistant messages as required by Claude
       if (lastRole === msg.role) {
-        // If we have consecutive messages of the same role, combine them
         const lastMessage = messages[messages.length - 1]
         if (typeof lastMessage.content === 'string') {
           lastMessage.content = `${lastMessage.content}\n\n${msg.content}`
         }
       } else {
-        // Add as a new message
         messages.push({
           role: msg.role as 'user' | 'assistant',
           content: msg.content,
@@ -208,22 +162,14 @@ export class ClaudeConnector extends BaseConnector {
         lastRole = msg.role as 'user' | 'assistant'
       }
     }
-
     return messages
   }
-
-  /**
-   * Generate a response from Claude
-   */
   async generateResponse(
     context: ConversationContext,
     functions?: FunctionDefinition[]
   ): Promise<AIResponse> {
     try {
-      // Format the messages for Claude API
       const messages = this.formatClaudeMessages(context)
-
-      // Prepare the request
       const requestBody: ClaudeCompletionRequest = {
         model: this.claudeConfig.modelName,
         messages,
@@ -231,19 +177,13 @@ export class ClaudeConnector extends BaseConnector {
         temperature: this.claudeConfig.defaultTemperature,
         anthropic_version: this.claudeConfig.anthropicVersion,
       }
-
-      // If we have a system prompt and it's not already in messages, add it
       if (
         this.claudeConfig.systemPrompt &&
         !messages.some(m => m.role === 'system')
       ) {
         requestBody.system = this.claudeConfig.systemPrompt
       }
-
-      // If functions are provided, format them for Claude
-      // Claude handles tool use differently than some other AIs
       if (functions && functions.length > 0) {
-        // Add tool use instructions to system prompt
         const toolInstructions = this.formatToolInstructions(functions)
         if (requestBody.system) {
           requestBody.system += '\n\n' + toolInstructions
@@ -251,8 +191,6 @@ export class ClaudeConnector extends BaseConnector {
           requestBody.system = toolInstructions
         }
       }
-
-      // Make the API request
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -263,18 +201,13 @@ export class ClaudeConnector extends BaseConnector {
         },
         body: JSON.stringify(requestBody),
       })
-
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(
           `Claude API error: ${errorData.error?.message || response.statusText}`
         )
       }
-
-      // Parse the response
       const data = (await response.json()) as ClaudeCompletionResponse
-
-      // Extract the content from Claude's response format
       let content = ''
       if (data.content && Array.isArray(data.content)) {
         content = data.content
@@ -282,12 +215,7 @@ export class ClaudeConnector extends BaseConnector {
           .map(item => item.text)
           .join('\n')
       }
-
-      // Check for function calls in the response
       let functionCall = undefined
-
-      // Claude doesn't have native function calling yet, so we parse from the text
-      // This is a simplified implementation - in production, use a more robust approach
       if (content.includes('```json') && functions && functions.length > 0) {
         try {
           const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/)
@@ -298,8 +226,6 @@ export class ClaudeConnector extends BaseConnector {
                 name: parsedJson.function,
                 arguments: JSON.stringify(parsedJson.arguments),
               }
-
-              // Optionally remove the function call from the content
               content = content.replace(
                 /```json\n[\s\S]*?\n```/,
                 `[Function call: ${parsedJson.function}]`
@@ -310,8 +236,6 @@ export class ClaudeConnector extends BaseConnector {
           console.warn('Failed to parse potential function call:', e)
         }
       }
-
-      // Format the AI response
       return {
         messageId: data.id,
         content,
@@ -328,27 +252,16 @@ export class ClaudeConnector extends BaseConnector {
       throw error
     }
   }
-
-  /**
-   * Format tool/function instructions for Claude
-   */
   private formatToolInstructions(functions: FunctionDefinition[]): string {
-    // Claude has a different approach to tool use than some other models
-    // Here we format the functions as instructions in the system prompt
-
     let instructions = `You have access to the following functions. When you need to use a function, output the function call as a JSON object inside a \`\`\`json code block, with 'function' and 'arguments' as top-level keys.
-    
 Available functions:
 `
-
-    // Add each function and its description
     functions.forEach(func => {
       instructions += `
 - ${func.name}: ${func.description}
   Parameters: ${JSON.stringify(func.parameters, null, 2)}
 `
     })
-
     instructions += `
 Example function call:
 \`\`\`json
@@ -360,19 +273,10 @@ Example function call:
   }
 }
 \`\`\`
-
 Only use these functions when necessary. If you need to use a function, output ONLY the JSON function call inside a code block. After receiving the function result, you can continue the conversation normally.`
-
     return instructions
   }
-
-  /**
-   * Generate embeddings for text (for semantic search)
-   * Note: Claude doesn't directly provide embeddings, so this is a placeholder
-   */
   async generateEmbeddings(text: string): Promise<number[]> {
-    // Claude doesn't have a native embeddings API, so we'd need to use another service
-    // This is just a placeholder implementation
     throw new Error('Embeddings not directly supported by Claude API')
   }
 }

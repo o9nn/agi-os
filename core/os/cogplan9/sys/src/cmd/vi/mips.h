@@ -1,12 +1,8 @@
-/*
- * mipsim.h
- */
 #include "/mips/include/ureg.h"
 #define	USERADDR	0xC0000000
 #define	UREGADDR	(USERADDR+BY2PG-4-0xA0)
 #define USER_REG(x)	(UREGADDR+(ulong)(x))
 #define	REGOFF(x)	(USER_REG(&((struct Ureg *) 0)->x))
-
 typedef struct Registers Registers;
 typedef struct Segment Segment;
 typedef struct Memory Memory;
@@ -16,141 +12,124 @@ typedef struct Inst Inst;
 typedef struct Icache Icache;
 typedef struct Tlb Tlb;
 typedef struct Breakpoint Breakpoint;
-
 enum
 {
-	Instruction	= 1,
-	Read		= 2,
-	Write		= 4,
-	Access		= 2|4,
-	Equal		= 4|8,
+Instruction	= 1,
+Read		= 2,
+Write		= 4,
+Access		= 2|4,
+Equal		= 4|8,
 };
-
 struct Breakpoint
 {
-	int		type;		/* Instruction/Read/Access/Write/Equal */
-	ulong		addr;		/* Place at address */
-	int		count;		/* To execute count times or value */
-	int		done;		/* How many times passed through */
-	Breakpoint	*next;		/* Link to next one */
+int		type;
+ulong		addr;
+int		count;
+int		done;
+Breakpoint	*next;
 };
-
 enum
 {
-	Iload,
-	Istore,
-	Iarith,
-	Ibranch,
-	Ireg,
-	Isyscall,
-	Ifloat,
+Iload,
+Istore,
+Iarith,
+Ibranch,
+Ireg,
+Isyscall,
+Ifloat,
 };
-
 enum
 {
-	Nmaxtlb = 64,
+Nmaxtlb = 64,
 };
-
 struct Tlb
 {
-	int	on;			/* Being updated */
-	int	tlbsize;		/* Number of entries */
-	ulong	tlbent[Nmaxtlb];	/* Virtual address tags */
-	int	hit;			/* Number of successful tag matches */
-	int	miss;			/* Number of failed tag matches */
-};		
-
+int	on;
+int	tlbsize;
+ulong	tlbent[Nmaxtlb];
+int	hit;
+int	miss;
+};
 struct Icache
 {
-	int	on;			/* Turned on */
-	int	linesize;		/* Line size in bytes */
-	int	stall;			/* Cache stalls */
-	int	*lines;			/* Tag array */
-	int*	(*hash)(ulong);		/* Hash function */
-	char	*hashtext;		/* What the function looks like */
+int	on;
+int	linesize;
+int	stall;
+int	*lines;
+int*	(*hash)(ulong);
+char	*hashtext;
 };
-
 struct Inst
 {
-	void 	(*func)(ulong);
-	char	*name;
-	int	type;
-	int	count;
-	int	taken;
-	int	useddelay;
+void 	(*func)(ulong);
+char	*name;
+int	type;
+int	count;
+int	taken;
+int	useddelay;
 };
-
 struct Registers
 {
-	ulong	pc;
-	ulong	ir;
-	Inst	*ip;
-	long	r[32];
-	ulong	mhi;
-	ulong	mlo;
-
-	ulong	fpsr;
-	union {
-		double	fd[16];
-		float	fl[32];
-		ulong	di[32];
-	};
-	char	ft[32];
+ulong	pc;
+ulong	ir;
+Inst	*ip;
+long	r[32];
+ulong	mhi;
+ulong	mlo;
+ulong	fpsr;
+union {
+double	fd[16];
+float	fl[32];
+ulong	di[32];
 };
-
+char	ft[32];
+};
 enum
 {
-	FPd	= 0,
-	FPs,
-	FPmemory,
+FPd	= 0,
+FPs,
+FPmemory,
 };
 #define dreg(r)	((r)>>1)
-
 struct Mulu
 {
-	ulong lo;
-	ulong hi;
+ulong lo;
+ulong hi;
 };
-
 struct Mul
 {
-	long lo;
-	long hi;
+long lo;
+long hi;
 };
-
 enum
 {
-	MemRead,
-	MemReadstring,
-	MemWrite,
+MemRead,
+MemReadstring,
+MemWrite,
 };
-
 enum
 {
-	Stack,
-	Text,
-	Data,
-	Bss,
-	Nseg,
+Stack,
+Text,
+Data,
+Bss,
+Nseg,
 };
-
 struct Segment
 {
-	short	type;
-	ulong	base;
-	ulong	end;
-	ulong	fileoff;
-	ulong	fileend;
-	int	rss;
-	int	refs;
-	uchar	**table;
+short	type;
+ulong	base;
+ulong	end;
+ulong	fileoff;
+ulong	fileend;
+int	rss;
+int	refs;
+uchar	**table;
 };
-
 struct Memory
 {
-	Segment	seg[Nseg];
+Segment	seg[Nseg];
 };
-
 void		fatal(int, char*, ...);
 void		run(void);
 void		undef(ulong);
@@ -200,8 +179,6 @@ void		printparams(Symbol *, ulong);
 void		printlocals(Symbol *, ulong);
 void		stktrace(int);
 void		iprofile(void);
-
-/* Globals */
 Extern 		Registers reg;
 Extern 		Memory memory;
 Extern		int text;
@@ -225,31 +202,25 @@ Extern		Biobuf *bioout;
 Extern		Biobuf *bin;
 Extern		ulong *iprof;
 extern		int datasize;
-Extern		Map *symmap;		
+Extern		Map *symmap;
 Extern		int rtrace;
-
-/* Plan9 Kernel constants */
 #define	BY2PG		(16*1024)
 #define BY2WD		4
 #define UTZERO		0x1000
 #define STACKTOP	0x80000000
 #define STACKSIZE	0x10000
-
 #define PROFGRAN	4
-/* Opcode decoders */
 #define Getrsrt(s,t,i)		s = (i>>21)&0x1f; t = (i>>16)&0x1f;
 #define Getrbrt(b,t,i)		b = (i>>21)&0x1f; t = (i>>16)&0x1f;
 #define Get3(s, t, d, i)	s = (i>>21)&0x1f; t = (i>>16)&0x1f; d = (i>>11)&0x1f;
 #define Getf3(s, t, d, i)	s = (i>>11)&0x1f; t = (i>>16)&0x1f; d = (i>>6)&0x1f;
 #define Getf2(s, d, i)		s = (i>>11)&0x1f; d = (i>>6)&0x1f;
 #define SpecialGetrtrd(t, d, i)	t = (i>>16)&0x1f; d = (i>>11)&0x1f;
-
 #define INOPINST	"nor"
-#define INOP		0x00000027	/* Instruction used as nop */
+#define INOP		0x00000027
 #define SIGNBIT		0x80000000
 #define Iexec(ir)	{Inst *i; i = &itab[(ir)>>26]; reg.ip = i; i->count++; (*i->func)(ir); }
 #define Statbra()	reg.ip->taken++; if(reg.ir != INOP) reg.ip->useddelay++;
-
 #define FP_U		3
 #define FP_L		1
 #define FP_G		2

@@ -1,21 +1,11 @@
-;;
-;; buggy-not.scm
-;;
-;; Crazy NotLink bug
-;;
-
 (define (stv mean conf) (cog-new-stv mean conf))
-
-;; Person1 lives in the red house.
 (EvaluationLink (stv 1 1)
 	(PredicateNode "LivesIn")
 	(ListLink
-		(FeatureNode "person1") ; AvatarNode
+		(FeatureNode "person1")
 		(ConceptNode "red_house")
 	)
 )
-
-;; Person2 lives the red house.
 (EvaluationLink (stv 1 1)
 	(PredicateNode "LivesIn")
 	(ListLink
@@ -23,13 +13,8 @@
 		(ConceptNode "red_house")
 	)
 )
-
-;; "Is the same person" deduction rule.
-;; If person A and person B both share the same predicate and property,
-;; then they must be the same person.
 (define (is-same-rule)
 	(BindLink
-		;; variable declarations
 		(VariableList
 			(TypedVariableLink
 				(VariableNode "$predicate")
@@ -48,7 +33,6 @@
 				(TypeNode "ConceptNode")
 			)
 		)
-		;; body -- if all parts of AndLink hold true ... then
 		(AndLink
 			(EvaluationLink
 				(VariableNode "$predicate")
@@ -64,9 +48,6 @@
 					(VariableNode "$property")
 				)
 			)
-			;; Avoid reporting things we already know.
-			;; Basically, if we already know that person A and B
-			;; are the same person, then lets not deduce it again.
 			(AbsentLink
 				(EvaluationLink
 					(PredicateNode "IsSamePerson")
@@ -77,7 +58,6 @@
 				)
 			)
 		)
-		;; implicand -- then the following is true too
 		(EvaluationLink
 			(PredicateNode "IsSamePerson")
 			(ListLink
@@ -87,10 +67,8 @@
 		)
 	)
 )
-
 (define (transitive-rule)
 	(BindLink
-		;; variable declarations
 		(VariableList
 			(TypedVariableLink
 				(VariableNode "$person_a")
@@ -101,7 +79,6 @@
 				(TypeNode "FeatureNode")
 			)
 		)
-		;; body -- if all parts of AndLink hold true ... then
 		(AndLink
 			(EvaluationLink
 				(PredicateNode "IsSamePerson")
@@ -111,7 +88,6 @@
 				)
 			)
 		)
-		;; implicand -- then the following is true too
 		(OrderedLink
 			(VariableNode "$person_a")
 			(VariableNode "$person_b")

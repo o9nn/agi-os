@@ -1,11 +1,5 @@
-;;; Generate Hypergraph Flowchart Diagrams
-;;; Creates Mermaid diagrams for all GNUMach primitives
-
 (use-modules (ice-9 format))
-
 (format #t "=== Generating Hypergraph Flowchart Diagrams ===~%~%")
-
-;;; GNUMach primitives for diagram generation
 (define gnumach-primitives
   '((VM_ALLOCATE (MEMORY 2 KERNEL 8 3))
     (PORT_ALLOCATE (IPC 1 SERVER 9 2))
@@ -13,8 +7,6 @@
     (FILE_OPEN (FILESYSTEM 1 TRANSLATOR 6 1))
     (NETWORK_SEND (NETWORK 2 USER 5 2))
     (SIGNAL_POST (SIGNAL 1 SYSTEM 8 3))))
-
-;;; Generate Mermaid diagram for a primitive
 (define (generate-primitive-diagram primitive-name properties)
   (let* ((modality (car properties))
          (depth (cadr properties))
@@ -52,8 +44,6 @@
       "    classDef link fill:#cc99ff,stroke:#333,stroke-width:1px,color:#000\n"
       "    classDef tensor fill:#ffff99,stroke:#333,stroke-width:2px,color:#000\n"
       "    classDef pattern fill:#ff99cc,stroke:#333,stroke-width:2px,color:#000\n")))
-
-;;; Save diagram to file
 (define (save-diagram primitive-name diagram)
   (let ((filename (format #f "docs/flowchart-~a.md" 
                           (string-downcase (symbol->string primitive-name)))))
@@ -77,8 +67,6 @@
         (format port "~%Generated: ~a~%" (current-time))))
     (format #t "Generated: ~a~%" filename)
     filename))
-
-;;; Generate all diagrams
 (let ((generated-files '()))
   (for-each
     (lambda (primitive)
@@ -88,8 +76,6 @@
              (filename (save-diagram name diagram)))
         (set! generated-files (cons filename generated-files))))
     gnumach-primitives)
-  
-  ;; Create index file
   (call-with-output-file "docs/HYPERGRAPH_FLOWCHARTS.md"
     (lambda (port)
       (format port "# Hypergraph Flowchart Index~%")
@@ -112,8 +98,6 @@
       (format port "- **Pattern Signature**: Unique identification hash~%")
       (format port "- **Visual Styling**: Color-coded component types~%~%")
       (format port "Generated: ~a~%" (current-time))))
-  
   (format #t "~%Created index: docs/HYPERGRAPH_FLOWCHARTS.md~%")
   (format #t "Generated ~a flowchart diagrams total~%~%" (length generated-files)))
-
 (format #t "✅ Hypergraph flowchart generation complete!~%")

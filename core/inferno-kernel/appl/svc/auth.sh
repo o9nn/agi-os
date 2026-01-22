@@ -10,4 +10,3 @@ and {auth/keyfs} {
 	listen -v -t -A 'tcp!*!infsigner' {auth/signer&}
 	listen -v -t -A 'tcp!*!infcsigner' {auth/countersigner&}
 }
-# run svc/registry separately if desired

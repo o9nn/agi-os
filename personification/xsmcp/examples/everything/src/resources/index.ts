@@ -1,10 +1,8 @@
 import { defineResource, defineResourceTemplate } from '@xsmcp/server-shared'
 import { Buffer } from 'node:buffer'
-
 export const resources = Array.from({ length: 100 }, (_, i) => {
   const uri = `test://static/resource/${i + 1}`
   const mimeType = i % 2 === 0 ? 'text/plain' : 'application/octet-stream'
-
   return defineResource({
     load: () => [{
       mimeType,
@@ -19,7 +17,6 @@ export const resources = Array.from({ length: 100 }, (_, i) => {
     uri,
   })
 })
-
 export const resourceTemplate = defineResourceTemplate({
   description: 'A static resource with a numeric ID',
   name: 'Static Resource',

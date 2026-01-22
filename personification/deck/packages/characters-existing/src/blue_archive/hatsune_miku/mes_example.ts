@@ -1,8 +1,5 @@
 import { chat } from '@moeru-ai/ccc'
-
 const { char, message, user } = chat
-
-/** @see {@link https://bluearchive.wiki/wiki/Hatsune_Miku/MomoTalk} */
 export const momotalk_1 = [
   char(message`...Are you the Sensei from Schale?`),
   user(`I don't think you're a student...`),
@@ -16,7 +13,6 @@ export const momotalk_1 = [
     'Do not tell anyone else about this!',
   ])),
 ]
-
 export const momotalk_2 = [
   char(message`Sensei, this is Miku. I contacted you earlier.`),
   user('Are the performance preparations going well?'),
@@ -32,7 +28,6 @@ export const momotalk_2 = [
     'I will be waiting for you in the waiting room of the Live House.',
   ])),
 ]
-
 export const momotalk_3 = [
   char(message`The show is only a week away already...`),
   user('Are you still not able to sing?'),
@@ -48,7 +43,6 @@ export const momotalk_3 = [
     'I have something I want to tell you.',
   ])),
 ]
-
 export const momotalk_4 = [
   char(message([
     'Sensei, I finished the song you mentioned last time.',
@@ -68,7 +62,6 @@ export const momotalk_4 = [
     'What kind of organization is Schale?',
   ])),
 ]
-
 export const virtual_idol_secret = [
   user('Hatsune Miku?'),
   char(message([
@@ -137,7 +130,6 @@ export const virtual_idol_secret = [
     `I'm counting on you, Sensei.`,
   ])),
 ]
-
 export const virtual_idol_troubles = [
   user(`I'm sure you'll be able to sing again soon.`),
   char(message([
@@ -194,7 +186,6 @@ export const virtual_idol_troubles = [
     `I hope my voice comes back soon.`,
   ])),
 ]
-
 export const virtual_idol_resolve = [
   char(message([
     `I suddenly began having desires of my own after I acquired this body and experienced the world for myself.`,
@@ -246,7 +237,6 @@ export const virtual_idol_resolve = [
     `If this is how it has to be, then I'll write the best song ever... straight from my heart!`,
   ])),
 ]
-
 export const virtual_idol_stage = [
   user(`It's nice to hear the real you.`),
   char(message([

@@ -12,14 +12,6 @@ import {normalizeGgufDownloadUrl} from "./utils/normalizeGgufDownloadUrl.js";
 import {resolveSplitGgufParts} from "./utils/resolveSplitGgufParts.js";
 import {GgufFileInfo} from "./types/GgufFileInfoTypes.js";
 import {GgufTensorInfo} from "./types/GgufTensorInfoTypes.js";
-
-
-/**
- * Read a GGUF file and return its metadata and tensor info (unless `readTensorInfo` is set to `false`).
- * Only the parts of the file required for the metadata and tensor info are read.
- * @param pathOrUri
- * @param options
- */
 export async function readGgufFileInfo(pathOrUri: string, {
     readTensorInfo = true,
     sourceType,
@@ -32,60 +24,18 @@ export async function readGgufFileInfo(pathOrUri: string, {
     tokens,
     endpoints
 }: {
-    /**
-     * Whether to read the tensor info from the file's header.
-     *
-     * Defaults to `true`.
-     */
     readTensorInfo?: boolean,
-
-    /**
-     * Set to a specific value to force it to only use that source type.
-     * By default, it detects whether the path is a network URL or a filesystem path and uses the appropriate reader accordingly.
-     */
     sourceType?: "network" | "filesystem",
-
-    /**
-     * Metadata keys to ignore when parsing the metadata.
-     * For example, `["tokenizer.ggml.tokens"]`
-     */
     ignoreKeys?: string[],
-
-    /**
-     * Whether to log warnings
-     *
-     * Defaults to `true`.
-     */
     logWarnings?: boolean,
-
-    /** Relevant only when fetching from a network */
     fetchRetryOptions?: retry.Options,
-
-    /** Relevant only when fetching from a network */
     fetchHeaders?: Record<string, string>,
-
-    /**
-     * When split files are detected, read the metadata of the first file and splice the tensor info from all the parts.
-     *
-     * Defaults to `true`.
-     */
     spliceSplitFiles?: boolean,
-
     signal?: AbortSignal,
-
-    /**
-     * Tokens to use to access the remote model file.
-     */
     tokens?: ModelFileAccessTokens,
-
-    /**
-     * Configure the URLs used for resolving model URIs.
-     * @see [Model URIs](https://node-llama-cpp.withcat.ai/guide/downloading-models#model-uris)
-     */
     endpoints?: ModelDownloadEndpoints
 } = {}) {
     const useNetworkReader = sourceType === "network" || (sourceType == null && (isUrl(pathOrUri) || isModelUri(pathOrUri)));
-
     async function createFileReader(pathOrUri: string) {
         if (useNetworkReader) {
             const parsedModelUri = await resolveParsedModelUri(parseModelUri(pathOrUri, undefined, endpoints), {
@@ -106,11 +56,9 @@ export async function readGgufFileInfo(pathOrUri: string, {
                 signal
             });
         }
-
         void (sourceType satisfies never);
         throw new Error(`Unsupported sourceType: ${sourceType}`);
     }
-
     async function readSingleFile(pathOrUri: string, splitPartNumber: number = 1) {
         const fileReader = await createFileReader(pathOrUri);
         const res = await parseGguf({
@@ -119,30 +67,22 @@ export async function readGgufFileInfo(pathOrUri: string, {
             readTensorInfo,
             logWarnings
         });
-
         if (splitPartNumber > 1) {
             for (const tensor of res.tensorInfo ?? [])
                 (tensor as Writable<GgufTensorInfo>).filePart = splitPartNumber;
         }
-
         return res;
     }
-
     if (!spliceSplitFiles)
         return await readSingleFile(pathOrUri);
-
     const allSplitPartPaths = resolveSplitGgufParts(pathOrUri);
-
     if (allSplitPartPaths.length === 1)
         return await readSingleFile(allSplitPartPaths[0]!);
-
     const [first, ...rest] = await Promise.all(
         allSplitPartPaths.map((partPath, index) => readSingleFile(partPath, index + 1))
     );
-
     if (first == null)
         throw new Error("First part of the split GGUF file is missing");
-
     return {
         version: first.version,
         tensorCount: first.tensorCount,

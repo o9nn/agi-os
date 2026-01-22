@@ -5,10 +5,8 @@ import {
   createTranscriptionProvider,
   merge,
 } from '@xsai-ext/shared-providers'
-
 export const createGroq = (apiKey: string, baseURL = 'https://api.groq.com/openai/v1/') => merge(
   createMetadataProvider('groq'),
-  /** @see {@link https://console.groq.com/docs/models} */
   createChatProvider<
     | 'deepseek-r1-distill-llama-70b'
     | 'deepseek-r1-distill-qwen-32b'

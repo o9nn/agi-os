@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import {fileURLToPath} from "url";
 import path from "path";
 import yargs from "yargs";
@@ -17,15 +16,10 @@ import {InfillCommand} from "./commands/InfillCommand.js";
 import {InspectCommand} from "./commands/inspect/InspectCommand.js";
 import {OnPostInstallCommand} from "./commands/OnPostInstallCommand.js";
 import {DebugCommand} from "./commands/DebugCommand.js";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const packageJson = fs.readJSONSync(path.join(__dirname, "..", "..", "package.json"));
-
 setIsRunningFromCLI(true);
-
 const yarg = yargs(hideBin(process.argv));
-
 yarg
     .scriptName(cliBinName)
     .usage(withCliCommandDescriptionDocsUrl("Usage: $0 <command> [options]", documentationPageUrls.CLI.index))

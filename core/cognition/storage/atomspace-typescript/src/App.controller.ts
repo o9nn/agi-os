@@ -1,7 +1,5 @@
-// This is temporary placement for functions while we continue to refactor.
 import tinycolor from "tinycolor2";
 import {SeedColors, TypesClass} from "./util/EdgeTypesStyle";
-
 export const generateTypeClassMap = (nodeSuperTypes: string[], linkSuperTypes: string[] ): Map<string,TypesClass> => {
     let seedColorOffset = nodeSuperTypes.length-1;
     let numColors = SeedColors.length;
@@ -22,7 +20,6 @@ export const generateTypeClassMap = (nodeSuperTypes: string[], linkSuperTypes: s
             }
         )
     });
-
     linkSuperTypes.forEach((linkParentType, index) => {
         let nextColor = tinycolor(SeedColors[(index+seedColorOffset+1)%numColors]).toHexString();
         let darkColor = tinycolor(nextColor).darken(15);
@@ -40,6 +37,5 @@ export const generateTypeClassMap = (nodeSuperTypes: string[], linkSuperTypes: s
             }
         )
     });
-
     return typesClasses;
 }

@@ -3,12 +3,9 @@ import {GbnfJsonSchema, Llama2ChatWrapper} from "../../../src/index.js";
 import {getTestLlama} from "../../utils/getTestLlama.js";
 import {FunctionCallNameGrammar} from "../../../src/evaluator/LlamaChat/utils/FunctionCallNameGrammar.js";
 import {FunctionCallParamsGrammar} from "../../../src/evaluator/LlamaChat/utils/FunctionCallParamsGrammar.js";
-
-
 describe("grammar for functions", () => {
     const functions = {
         func1: {
-
         },
         func2: {
             params: {
@@ -36,12 +33,10 @@ describe("grammar for functions", () => {
             } satisfies GbnfJsonSchema
         }
     } as const;
-
     test("FunctionCallNameGrammar", async () => {
         const chatWrapper = new Llama2ChatWrapper();
         const llama = await getTestLlama();
         const grammar = new FunctionCallNameGrammar(llama, functions, chatWrapper);
-
         expect(grammar.grammar).toMatchInlineSnapshot(
             `
           "root ::= [ ]? rule3 [\\n]
@@ -52,12 +47,10 @@ describe("grammar for functions", () => {
         `
         );
     });
-
     test("FunctionCallParamsGrammar", async () => {
         const chatWrapper = new Llama2ChatWrapper();
         const llama = await getTestLlama();
         const grammar1 = new FunctionCallParamsGrammar(llama, functions, chatWrapper, "func2", functions.func2.params);
-
         expect(grammar1.grammar).toMatchInlineSnapshot(
             `
           "root ::= "{" whitespace-b-1-4-rule "\\"message\\"" ":" [ ]? string-rule comma-whitespace-b-1-4-rule "\\"feeling\\"" ":" [ ]? rule0 comma-whitespace-b-1-4-rule "\\"words\\"" ":" [ ]? integer-number-rule whitespace-b-0-4-rule "}" "\\n\\n\\n\\n"
@@ -72,9 +65,7 @@ describe("grammar for functions", () => {
           whitespace-b-0-4-rule ::= [\\n] | [ ]?"
         `
         );
-
         const grammar2 = new FunctionCallParamsGrammar(llama, functions, chatWrapper, "func3", functions.func3.params);
-
         expect(grammar2.grammar).toMatchInlineSnapshot(
             `
           "root ::= "[" whitespace-b-1-4-rule ( string-rule ( comma-whitespace-b-1-4-rule string-rule )* )? whitespace-b-0-4-rule "]" "\\n\\n\\n\\n"

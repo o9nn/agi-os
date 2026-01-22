@@ -1,39 +1,25 @@
-//go:build examples
-// +build examples
-
 package main
-
 import (
 	"context"
 	"fmt"
 	"log"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/orchestration"
 )
-
-// EnhancedOrchestrationDemo demonstrates the new advanced features
 func main() {
 	fmt.Println("🚀 Enhanced Echollama Orchestration Demo")
 	fmt.Println("========================================")
 	fmt.Println("Demonstrating advanced learning and performance optimization features...")
 	fmt.Println()
-
-	// Initialize orchestration engine
 	client := api.Client{}
 	engine := orchestration.NewEngine(client)
 	ctx := context.Background()
-
-	// Register default tools and plugins
 	orchestration.RegisterDefaultTools(engine)
 	orchestration.RegisterDefaultPlugins(engine)
-
 	fmt.Printf("✅ Initialized engine with %d tools and %d plugins\n",
 		len(engine.GetAvailableTools()),
 		len(engine.GetAvailablePlugins()))
-
-	// Initialize Deep Tree Echo System
 	fmt.Println("\n🧠 Initializing Deep Tree Echo System...")
 	err := engine.InitializeDeepTreeEcho(ctx)
 	if err != nil {
@@ -41,34 +27,23 @@ func main() {
 	} else {
 		fmt.Println("✅ Deep Tree Echo system initialized")
 	}
-
-	// Create specialized agents
 	fmt.Println("\n🤖 Creating Specialized Agents...")
-
-	// Create a performance-optimized agent
 	performanceAgent, err := engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeSpecialist, "performance-optimization")
 	if err != nil {
 		log.Fatalf("Failed to create performance agent: %v", err)
 	}
 	fmt.Printf("✅ Created performance-optimized agent: %s\n", performanceAgent.Name)
-
-	// Create a learning-focused agent
 	learningAgent, err := engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeReflective, "machine-learning")
 	if err != nil {
 		log.Fatalf("Failed to create learning agent: %v", err)
 	}
 	fmt.Printf("✅ Created learning-focused agent: %s\n", learningAgent.Name)
-
-	// Create an orchestrator agent
 	orchestratorAgent, err := engine.CreateSpecializedAgent(ctx, orchestration.AgentTypeOrchestrator, "advanced-coordination")
 	if err != nil {
 		log.Fatalf("Failed to create orchestrator agent: %v", err)
 	}
 	fmt.Printf("✅ Created orchestrator agent: %s\n", orchestratorAgent.Name)
-
-	// Demonstrate optimized task execution
 	fmt.Println("\n⚡ Demonstrating Performance-Optimized Task Execution...")
-
 	task1 := &orchestration.Task{
 		Type:  orchestration.TaskTypeTool,
 		Input: "Calculate the performance impact of recent optimizations",
@@ -82,7 +57,6 @@ func main() {
 			},
 		},
 	}
-
 	deadline := time.Now().Add(2 * time.Minute)
 	result1, err := engine.ExecuteTaskOptimized(ctx, task1, orchestration.TaskPriorityHigh, deadline)
 	if err != nil {
@@ -90,18 +64,13 @@ func main() {
 	} else {
 		fmt.Printf("✅ Optimized task completed: %s\n", truncateString(result1.Output, 80))
 	}
-
-	// Demonstrate learning system
 	fmt.Println("\n🧠 Demonstrating Learning System...")
-
-	// Execute several tasks to build learning history
 	for i := 0; i < 3; i++ {
 		task := &orchestration.Task{
 			ID:    fmt.Sprintf("learning-task-%d", i+1),
 			Type:  orchestration.TaskTypeReflect,
 			Input: fmt.Sprintf("Perform learning iteration %d: analyze patterns and improve", i+1),
 		}
-
 		_, err := engine.ExecuteTask(ctx, task, learningAgent)
 		if err != nil {
 			log.Printf("Learning task %d failed: %v", i+1, err)
@@ -109,18 +78,13 @@ func main() {
 			fmt.Printf("✅ Learning task %d completed\n", i+1)
 		}
 	}
-
-	// Get learning model for the agent
 	learningSystem := engine.GetLearningSystem()
 	model := learningSystem.GetLearningModel(learningAgent.ID)
-
 	fmt.Printf("📊 Learning Model Stats:\n")
 	fmt.Printf("   - Current Performance: %.1f%%\n", model.LearningTrajectory.CurrentPerformance*100)
 	fmt.Printf("   - Learning Rate: %.1f%%\n", model.LearningRate*100)
 	fmt.Printf("   - Specialization Areas: %v\n", model.SpecializationAreas)
 	fmt.Printf("   - Collaboration Style: %s\n", model.CollaborationStyle)
-
-	// Demonstrate agent adaptation
 	fmt.Println("\n🔄 Demonstrating Agent Adaptation...")
 	adaptationResult, err := engine.AdaptAgent(ctx, learningAgent.ID)
 	if err != nil {
@@ -133,8 +97,6 @@ func main() {
 			fmt.Printf("   - Recommendations: %v\n", adaptationResult.RecommendedActions)
 		}
 	}
-
-	// Demonstrate optimal agent prediction
 	fmt.Println("\n🎯 Demonstrating Optimal Agent Prediction...")
 	predictionTask := &orchestration.Task{
 		Type:  orchestration.TaskTypePlugin,
@@ -144,15 +106,12 @@ func main() {
 			"complexity":  "high",
 		},
 	}
-
 	optimalAgent, confidence, err := engine.PredictOptimalAgentForTask(ctx, predictionTask)
 	if err != nil {
 		log.Printf("Optimal agent prediction failed: %v", err)
 	} else {
 		fmt.Printf("✅ Predicted optimal agent: %s (confidence: %.1f%%)\n", optimalAgent.Name, confidence*100)
 	}
-
-	// Show performance metrics
 	fmt.Println("\n📈 Current System Performance Metrics:")
 	systemMetrics := engine.GetSystemMetrics()
 	if systemMetrics != nil {
@@ -162,8 +121,6 @@ func main() {
 		fmt.Printf("   - System Health: %.1f%%\n", systemMetrics.SystemHealth*100)
 		fmt.Printf("   - Throughput: %.2f TPS\n", systemMetrics.ThroughputTPS)
 	}
-
-	// Show resource usage
 	fmt.Println("\n💾 Resource Usage:")
 	resourceUsage := engine.GetResourceUsage()
 	if len(resourceUsage) > 0 {
@@ -174,8 +131,6 @@ func main() {
 	} else {
 		fmt.Printf("   - No active resource usage\n")
 	}
-
-	// Check for any alerts
 	fmt.Println("\n🚨 System Alerts:")
 	alerts := engine.GetActiveAlerts()
 	if len(alerts) > 0 {
@@ -185,10 +140,7 @@ func main() {
 	} else {
 		fmt.Printf("   - No active alerts\n")
 	}
-
-	// Multi-agent workflow demonstration
 	fmt.Println("\n🤝 Demonstrating Multi-Agent Workflow...")
-
 	workflow := &orchestration.ConversationWorkflow{
 		ID:           "enhanced-workflow",
 		Name:         "Enhanced Orchestration Workflow",
@@ -218,7 +170,6 @@ func main() {
 			},
 		},
 	}
-
 	workflowResult, err := engine.ExecuteConversationWorkflow(ctx, workflow)
 	if err != nil {
 		log.Printf("Workflow execution failed: %v", err)
@@ -232,7 +183,6 @@ func main() {
 			fmt.Printf("   - Key Insight: %s\n", workflowResult.Insights[0])
 		}
 	}
-
 	fmt.Println("\n🎉 Enhanced Orchestration Demo Complete!")
 	fmt.Println("The system now includes advanced learning, performance optimization,")
 	fmt.Println("intelligent agent selection, resource management, and comprehensive monitoring.")
@@ -246,7 +196,6 @@ func main() {
 	fmt.Println("   • Adaptive agent behaviors")
 	fmt.Println("   • Multi-agent collaboration workflows")
 }
-
 func truncateString(s string, maxLen int) string {
 	if len(s) <= maxLen {
 		return s

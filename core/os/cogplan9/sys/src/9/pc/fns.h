@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 void	aamloop(int);
 void	acpiscan(void (*func)(uchar *));
 Dirtab*	addarchfile(char*, int, long(*)(Chan*,void*,long,vlong), long(*)(Chan*,void*,long,vlong));
@@ -189,17 +188,12 @@ void	vunmap(void*, int);
 void	wbinvd(void);
 void	wrmsr(int, vlong);
 int	xchgw(ushort*, int);
-
 #define PTR2UINT(p)	((uintptr)(p))
 #define UINT2PTR(i)	((void*)(i))
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 #define	KADDR(a)	kaddr(a)
 #define PADDR(a)	paddr((void*)(a))
-
 #define	dcflush(a, b)
-
 #define BIOSSEG(a)	KADDR(((uint)(a))<<4)
-
 #define L16GET(p)	(((p)[1]<<8)|(p)[0])
 #define L32GET(p)	(((u32int)L16GET((p)+2)<<16)|L16GET(p))

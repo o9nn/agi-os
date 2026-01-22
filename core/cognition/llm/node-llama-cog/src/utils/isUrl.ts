@@ -6,10 +6,8 @@ export function isUrl(text: string, throwOnInvalidUrl: boolean = true) {
         } catch {
             if (throwOnInvalidUrl)
                 throw new Error(`Invalid URL: ${text}`);
-
             return false;
         }
     }
-
     return false;
 }

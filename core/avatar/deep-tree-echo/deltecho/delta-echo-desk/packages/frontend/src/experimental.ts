@@ -3,35 +3,29 @@ import { BackendRemote } from './backend-com'
 import { DragRegionOverlay, printCallCounterResult } from './debug-tools'
 import { runtime } from '@deltachat-desktop/runtime-interface'
 import { selectedAccountId } from './ScreenController'
-
 const log = getLogger('renderer/experiments')
-
 class Experimental {
   help() {
-    /* ignore-console-log */
     console.log(`
 These functions are highly experimental, use at your own risk.
-- importContacts (contacts:[email,name][]) // for mass importing contacts
+- importContacts (contacts:[email,name][]) 
     example: type "exp.importContacts([['email1@example.com', 'Heinz Herlich'],['bea@example.com','Berta Bissig']])"
-- getAllAccounts() // list all accounts
-
+- getAllAccounts() 
 only for debugging:
 - testErrorLogging()
 - getContextEmitters()
-- printCallCounterResult() // for profiling you can track what is called how often with 'countCall(label: string)'
-- .rpc // only available in devmode, gives full access to jsonrpc
-- .runtime // only available in devmode, gives full access to runtime
-- showDragAreas() // toggle drag region overlay
+- printCallCounterResult() 
+- .rpc 
+- .runtime 
+- showDragAreas() 
     `)
   }
   constructor() {
     window.exp = this
   }
-
   getAllAccounts() {
     return BackendRemote.listAccounts()
   }
-
   async importContacts(contacts: [string, string][]) {
     const accountId = selectedAccountId()
     let error_count = 0
@@ -47,20 +41,16 @@ only for debugging:
     }
     log.info(`Imported ${contacts.length - error_count} contacts`)
   }
-
   testErrorLogging() {
     log.debug(new Error('a test error - should be logged to logfile'))
     throw new Error('a test error - should be caught and logged to logfile')
   }
-
   getContextEmitters() {
     return (BackendRemote as any).contextEmitters
   }
-
   printCallCounterResult() {
     printCallCounterResult()
   }
-
   get rpc() {
     if (!runtime.getRC_Config().devmode) {
       throw new Error(
@@ -69,7 +59,6 @@ only for debugging:
     }
     return BackendRemote.rpc
   }
-
   get runtime() {
     if (!runtime.getRC_Config().devmode) {
       throw new Error(
@@ -78,7 +67,6 @@ only for debugging:
     }
     return runtime
   }
-
   dragRegionOverlay?: DragRegionOverlay
   showDragAreas() {
     if (!this.dragRegionOverlay) {
@@ -87,5 +75,4 @@ only for debugging:
     this.dragRegionOverlay.toggle()
   }
 }
-
 export const exp = new Experimental()

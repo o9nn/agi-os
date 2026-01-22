@@ -1,10 +1,6 @@
 #include "dtos.h"
-
-/* avoid name conflicts */
 #undef accept
 #undef listen
-
-/* sys calls */
 #undef bind
 #undef chdir
 #undef close

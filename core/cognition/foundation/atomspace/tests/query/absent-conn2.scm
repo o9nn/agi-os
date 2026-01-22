@@ -1,7 +1,5 @@
 (use-modules (opencog) (opencog exec))
-
 (define soln (SetLink (ListLink (ConceptNode "A") (ConceptNode "B"))))
-
 (define test-absent
     (BindLink
         (VariableList
@@ -26,7 +24,6 @@
         )
     )
 )
-
 (define test-not-present
     (BindLink
         (VariableList

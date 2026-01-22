@@ -1,8 +1,3 @@
-
-
-; The bindlink below has two disconnected parts. The pattern matcher
-; should throw an error for this situation, as it is an undesirable
-; kind of thing to have. 
 (define anaphora-resolution
    (BindLink
       (VariableList
@@ -31,13 +26,7 @@
       )
    )
 )
-
-; weird hack to interface with the C++ code ...
 (define (get-bindlink) anaphora-resolution)
-
-
-; An unused binlink, it provides some confounding junk to confuse
-; the pattern matcher.
 (define pronoun-finder
    (BindLink
       (VariableList
@@ -60,21 +49,11 @@
      )
    )
 )
-
 (ListLink
    (AnchorNode "Recent Unresolved references")
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
 )
-
-
-; Some pointless junk in the atomspace.  Not needed for this test case,
-; its just here wasting space.
-;
-; Relex parse of sentence Tom ate it
-; (S (NP Tom.m) (VP ate.v-d (NP it)))
-
 (define (stv mean conf) (cog-new-stv mean conf))
-
 (ReferenceLink (stv 1.0 1.0)
    (WordInstanceNode "LEFT-WALL@sentence@f73f6f0d-8822-4220-b6fa-7afa24ec3af8_parse_0")
    (WordNode "###LEFT-WALL###")
@@ -159,7 +138,6 @@
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    (WordNode "it")
 )
-; _subj (<<eat>>, <<Tom>>) 
 (EvaluationLink (stv 1.0 1.0)
    (DefinedLinguisticRelationshipNode "_subj")
    (ListLink
@@ -167,7 +145,6 @@
       (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    )
 )
-; _obj (<<eat>>, <<it>>) 
 (EvaluationLink (stv 1.0 1.0)
    (DefinedLinguisticRelationshipNode "_obj")
    (ListLink
@@ -175,75 +152,59 @@
       (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    )
 )
-; tense (eat, past)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "ate@0d0cf639-73c2-4d6f-9893-7de70ea9c654")
    (DefinedLinguisticConceptNode "past")
 )
-; subscript-TAG (eat, .v-d)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "ate@0d0cf639-73c2-4d6f-9893-7de70ea9c654")
    (DefinedLinguisticConceptNode ".v-d")
 )
-; pos (eat, verb)
 (PartOfSpeechLink (stv 1.0 1.0)
    (WordInstanceNode "ate@0d0cf639-73c2-4d6f-9893-7de70ea9c654")
    (DefinedLinguisticConceptNode "verb")
 )
-; gender (Tom, masculine)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode "masculine")
 )
-; person-FLAG (Tom, T)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode "person")
 )
-; subscript-TAG (Tom, .m)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode ".m")
 )
-; definite-FLAG (Tom, T)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode "definite")
 )
-; pos (Tom, noun)
 (PartOfSpeechLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode "noun")
 )
-; noun_number (Tom, singular)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "Tom@316f309d-cf95-493b-bf55-98bebcc91c5a")
    (DefinedLinguisticConceptNode "singular")
 )
-; gender (it, neuter)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    (DefinedLinguisticConceptNode "neuter")
 )
-; definite-FLAG (it, T)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    (DefinedLinguisticConceptNode "definite")
 )
-; pos (it, noun)
 (PartOfSpeechLink (stv 1.0 1.0)
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    (DefinedLinguisticConceptNode "noun")
 )
-; pronoun-FLAG (it, T)
 (InheritanceLink (stv 1.0 1.0)
    (WordInstanceNode "it@2f788834-beeb-4c8d-914d-8b677bca95fb")
    (DefinedLinguisticConceptNode "pronoun")
 )
-
 (ListLink (stv 1 1)
    (AnchorNode "# New Parsed Sentence")
    (SentenceNode "sentence@f73f6f0d-8822-4220-b6fa-7afa24ec3af8")
 )
-; END OF SENTENCE
-

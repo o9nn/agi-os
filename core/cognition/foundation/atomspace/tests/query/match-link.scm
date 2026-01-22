@@ -1,21 +1,16 @@
-
 (define (stv mean conf) (cog-new-stv mean conf))
-
-; Some data to populate the atomspace
 (SetLink
    (UnorderedLink
       (AssociativeLink (stv 1.0 1.0)
          (ConceptNode "want-this")
          (ConceptNode "valid")
       )
-
       (AssociativeLink (stv 1.0 1.0)
          (ConceptNode "want-this")
          (ConceptNode "one-high, 4-arity")
          (ConceptNode "mehh2")
          (ConceptNode "mehh3")
       )
-
       (AssociativeLink (stv 1.0 1.0)
          (ConceptNode "want-this")
          (MemberLink
@@ -24,7 +19,6 @@
          )
       )
    )
-
    (SimilarityLink
       (AssociativeLink (stv 1.0 1.0)
          (ConceptNode "wrong thing")
@@ -33,7 +27,6 @@
             (WordInstanceNode "blue")
          )
       )
-
       (AssociativeLink (stv 1.0 1.0)
          (FeatureNode "want-this")
          (MemberLink
@@ -42,7 +35,6 @@
          )
       )
    )
-
    (AssociativeLink (stv 1.0 1.0)
       (FeatureNode "want-this")
       (FeatureNode "not really")
@@ -52,7 +44,6 @@
       )
    )
 )
-
 (AssociativeLink (stv 1.0 1.0)
    (MemberLink
       (WordInstanceNode "color")
@@ -60,7 +51,6 @@
    )
    (ConceptNode "want-this")
 )
-
 (AssociativeLink (stv 1.0 1.0)
    (ConceptNode "want-this")
    (InheritanceLink
@@ -68,7 +58,6 @@
       (WordInstanceNode "green")
    )
 )
-
 (AssociativeLink (stv 1.0 1.0)
    (ConceptNode "want-this")
    (MemberLink
@@ -78,7 +67,6 @@
    (ConceptNode "mehh2")
    (ConceptNode "mehh3")
 )
-
 (AssociativeLink (stv 1.0 1.0)
    (FeatureNode "want-this")
    (AssociativeLink (stv 1.0 1.0)
@@ -100,8 +88,6 @@
       )
    )
 )
-
-; Match any arity-2 structure of the desired form.
 (define (untyped-link-match)
    (BindLink
       (VariableList
@@ -116,8 +102,6 @@
       (VariableNode "$var")
    )
 )
-
-; Match arity-2 with the link having a type.
 (define (typed-link-match)
    (BindLink
       (VariableList
@@ -135,8 +119,6 @@
       (VariableNode "$var")
    )
 )
-
-; Match any arity-two structure
 (define (untyped-any-match)
    (BindLink
       (VariableList
@@ -155,8 +137,6 @@
       )
    )
 )
-
-; Match typed arity-two structure
 (define (typed-memb-link-match)
    (BindLink
       (VariableList
@@ -178,7 +158,6 @@
       )
    )
 )
-
 (define (typed-pet-node-match)
    (BindLink
       (VariableList

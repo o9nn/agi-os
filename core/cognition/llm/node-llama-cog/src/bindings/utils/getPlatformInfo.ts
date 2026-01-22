@@ -1,10 +1,8 @@
 import os from "os";
 import {getPlatform} from "./getPlatform.js";
 import {getLinuxDistroInfo} from "./getLinuxDistroInfo.js";
-
 export async function getPlatformInfo(): Promise<{name: string, version: string}> {
     const currentPlatform = getPlatform();
-
     if (currentPlatform === "mac")
         return {
             name: "macOS",
@@ -12,7 +10,6 @@ export async function getPlatformInfo(): Promise<{name: string, version: string}
         };
     else if (currentPlatform === "linux") {
         const linuxDistroInfo = await getLinuxDistroInfo();
-
         return {
             name: linuxDistroInfo.name,
             version: linuxDistroInfo.version
@@ -22,11 +19,9 @@ export async function getPlatformInfo(): Promise<{name: string, version: string}
             name: "Windows",
             version: os.release()
         };
-
     return {
         name: "Unknown",
         version: os.release()
     };
 }
-
 export type BinaryPlatformInfo = Awaited<ReturnType<typeof getPlatformInfo>>;

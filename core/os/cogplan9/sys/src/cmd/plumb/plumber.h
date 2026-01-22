@@ -1,71 +1,58 @@
 typedef struct Exec Exec;
 typedef struct Rule Rule;
 typedef struct Ruleset Ruleset;
-
-/*
- * Object
- */
 enum
 {
-	OArg,
-	OAttr,
-	OData,
-	ODst,
-	OPlumb,
-	OSrc,
-	OType,
-	OWdir,
+OArg,
+OAttr,
+OData,
+ODst,
+OPlumb,
+OSrc,
+OType,
+OWdir,
 };
-
-/*
- * Verbs
- */
 enum
 {
-	VAdd,	/* apply to OAttr only */
-	VClient,
-	VDelete,	/* apply to OAttr only */
-	VIs,
-	VIsdir,
-	VIsfile,
-	VMatches,
-	VSet,
-	VStart,
-	VTo,
+VAdd,
+VClient,
+VDelete,
+VIs,
+VIsdir,
+VIsfile,
+VMatches,
+VSet,
+VStart,
+VTo,
 };
-
 struct Rule
 {
-	int	obj;
-	int	verb;
-	char	*arg;		/* unparsed string of all arguments */
-	char	*qarg;	/* quote-processed arg string */
-	Reprog	*regex;
+int	obj;
+int	verb;
+char	*arg;
+char	*qarg;
+Reprog	*regex;
 };
-
 struct Ruleset
 {
-	int	npat;
-	int	nact;
-	Rule	**pat;
-	Rule	**act;
-	char	*port;
+int	npat;
+int	nact;
+Rule	**pat;
+Rule	**act;
+char	*port;
 };
-
 struct Exec
 {
-	Plumbmsg	*msg;
-	char			*match[10];
-	int			p0;		/* begin and end of match */
-	int			p1;
-	int			clearclick;	/* click was expanded; remove attribute */
-	int			setdata;	/* data should be set to $0 */
-	int			holdforclient;	/* exec'ing client; keep message until port is opened */
-	/* values of $variables */
-	char			*file;
-	char 			*dir;
+Plumbmsg	*msg;
+char			*match[10];
+int			p0;
+int			p1;
+int			clearclick;
+int			setdata;
+int			holdforclient;
+char			*file;
+char 			*dir;
 };
-
 void		parseerror(char*, ...);
 void		error(char*, ...);
 void*	emalloc(long);
@@ -83,7 +70,6 @@ char*	expand(Exec*, char*, char**);
 void		makeports(Ruleset*[]);
 void		printinputstack(void);
 int		popinput(void);
-
 Ruleset	**rules;
 char		*user;
 char		*home;

@@ -1,5 +1,4 @@
 import type { StreamTextEvent } from '@xsai/stream-text'
-
 export function mockStreamText(): {
   fullStream: ReadableStream<StreamTextEvent>
 } {
@@ -9,7 +8,6 @@ export function mockStreamText(): {
       start(controller) {
         const text = source.split('')
         let index = 0
-
         const interval = setInterval(() => {
           if (index < text.length) {
             controller.enqueue({ type: 'text-delta', text: text[index] })

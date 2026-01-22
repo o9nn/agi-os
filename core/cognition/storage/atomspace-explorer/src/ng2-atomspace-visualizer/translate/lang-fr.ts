@@ -1,10 +1,4 @@
-/**
- * Created by sshermz on 2/23/18.
- */
-
-// French
 export const LANG_FR_NAME = 'fr';
-
 export const LANG_FR_TRANS = {
   'Play-TT': 'Jouer  (Clause de pause)',
   'Pause-TT': 'Pause  (Clause de pause)',

@@ -1,47 +1,39 @@
 from typing import List, Optional, Union
-
 from pydantic import BaseModel, Field, root_validator
-
-
 class SamplingParams(BaseModel):
-    n: int = Field(1, alias="n")
-    best_of: Optional[int] = Field(None, alias="best_of")
-    presence_penalty: float = Field(0.0, alias="presence_penalty")
-    frequency_penalty: float = Field(0.0, alias="rep_pen")
-    temperature: float = Field(1.0, alias="temperature")
+    n: int = Field(1, alias='n')
+    best_of: Optional[int] = Field(None, alias='best_of')
+    presence_penalty: float = Field(0.0, alias='presence_penalty')
+    frequency_penalty: float = Field(0.0, alias='rep_pen')
+    temperature: float = Field(1.0, alias='temperature')
     dynatemp_range: Optional[float] = 0.0
     dynatemp_exponent: Optional[float] = 1.0
     smoothing_factor: Optional[float] = 0.0
     smoothing_curve: Optional[float] = 1.0
-    top_p: float = Field(1.0, alias="top_p")
-    top_k: float = Field(-1, alias="top_k")
-    min_p: float = Field(0.0, alias="min_p")
-    top_a: float = Field(0.0, alias="top_a")
-    tfs: float = Field(1.0, alias="tfs")
-    eta_cutoff: float = Field(0.0, alias="eta_cutoff")
-    epsilon_cutoff: float = Field(0.0, alias="epsilon_cutoff")
-    typical_p: float = Field(1.0, alias="typical_p")
-    use_beam_search: bool = Field(False, alias="use_beam_search")
-    length_penalty: float = Field(1.0, alias="length_penalty")
-    early_stopping: Union[bool, str] = Field(False, alias="early_stopping")
-    stop: Union[None, str, List[str]] = Field(None, alias="stop_sequence")
+    top_p: float = Field(1.0, alias='top_p')
+    top_k: float = Field(-1, alias='top_k')
+    min_p: float = Field(0.0, alias='min_p')
+    top_a: float = Field(0.0, alias='top_a')
+    tfs: float = Field(1.0, alias='tfs')
+    eta_cutoff: float = Field(0.0, alias='eta_cutoff')
+    epsilon_cutoff: float = Field(0.0, alias='epsilon_cutoff')
+    typical_p: float = Field(1.0, alias='typical_p')
+    use_beam_search: bool = Field(False, alias='use_beam_search')
+    length_penalty: float = Field(1.0, alias='length_penalty')
+    early_stopping: Union[bool, str] = Field(False, alias='early_stopping')
+    stop: Union[None, str, List[str]] = Field(None, alias='stop_sequence')
     include_stop_str_in_output: Optional[bool] = False
-    ignore_eos: bool = Field(False, alias="ignore_eos")
-    max_tokens: int = Field(16, alias="max_length")
-    logprobs: Optional[int] = Field(None, alias="logprobs")
-    custom_token_bans: Optional[List[int]] = Field(None,
-                                                   alias="custom_token_bans")
-
+    ignore_eos: bool = Field(False, alias='ignore_eos')
+    max_tokens: int = Field(16, alias='max_length')
+    logprobs: Optional[int] = Field(None, alias='logprobs')
+    custom_token_bans: Optional[List[int]] = Field(None, alias='custom_token_bans')
     @root_validator(pre=False, skip_on_failure=True)
-    def validate_best_of(cls, values):  # pylint: disable=no-self-argument
-        best_of = values.get("best_of")
-        n = values.get("n")
+    def validate_best_of(cls, values):
+        best_of = values.get('best_of')
+        n = values.get('n')
         if best_of is not None and (best_of <= 0 or best_of > n):
-            raise ValueError(
-                "best_of must be a positive integer less than or equal to n")
+            raise ValueError('best_of must be a positive integer less than or equal to n')
         return values
-
-
 class KAIGenerationInputSchema(BaseModel):
     genkey: Optional[str] = None
     prompt: str
@@ -81,16 +73,12 @@ class KAIGenerationInputSchema(BaseModel):
     disable_input_formatting: Optional[bool] = None
     frmtadsnsp: Optional[bool] = None
     quiet: Optional[bool] = None
-    # pylint: disable=unexpected-keyword-arg
     sampler_order: Optional[Union[List, str]] = Field(default_factory=list)
     sampler_seed: Optional[int] = None
     sampler_full_determinism: Optional[bool] = None
     stop_sequence: Optional[List[str]] = None
     include_stop_str_in_output: Optional[bool] = False
-
     @root_validator(pre=False, skip_on_failure=True)
-    def check_context(cls, values):  # pylint: disable=no-self-argument
-        assert values.get("max_length") <= values.get(
-            "max_context_length"
-        ), "max_length must not be larger than max_context_length"
+    def check_context(cls, values):
+        assert values.get('max_length') <= values.get('max_context_length'), 'max_length must not be larger than max_context_length'
         return values

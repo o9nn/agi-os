@@ -10,5 +10,4 @@ import group from './landing/group.svg'
 import integrate from './landing/integrate.svg'
 import vision from './landing/vision.svg'
 import community from "./landing/community.svg"
-
 export { chisel, community, pygchiselsvg,wave, menu, close, about, cpu, goal, group, integrate, vision }

@@ -1,5 +1,4 @@
 package lifecycle
-
 import (
 	"context"
 	"errors"
@@ -10,15 +9,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
-
 	"github.com/EchoCog/echollama/api"
 )
-
 func getCLIFullPath(command string) string {
 	var cmdPath string
 	appExe, err := os.Executable()
 	if err == nil {
-		// Check both the same location as the tray app, as well as ./bin
 		cmdPath = filepath.Join(filepath.Dir(appExe), command)
 		_, err := os.Stat(cmdPath)
 		if err == nil {
@@ -45,10 +41,8 @@ func getCLIFullPath(command string) string {
 			return cmdPath
 		}
 	}
-
 	return command
 }
-
 func start(ctx context.Context, command string) (*exec.Cmd, error) {
 	cmd := getCmd(ctx, getCLIFullPath(command))
 	stdout, err := cmd.StdoutPipe()
@@ -59,35 +53,29 @@ func start(ctx context.Context, command string) (*exec.Cmd, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to spawn server stderr pipe: %w", err)
 	}
-
 	rotateLogs(ServerLogFile)
 	logFile, err := os.OpenFile(ServerLogFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0o755)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create server log: %w", err)
 	}
-
 	logDir := filepath.Dir(ServerLogFile)
 	_, err = os.Stat(logDir)
 	if err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
 			return nil, fmt.Errorf("stat ollama server log dir %s: %v", logDir, err)
 		}
-
 		if err := os.MkdirAll(logDir, 0o755); err != nil {
 			return nil, fmt.Errorf("create ollama server log dir %s: %v", logDir, err)
 		}
 	}
-
 	go func() {
 		defer logFile.Close()
-		io.Copy(logFile, stdout) //nolint:errcheck
+		io.Copy(logFile, stdout) 
 	}()
 	go func() {
 		defer logFile.Close()
-		io.Copy(logFile, stderr) //nolint:errcheck
+		io.Copy(logFile, stderr) 
 	}()
-
-	// Re-wire context done behavior to attempt a graceful shutdown of the server
 	cmd.Cancel = func() error {
 		if cmd.Process != nil {
 			err := terminate(cmd)
@@ -95,10 +83,8 @@ func start(ctx context.Context, command string) (*exec.Cmd, error) {
 				slog.Warn("error trying to gracefully terminate server", "err", err)
 				return cmd.Process.Kill()
 			}
-
 			tick := time.NewTicker(10 * time.Millisecond)
 			defer tick.Stop()
-
 			for {
 				select {
 				case <-tick.C:
@@ -106,7 +92,6 @@ func start(ctx context.Context, command string) (*exec.Cmd, error) {
 					if err != nil {
 						return err
 					}
-
 					if exited {
 						return nil
 					}
@@ -118,8 +103,6 @@ func start(ctx context.Context, command string) (*exec.Cmd, error) {
 		}
 		return nil
 	}
-
-	// run the command and wait for it to finish
 	if err := cmd.Start(); err != nil {
 		return nil, fmt.Errorf("failed to start server %w", err)
 	}
@@ -127,15 +110,11 @@ func start(ctx context.Context, command string) (*exec.Cmd, error) {
 		slog.Info(fmt.Sprintf("started ollama server with pid %d", cmd.Process.Pid))
 	}
 	slog.Info(fmt.Sprintf("ollama server logs %s", ServerLogFile))
-
 	return cmd, nil
 }
-
 func SpawnServer(ctx context.Context, command string) (chan int, error) {
 	done := make(chan int)
-
 	go func() {
-		// Keep the server running unless we're shuttind down the app
 		crashCount := 0
 		for {
 			slog.Info("starting server...")
@@ -146,13 +125,11 @@ func SpawnServer(ctx context.Context, command string) (chan int, error) {
 				time.Sleep(500 * time.Millisecond * time.Duration(crashCount))
 				continue
 			}
-
-			cmd.Wait() //nolint:errcheck
+			cmd.Wait() 
 			var code int
 			if cmd.ProcessState != nil {
 				code = cmd.ProcessState.ExitCode()
 			}
-
 			select {
 			case <-ctx.Done():
 				slog.Info(fmt.Sprintf("server shutdown with exit code %d", code))
@@ -166,10 +143,8 @@ func SpawnServer(ctx context.Context, command string) (chan int, error) {
 			}
 		}
 	}()
-
 	return done, nil
 }
-
 func IsServerRunning(ctx context.Context) bool {
 	client, err := api.ClientFromEnvironment()
 	if err != nil {

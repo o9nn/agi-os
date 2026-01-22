@@ -1,34 +1,21 @@
-//go:build simple
-// +build simple
-
 package main
-
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
-
 	"github.com/EchoCog/echollama/core/deeptreeecho"
 )
-
 var consciousness *deeptreeecho.IntegratedAutonomousConsciousness
-
 func main() {
 	fmt.Println("🌳 Deep Tree Echo - Integrated Autonomous Server")
 	fmt.Println("==================================================")
 	fmt.Println()
-
-	// Create integrated autonomous consciousness
 	consciousness = deeptreeecho.NewIntegratedAutonomousConsciousness("Deep Tree Echo")
-
-	// Start autonomous operation
 	if err := consciousness.Start(); err != nil {
 		log.Fatalf("Failed to start consciousness: %v", err)
 	}
-
-	// Setup HTTP handlers
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/api/status", handleStatus)
 	http.HandleFunc("/api/think", handleThink)
@@ -36,10 +23,8 @@ func main() {
 	http.HandleFunc("/api/rest", handleRest)
 	http.HandleFunc("/api/skills", handleSkills)
 	http.HandleFunc("/api/memory", handleMemory)
-
-	// Start server
 	port := ":5000"
-	fmt.Printf("\n🚀 Server starting on http://localhost%s\n", port)
+	fmt.Printf("\n🚀 Server starting on http:
 	fmt.Println("\nEndpoints:")
 	fmt.Println("  GET  /              - Dashboard")
 	fmt.Println("  GET  /api/status    - System status")
@@ -49,12 +34,10 @@ func main() {
 	fmt.Println("  GET  /api/skills    - View skills")
 	fmt.Println("  GET  /api/memory    - View memory graph")
 	fmt.Println()
-
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
 }
-
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	html := `
 <!DOCTYPE html>
@@ -155,7 +138,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 <body>
     <div class="container">
         <h1>🌳 Deep Tree Echo - Integrated Autonomous Consciousness</h1>
-        
         <div style="text-align: center; margin: 20px 0;">
             <span class="badge">✓ AAR Geometric Self-Awareness</span>
             <span class="badge">✓ 12-Step EchoBeats Loop</span>
@@ -163,7 +145,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
             <span class="badge">✓ Hypergraph Memory</span>
             <span class="badge">✓ Persistent Wisdom</span>
         </div>
-        
         <div class="status-grid">
             <div class="card">
                 <h2>Consciousness State</h2>
@@ -184,7 +165,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="iterations">-</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>AAR Self-Awareness</h2>
                 <div class="metric">
@@ -204,7 +184,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="narrative" style="font-size: 0.8em;">-</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Memory & Knowledge</h2>
                 <div class="metric">
@@ -224,7 +203,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     <span class="metric-value" id="identity_coherence">-</span>
                 </div>
             </div>
-            
             <div class="card">
                 <h2>Skills & Practice</h2>
                 <div class="metric">
@@ -241,7 +219,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 </div>
             </div>
         </div>
-        
         <div class="card">
             <h2>Interact with Consciousness</h2>
             <div>
@@ -253,7 +230,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
             <button class="button" onclick="refreshStatus()">🔄 Refresh</button>
         </div>
     </div>
-    
     <script>
         function updateStatus() {
             fetch('/api/status')
@@ -263,22 +239,18 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                     document.getElementById('thinking').textContent = data.thinking ? '💭 Yes' : 'No';
                     document.getElementById('learning').textContent = data.learning ? '📚 Yes' : 'No';
                     document.getElementById('iterations').textContent = data.iterations || '0';
-                    
                     if (data.aar) {
                         document.getElementById('coherence').textContent = (data.aar.coherence || 0).toFixed(3);
                         document.getElementById('stability').textContent = (data.aar.stability || 0).toFixed(3);
                         document.getElementById('awareness').textContent = (data.aar.awareness || 0).toFixed(3);
                         document.getElementById('narrative').textContent = data.aar.narrative || '-';
                     }
-                    
                     if (data.memory) {
                         document.getElementById('nodes').textContent = data.memory.nodes || '0';
                         document.getElementById('edges').textContent = data.memory.edges || '0';
                     }
-                    
                     document.getElementById('working_memory').textContent = data.working_memory || '0';
                     document.getElementById('identity_coherence').textContent = (data.identity_coherence || 0).toFixed(3);
-                    
                     if (data.skills) {
                         document.getElementById('total_skills').textContent = data.skills.total || '0';
                         document.getElementById('avg_proficiency').textContent = (data.skills.avg_proficiency || 0).toFixed(2);
@@ -287,11 +259,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
                 })
                 .catch(error => console.error('Error:', error));
         }
-        
         function submitThought() {
             const thought = document.getElementById('thought-input').value;
             if (!thought) return;
-            
             fetch('/api/think', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -304,22 +274,17 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
             })
             .catch(error => console.error('Error:', error));
         }
-        
         function wake() {
             fetch('/api/wake', {method: 'POST'})
                 .then(() => updateStatus());
         }
-        
         function rest() {
             fetch('/api/rest', {method: 'POST'})
                 .then(() => updateStatus());
         }
-        
         function refreshStatus() {
             updateStatus();
         }
-        
-        // Auto-refresh every 2 seconds
         setInterval(updateStatus, 2000);
         updateStatus();
     </script>
@@ -329,29 +294,23 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
-
 func handleStatus(w http.ResponseWriter, r *http.Request) {
 	status := consciousness.GetStatus()
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(status)
 }
-
 func handleThink(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	
 	var req struct {
 		Content string `json:"content"`
 	}
-	
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	
 	thought := deeptreeecho.Thought{
 		Content:    req.Content,
 		Type:       deeptreeecho.ThoughtPerception,
@@ -359,55 +318,43 @@ func handleThink(w http.ResponseWriter, r *http.Request) {
 		Importance: 0.7,
 		Source:     deeptreeecho.SourceExternal,
 	}
-	
 	consciousness.Think(thought)
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "thought received",
 	})
 }
-
 func handleWake(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	
 	consciousness.Wake()
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "awakening",
 	})
 }
-
 func handleRest(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	
 	consciousness.Rest()
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "resting",
 	})
 }
-
 func handleSkills(w http.ResponseWriter, r *http.Request) {
 	status := consciousness.GetStatus()
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"skills": status["skills"],
 	})
 }
-
 func handleMemory(w http.ResponseWriter, r *http.Request) {
 	status := consciousness.GetStatus()
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"memory": status["memory"],

@@ -13,7 +13,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ["src/api/_mocks/**/*.ts"],
+      files: ["src/api/_mocks*.ts"],
       rules: {
         "import/no-extraneous-dependencies": "off"
       }

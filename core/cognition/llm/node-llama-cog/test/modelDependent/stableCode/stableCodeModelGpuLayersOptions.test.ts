@@ -5,21 +5,17 @@ import {LlamaModelOptions, readGgufFileInfo} from "../../../src/index.js";
 import {GgufInsights} from "../../../src/gguf/insights/GgufInsights.js";
 import {BuildGpu} from "../../../src/bindings/types.js";
 import {defaultLlamaVramPadding} from "../../../src/bindings/getLlama.js";
-
 describe("stableCode", () => {
     describe("model options", () => {
         describe("Resolve the correct number of GPU layers", async () => {
             const modelPath = await getModelFile("stable-code-3b-Q5_K_M.gguf");
             const llama = await getTestLlama();
-
             const fileInfo = await readGgufFileInfo(modelPath);
             const ggufInsights = await GgufInsights.from(fileInfo, llama);
-
             const s1GB = Math.pow(1024, 3);
-
             async function resolveGpuLayers(gpuLayers: LlamaModelOptions["gpuLayers"], {
                 totalVram, freeVram, unifiedMemorySize = 0,
-                totalRam = s1GB * 10, freeRam = s1GB * 10, // TODO: update all tests to test different RAM sizes
+                totalRam = s1GB * 10, freeRam = s1GB * 10, 
                 totalSwap = 0, freeSwap = 0,
                 ignoreMemorySafetyChecks = false, llamaGpu = "metal"
             }: {
@@ -39,7 +35,6 @@ describe("stableCode", () => {
                     llamaSupportsGpuOffloading: llamaGpu !== false,
                     useMmap: true
                 });
-
                 async function resolveAutoContextSize() {
                     const resolvedConfig = await ggufInsights.configurationResolver.resolveAndScoreConfig({
                         targetGpuLayers: resolvedGpuLayers,
@@ -62,19 +57,15 @@ describe("stableCode", () => {
                         llamaSupportsGpuOffloading: llamaGpu !== false,
                         llamaVramPaddingSize: defaultLlamaVramPadding(llamaGpu === false ? 0 : totalVram)
                     });
-
                     if (resolvedConfig.compatibilityScore === 0)
                         return null;
-
                     return resolvedConfig.resolvedValues.contextSize;
                 }
-
                 return {
                     gpuLayers: resolvedGpuLayers,
                     contextSize: await resolveAutoContextSize()
                 };
             }
-
             it("attempts to resolve 0 gpuLayers", async () => {
                 {
                     const res = await resolveGpuLayers(0, {
@@ -92,7 +83,6 @@ describe("stableCode", () => {
                     expect(res.gpuLayers).to.eql(0);
                     expect(res.contextSize).to.toMatchInlineSnapshot("16384");
                 }
-
                 {
                     const res = await resolveGpuLayers(0, {
                         totalVram: 0,
@@ -103,7 +93,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("16384");
                 }
             });
-
             it("attempts to resolve 16 gpuLayers", async () => {
                 {
                     const res = await resolveGpuLayers(16, {
@@ -134,18 +123,12 @@ describe("stableCode", () => {
                 {
                     const res = await resolveGpuLayers(16, {
                         totalVram: s1GB * 6,
-
-                        // play with this number to make the test pass, it should be low enough so that there won't be any VRAM left
-                        // to create a context
                         freeVram: s1GB * 1.4,
-
                         ignoreMemorySafetyChecks: true
                     });
                     expect(res.gpuLayers).to.eql(16);
                     expect(res.contextSize).to.toMatchInlineSnapshot("155");
                 }
-
-
                 {
                     const res = await resolveGpuLayers(16, {
                         totalVram: 0,
@@ -166,7 +149,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("16384");
                 }
             });
-
             it("attempts to resolve 32 gpuLayers", async () => {
                 {
                     const res = await resolveGpuLayers(32, {
@@ -194,7 +176,6 @@ describe("stableCode", () => {
                     expect(res.gpuLayers).to.eql(32);
                     expect(res.contextSize).to.toMatchInlineSnapshot("null");
                 }
-
                 {
                     const res = await resolveGpuLayers(32, {
                         totalVram: 0,
@@ -215,7 +196,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("16384");
                 }
             });
-
             it("attempts to resolve 33 gpuLayers", async () => {
                 {
                     const res = await resolveGpuLayers(33, {
@@ -243,7 +223,6 @@ describe("stableCode", () => {
                     expect(res.gpuLayers).to.eql(33);
                     expect(res.contextSize).to.toMatchInlineSnapshot("null");
                 }
-
                 {
                     const res = await resolveGpuLayers(33, {
                         totalVram: 0,
@@ -264,7 +243,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("16384");
                 }
             });
-
             it('attempts to resolve "max"', async () => {
                 try {
                     await resolveGpuLayers("max", {
@@ -275,7 +253,6 @@ describe("stableCode", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 try {
                     await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -285,7 +262,6 @@ describe("stableCode", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 try {
                     await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -295,7 +271,6 @@ describe("stableCode", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[AssertionError: expected \"Should have thrown an error\" not to be reached]");
                 }
-
                 {
                     const res = await resolveGpuLayers("max", {
                         totalVram: s1GB * 6,
@@ -330,7 +305,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("7936");
                 }
             });
-
             it('attempts to resolve "auto"', async () => {
                 {
                     const res = await resolveGpuLayers("auto", {
@@ -461,7 +435,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("11264");
                 }
             });
-
             it("attempts to resolve {min?: number, max?: number}", async () => {
                 {
                     const res = await resolveGpuLayers({max: 4}, {
@@ -497,7 +470,6 @@ describe("stableCode", () => {
                 } catch (err) {
                     expect(err).toMatchInlineSnapshot("[Error: Not enough VRAM to fit the model with the specified settings]");
                 }
-
                 {
                     const res = await resolveGpuLayers({max: 16}, {
                         totalVram: s1GB * 6,
@@ -545,7 +517,6 @@ describe("stableCode", () => {
                     expect(res.contextSize).to.toMatchInlineSnapshot("7936");
                 }
             });
-
             it("attempts to resolve {fitContext?: {contextSize?: number}}", async () => {
                 {
                     const contextSize = 4096;

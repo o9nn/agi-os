@@ -1,6 +1,5 @@
 import { C } from '@deltachat/jsonrpc-client'
 import { msgStatus } from '../../types-app'
-
 export function mapCoreMsgStatus2String(state: number): msgStatus {
   switch (state) {
     case C.DC_STATE_OUT_FAILED:
@@ -22,6 +21,6 @@ export function mapCoreMsgStatus2String(state: number): msgStatus {
     case C.DC_STATE_IN_NOTICED:
       return 'in_noticed'
     default:
-      return '' // to display no icon on unknown state
+      return '' 
   }
 }

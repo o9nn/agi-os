@@ -1,17 +1,12 @@
 package server
-
 import (
 	"path/filepath"
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
 func TestGetBlobsPath(t *testing.T) {
-	// GetBlobsPath expects an actual directory to exist
 	tempDir := t.TempDir()
-
 	tests := []struct {
 		name     string
 		digest   string
@@ -58,15 +53,12 @@ func TestGetBlobsPath(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Setenv("OLLAMA_MODELS", tempDir)
-
 			got, err := GetBlobsPath(tc.digest)
-
 			require.ErrorIs(t, tc.err, err, tc.name)
 			assert.Equal(t, tc.expected, got, tc.name)
 		})
 	}
 }
-
 func TestParseModelPath(t *testing.T) {
 	tests := []struct {
 		name string
@@ -75,7 +67,7 @@ func TestParseModelPath(t *testing.T) {
 	}{
 		{
 			"full path https",
-			"https://example.com/ns/repo:tag",
+			"https:
 			ModelPath{
 				ProtocolScheme: "https",
 				Registry:       "example.com",
@@ -86,7 +78,7 @@ func TestParseModelPath(t *testing.T) {
 		},
 		{
 			"full path http",
-			"http://example.com/ns/repo:tag",
+			"http:
 			ModelPath{
 				ProtocolScheme: "http",
 				Registry:       "example.com",
@@ -140,11 +132,9 @@ func TestParseModelPath(t *testing.T) {
 			},
 		},
 	}
-
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			got := ParseModelPath(tc.arg)
-
 			if got != tc.want {
 				t.Errorf("got: %q want: %q", got, tc.want)
 			}

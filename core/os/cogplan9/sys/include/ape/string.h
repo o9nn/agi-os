@@ -1,13 +1,10 @@
 #ifndef __STRING_H_
 #define __STRING_H_
 #pragma lib "/$M/lib/ape/libap.a"
-
 #include <stddef.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 extern void *memcpy(void *, const void *, size_t);
 extern void* memccpy(void*, void*, int, size_t);
 extern void *memmove(void *, const void *, size_t);
@@ -32,18 +29,14 @@ extern char *strtok(char *, const char *);
 extern void *memset(void *, int, size_t);
 extern char *strerror(int);
 extern size_t strlen(const char *);
-
 #ifdef _REENTRANT_SOURCE
 extern char *strerror_r(int, const char *, int);
 extern char *strtok_r(char *, const char *, char **);
 #endif
-
 #ifdef _BSD_EXTENSION
 #include <bsd.h>
 #endif
-
 #ifdef __cplusplus
 }
 #endif
-
 #endif

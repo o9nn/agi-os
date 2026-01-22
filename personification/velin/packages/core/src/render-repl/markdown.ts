@@ -1,12 +1,9 @@
 import type { ComponentProp } from '../render-shared/props'
 import type { InputProps } from '../types'
-
 import { fromMarkdown, scriptFrom } from '@velin-dev/utils/from-md'
 import { toMarkdown } from '@velin-dev/utils/to-md'
 import { createSFC } from '@velin-dev/utils/vue-sfc'
-
 import { renderSFC } from './sfc'
-
 export async function renderMarkdownString<RawProps = any>(
   source: string,
   data?: InputProps<RawProps>,
@@ -16,13 +13,10 @@ export async function renderMarkdownString<RawProps = any>(
   rendered: string
 }> {
   const html = fromMarkdown(source)
-
   const { script, template, lang } = scriptFrom(html)
   const sfcString = createSFC(template, script, lang)
-
   const { props, rendered } = await renderSFC(sfcString, data, basePath)
   const markdownResult = await toMarkdown(rendered)
-
   return {
     props,
     rendered: markdownResult,

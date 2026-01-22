@@ -1,8 +1,7 @@
 #include <magick/api.h>
-
 int main()
 {
-    InitializeMagick(NULL);
-    DestroyMagick();
-    return 0;
+InitializeMagick(NULL);
+DestroyMagick();
+return 0;
 }

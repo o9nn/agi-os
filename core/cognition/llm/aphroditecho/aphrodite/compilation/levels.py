@@ -1,6 +1,3 @@
-# constants for the levels of the compilation process
-
-
 class CompilationLevel:
     NO_COMPILATION = 0
     DYNAMO_AS_IS = 1

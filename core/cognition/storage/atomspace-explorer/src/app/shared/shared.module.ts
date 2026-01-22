@@ -1,6 +1,3 @@
-/**
- * Created by tsadik on 2/25/17.
- */
 import { NgModule } from '@angular/core';
 import { ScrollableTableModule } from './scrollable-table/scrollable-table.module';
 import { InitializeDropdown } from './directives/intitialise-dropdown.directive';
@@ -19,7 +16,6 @@ import { CommonModule } from '@angular/common';
 import { OpencogAPIService } from './services/opencog_API.service';
 import { AtomService } from 'ng2-atomspace-visualizer';
 import { EqualValidator } from './directives/equal-validator.directive';
-
 @NgModule({
   imports: [ TranslateModule, BrowserModule, CommonModule ],
   declarations: [

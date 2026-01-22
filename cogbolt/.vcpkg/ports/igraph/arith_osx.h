@@ -1,6 +1,3 @@
-/* Suitable for macOS on x86_64 and arm64 */
-/* Not suitable for 32-bit macOS */
-
 #define IEEE_8087
 #define Arith_Kind_ASL 1
 #define Long int

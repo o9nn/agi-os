@@ -1,21 +1,16 @@
 #ifndef __STDLIB_H
 #define __STDLIB_H
 #pragma lib "/$M/lib/ape/libap.a"
-
 #include <stddef.h>
-
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
 #define MB_CUR_MAX 4
 #define RAND_MAX 32767
-
 typedef struct { int quot, rem; } div_t;
 typedef struct { long quot, rem; } ldiv_t;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 extern double atof(const char *);
 extern int atoi(const char *);
 extern long int atol(const char *);
@@ -47,9 +42,7 @@ extern int mbtowc(wchar_t *, const char *, size_t);
 extern int wctomb(char *, wchar_t);
 extern size_t mbstowcs(wchar_t *, const char *, size_t);
 extern size_t wcstombs(char *, const wchar_t *, size_t);
-
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STDLIB_H */
+#endif

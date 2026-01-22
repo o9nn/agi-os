@@ -1,71 +1,45 @@
-/*!
- * # Semantic UI 2.0.0 - Video
- * http://github.com/semantic-org/semantic-ui/
- *
- *
- * Copyright 2014 Contributors
- * Released under the MIT license
- * http://opensource.org/licenses/MIT
- *
- */
-
 ;(function ($, window, document, undefined) {
-
 "use strict";
-
 $.fn.video = function(parameters) {
-
   var
     $allModules     = $(this),
-
     moduleSelector  = $allModules.selector || '',
-
     time            = new Date().getTime(),
     performance     = [],
-
     query           = arguments[0],
     methodInvoked   = (typeof query == 'string'),
     queryArguments  = [].slice.call(arguments, 1),
-
     requestAnimationFrame = window.requestAnimationFrame
       || window.mozRequestAnimationFrame
       || window.webkitRequestAnimationFrame
       || window.msRequestAnimationFrame
       || function(callback) { setTimeout(callback, 0); },
-
     returnedValue
   ;
-
   $allModules
     .each(function() {
       var
         settings        = ( $.isPlainObject(parameters) )
           ? $.extend(true, {}, $.fn.video.settings, parameters)
           : $.extend({}, $.fn.video.settings),
-
         selector        = settings.selector,
         className       = settings.className,
         error           = settings.error,
         metadata        = settings.metadata,
         namespace       = settings.namespace,
         templates       = settings.templates,
-
         eventNamespace  = '.' + namespace,
         moduleNamespace = 'module-' + namespace,
-
         $window         = $(window),
         $module         = $(this),
         $placeholder    = $module.find(selector.placeholder),
         $playButton     = $module.find(selector.playButton),
         $embed          = $module.find(selector.embed),
-
         element         = this,
         instance        = $module.data(moduleNamespace),
         module
       ;
-
       module = {
-
         initialize: function() {
           module.debug('Initializing video');
           module.create();
@@ -75,7 +49,6 @@ $.fn.video = function(parameters) {
           ;
           module.instantiate();
         },
-
         instantiate: function() {
           module.verbose('Storing instance of module', module);
           instance = module;
@@ -83,7 +56,6 @@ $.fn.video = function(parameters) {
             .data(moduleNamespace, module)
           ;
         },
-
         create: function() {
           var
             image = $module.data(metadata.image),
@@ -96,7 +68,6 @@ $.fn.video = function(parameters) {
           }
           module.debug('Creating html for video element', html);
         },
-
         destroy: function() {
           module.verbose('Destroying previous instance of video');
           module.reset();
@@ -105,15 +76,12 @@ $.fn.video = function(parameters) {
             .off(eventNamespace)
           ;
         },
-
         refresh: function() {
           module.verbose('Refreshing selector cache');
           $placeholder    = $module.find(selector.placeholder);
           $playButton     = $module.find(selector.playButton);
           $embed          = $module.find(selector.embed);
         },
-
-        // sets new video
         change: function(source, id, url) {
           module.debug('Changing video to ', source, id, url);
           $module
@@ -123,8 +91,6 @@ $.fn.video = function(parameters) {
           ;
           settings.onChange();
         },
-
-        // clears video embed
         reset: function() {
           module.debug('Clearing video embed and showing placeholder');
           $module
@@ -138,8 +104,6 @@ $.fn.video = function(parameters) {
           ;
           settings.onReset();
         },
-
-        // plays current video
         play: function() {
           module.debug('Playing video');
           var
@@ -155,7 +119,6 @@ $.fn.video = function(parameters) {
           ;
           settings.onPlay();
         },
-
         get: {
           source: function(url) {
             if(typeof url !== 'string') {
@@ -179,15 +142,12 @@ $.fn.video = function(parameters) {
             return false;
           }
         },
-
         generate: {
-          // generates iframe html
           html: function(source, id, url) {
             module.debug('Generating embed html');
             var
               html
             ;
-            // allow override of settings
             source = source || settings.source;
             id     = id     || settings.id;
             if((source && id) || url) {
@@ -197,14 +157,14 @@ $.fn.video = function(parameters) {
               }
               if(source == 'vimeo') {
                 html = ''
-                  + '<iframe src="//player.vimeo.com/video/' + id + '?=' + module.generate.url(source) + '"'
+                  + '<iframe src="
                   + ' width="100%" height="100%"'
                   + ' frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>'
                 ;
               }
               else if(source == 'youtube') {
                 html = ''
-                  + '<iframe src="//www.youtube.com/embed/' + id + '?=' + module.generate.url(source) + '"'
+                  + '<iframe src="
                   + ' width="100%" height="100%"'
                   + ' frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>'
                 ;
@@ -215,8 +175,6 @@ $.fn.video = function(parameters) {
             }
             return html;
           },
-
-          // generate url parameters
           url: function(source) {
             var
               api      = (settings.api)
@@ -231,7 +189,6 @@ $.fn.video = function(parameters) {
               showUI   = (settings.showUI)
                 ? 1
                 : 0,
-              // opposite used for some params
               hideUI   = !(settings.showUI)
                 ? 1
                 : 0,
@@ -272,7 +229,6 @@ $.fn.video = function(parameters) {
             return url;
           }
         },
-
         setting: function(name, value) {
           module.debug('Changing setting', name, value);
           if( $.isPlainObject(name) ) {
@@ -431,7 +387,6 @@ $.fn.video = function(parameters) {
           return found;
         }
       };
-
       if(methodInvoked) {
         if(instance === undefined) {
           module.initialize();
@@ -451,67 +406,51 @@ $.fn.video = function(parameters) {
     : this
   ;
 };
-
 $.fn.video.settings = {
-
   name        : 'Video',
   namespace   : 'video',
-
   debug       : false,
   verbose     : false,
   performance : true,
-
   metadata    : {
     id     : 'id',
     image  : 'image',
     source : 'source',
     url    : 'url'
   },
-
   source      : false,
   url         : false,
   id          : false,
-
   aspectRatio : (16/9),
-
   onPlay   : function(){},
   onReset  : function(){},
   onChange : function(){},
-
-  // callbacks not coded yet (needs to use jsapi)
   onPause  : function() {},
   onStop   : function() {},
-
   width    : 'auto',
   height   : 'auto',
-
   autoplay : 'auto',
   color    : '#442359',
   hd       : true,
   showUI   : false,
   api      : true,
-
   regExp : {
     youtube : /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/,
     vimeo   : /http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/
   },
-
   error      : {
     noVideo     : 'No video specified',
     method      : 'The method you called is not defined'
   },
-
   className   : {
     active      : 'active'
   },
-
   selector    : {
     embed       : '.embed',
     placeholder : '.placeholder',
     playButton  : '.play'
   }
 };
-
 $.fn.video.settings.templates = {
   video: function(image) {
     var
@@ -527,6 +466,4 @@ $.fn.video.settings.templates = {
     return html;
   }
 };
-
-
 })( jQuery, window , document );

@@ -8,7 +8,6 @@ then
     rm -R $results_dir
 fi
 mkdir ${results_dir}
-
 densities="0.4 0.8 1.0"
 focus_threshold=5
 viz_threshold=5
@@ -16,15 +15,10 @@ error=0.2
 stimulus=10
 retrieval_cycles=10
 flags="-R -E"
-
-# test random created patterns
 sizes="3 4 5"
-
 npatterns=30
 gen_density=0.3
-
 echo "Testing random patterns"
-
 for n in $sizes
 do
     for d in $densities
@@ -44,15 +38,10 @@ do
 	mv ${logfile} ${results_dir}/.
 	gzip ${results_dir}/${logfile} 
 	mv results_n_${n}_d_${d}_* ${results_dir}/.
-
     done
 done
-
-
-# test user made patterns 
 echo "---------------------"
 echo "Testing user patterns"
-
 densities="0.05 0.5 0.8"
 n=10
 train_file=../src/examples/hopfield/training_patterns.txt
@@ -77,10 +66,7 @@ do
     mv ${logfile} ${results_dir}/.
     gzip ${results_dir}/${logfile} 
     mv results_n_${n}_d_${d}_* ${results_dir}/.
-
 done
-
-#---
 n=8
 train_file=../src/examples/hopfield/training_patterns_simple.txt
 results_file=${results_dir}/result_user_pattern_n_${n}_d_${d}.txt
@@ -102,5 +88,4 @@ do
     mv ${logfile} ${results_dir}/.
     gzip ${results_dir}/${logfile} 
     mv results_n_${n}_d_${d}_* ${results_dir}/.
-
 done

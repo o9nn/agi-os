@@ -1,21 +1,3 @@
-; =============================================================================
-; NegatedSubsetEvaluationRule
-;
-; AndLink
-;   MemberLink
-;       C
-;       A
-;   MemberLink
-;       C
-;       B
-; |-
-; SubsetLink
-;   NotLink
-;       A
-;   B
-;
-; -----------------------------------------------------------------------------
-
 (define negated-subset-evaluation-rule
     (BindLink
         (VariableList
@@ -42,11 +24,9 @@
                 (MemberLink
                     (VariableNode "$C")
                     (VariableNode "$B"))))))
-
 (define (negated-subset-evaluation-formula nAB CA CB)
     (cog-set-tv!
         nAB (negated-subset-evaluation-side-effect-free-formula nAB CA CB)))
-
 (define (subset-negated-evaluation-side-effect-free-formula nAB CA CB)
     (let 
         ((snCA (- 1 (cog-mean CA)))
@@ -60,8 +40,6 @@
                 (< sCB 0.5)
                 (stv 1 0)
                 (stv 1 1)))))
-
-; Name the rule
 (define negated-subset-evaluation-rule-name
   (DefinedSchemaNode "negated-subset-evaluation-rule"))
 (DefineLink

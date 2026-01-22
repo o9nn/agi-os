@@ -1,34 +1,27 @@
 enum {
-	ACCEPT = 0,
-	REFUSED,
-	DENIED,
-	DIALUP,
-	BLOCKED,
-	DELAY,
-	TRUSTED,
-	NONE,
-
-	MAXREJECTS = 100,
+ACCEPT = 0,
+REFUSED,
+DENIED,
+DIALUP,
+BLOCKED,
+DELAY,
+TRUSTED,
+NONE,
+MAXREJECTS = 100,
 };
-
-	
 typedef struct Link Link;
 typedef struct List List;
-
 struct Link {
-	Link *next;
-	String *p;
+Link *next;
+String *p;
 };
-
 struct List {
-	Link *first;
-	Link *last;
+Link *first;
+Link *last;
 };
-
 extern	int	fflag;
 extern	int	rflag;
 extern	int	sflag;
-
 extern	int	debug;
 extern	NetConnInfo	*nci;
 extern	char	*dom;
@@ -37,7 +30,6 @@ extern	int	trusted;
 extern	List	senders;
 extern	List	rcvers;
 extern	uchar	rsysip[];
-
 void	addbadguy(char*);
 void	auth(String *, String *);
 int	blocked(String*);

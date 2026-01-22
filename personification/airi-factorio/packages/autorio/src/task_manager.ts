@@ -1,22 +1,17 @@
 import type { PlayerParameters, PlayerState } from './types'
 import { TaskStates } from './types'
-
 export function new_task_manager() {
   const player_state: PlayerState = {
     task_state: TaskStates.IDLE,
   }
-
   const task_queue: PlayerParameters[] = []
-
   function add_task(task: PlayerParameters) {
     task_queue.push(task)
     log(`[AUTORIO] Task added: ${task.type}, task queue length: ${task_queue.length}`)
-
     if (task_queue.length === 1) {
       next_task()
     }
   }
-
   function reset_task_state() {
     player_state.task_state = TaskStates.IDLE
     player_state.parameters_walk_to_entity = undefined
@@ -29,13 +24,11 @@ export function new_task_manager() {
     player_state.parameters_research_technology = undefined
     player_state.parameters_waiting = undefined
   }
-
   function next_task() {
     if (player_state.task_state !== TaskStates.IDLE) {
       log('[AUTORIO] Task state is not IDLE, wont execute next task')
       return
     }
-
     const task = task_queue.shift()
     if (!task) {
       player_state.task_state = TaskStates.IDLE
@@ -43,7 +36,6 @@ export function new_task_manager() {
       log('[AUTORIO] All operations completed')
       return
     }
-
     log(`[AUTORIO] Next task: ${task.type}, task queue length: ${task_queue.length}`)
     player_state.task_state = task.type
     switch (task.type) {
@@ -68,12 +60,10 @@ export function new_task_manager() {
           log('[AUTORIO] No player found')
           return
         }
-
         player.begin_crafting({
           count: task.count,
           recipe: task.item_name,
         })
-
         player_state.parameters_craft_item = task
         break
       }
@@ -88,20 +78,16 @@ export function new_task_manager() {
         break
     }
   }
-
   function is_task_queue_empty() {
     return task_queue.length === 0
   }
-
   function cancel_task() {
     reset_task_state()
   }
-
   function cancel_all_tasks() {
     reset_task_state()
-    task_queue.length = 0 // can use this to clear the array in lua
+    task_queue.length = 0 
   }
-
   return {
     player_state,
     add_task,

@@ -1,10 +1,4 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
-/**
- * Sort package.json with scripts
- *
- * Requires `jsonc` config
- */
 export const sortPackageJsonWithScripts = (): TypedFlatConfigItem[] => [{
   files: ['**/package.json'],
   name: 'moeru/sort/package-json-scripts',
@@ -15,7 +9,6 @@ export const sortPackageJsonWithScripts = (): TypedFlatConfigItem[] => [{
         order: { type: 'asc' },
         pathPattern: '^scripts$',
       },
-      // https://github.com/antfu/eslint-config/blob/ca5646466d58e69334d4ca20f105a3ac7344032b/src/configs/sort.ts#L23-L105
       {
         order: [
           'publisher',
@@ -85,7 +78,6 @@ export const sortPackageJsonWithScripts = (): TypedFlatConfigItem[] => [{
       },
       {
         order: [
-          // client hooks only
           'pre-commit',
           'prepare-commit-msg',
           'commit-msg',

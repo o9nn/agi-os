@@ -1,7 +1,5 @@
 import type { Command } from 'cleye'
-
 import { env } from 'node:process'
-
 export const flags = {
   apiKey: {
     default: env.ARPK_LLM_API_KEY,

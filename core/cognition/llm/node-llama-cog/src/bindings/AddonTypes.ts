@@ -1,7 +1,5 @@
 import {Token} from "../types.js";
 import {LlamaNuma} from "./types.js";
-
-
 export type BindingModule = {
     AddonModel: {
         new (modelPath: string, params: {
@@ -91,7 +89,6 @@ export type BindingModule = {
     loadBackends(forceLoadLibrariesSearchPath?: string): void,
     dispose(): Promise<void>
 };
-
 export type AddonModel = {
     init(): Promise<boolean>,
     loadLora(lora: AddonModelLora): Promise<void>,
@@ -120,18 +117,17 @@ export type AddonModel = {
     shouldAppendEosToken(): boolean,
     getModelSize(): number
 };
-
 export type AddonContext = {
     init(): Promise<boolean>,
     dispose(): Promise<void>,
     getContextSize(): number,
-    initBatch(size: number): void, // size must be less or equal to batchSize
+    initBatch(size: number): void, 
     addToBatch(
         sequenceId: number,
         firstTokenSequenceIndex: number,
         tokens: Uint32Array,
         logitIndexes: Uint32Array,
-    ): Uint32Array, // returns an array with batchLogitIndex for each item in the logitIndexes array
+    ): Uint32Array, 
     decodeBatch(): Promise<void>,
     sampleToken(batchLogitIndex: BatchLogitIndex, sampler: AddonSampler): Promise<Token | -1>,
     sampleToken(
@@ -141,13 +137,8 @@ export type AddonContext = {
         confidence?: boolean
     ): Promise<[token: Token | -1, probabilities: (Token | number)[] | undefined, confidence: number | undefined]>,
     disposeSequence(sequenceId: number): void,
-
-    // startPos in inclusive, endPos is exclusive
     removeTokenCellsFromSequence(sequenceId: number, startPos: number, endPos: number): boolean,
-
-    // startPos in inclusive, endPos is exclusive
     shiftSequenceTokenCells(sequenceId: number, startPos: number, endPos: number, shiftDelta: number): void,
-
     getSequenceKvCacheMinPosition(sequenceId: number): number,
     getSequenceKvCacheMaxPosition(sequenceId: number): number,
     getEmbedding(inputTokensLength: number, maxVectorSize?: number): Float64Array,
@@ -160,19 +151,15 @@ export type AddonContext = {
     loadSequenceStateFromFile(filePath: string, sequenceId: number, maxContextSize: number): Promise<Uint32Array>,
     setLora(lora: AddonModelLora, scale: number): void
 };
-
 export type BatchLogitIndex = number & {
     readonly __batchLogitIndex: never
 };
-
 export type AddonGrammar = {
     isTextCompatible(testText: string): boolean
 };
-
 export type AddonGrammarEvaluationState = "AddonGrammarEvaluationState" & {
     readonly __brand: never
 };
-
 export type AddonSampler = {
     dispose(): void,
     applyConfig(config: {
@@ -184,21 +171,19 @@ export type AddonSampler = {
         repeatPenalty?: number,
         repeatPenaltyMaxTokens?: number,
         repeatPenaltyTokens?: Uint32Array,
-        repeatPenaltyPresencePenalty?: number, // alpha_presence
-        repeatPenaltyFrequencyPenalty?: number, // alpha_frequency
+        repeatPenaltyPresencePenalty?: number, 
+        repeatPenaltyFrequencyPenalty?: number, 
         grammarEvaluationState?: AddonGrammarEvaluationState,
         tokenBiasKeys?: Uint32Array,
         tokenBiasValues?: Float32Array
     }): void
 };
-
 export type AddonModelLora = {
     usages: number,
     readonly filePath: string,
     readonly disposed: boolean,
     dispose(): Promise<void>
 };
-
 export type ModelTypeDescription = `${AddonModelArchName} ${AddonModelTypeName} ${AddonModelFileTypeName}`;
 export type AddonModelArchName = "unknown" | "llama" | "falcon" | "gpt2" | "gptj" | "gptneox" | "mpt" | "baichuan" | "starcoder" | "persimmon" |
     "refact" | "bloom" | "stablelm";

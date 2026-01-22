@@ -1,4 +1,3 @@
-/* This file was generated automatically by genconf.c. */
 #ifdef compositor_
 compositor_(gs_composite_alpha_type)
 compositor_(gs_composite_overprint_type)
@@ -344,4 +343,3 @@ image_class_(gs_image_class_2_fracs)
 image_class_(gs_image_class_3_mono)
 image_class_(gs_image_class_4_color)
 #endif
-

@@ -1,72 +1,57 @@
-/*
- * these limits are intended to stay within those imposed by SMTP
- * and avoid tickling bugs in other mail systems.
- * they both pertain to attempts to group recipients for the same
- * destination together in a single copy of a message.
- */
-#define MAXSAME 32	/* max recipients; was 16 */
-#define MAXSAMECHAR 1024 /* max chars in the list of recipients */
-
-/* status of a destination*/
+#define MAXSAME 32
+#define MAXSAMECHAR 1024
 typedef enum {
-	d_undefined,	/* address has not been matched*/
-	d_pipe,		/* repl1|repl2 == delivery command, rep*/
-	d_cat,		/* repl1 == mail file */
-	d_translate,	/* repl1 == translation command*/
-	d_alias,	/* repl1 == translation*/
-	d_auth,		/* repl1 == command to authorize*/
-	d_syntax,	/* addr contains illegal characters*/
-	d_unknown,	/* addr does not match a rewrite rule*/
-	d_loop,		/* addressing loop*/
-	d_eloop,	/* external addressing loop*/
-	d_noforward,	/* forwarding not allowed*/
-	d_badmbox,	/* mailbox badly formatted*/
-	d_resource,	/* ran out of something we needed*/
-	d_pipeto,	/* pipe to from a mailbox*/
+d_undefined,
+d_pipe,
+d_cat,
+d_translate,
+d_alias,
+d_auth,
+d_syntax,
+d_unknown,
+d_loop,
+d_eloop,
+d_noforward,
+d_badmbox,
+d_resource,
+d_pipeto,
 } d_status;
-
-/* a destination*/
 typedef struct dest dest;
 struct dest {
-	dest	*next;		/* for chaining*/
-	dest	*same;		/* dests with same cmd*/
-	dest	*parent;	/* destination we're a translation of*/
-	String	*addr;		/* destination address*/
-	String	*repl1;		/* substitution field 1*/
-	String	*repl2;		/* substitution field 2*/
-	int	pstat;		/* process status*/
-	d_status status;	/* delivery status*/
-	int	authorized;	/* non-zero if we have been authorized*/
-	int	nsame;		/* number of same dests chained to this entry*/
-	int	nchar;		/* number of characters in the command*/
+dest	*next;
+dest	*same;
+dest	*parent;
+String	*addr;
+String	*repl1;
+String	*repl2;
+int	pstat;
+d_status status;
+int	authorized;
+int	nsame;
+int	nchar;
 };
-
 typedef struct message message;
 struct message {
-	String	*sender;
-	String	*replyaddr;
-	String	*date;
-	String	*body;
-	String	*tmp;		/* name of temp file */
-	String	*to;
-	int	size;
-	int	fd;		/* if >= 0, the file the message is stored in*/
-	char	haveto;
-	String	*havefrom;
-	String	*havesender;
-	String	*havereplyto;
-	char	havedate;
-	char	havemime;
-	String	*havesubject;
-	char	bulk;		/* if Precedence: Bulk in header */
-	char	rfc822headers;
-	int	received;	/* number of received lines */
-	char	*boundary;	/* bondary marker for attachments */
+String	*sender;
+String	*replyaddr;
+String	*date;
+String	*body;
+String	*tmp;
+String	*to;
+int	size;
+int	fd;
+char	haveto;
+String	*havefrom;
+String	*havesender;
+String	*havereplyto;
+char	havedate;
+char	havemime;
+String	*havesubject;
+char	bulk;
+char	rfc822headers;
+int	received;
+char	*boundary;
 };
-
-/*
- *  exported variables
- */
 extern int rmail;
 extern int onatty;
 extern char *thissys, *altthissys;
@@ -75,10 +60,6 @@ extern int nflg;
 extern int tflg;
 extern int debug;
 extern int nosummary;
-
-/*
- *  exported procedures
- */
 extern void	authorize(dest*);
 extern int	cat_mail(dest*, message*);
 extern dest	*up_bind(dest*, message*, int);

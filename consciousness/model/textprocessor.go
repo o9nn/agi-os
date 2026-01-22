@@ -1,5 +1,4 @@
 package model
-
 const (
 	TOKEN_TYPE_NORMAL = iota + 1
 	TOKEN_TYPE_UNKNOWN
@@ -8,7 +7,6 @@ const (
 	TOKEN_TYPE_UNUSED
 	TOKEN_TYPE_BYTE
 )
-
 type TextProcessor interface {
 	Encode(s string, addSpecial bool) ([]int32, error)
 	Decode([]int32) (string, error)

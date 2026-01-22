@@ -1,6 +1,4 @@
 import '@testing-library/jest-dom'
-
-// Set up global type definitions for testing
 declare global {
   namespace jest {
     interface Matchers<R> {
@@ -11,8 +9,6 @@ declare global {
     }
   }
 }
-
-// Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
   return {
@@ -28,14 +24,9 @@ const localStorageMock = (() => {
     }),
   }
 })()
-
 Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-
-// Mock window functions
 window.confirm = jest.fn()
 window.alert = jest.fn()
-
-// Reset all mocks after each test
 afterEach(() => {
   jest.clearAllMocks()
 })

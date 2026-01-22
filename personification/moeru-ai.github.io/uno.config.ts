@@ -1,8 +1,6 @@
 import { presetWebFonts } from '@unocss/preset-web-fonts'
 import { presetWind4 } from '@unocss/preset-wind4'
 import { defineConfig } from '@unocss/vite'
-
-// https://unocss.dev/guide/config-file
 export default defineConfig({
   presets: [
     presetWind4({
@@ -33,7 +31,6 @@ export default defineConfig({
           },
         ],
       },
-      // https://unocss.dev/presets/wind4#presetwebfonts
       themeKey: 'font',
     }),
   ],

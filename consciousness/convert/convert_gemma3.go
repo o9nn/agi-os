@@ -1,11 +1,8 @@
 package convert
-
 import (
 	"cmp"
-
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 type gemma3Model struct {
 	gemmaModel
 	Architecture string
@@ -17,14 +14,14 @@ type gemma3Model struct {
 		SlidingWindow    uint32 `json:"sliding_window"`
 	} `json:"text_config"`
 	VisionModel struct {
-		NumAttentionHeads uint32  `json:"num_attention_heads"` // attention.head_count 16
-		LayerNormEpsilon  float32 `json:"layer_norm_eps"`      // attention.layer_norm_epsilon 1e-05
-		NumHiddenLayers   uint32  `json:"num_hidden_layers"`   // block_count 32
-		HiddenSize        uint32  `json:"hidden_size"`         // embedding_length 1280
-		IntermediateSize  uint32  `json:"intermediate_size"`   // feed_forward_length 5120
-		ImageSize         uint32  `json:"image_size"`          // image_size 560
-		NumChannels       uint32  `json:"num_channels"`        // num_channels 3
-		PatchSize         uint32  `json:"patch_size"`          // patch_size 14
+		NumAttentionHeads uint32  `json:"num_attention_heads"` 
+		LayerNormEpsilon  float32 `json:"layer_norm_eps"`      
+		NumHiddenLayers   uint32  `json:"num_hidden_layers"`   
+		HiddenSize        uint32  `json:"hidden_size"`         
+		IntermediateSize  uint32  `json:"intermediate_size"`   
+		ImageSize         uint32  `json:"image_size"`          
+		NumChannels       uint32  `json:"num_channels"`        
+		PatchSize         uint32  `json:"patch_size"`          
 	} `json:"vision_config"`
 	MaxPositionEmbeddings    uint32  `json:"max_position_embeddings"`
 	NumAttentionHeads        uint32  `json:"num_attention_heads"`
@@ -37,25 +34,20 @@ type gemma3Model struct {
 	SlidingWindow            uint32  `json:"sliding_window"`
 	MultiModalTokensPerImage uint32  `json:"mm_tokens_per_image"`
 }
-
 const (
 	gemma4BLayerCount  = 34
 	gemma12BLayerCount = 48
 	gemma27BLayerCount = 62
 )
-
 func (p *gemma3Model) KV(t *Tokenizer) ggml.KV {
 	kv := p.ModelParameters.KV(t)
 	kv["general.architecture"] = "gemma3"
-
 	numBlocks := cmp.Or(p.HiddenLayers, p.TextModel.HiddenLayers)
 	kv["gemma3.block_count"] = numBlocks
-
 	var (
 		numHeads   uint32
 		numKVHeads uint32
 	)
-
 	switch numBlocks {
 	case gemma4BLayerCount:
 		numHeads = 8
@@ -70,10 +62,8 @@ func (p *gemma3Model) KV(t *Tokenizer) ggml.KV {
 		numHeads = p.NumAttentionHeads
 		numKVHeads = p.NumKeyValueHeads
 	}
-
 	kv["gemma3.attention.head_count"] = numHeads
 	kv["gemma3.attention.head_count_kv"] = numKVHeads
-
 	switch p.Architecture {
 	case "Gemma3ForCausalLM":
 		kv["gemma3.context_length"] = p.MaxPositionEmbeddings
@@ -102,14 +92,11 @@ func (p *gemma3Model) KV(t *Tokenizer) ggml.KV {
 		kv["gemma3.attention.key_length"] = cmp.Or(p.TextModel.HeadDim, 256)
 		kv["gemma3.attention.value_length"] = cmp.Or(p.TextModel.HeadDim, 256)
 	}
-
 	if p.MultiModalTokensPerImage > 0 {
 		kv["gemma3.mm.tokens_per_image"] = p.MultiModalTokensPerImage
 	}
-
 	return kv
 }
-
 func (p *gemma3Model) Replacements() []string {
 	return []string{
 		"lm_head", "output",

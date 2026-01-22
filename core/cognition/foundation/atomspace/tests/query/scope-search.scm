@@ -1,18 +1,5 @@
-;
-; Test Data from bug opencog/atomspace #910
-;
-
 (use-modules (opencog))
 (use-modules (opencog exec))
-
-; (use-modules (opencog logger))
-; (cog-logger-set-level! "fine")
-; (cog-logger-set-stdout! #t)
-; (cog-logger-set-timestamp! #f)
-
-;; ----------------------------------------------------------------
-;; Helper functions
-
 (define (content-1)
    (MemberLink
       (ConceptNode "Socrates@81011e61-27a7-4001-a63b-3b569478bced")
@@ -28,10 +15,7 @@
       )
    )
 )
-
-
 (define (content-2)
-; MemberLink having the same Variable name as rule
    (MemberLink
       (ConceptNode "Socrates@81011e61-27a7-4001-a63b-3b569478bced")
       (ScopeLink
@@ -46,8 +30,6 @@
       )
    )
 )
-
-
 (define (member-to-evaluation-2-1-rule)
    (BindLink
       (VariableList
@@ -98,9 +80,6 @@
       )
    )
 )
-
-; Same as above, but apha-renamed deduction. Should get the same
-; results.
 (define (member-to-evaluation-2-1-alt)
    (BindLink
       (VariableList
@@ -151,6 +130,5 @@
       )
    )
 )
-
 (define (member-to-evaluation-formula EVAL MEM)
    (cog-set-tv! EVAL (cog-tv MEM)))

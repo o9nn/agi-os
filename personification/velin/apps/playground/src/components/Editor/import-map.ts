@@ -1,7 +1,4 @@
-// https://github.com/vuejs/repl/blob/5e092b6111118f5bb5fc419f0f8f3f84cd539366/src/import-map.ts
-
 import { computed, version as currentVersion, ref } from 'vue'
-
 export function useVueImportMap(
   defaults: {
     runtimeDev?: string | (() => string)
@@ -15,7 +12,6 @@ export function useVueImportMap(
       return
     return typeof defaults === 'string' ? defaults : defaults()
   }
-
   const productionMode = ref(false)
   const vueVersion = ref<string | null>(defaults.vueVersion || null)
   const importMap = computed<ImportMap>(() => {
@@ -27,7 +23,6 @@ export function useVueImportMap(
         || `https://cdn.jsdelivr.net/npm/@vue/runtime-dom@${
           vueVersion.value || currentVersion
         }/dist/runtime-dom.esm-browser${productionMode.value ? `.prod` : ``}.js`
-
     const serverRenderer
       = (!vueVersion.value && normalizeDefaults(defaults.serverRenderer))
         || `https://cdn.jsdelivr.net/npm/@vue/server-renderer@${
@@ -40,7 +35,6 @@ export function useVueImportMap(
       },
     }
   })
-
   return {
     productionMode,
     importMap,
@@ -48,12 +42,10 @@ export function useVueImportMap(
     defaultVersion: currentVersion,
   }
 }
-
 export interface ImportMap {
   imports?: Record<string, string | undefined>
   scopes?: Record<string, Record<string, string>>
 }
-
 export function mergeImportMap(a: ImportMap, b: ImportMap): ImportMap {
   return {
     imports: { ...a.imports, ...b.imports },

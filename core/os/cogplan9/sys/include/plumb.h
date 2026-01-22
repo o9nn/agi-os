@@ -1,38 +1,23 @@
 #pragma	lib	"libplumb.a"
 #pragma	src	"/sys/src/libplumb"
-
-/*
- * Message format:
- *	source application\n
- *	destination port\n
- *	working directory\n
- *	type\n
- *	attributes\n
- *	nbytes\n
- *	n bytes of data
- */
-
 typedef struct Plumbattr Plumbattr;
 typedef struct Plumbmsg Plumbmsg;
-
 struct Plumbmsg
 {
-	char		*src;
-	char		*dst;
-	char		*wdir;
-	char		*type;
-	Plumbattr	*attr;
-	int		ndata;
-	char		*data;
+char		*src;
+char		*dst;
+char		*wdir;
+char		*type;
+Plumbattr	*attr;
+int		ndata;
+char		*data;
 };
-
 struct Plumbattr
 {
-	char		*name;
-	char		*value;
-	Plumbattr	*next;
+char		*name;
+char		*value;
+Plumbattr	*next;
 };
-
 int			plumbsend(int, Plumbmsg*);
 int			plumbsendtext(int, char*, char*, char*, char*);
 Plumbmsg*	plumbrecv(int);

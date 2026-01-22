@@ -1,8 +1,7 @@
 #include <pqxx/pqxx>
-
 int main()
 {
-    pqxx::connection cx{"postgresql://vcpkg@localhost/tests"};
-    pqxx::work tx{cx};
-    return 0;
+pqxx::connection cx{"postgresql:
+pqxx::work tx{cx};
+return 0;
 }

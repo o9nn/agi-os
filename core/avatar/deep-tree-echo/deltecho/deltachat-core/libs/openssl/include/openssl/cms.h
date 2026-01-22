@@ -1,70 +1,12 @@
-/* crypto/cms/cms.h */
-/*
- * Written by Dr Stephen N Henson (steve@openssl.org) for the OpenSSL
- * project.
- */
-/* ====================================================================
- * Copyright (c) 2008 The OpenSSL Project.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * 3. All advertising materials mentioning features or use of this
- *    software must display the following acknowledgment:
- *    "This product includes software developed by the OpenSSL Project
- *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
- *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
- *    endorse or promote products derived from this software without
- *    prior written permission. For written permission, please contact
- *    licensing@OpenSSL.org.
- *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
- *    permission of the OpenSSL Project.
- *
- * 6. Redistributions of any form whatsoever must retain the following
- *    acknowledgment:
- *    "This product includes software developed by the OpenSSL Project
- *    for use in the OpenSSL Toolkit (http://www.OpenSSL.org/)"
- *
- * THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT ``AS IS'' AND ANY
- * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE OpenSSL PROJECT OR
- * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- * ====================================================================
- */
-
 #ifndef HEADER_CMS_H
 # define HEADER_CMS_H
-
 # include <openssl/x509.h>
-
 # ifdef OPENSSL_NO_CMS
 #  error CMS is disabled.
 # endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 typedef struct CMS_ContentInfo_st CMS_ContentInfo;
 typedef struct CMS_SignerInfo_st CMS_SignerInfo;
 typedef struct CMS_CertificateChoices CMS_CertificateChoices;
@@ -72,30 +14,24 @@ typedef struct CMS_RevocationInfoChoice_st CMS_RevocationInfoChoice;
 typedef struct CMS_RecipientInfo_st CMS_RecipientInfo;
 typedef struct CMS_ReceiptRequest_st CMS_ReceiptRequest;
 typedef struct CMS_Receipt_st CMS_Receipt;
-
 DECLARE_STACK_OF(CMS_SignerInfo)
 DECLARE_STACK_OF(GENERAL_NAMES)
 DECLARE_ASN1_FUNCTIONS(CMS_ContentInfo)
 DECLARE_ASN1_FUNCTIONS(CMS_ReceiptRequest)
 DECLARE_ASN1_PRINT_FUNCTION(CMS_ContentInfo)
-
 # define CMS_SIGNERINFO_ISSUER_SERIAL    0
 # define CMS_SIGNERINFO_KEYIDENTIFIER    1
-
 # define CMS_RECIPINFO_TRANS             0
 # define CMS_RECIPINFO_AGREE             1
 # define CMS_RECIPINFO_KEK               2
 # define CMS_RECIPINFO_PASS              3
 # define CMS_RECIPINFO_OTHER             4
-
-/* S/MIME related flags */
-
 # define CMS_TEXT                        0x1
 # define CMS_NOCERTS                     0x2
 # define CMS_NO_CONTENT_VERIFY           0x4
 # define CMS_NO_ATTR_VERIFY              0x8
 # define CMS_NOSIGS                      \
-                        (CMS_NO_CONTENT_VERIFY|CMS_NO_ATTR_VERIFY)
+(CMS_NO_CONTENT_VERIFY|CMS_NO_ATTR_VERIFY)
 # define CMS_NOINTERN                    0x10
 # define CMS_NO_SIGNER_CERT_VERIFY       0x20
 # define CMS_NOVERIFY                    0x20
@@ -111,239 +47,190 @@ DECLARE_ASN1_PRINT_FUNCTION(CMS_ContentInfo)
 # define CMS_REUSE_DIGEST                0x8000
 # define CMS_USE_KEYID                   0x10000
 # define CMS_DEBUG_DECRYPT               0x20000
-
 const ASN1_OBJECT *CMS_get0_type(CMS_ContentInfo *cms);
-
 BIO *CMS_dataInit(CMS_ContentInfo *cms, BIO *icont);
 int CMS_dataFinal(CMS_ContentInfo *cms, BIO *bio);
-
 ASN1_OCTET_STRING **CMS_get0_content(CMS_ContentInfo *cms);
 int CMS_is_detached(CMS_ContentInfo *cms);
 int CMS_set_detached(CMS_ContentInfo *cms, int detached);
-
 # ifdef HEADER_PEM_H
 DECLARE_PEM_rw_const(CMS, CMS_ContentInfo)
 # endif
 int CMS_stream(unsigned char ***boundary, CMS_ContentInfo *cms);
 CMS_ContentInfo *d2i_CMS_bio(BIO *bp, CMS_ContentInfo **cms);
 int i2d_CMS_bio(BIO *bp, CMS_ContentInfo *cms);
-
 BIO *BIO_new_CMS(BIO *out, CMS_ContentInfo *cms);
 int i2d_CMS_bio_stream(BIO *out, CMS_ContentInfo *cms, BIO *in, int flags);
 int PEM_write_bio_CMS_stream(BIO *out, CMS_ContentInfo *cms, BIO *in,
-                             int flags);
+int flags);
 CMS_ContentInfo *SMIME_read_CMS(BIO *bio, BIO **bcont);
 int SMIME_write_CMS(BIO *bio, CMS_ContentInfo *cms, BIO *data, int flags);
-
 int CMS_final(CMS_ContentInfo *cms, BIO *data, BIO *dcont,
-              unsigned int flags);
-
+unsigned int flags);
 CMS_ContentInfo *CMS_sign(X509 *signcert, EVP_PKEY *pkey,
-                          STACK_OF(X509) *certs, BIO *data,
-                          unsigned int flags);
-
+STACK_OF(X509) *certs, BIO *data,
+unsigned int flags);
 CMS_ContentInfo *CMS_sign_receipt(CMS_SignerInfo *si,
-                                  X509 *signcert, EVP_PKEY *pkey,
-                                  STACK_OF(X509) *certs, unsigned int flags);
-
+X509 *signcert, EVP_PKEY *pkey,
+STACK_OF(X509) *certs, unsigned int flags);
 int CMS_data(CMS_ContentInfo *cms, BIO *out, unsigned int flags);
 CMS_ContentInfo *CMS_data_create(BIO *in, unsigned int flags);
-
 int CMS_digest_verify(CMS_ContentInfo *cms, BIO *dcont, BIO *out,
-                      unsigned int flags);
+unsigned int flags);
 CMS_ContentInfo *CMS_digest_create(BIO *in, const EVP_MD *md,
-                                   unsigned int flags);
-
+unsigned int flags);
 int CMS_EncryptedData_decrypt(CMS_ContentInfo *cms,
-                              const unsigned char *key, size_t keylen,
-                              BIO *dcont, BIO *out, unsigned int flags);
-
+const unsigned char *key, size_t keylen,
+BIO *dcont, BIO *out, unsigned int flags);
 CMS_ContentInfo *CMS_EncryptedData_encrypt(BIO *in, const EVP_CIPHER *cipher,
-                                           const unsigned char *key,
-                                           size_t keylen, unsigned int flags);
-
+const unsigned char *key,
+size_t keylen, unsigned int flags);
 int CMS_EncryptedData_set1_key(CMS_ContentInfo *cms, const EVP_CIPHER *ciph,
-                               const unsigned char *key, size_t keylen);
-
+const unsigned char *key, size_t keylen);
 int CMS_verify(CMS_ContentInfo *cms, STACK_OF(X509) *certs,
-               X509_STORE *store, BIO *dcont, BIO *out, unsigned int flags);
-
+X509_STORE *store, BIO *dcont, BIO *out, unsigned int flags);
 int CMS_verify_receipt(CMS_ContentInfo *rcms, CMS_ContentInfo *ocms,
-                       STACK_OF(X509) *certs,
-                       X509_STORE *store, unsigned int flags);
-
+STACK_OF(X509) *certs,
+X509_STORE *store, unsigned int flags);
 STACK_OF(X509) *CMS_get0_signers(CMS_ContentInfo *cms);
-
 CMS_ContentInfo *CMS_encrypt(STACK_OF(X509) *certs, BIO *in,
-                             const EVP_CIPHER *cipher, unsigned int flags);
-
+const EVP_CIPHER *cipher, unsigned int flags);
 int CMS_decrypt(CMS_ContentInfo *cms, EVP_PKEY *pkey, X509 *cert,
-                BIO *dcont, BIO *out, unsigned int flags);
-
+BIO *dcont, BIO *out, unsigned int flags);
 int CMS_decrypt_set1_pkey(CMS_ContentInfo *cms, EVP_PKEY *pk, X509 *cert);
 int CMS_decrypt_set1_key(CMS_ContentInfo *cms,
-                         unsigned char *key, size_t keylen,
-                         unsigned char *id, size_t idlen);
+unsigned char *key, size_t keylen,
+unsigned char *id, size_t idlen);
 int CMS_decrypt_set1_password(CMS_ContentInfo *cms,
-                              unsigned char *pass, ossl_ssize_t passlen);
-
+unsigned char *pass, ossl_ssize_t passlen);
 STACK_OF(CMS_RecipientInfo) *CMS_get0_RecipientInfos(CMS_ContentInfo *cms);
 int CMS_RecipientInfo_type(CMS_RecipientInfo *ri);
 CMS_ContentInfo *CMS_EnvelopedData_create(const EVP_CIPHER *cipher);
 CMS_RecipientInfo *CMS_add1_recipient_cert(CMS_ContentInfo *cms,
-                                           X509 *recip, unsigned int flags);
+X509 *recip, unsigned int flags);
 int CMS_RecipientInfo_set0_pkey(CMS_RecipientInfo *ri, EVP_PKEY *pkey);
 int CMS_RecipientInfo_ktri_cert_cmp(CMS_RecipientInfo *ri, X509 *cert);
 int CMS_RecipientInfo_ktri_get0_algs(CMS_RecipientInfo *ri,
-                                     EVP_PKEY **pk, X509 **recip,
-                                     X509_ALGOR **palg);
+EVP_PKEY **pk, X509 **recip,
+X509_ALGOR **palg);
 int CMS_RecipientInfo_ktri_get0_signer_id(CMS_RecipientInfo *ri,
-                                          ASN1_OCTET_STRING **keyid,
-                                          X509_NAME **issuer,
-                                          ASN1_INTEGER **sno);
-
+ASN1_OCTET_STRING **keyid,
+X509_NAME **issuer,
+ASN1_INTEGER **sno);
 CMS_RecipientInfo *CMS_add0_recipient_key(CMS_ContentInfo *cms, int nid,
-                                          unsigned char *key, size_t keylen,
-                                          unsigned char *id, size_t idlen,
-                                          ASN1_GENERALIZEDTIME *date,
-                                          ASN1_OBJECT *otherTypeId,
-                                          ASN1_TYPE *otherType);
-
+unsigned char *key, size_t keylen,
+unsigned char *id, size_t idlen,
+ASN1_GENERALIZEDTIME *date,
+ASN1_OBJECT *otherTypeId,
+ASN1_TYPE *otherType);
 int CMS_RecipientInfo_kekri_get0_id(CMS_RecipientInfo *ri,
-                                    X509_ALGOR **palg,
-                                    ASN1_OCTET_STRING **pid,
-                                    ASN1_GENERALIZEDTIME **pdate,
-                                    ASN1_OBJECT **potherid,
-                                    ASN1_TYPE **pothertype);
-
+X509_ALGOR **palg,
+ASN1_OCTET_STRING **pid,
+ASN1_GENERALIZEDTIME **pdate,
+ASN1_OBJECT **potherid,
+ASN1_TYPE **pothertype);
 int CMS_RecipientInfo_set0_key(CMS_RecipientInfo *ri,
-                               unsigned char *key, size_t keylen);
-
+unsigned char *key, size_t keylen);
 int CMS_RecipientInfo_kekri_id_cmp(CMS_RecipientInfo *ri,
-                                   const unsigned char *id, size_t idlen);
-
+const unsigned char *id, size_t idlen);
 int CMS_RecipientInfo_set0_password(CMS_RecipientInfo *ri,
-                                    unsigned char *pass,
-                                    ossl_ssize_t passlen);
-
+unsigned char *pass,
+ossl_ssize_t passlen);
 CMS_RecipientInfo *CMS_add0_recipient_password(CMS_ContentInfo *cms,
-                                               int iter, int wrap_nid,
-                                               int pbe_nid,
-                                               unsigned char *pass,
-                                               ossl_ssize_t passlen,
-                                               const EVP_CIPHER *kekciph);
-
+int iter, int wrap_nid,
+int pbe_nid,
+unsigned char *pass,
+ossl_ssize_t passlen,
+const EVP_CIPHER *kekciph);
 int CMS_RecipientInfo_decrypt(CMS_ContentInfo *cms, CMS_RecipientInfo *ri);
-
 int CMS_uncompress(CMS_ContentInfo *cms, BIO *dcont, BIO *out,
-                   unsigned int flags);
+unsigned int flags);
 CMS_ContentInfo *CMS_compress(BIO *in, int comp_nid, unsigned int flags);
-
 int CMS_set1_eContentType(CMS_ContentInfo *cms, const ASN1_OBJECT *oid);
 const ASN1_OBJECT *CMS_get0_eContentType(CMS_ContentInfo *cms);
-
 CMS_CertificateChoices *CMS_add0_CertificateChoices(CMS_ContentInfo *cms);
 int CMS_add0_cert(CMS_ContentInfo *cms, X509 *cert);
 int CMS_add1_cert(CMS_ContentInfo *cms, X509 *cert);
 STACK_OF(X509) *CMS_get1_certs(CMS_ContentInfo *cms);
-
 CMS_RevocationInfoChoice *CMS_add0_RevocationInfoChoice(CMS_ContentInfo *cms);
 int CMS_add0_crl(CMS_ContentInfo *cms, X509_CRL *crl);
 int CMS_add1_crl(CMS_ContentInfo *cms, X509_CRL *crl);
 STACK_OF(X509_CRL) *CMS_get1_crls(CMS_ContentInfo *cms);
-
 int CMS_SignedData_init(CMS_ContentInfo *cms);
 CMS_SignerInfo *CMS_add1_signer(CMS_ContentInfo *cms,
-                                X509 *signer, EVP_PKEY *pk, const EVP_MD *md,
-                                unsigned int flags);
+X509 *signer, EVP_PKEY *pk, const EVP_MD *md,
+unsigned int flags);
 STACK_OF(CMS_SignerInfo) *CMS_get0_SignerInfos(CMS_ContentInfo *cms);
-
 void CMS_SignerInfo_set1_signer_cert(CMS_SignerInfo *si, X509 *signer);
 int CMS_SignerInfo_get0_signer_id(CMS_SignerInfo *si,
-                                  ASN1_OCTET_STRING **keyid,
-                                  X509_NAME **issuer, ASN1_INTEGER **sno);
+ASN1_OCTET_STRING **keyid,
+X509_NAME **issuer, ASN1_INTEGER **sno);
 int CMS_SignerInfo_cert_cmp(CMS_SignerInfo *si, X509 *cert);
 int CMS_set1_signers_certs(CMS_ContentInfo *cms, STACK_OF(X509) *certs,
-                           unsigned int flags);
+unsigned int flags);
 void CMS_SignerInfo_get0_algs(CMS_SignerInfo *si, EVP_PKEY **pk,
-                              X509 **signer, X509_ALGOR **pdig,
-                              X509_ALGOR **psig);
+X509 **signer, X509_ALGOR **pdig,
+X509_ALGOR **psig);
 int CMS_SignerInfo_sign(CMS_SignerInfo *si);
 int CMS_SignerInfo_verify(CMS_SignerInfo *si);
 int CMS_SignerInfo_verify_content(CMS_SignerInfo *si, BIO *chain);
-
 int CMS_add_smimecap(CMS_SignerInfo *si, STACK_OF(X509_ALGOR) *algs);
 int CMS_add_simple_smimecap(STACK_OF(X509_ALGOR) **algs,
-                            int algnid, int keysize);
+int algnid, int keysize);
 int CMS_add_standard_smimecap(STACK_OF(X509_ALGOR) **smcap);
-
 int CMS_signed_get_attr_count(const CMS_SignerInfo *si);
 int CMS_signed_get_attr_by_NID(const CMS_SignerInfo *si, int nid,
-                               int lastpos);
+int lastpos);
 int CMS_signed_get_attr_by_OBJ(const CMS_SignerInfo *si, ASN1_OBJECT *obj,
-                               int lastpos);
+int lastpos);
 X509_ATTRIBUTE *CMS_signed_get_attr(const CMS_SignerInfo *si, int loc);
 X509_ATTRIBUTE *CMS_signed_delete_attr(CMS_SignerInfo *si, int loc);
 int CMS_signed_add1_attr(CMS_SignerInfo *si, X509_ATTRIBUTE *attr);
 int CMS_signed_add1_attr_by_OBJ(CMS_SignerInfo *si,
-                                const ASN1_OBJECT *obj, int type,
-                                const void *bytes, int len);
+const ASN1_OBJECT *obj, int type,
+const void *bytes, int len);
 int CMS_signed_add1_attr_by_NID(CMS_SignerInfo *si,
-                                int nid, int type,
-                                const void *bytes, int len);
+int nid, int type,
+const void *bytes, int len);
 int CMS_signed_add1_attr_by_txt(CMS_SignerInfo *si,
-                                const char *attrname, int type,
-                                const void *bytes, int len);
+const char *attrname, int type,
+const void *bytes, int len);
 void *CMS_signed_get0_data_by_OBJ(CMS_SignerInfo *si, ASN1_OBJECT *oid,
-                                  int lastpos, int type);
-
+int lastpos, int type);
 int CMS_unsigned_get_attr_count(const CMS_SignerInfo *si);
 int CMS_unsigned_get_attr_by_NID(const CMS_SignerInfo *si, int nid,
-                                 int lastpos);
+int lastpos);
 int CMS_unsigned_get_attr_by_OBJ(const CMS_SignerInfo *si, ASN1_OBJECT *obj,
-                                 int lastpos);
+int lastpos);
 X509_ATTRIBUTE *CMS_unsigned_get_attr(const CMS_SignerInfo *si, int loc);
 X509_ATTRIBUTE *CMS_unsigned_delete_attr(CMS_SignerInfo *si, int loc);
 int CMS_unsigned_add1_attr(CMS_SignerInfo *si, X509_ATTRIBUTE *attr);
 int CMS_unsigned_add1_attr_by_OBJ(CMS_SignerInfo *si,
-                                  const ASN1_OBJECT *obj, int type,
-                                  const void *bytes, int len);
+const ASN1_OBJECT *obj, int type,
+const void *bytes, int len);
 int CMS_unsigned_add1_attr_by_NID(CMS_SignerInfo *si,
-                                  int nid, int type,
-                                  const void *bytes, int len);
+int nid, int type,
+const void *bytes, int len);
 int CMS_unsigned_add1_attr_by_txt(CMS_SignerInfo *si,
-                                  const char *attrname, int type,
-                                  const void *bytes, int len);
+const char *attrname, int type,
+const void *bytes, int len);
 void *CMS_unsigned_get0_data_by_OBJ(CMS_SignerInfo *si, ASN1_OBJECT *oid,
-                                    int lastpos, int type);
-
+int lastpos, int type);
 # ifdef HEADER_X509V3_H
-
 int CMS_get1_ReceiptRequest(CMS_SignerInfo *si, CMS_ReceiptRequest **prr);
 CMS_ReceiptRequest *CMS_ReceiptRequest_create0(unsigned char *id, int idlen,
-                                               int allorfirst,
-                                               STACK_OF(GENERAL_NAMES)
-                                               *receiptList, STACK_OF(GENERAL_NAMES)
-                                               *receiptsTo);
+int allorfirst,
+STACK_OF(GENERAL_NAMES)
+*receiptList, STACK_OF(GENERAL_NAMES)
+*receiptsTo);
 int CMS_add1_ReceiptRequest(CMS_SignerInfo *si, CMS_ReceiptRequest *rr);
 void CMS_ReceiptRequest_get0_values(CMS_ReceiptRequest *rr,
-                                    ASN1_STRING **pcid,
-                                    int *pallorfirst,
-                                    STACK_OF(GENERAL_NAMES) **plist,
-                                    STACK_OF(GENERAL_NAMES) **prto);
-
+ASN1_STRING **pcid,
+int *pallorfirst,
+STACK_OF(GENERAL_NAMES) **plist,
+STACK_OF(GENERAL_NAMES) **prto);
 # endif
-
-/* BEGIN ERROR CODES */
-/*
- * The following lines are auto generated by the script mkerr.pl. Any changes
- * made after this point may be overwritten when the script is next run.
- */
 void ERR_load_CMS_strings(void);
-
-/* Error codes for the CMS functions. */
-
-/* Function codes. */
 # define CMS_F_CHECK_CONTENT                              99
 # define CMS_F_CMS_ADD0_CERT                              164
 # define CMS_F_CMS_ADD0_RECIPIENT_KEY                     100
@@ -414,8 +301,6 @@ void ERR_load_CMS_strings(void);
 # define CMS_F_CMS_STREAM                                 155
 # define CMS_F_CMS_UNCOMPRESS                             156
 # define CMS_F_CMS_VERIFY                                 157
-
-/* Reason codes. */
 # define CMS_R_ADD_SIGNER_ERROR                           99
 # define CMS_R_CERTIFICATE_ALREADY_PRESENT                175
 # define CMS_R_CERTIFICATE_HAS_NO_KEYID                   160
@@ -498,7 +383,6 @@ void ERR_load_CMS_strings(void);
 # define CMS_R_UNWRAP_FAILURE                             180
 # define CMS_R_VERIFICATION_FAILURE                       158
 # define CMS_R_WRAP_ERROR                                 159
-
 #ifdef  __cplusplus
 }
 #endif

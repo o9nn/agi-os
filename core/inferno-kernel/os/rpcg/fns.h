@@ -1,5 +1,4 @@
 #include "../port/portfns.h"
-
 void	addpower(Power*);
 void	archbacklight(int);
 void	archconfinit(void);
@@ -26,7 +25,7 @@ void	clockcheck(void);
 void	clockinit(void);
 void	clockintr(Ureg*);
 void	clrfptrap(void);
-#define	coherence()		/* nothing needed for uniprocessor */
+#define	coherence()
 void	cpminit(void);
 void	cpuidprint(void);
 void	dcflush(void*, ulong);
@@ -57,7 +56,7 @@ ulong	gettbu(void);
 void	gotopc(ulong);
 void	icflush(void*, ulong);
 void	idle(void);
-#define	idlehands()			/* nothing to do in the runproc */
+#define	idlehands()
 void	intr(Ureg*);
 void	intrenable(int, void (*)(Ureg*, void*), void*, int, char*);
 void	intrdisable(int, void (*)(Ureg*, void*), void*, int, char*);
@@ -90,7 +89,7 @@ void	putmsr(ulong);
 void	puttwb(ulong);
 ulong	rmapalloc(RMap*, ulong, int, int);
 void	screeninit(void);
-int	screenprint(char*, ...);			/* debugging */
+int	screenprint(char*, ...);
 void	screenputs(char*, int);
 int	segflush(void*, ulong);
 void	setpanic(void);
@@ -101,19 +100,13 @@ void	trapinit(void);
 void	trapvec(void);
 void	uartinstall(void);
 void	uartspecial(int, int, Queue**, Queue**, int (*)(Queue*, int));
-void	uartwait(void);	/* debugging */
+void	uartwait(void);
 void	videoreset(void);
 void	videotest(void);
 void	wbflush(void);
-
 #define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 ulong	getcallerpc(void*);
-
 #define KADDR(a)	((void*)((ulong)(a)|KZERO))
 #define PADDR(a)	((((ulong)(a)&KSEGM)!=KSEG0)?(ulong)(a):((ulong)(a)&~KZERO))
-
-/* IBM bit field order */
 #define	IBIT(b)	((ulong)1<<(31-(b)))
 #define	SIBIT(n)	((ushort)1<<(15-(n)))
-
-/* compatibility with inf2.1 */

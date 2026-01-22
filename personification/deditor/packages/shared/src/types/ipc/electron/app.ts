@@ -1,7 +1,4 @@
 export interface AppMethods {
-  /**
-   * @see https://www.electronjs.org/docs/latest/api/app#appgetpathname
-   */
   getPath: (params: {
     name:
       | 'home'

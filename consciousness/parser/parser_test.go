@@ -1,5 +1,4 @@
 package parser
-
 import (
 	"bytes"
 	"crypto/sha256"
@@ -11,17 +10,14 @@ import (
 	"strings"
 	"testing"
 	"unicode/utf16"
-
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/unicode"
-
 	"github.com/EchoCog/echollama/api"
 	"github.com/EchoCog/echollama/fs/ggml"
 )
-
 func TestParseFileFile(t *testing.T) {
 	input := `
 FROM model1
@@ -30,19 +26,13 @@ LICENSE MIT
 PARAMETER param1 value1
 PARAMETER param2 value2
 TEMPLATE """{{ if .System }}<|start_header_id|>system<|end_header_id|>
-
 {{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
-
 {{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
-
 {{ .Response }}<|eot_id|>"""    
 `
-
 	reader := strings.NewReader(input)
-
 	modelfile, err := ParseFile(reader)
 	require.NoError(t, err)
-
 	expectedCommands := []Command{
 		{Name: "model", Args: "model1"},
 		{Name: "adapter", Args: "adapter1"},
@@ -51,10 +41,8 @@ TEMPLATE """{{ if .System }}<|start_header_id|>system<|end_header_id|>
 		{Name: "param2", Args: "value2"},
 		{Name: "template", Args: "{{ if .System }}<|start_header_id|>system<|end_header_id|>\n\n{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>\n\n{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>\n\n{{ .Response }}<|eot_id|>"},
 	}
-
 	assert.Equal(t, expectedCommands, modelfile.Commands)
 }
-
 func TestParseFileTrimSpace(t *testing.T) {
 	input := `
 FROM "     model 1"
@@ -63,19 +51,13 @@ LICENSE "MIT       "
 PARAMETER param1        value1
 PARAMETER param2    value2
 TEMPLATE """   {{ if .System }}<|start_header_id|>system<|end_header_id|>
-
 {{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>
-
 {{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>
-
 {{ .Response }}<|eot_id|>   """    
 `
-
 	reader := strings.NewReader(input)
-
 	modelfile, err := ParseFile(reader)
 	require.NoError(t, err)
-
 	expectedCommands := []Command{
 		{Name: "model", Args: "     model 1"},
 		{Name: "adapter", Args: "adapter3"},
@@ -84,10 +66,8 @@ TEMPLATE """   {{ if .System }}<|start_header_id|>system<|end_header_id|>
 		{Name: "param2", Args: "value2"},
 		{Name: "template", Args: "   {{ if .System }}<|start_header_id|>system<|end_header_id|>\n\n{{ .System }}<|eot_id|>{{ end }}{{ if .Prompt }}<|start_header_id|>user<|end_header_id|>\n\n{{ .Prompt }}<|eot_id|>{{ end }}<|start_header_id|>assistant<|end_header_id|>\n\n{{ .Response }}<|eot_id|>   "},
 	}
-
 	assert.Equal(t, expectedCommands, modelfile.Commands)
 }
-
 func TestParseFileFrom(t *testing.T) {
 	cases := []struct {
 		input    string
@@ -158,7 +138,6 @@ func TestParseFileFrom(t *testing.T) {
 			nil,
 		},
 	}
-
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
 			modelfile, err := ParseFile(strings.NewReader(c.input))
@@ -169,19 +148,15 @@ func TestParseFileFrom(t *testing.T) {
 		})
 	}
 }
-
 func TestParseFileParametersMissingValue(t *testing.T) {
 	input := `
 FROM foo
 PARAMETER param1
 `
-
 	reader := strings.NewReader(input)
-
 	_, err := ParseFile(reader)
 	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
 }
-
 func TestParseFileBadCommand(t *testing.T) {
 	input := `
 FROM foo
@@ -191,13 +166,11 @@ BADCOMMAND param1 value1
 		LineNumber: 3,
 		Msg:        errInvalidCommand.Error(),
 	}
-
 	_, err := ParseFile(strings.NewReader(input))
 	if !errors.As(err, &parserError) {
 		t.Errorf("unexpected error: expected: %s, actual: %s", parserError.Error(), err.Error())
 	}
 }
-
 func TestParseFileMessages(t *testing.T) {
 	cases := []struct {
 		input    string
@@ -280,40 +253,32 @@ MESSAGE system`,
 			io.ErrUnexpectedEOF,
 		},
 	}
-
 	for _, tt := range cases {
 		t.Run("", func(t *testing.T) {
 			modelfile, err := ParseFile(strings.NewReader(tt.input))
-
 			if modelfile != nil {
 				assert.Equal(t, tt.expected, modelfile.Commands)
 			}
-
 			if tt.err == nil {
 				if err != nil {
 					t.Fatalf("expected no error, but got %v", err)
 				}
 				return
 			}
-
 			switch tt.err.(type) {
 			case *ParserError:
 				var pErr *ParserError
 				if errors.As(err, &pErr) {
-					// got the correct type of error
 					return
 				}
 			}
-
 			if errors.Is(err, tt.err) {
 				return
 			}
-
 			t.Fatalf("unexpected error: expected: %v, actual: %v", tt.err, err)
 		})
 	}
 }
-
 func TestParseFileQuoted(t *testing.T) {
 	cases := []struct {
 		multiline string
@@ -456,7 +421,6 @@ TEMPLATE """
 			nil,
 		},
 	}
-
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
 			modelfile, err := ParseFile(strings.NewReader(c.multiline))
@@ -467,7 +431,6 @@ TEMPLATE """
 		})
 	}
 }
-
 func TestParseFileParameters(t *testing.T) {
 	cases := map[string]struct {
 		name, value string
@@ -503,7 +466,6 @@ func TestParseFileParameters(t *testing.T) {
 		"stop <|eot_id|>":              {"stop", "<|eot_id|>"},
 		"stop </s>":                    {"stop", "</s>"},
 	}
-
 	for k, v := range cases {
 		t.Run(k, func(t *testing.T) {
 			var b bytes.Buffer
@@ -511,7 +473,6 @@ func TestParseFileParameters(t *testing.T) {
 			fmt.Fprintln(&b, "PARAMETER", k)
 			modelfile, err := ParseFile(&b)
 			require.NoError(t, err)
-
 			assert.Equal(t, []Command{
 				{Name: "model", Args: "foo"},
 				{Name: v.name, Args: v.value},
@@ -519,7 +480,6 @@ func TestParseFileParameters(t *testing.T) {
 		})
 	}
 }
-
 func TestParseFileComments(t *testing.T) {
 	cases := []struct {
 		input    string
@@ -535,7 +495,6 @@ FROM foo
 			},
 		},
 	}
-
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
 			modelfile, err := ParseFile(strings.NewReader(c.input))
@@ -544,7 +503,6 @@ FROM foo
 		})
 	}
 }
-
 func TestParseFileFormatParseFile(t *testing.T) {
 	cases := []string{
 		`
@@ -579,7 +537,6 @@ Very long and boring legal text.
 Blah blah blah.
 "Oh look, a quote!"
 """
-
 PARAMETER param1 value1
 PARAMETER param2 value2
 TEMPLATE template1
@@ -594,84 +551,67 @@ FROM foo
 SYSTEM ""
 `,
 	}
-
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
 			modelfile, err := ParseFile(strings.NewReader(c))
 			require.NoError(t, err)
-
 			modelfile2, err := ParseFile(strings.NewReader(modelfile.String()))
 			require.NoError(t, err)
-
 			assert.Equal(t, modelfile, modelfile2)
 		})
 	}
 }
-
 func TestParseFileUTF16ParseFile(t *testing.T) {
 	data := `FROM bob
 PARAMETER param1 1
 PARAMETER param2 4096
 SYSTEM You are a utf16 file.
 `
-
 	expected := []Command{
 		{Name: "model", Args: "bob"},
 		{Name: "param1", Args: "1"},
 		{Name: "param2", Args: "4096"},
 		{Name: "system", Args: "You are a utf16 file."},
 	}
-
 	t.Run("le", func(t *testing.T) {
 		var b bytes.Buffer
 		require.NoError(t, binary.Write(&b, binary.LittleEndian, []byte{0xff, 0xfe}))
 		require.NoError(t, binary.Write(&b, binary.LittleEndian, utf16.Encode([]rune(data))))
-
 		actual, err := ParseFile(&b)
 		require.NoError(t, err)
-
 		assert.Equal(t, expected, actual.Commands)
 	})
-
 	t.Run("be", func(t *testing.T) {
 		var b bytes.Buffer
 		require.NoError(t, binary.Write(&b, binary.BigEndian, []byte{0xfe, 0xff}))
 		require.NoError(t, binary.Write(&b, binary.BigEndian, utf16.Encode([]rune(data))))
-
 		actual, err := ParseFile(&b)
 		require.NoError(t, err)
 		assert.Equal(t, expected, actual.Commands)
 	})
 }
-
 func TestParseMultiByte(t *testing.T) {
 	input := `FROM test
 	SYSTEM 你好👋`
-
 	expect := []Command{
 		{Name: "model", Args: "test"},
 		{Name: "system", Args: "你好👋"},
 	}
-
 	encodings := []encoding.Encoding{
 		unicode.UTF8,
 		unicode.UTF16(unicode.LittleEndian, unicode.UseBOM),
 		unicode.UTF16(unicode.BigEndian, unicode.UseBOM),
 	}
-
 	for _, encoding := range encodings {
 		t.Run(fmt.Sprintf("%s", encoding), func(t *testing.T) {
 			s, err := encoding.NewEncoder().String(input)
 			require.NoError(t, err)
-
 			actual, err := ParseFile(strings.NewReader(s))
 			require.NoError(t, err)
-
 			assert.Equal(t, expect, actual.Commands)
 		})
 	}
 }
-
 func TestCreateRequest(t *testing.T) {
 	cases := []struct {
 		input    string
@@ -727,67 +667,52 @@ MESSAGE assistant Hi! How are you?
 			},
 		},
 	}
-
 	for _, c := range cases {
 		s, err := unicode.UTF8.NewEncoder().String(c.input)
 		if err != nil {
 			t.Fatal(err)
 		}
-
 		p, err := ParseFile(strings.NewReader(s))
 		if err != nil {
 			t.Error(err)
 		}
-
 		actual, err := p.CreateRequest("")
 		if err != nil {
 			t.Error(err)
 		}
-
 		if diff := cmp.Diff(actual, c.expected); diff != "" {
 			t.Errorf("mismatch (-got +want):\n%s", diff)
 		}
 	}
 }
-
 func getSHA256Digest(t *testing.T, r io.Reader) (string, int64) {
 	t.Helper()
-
 	h := sha256.New()
 	n, err := io.Copy(h, r)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	return fmt.Sprintf("sha256:%x", h.Sum(nil)), n
 }
-
 func createBinFile(t *testing.T, kv map[string]any, ti []*ggml.Tensor) (string, string) {
 	t.Helper()
-
 	f, err := os.CreateTemp(t.TempDir(), "testbin.*.gguf")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-
 	if err := ggml.WriteGGUF(f, kv, ti); err != nil {
 		t.Fatal(err)
 	}
-	// Calculate sha256 of file
 	if _, err := f.Seek(0, 0); err != nil {
 		t.Fatal(err)
 	}
-
 	digest, _ := getSHA256Digest(t, f)
-
 	return f.Name(), digest
 }
-
 func TestCreateRequestFiles(t *testing.T) {
 	n1, d1 := createBinFile(t, nil, nil)
 	n2, d2 := createBinFile(t, map[string]any{"foo": "bar"}, nil)
-
 	cases := []struct {
 		input    string
 		expected *api.CreateRequest
@@ -801,23 +726,19 @@ func TestCreateRequestFiles(t *testing.T) {
 			&api.CreateRequest{Files: map[string]string{n1: d1, n2: d2}},
 		},
 	}
-
 	for _, c := range cases {
 		s, err := unicode.UTF8.NewEncoder().String(c.input)
 		if err != nil {
 			t.Fatal(err)
 		}
-
 		p, err := ParseFile(strings.NewReader(s))
 		if err != nil {
 			t.Error(err)
 		}
-
 		actual, err := p.CreateRequest("")
 		if err != nil {
 			t.Error(err)
 		}
-
 		if diff := cmp.Diff(actual, c.expected); diff != "" {
 			t.Errorf("mismatch (-got +want):\n%s", diff)
 		}

@@ -9,7 +9,7 @@ export const grey = colorize(0, 37);
 export const green = colorize(1, 37);
 export const cyan = colorize(1, 36);
 const emojiFontCss = 'font-family: Roboto, "Apple Color Emoji", NotoEmoji, "Helvetica Neue", Arial, Helvetica, NotoMono, sans-serif !important;';
-export var LogLevelString = /* @__PURE__ */ ((LogLevelString2) => {
+export var LogLevelString =  ((LogLevelString2) => {
   LogLevelString2["DEBUG"] = "DEBUG";
   LogLevelString2["WARNING"] = "WARNING";
   LogLevelString2["INFO"] = "INFO";
@@ -20,31 +20,31 @@ export var LogLevelString = /* @__PURE__ */ ((LogLevelString2) => {
 const LoggerVariants = [
   {
     log: console.debug,
-    level: "DEBUG" /* DEBUG */,
+    level: "DEBUG" ,
     emoji: "\u{1F578}\uFE0F",
     symbol: "[D]"
   },
   {
     log: console.info,
-    level: "INFO" /* INFO */,
+    level: "INFO" ,
     emoji: "\u2139\uFE0F",
     symbol: blue("[i]")
   },
   {
     log: console.warn,
-    level: "WARNING" /* WARNING */,
+    level: "WARNING" ,
     emoji: "\u26A0\uFE0F",
     symbol: yellow("[w]")
   },
   {
     log: console.error,
-    level: "ERROR" /* ERROR */,
+    level: "ERROR" ,
     emoji: "\u{1F6A8}",
     symbol: red("[E]")
   },
   {
     log: console.error,
-    level: "CRITICAL" /* CRITICAL */,
+    level: "CRITICAL" ,
     emoji: "\u{1F6A8}\u{1F6A8}",
     symbol: red("[C]")
   }
@@ -59,13 +59,10 @@ ${LoggerVariants.map((v) => `${v.emoji} ${v.level}`).join(
   );
   console.info(
     `# Tips and Tricks for using the search filter in the browser console:
-
 \u2022 Use space to separate search terms
 \u2022 Exclude search terms using -
 \u2022 If the search term contains spaces you should escape it with ""
-
 Examples:
-
 \u{1F578}\uFE0F          only show debug messages
 -\u{1F578}\uFE0F         don't show debug messages
 \u2139\uFE0F          only show info messages
@@ -76,7 +73,6 @@ Examples:
 -\u{1F4E1}         don't show any events
 [JSONRPC]   only show jsonrpc messages
 -[JSONRPC]  don't show jsonrpc messages
-
 Start deltachat with --devmode (or --log-debug and --log-to-console) argument to show full log output.
 If the log seems quiet, make sure the 'All levels' drop down has 'Verbose' checked.
   `
@@ -133,7 +129,6 @@ ${s.toString()}`).join();
 export class Logger {
   constructor(channel) {
     this.channel = channel;
-    //@ts-ignore
     this.isMainProcess = typeof window === "undefined";
     if (channel === "core/event") {
       this.getStackTrace = () => "";
@@ -160,7 +155,6 @@ ${s.toString()}`).join();
   error(...args) {
     log(this, 3, this.getStackTrace(), args);
   }
-  /** use this when you know that the stacktrace is not relevant */
   errorWithoutStackTrace(...args) {
     log(this, 3, [], args);
   }
@@ -183,4 +177,3 @@ if (!("toJSON" in Error.prototype))
     configurable: true,
     writable: true
   });
-//# sourceMappingURL=logger.js.map

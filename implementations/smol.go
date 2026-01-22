@@ -1,5 +1,4 @@
 package main
-
 import (
 	"bytes"
 	"fmt"
@@ -7,22 +6,18 @@ import (
 	"os/exec"
 	"strings"
 )
-
 type Status int
-
 const (
 	StatusAccept Status = iota
 	StatusNeutral
 	StatusReject
 )
-
 type OptimizationResult struct {
 	Status Status
 	Code   string
 	Size   int
 }
 type Transformation func(string) string
-
 func measureSize(filepath string) (int64, error) {
 	info, err := os.Stat(filepath)
 	if err != nil {
@@ -120,9 +115,7 @@ func minimizeCode(filepath string, maxIterations int) (string, error) {
 	}
 	return code, nil
 }
-
 type Principle int
-
 const (
 	FunctionalityIsSacred Principle = iota
 	MeasureEverything
@@ -131,7 +124,6 @@ const (
 	EmbraceReversibility
 	ConvergeSystematically
 )
-
 func decisionRule(functionalityPreserved, sizeReduced bool) Status {
 	if functionalityPreserved && sizeReduced {
 		return StatusAccept

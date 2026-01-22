@@ -1,9 +1,3 @@
-;
-; mst-print.scm
-;
-; Create a human-readable version of an MST parse.
-;
-
 (define (print-mst TXT)
 "
  Create a human-readable version of an MST parse. TXT should be a

@@ -1,8 +1,5 @@
-
 #include <opencog/atoms/atom_types/NameServer.h>
-
 using namespace opencog;
-
 Type ANTI_LINK;
 Type AT_TIME_LINK;
 Type DEFINED_LINGUISTIC_CONCEPT_NODE;

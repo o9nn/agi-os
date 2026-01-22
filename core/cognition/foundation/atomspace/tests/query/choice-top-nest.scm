@@ -1,82 +1,61 @@
-;
-; Unit testing for nested ChoiceLinks in the pattern matcher.
-;
 (use-modules (opencog))
 (use-modules (opencog exec))
-
-
-;;; Populate the atomspace with four small trees.
 (MemberLink
 	(ConceptNode "Tom")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Joe")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Hank")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Mary")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Phillip")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Milton")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Charlie")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Chayim")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Stuart")
 	(ConceptNode "ways and means")
 )
-
 (MemberLink
 	(ConceptNode "Tom")
 	(ConceptNode "Senator")
 )
-
 (MemberLink
 	(ConceptNode "Joe")
 	(ConceptNode "Representative")
 )
-
-;; We should NOT find Hank!
 (MemberLink
 	(ConceptNode "Hank")
 	(ConceptNode "CEO")
 )
-
 (MemberLink
 	(ConceptNode "Mary")
 	(ConceptNode "Page")
 )
-
 (MemberLink
 	(ConceptNode "Phillip")
 	(ConceptNode "Secretary")
 )
-
 (EvaluationLink
 	(PredicateNode "involved")
 	(ListLink
@@ -84,7 +63,6 @@
 		(ConceptNode "Business")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "involved")
 	(ListLink
@@ -92,7 +70,6 @@
 		(ConceptNode "Industry")
 	)
 )
-
 (EvaluationLink
 	(PredicateNode "involved")
 	(ListLink
@@ -100,8 +77,6 @@
 		(ConceptNode "Banking")
 	)
 )
-
-;; Should NOT find Stuart
 (EvaluationLink
 	(PredicateNode "involved")
 	(ListLink
@@ -109,8 +84,6 @@
 		(ConceptNode "Diletant")
 	)
 )
-
-;;; Nested clauses; all connected with a common variable.
 (define (top-nest)
 	(BindLink
 		(AndLink
@@ -149,8 +122,6 @@
 		(VariableNode "$x")
 	)
 )
-
-;; Simple nesting -- Choice within Choice
 (define (top-nest-bad)
 	(BindLink
 		(AndLink
@@ -167,7 +138,6 @@
 					(VariableNode "$x")
 					(ConceptNode "Representative")
 				)
-				;;  Note this Choice within a Choice
 				(ChoiceLink
 					(MemberLink
 						(VariableNode "$x")
