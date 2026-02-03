@@ -46,6 +46,66 @@ python /path/to/project/llm_interface/llm_sidecar.py
 > Show time crystal hierarchy
 ```
 
+## Composed Architecture: Self-Weaving Daemon
+
+This skill supports an advanced **composed architecture** that implements the skill expression:
+
+```
+/time-crystal-daemon ( (/o9c -> /topology-weaver [ /opencog-inferno-kernel | /time-crystal-neuron ]) )
+```
+
+This creates a **self-weaving cognitive fabric** that dynamically generates and refines its own neural architecture.
+
+### Pipeline Stages
+
+| Stage | Skill | Function |
+|-------|-------|----------|
+| 1 | `/topology-weaver` | Extracts terminology from parallel inputs and generates contextually-tagged neural topology |
+| 2 | `/o9c` | Applies recursive self-improvement, converging to a fixed-point architecture |
+| 3 | `/time-crystal-daemon` | Executes the evolved topology with hierarchical temporal organization |
+
+### Running the Self-Weaving Daemon
+
+```bash
+# Start the self-weaving daemon
+python /home/ubuntu/skills/time-crystal-daemon/templates/composed/self_weaving_daemon.py
+
+# Or save the evolved topology without running
+python templates/composed/self_weaving_daemon.py --save-topology evolved.yaml
+```
+
+### o9c Kernel Integration
+
+The o9c kernel implements Marduk's recursive transformation:
+
+```
+T(system) = marduk(hypergauge(sys-n(system)))
+```
+
+Where:
+- **sys-n**: Analyzes hierarchical structure (rooted trees, A000081 sequence)
+- **hypergauge-orbifold**: Interprets as geometric manifold with singularities
+- **marduk-persona**: Transforms via over-engineering and indirect orchestration
+
+The kernel converges to a **fixed point** where `T(o9c) = o9c`.
+
+### Topology Weaver Integration
+
+The topology weaver extracts terminology from:
+- `/opencog-inferno-kernel`: Atoms, AtomSpace, PLN, pattern matching
+- `/time-crystal-neuron`: Temporal hierarchy, oscillators, phase coupling
+
+And maps them to neural components using analogy patterns:
+
+| Source Concept | Neural Component | Tag |
+|----------------|------------------|-----|
+| Atom | Embedding | `discrete_feature` |
+| AtomSpace | Attention | `hypergraph_attention` |
+| Pattern Matching | Cross-Attention | `pattern_matcher` |
+| PLN Inference | Linear | `probabilistic_reasoner` |
+| Time Crystal | LayerNorm | `temporal_oscillator` |
+| Global Rhythm | Norm | `level_9_rhythm` |
+
 ## Access Levels
 
 | Level | Description | Commands |
@@ -113,10 +173,16 @@ plan = compiler.compile("Pause the PLN module", access_level="engineer")
 
 ## Bundled Resources
 
+### Core Daemon
 - **`templates/daemon/`**: Time Crystal Daemon implementation
 - **`templates/llm_interface/`**: LLM sidecar and OpenAI compiler
 - **`references/idl_specification.md`**: Full IDL specification
 - **`scripts/run_daemon.sh`**: Convenience script to start the daemon
+
+### Composed Architecture
+- **`templates/o9c/`**: o9c self-referential cognitive kernel
+- **`templates/topology_weaver/`**: Topology weaver with parallel inputs
+- **`templates/composed/`**: Self-weaving daemon combining all components
 
 ## Integration with agi-os
 
@@ -125,6 +191,8 @@ This skill integrates with the agi-os cognitive operating system:
 1. The daemon implements the `opencog-inferno-kernel` cognitive kernel interface
 2. The time crystal hierarchy maps to `time-crystal-neuron` temporal structures
 3. The IDL provides the "ghost in the shell" addressability for cognitive processes
+4. The o9c kernel enables recursive self-improvement
+5. The topology weaver generates architectures from conceptual frameworks
 
 ## Design Principles
 
@@ -133,3 +201,5 @@ This skill integrates with the agi-os cognitive operating system:
 3. **Fail-Safe**: LLM interface can fail without affecting daemon
 4. **Auditable**: All commands logged and reviewable
 5. **Hierarchical Time**: Cognition organized by temporal scale
+6. **Self-Weaving**: Architecture can evolve through o9c transformation
+7. **Conceptual Grounding**: Neural topology derived from domain concepts
