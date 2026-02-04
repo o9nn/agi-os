@@ -155,3 +155,4 @@ Makefile
 test-build/
 cogutil/debian-test/
 */debian-test/
+.archive/
