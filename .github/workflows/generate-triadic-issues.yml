@@ -1,5 +1,5 @@
 name: Generate Development Issues for Triadic Architecture
-description: Creates GitHub issues for each phase of the Triadic Architecture implementation
+# Creates GitHub issues for each phase of the Triadic Architecture implementation
 
 "on":
   workflow_dispatch:

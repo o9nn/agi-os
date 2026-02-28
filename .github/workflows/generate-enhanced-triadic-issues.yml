@@ -1,5 +1,5 @@
-name: Generate Enhanced Development Issues for Triadic Architecture
-description: Creates comprehensive GitHub issues for all phases of the Triadic Architecture implementation with OpenCoq integration
+name: Generate Enhanced Triadic Architecture Issues
+# Creates comprehensive GitHub issues for all phases of the Triadic Architecture implementation with OpenCoq integration
 
 "on":
   workflow_dispatch:
