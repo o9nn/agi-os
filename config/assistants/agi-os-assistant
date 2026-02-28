@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""
+AGI-OS Assistant Launcher
+=========================
+Unified entry point for all AGI-OS assistants.
+
+Usage:
+    agi-os-assistant engineer "How do I add a new CogServer module?"
+    agi-os-assistant dev "Create a PLN rule for inheritance"
+    agi-os-assistant manage status
+    agi-os-assistant manage health
+    agi-os-assistant manage build-order
+    agi-os-assistant manage packaging
+    agi-os-assistant manage workflows
+    agi-os-assistant manage recommend
+    agi-os-assistant ask "What is the AtomSpace?"
+"""
+
+import sys
+import os
+
+# Ensure we can find the assistant modules
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
+sys.path.insert(0, os.path.join(SCRIPT_DIR, '../../core/cognition/llm/koboldcpp-cog/python'))
+
+ENDPOINT = os.environ.get("KOBOLDCPP_ENDPOINT", "http://localhost:5001")
+REPO_ROOT = os.path.join(SCRIPT_DIR, "../..")
+
+
+def print_help():
+    print("""
+AGI-OS Assistant - Unified AI Assistant for AGI-OS
+===================================================
+
+Commands:
+  engineer <question>     Engineering assistant (architecture, build, packaging)
+  dev <task>              Development assistant (code generation, review, testing)
+  manage <command>        Management assistant (status, health, build-order, etc.)
+  ask <question>          General cognitive query via KoboldCpp
+
+Management sub-commands:
+  status                  JSON status of all subsystems
+  health                  Human-readable health report
+  build-order             Dependency-resolved build order
+  packaging               Validate Debian packaging
+  workflows               Analyze GitHub Actions workflows
+  recommend               Get recommended next action
+
+Environment:
+  KOBOLDCPP_ENDPOINT      KoboldCpp server URL (default: http://localhost:5001)
+
+Examples:
+  agi-os-assistant engineer "How do I fix a CMake build error in atomspace?"
+  agi-os-assistant dev "Write a CogServer module for sentiment analysis"
+  agi-os-assistant manage health
+  agi-os-assistant manage recommend
+  agi-os-assistant ask "What subsystems are available?"
+""")
+
+
+def main():
+    if len(sys.argv) < 2:
+        print_help()
+        sys.exit(0)
+
+    command = sys.argv[1]
+    args = " ".join(sys.argv[2:]) if len(sys.argv) > 2 else ""
+
+    if command in ("help", "--help", "-h"):
+        print_help()
+        sys.exit(0)
+
+    elif command == "engineer":
+        from engineer_assistant import EngineerAssistant
+        eng = EngineerAssistant(ENDPOINT)
+        if args:
+            print(eng.ask(args))
+        else:
+            print("AGI-OS Engineer Assistant (interactive mode)")
+            while True:
+                try:
+                    q = input("\nengineer> ").strip()
+                    if q.lower() in ("quit", "exit", "q"):
+                        break
+                    if q:
+                        print(eng.ask(q))
+                except (EOFError, KeyboardInterrupt):
+                    break
+
+    elif command == "dev":
+        from dev_assistant import DevAssistant
+        dev = DevAssistant(ENDPOINT)
+        if args:
+            print(dev.write_code(args))
+        else:
+            print("AGI-OS Dev Assistant (interactive mode)")
+            while True:
+                try:
+                    q = input("\ndev> ").strip()
+                    if q.lower() in ("quit", "exit", "q"):
+                        break
+                    if q:
+                        print(dev.write_code(q))
+                except (EOFError, KeyboardInterrupt):
+                    break
+
+    elif command == "manage":
+        from mgmt_assistant import MgmtAssistant
+        mgmt = MgmtAssistant(ENDPOINT, REPO_ROOT)
+        sub = args.split()[0] if args else "health"
+        sub_args = " ".join(args.split()[1:]) if len(args.split()) > 1 else ""
+
+        if sub == "status":
+            import json
+            print(json.dumps(mgmt.status(), indent=2))
+        elif sub == "health":
+            print(mgmt.health_check())
+        elif sub == "build-order":
+            print(mgmt.print_build_order())
+        elif sub == "packaging":
+            import json
+            print(json.dumps(mgmt.validate_packaging(), indent=2))
+        elif sub == "workflows":
+            import json
+            print(json.dumps(mgmt.analyze_workflows(), indent=2))
+        elif sub == "recommend":
+            print(mgmt.recommend_next_action())
+        else:
+            print(mgmt.ask(args))
+
+    elif command == "ask":
+        from koboldcpp_cog import CognitiveInference
+        engine = CognitiveInference(ENDPOINT)
+        if args:
+            result = engine.infer(args, mode="query")
+            print(result.response_text)
+        else:
+            print("AGI-OS Cognitive Query (interactive mode)")
+            while True:
+                try:
+                    q = input("\nagi-os> ").strip()
+                    if q.lower() in ("quit", "exit", "q"):
+                        break
+                    if q:
+                        result = engine.infer(q, mode="query")
+                        print(result.response_text)
+                except (EOFError, KeyboardInterrupt):
+                    break
+
+    else:
+        print(f"Unknown command: {command}")
+        print_help()
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
