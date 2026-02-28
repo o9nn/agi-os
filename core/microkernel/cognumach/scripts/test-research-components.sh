@@ -37,10 +37,10 @@ $0 --component=ipc --duration=24h
 $0 --component=all --duration=1h --output-dir=/tmp/research-tests
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --duration=*)
-DURATION="${1
+DURATION="${1#*=}"
 shift
 ;;
 --duration)
@@ -48,7 +48,7 @@ DURATION="$2"
 shift 2
 ;;
 --component=*)
-COMPONENT="${1
+COMPONENT="${1#*=}"
 shift
 ;;
 --component)
@@ -56,7 +56,7 @@ COMPONENT="$2"
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

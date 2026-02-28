@@ -41,7 +41,7 @@ $0 --platform i686 --quick
 $0 --all-platforms --output-dir=/tmp/final-tests
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --all-platforms)
 ALL_PLATFORMS=true
@@ -52,7 +52,7 @@ FULL_COVERAGE=true
 shift
 ;;
 --platform=*)
-PLATFORM="${1
+PLATFORM="${1#*=}"
 shift
 ;;
 --platform)
@@ -64,7 +64,7 @@ QUICK_MODE=true
 shift
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

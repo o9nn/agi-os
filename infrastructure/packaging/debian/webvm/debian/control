@@ -1,0 +1,15 @@
+Source: webvm
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: webvm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: WebVM browser-based cognitive VM for AGI-OS
+ WebVM provides a browser-based virtual machine environment
+ for running AGI-OS cognitive components in WebAssembly,
+ enabling cognitive computing in web environments.

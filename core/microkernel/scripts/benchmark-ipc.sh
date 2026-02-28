@@ -39,10 +39,10 @@ $0 --workload=webserver --iterations=50000
 $0 --workload=scientific --duration=10m
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --workload=*)
-WORKLOAD="${1
+WORKLOAD="${1#*=}"
 shift
 ;;
 --workload)
@@ -50,7 +50,7 @@ WORKLOAD="$2"
 shift 2
 ;;
 --iterations=*)
-ITERATIONS="${1
+ITERATIONS="${1#*=}"
 shift
 ;;
 --iterations)
@@ -58,7 +58,7 @@ ITERATIONS="$2"
 shift 2
 ;;
 --duration=*)
-DURATION="${1
+DURATION="${1#*=}"
 shift
 ;;
 --duration)
@@ -66,7 +66,7 @@ DURATION="$2"
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

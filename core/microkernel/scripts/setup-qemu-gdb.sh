@@ -31,7 +31,7 @@ EOF
 }
 MEMORY="128M"
 WAIT_GDB=true
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 -k|--kernel)
 GNUMACH_BINARY="$2"

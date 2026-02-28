@@ -128,12 +128,15 @@ ENDIF()
 # Layer 0: Build Tools - MIG (Mach Interface Generator)
 # ============================================================================
 
-IF(BUILD_COGNUMACH OR BUILD_HURDCOG)
+IF(BUILD_COGNUMACH OR BUILD_HURDCOG OR BUILD_MIG)
     MESSAGE(STATUS "Building Layer 0: MIG (Mach Interface Generator)...")
     
-    # MIG is part of Cognumach, will be built as part of Cognumach build
-    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/microkernel/cognumach/mig/")
-        MESSAGE(STATUS "  MIG found in Cognumach (autotools-based)")
+    # Unified MIG build from build-tools/mig
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build-tools/mig/CMakeLists.txt")
+        add_subdirectory(build-tools/mig)
+        MESSAGE(STATUS "  MIG configured via unified build-tools/mig")
+    ELSEIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/microkernel/cognumach/mig/")
+        MESSAGE(STATUS "  MIG found in Cognumach (autotools-based, fallback)")
     ENDIF()
 ENDIF()
 

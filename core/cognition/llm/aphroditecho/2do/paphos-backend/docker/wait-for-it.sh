@@ -59,7 +59,7 @@ echoerr "$WAITFORIT_cmdname: timeout occurred after waiting $WAITFORIT_TIMEOUT s
 fi
 return $WAITFORIT_RESULT
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 do
 case "$1" in
 *:* )
@@ -86,7 +86,7 @@ if [[ $WAITFORIT_HOST == "" ]]; then break; fi
 shift 2
 ;;
 --host=*)
-WAITFORIT_HOST="${1
+WAITFORIT_HOST="${1#*=}"
 shift 1
 ;;
 -p)
@@ -95,7 +95,7 @@ if [[ $WAITFORIT_PORT == "" ]]; then break; fi
 shift 2
 ;;
 --port=*)
-WAITFORIT_PORT="${1
+WAITFORIT_PORT="${1#*=}"
 shift 1
 ;;
 -t)
@@ -104,7 +104,7 @@ if [[ $WAITFORIT_TIMEOUT == "" ]]; then break; fi
 shift 2
 ;;
 --timeout=*)
-WAITFORIT_TIMEOUT="${1
+WAITFORIT_TIMEOUT="${1#*=}"
 shift 1
 ;;
 --)

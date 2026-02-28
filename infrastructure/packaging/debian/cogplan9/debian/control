@@ -1,0 +1,15 @@
+Source: cogplan9
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: cogplan9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: CogPlan9 distributed cognitive computing for AGI-OS
+ CogPlan9 integrates Plan 9 distributed computing principles
+ with cognitive architecture, enabling per-process cognitive
+ namespaces and distributed AtomSpace access.

@@ -237,7 +237,7 @@ local run_quick=false
 local timeout=300
 local compare_file=""
 local report_only=false
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 -h|--help)
 usage

@@ -1,0 +1,15 @@
+Source: atomspace-9p
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, libcogutil-dev, opencog-atomspace
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: atomspace-9p
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, opencog-atomspace
+Description: AtomSpace 9P file server interface for AGI-OS
+ Exposes the AtomSpace hypergraph database through the Plan 9
+ 9P2000 file protocol, enabling distributed cognitive namespace
+ access across Inferno and Plan 9 systems.

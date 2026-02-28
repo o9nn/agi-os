@@ -1,0 +1,16 @@
+Source: inferno-kernel
+Section: kernel
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: inferno-kernel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: InFernOKern cognitive kernel for AGI-OS
+ The Inferno Kernel provides Layer 0 cognitive kernel services
+ including 9P protocol support, Vortex-Morphule-Egregore
+ architecture, and agentic cognitive grammar with GGML
+ tensor kernel integration.

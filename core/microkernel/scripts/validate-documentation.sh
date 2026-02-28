@@ -37,7 +37,7 @@ $0 --completeness-check --strict
 $0 --completeness-check --output-dir=/tmp/doc-validation
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --completeness-check)
 COMPLETENESS_CHECK=true
@@ -48,7 +48,7 @@ STRICT_MODE=true
 shift
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

@@ -19,7 +19,7 @@ EOF
 UPDATE_STRUCT_SIZES=false
 BATCH_PROCESS=false
 VERIFY_ONLY=false
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --update-struct-sizes)
 UPDATE_STRUCT_SIZES=true

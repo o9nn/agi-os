@@ -37,14 +37,14 @@ $0 --component ipc --production-assessment
 $0 --component all --output-dir=/tmp/research-validation
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --production-assessment)
 PRODUCTION_ASSESSMENT=true
 shift
 ;;
 --component=*)
-COMPONENT="${1
+COMPONENT="${1#*=}"
 shift
 ;;
 --component)
@@ -52,7 +52,7 @@ COMPONENT="$2"
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

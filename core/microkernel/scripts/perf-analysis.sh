@@ -190,7 +190,7 @@ BUFFER_SIZE=4096
 THRESHOLD=20
 EVENT_TYPE=""
 INTERVAL=1
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 enable|disable|configure|stats|baseline|check-regression|reset|monitor|test)
 COMMAND="$1"

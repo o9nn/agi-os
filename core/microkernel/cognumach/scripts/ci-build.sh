@@ -204,7 +204,7 @@ local test=false
 local analysis=false
 local debug=false
 local force_build=false
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 -h|--help)
 usage

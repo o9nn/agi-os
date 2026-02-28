@@ -23,7 +23,7 @@ EOF
 DEBUG_FOCUS=false
 TIMESTAMP_FOCUS=false
 SECURITY_FOCUS=false
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 -h|--help)
 usage

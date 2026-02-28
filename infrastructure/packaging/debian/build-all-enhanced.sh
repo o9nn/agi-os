@@ -190,7 +190,7 @@ $0 --agi-os
 $0 --clean
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 -h|--help)
 show_help

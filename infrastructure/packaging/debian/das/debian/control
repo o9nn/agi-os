@@ -1,0 +1,15 @@
+Source: das
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, python3, python3-dev
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: das
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3
+Description: Distributed AtomSpace (DAS) for AGI-OS
+ The Distributed AtomSpace provides a scalable, distributed
+ implementation of the AtomSpace hypergraph database for
+ multi-node cognitive computing deployments.

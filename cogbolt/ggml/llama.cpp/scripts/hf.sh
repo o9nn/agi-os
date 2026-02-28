@@ -23,7 +23,7 @@ url=""
 repo=""
 file=""
 outdir="."
-while [[ $
+while [[ $# -gt 0 ]]; do
 case "$1" in
 --url)
 url="$2"

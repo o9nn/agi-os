@@ -1,0 +1,14 @@
+Source: d81p9p9
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: d81p9p9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: D81-P9P9 cognitive protocol bridge for AGI-OS
+ D81-P9P9 provides a cognitive protocol bridge between
+ 9P2000 and cognitive computing primitives.

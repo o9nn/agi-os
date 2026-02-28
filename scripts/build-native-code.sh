@@ -25,7 +25,7 @@ BUILD_TYPE="Release"
 BUILD_TESTS=OFF
 INSTALL_PREFIX="/usr/local"
 JOBS=$(nproc)
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --debug)
 BUILD_TYPE="Debug"
@@ -36,11 +36,11 @@ BUILD_TESTS=ON
 shift
 ;;
 --prefix=*)
-INSTALL_PREFIX="${1
+INSTALL_PREFIX="${1#*=}"
 shift
 ;;
 -j*)
-JOBS="${1
+JOBS="${1#-j}"
 shift
 ;;
 --help)

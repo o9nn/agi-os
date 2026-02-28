@@ -39,14 +39,14 @@ $0 --pattern random --duration=30m
 $0 --extreme-load --duration=24h --output-dir=/tmp/stress-results
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --extreme-load)
 EXTREME_LOAD=true
 shift
 ;;
 --duration=*)
-DURATION="${1
+DURATION="${1#*=}"
 shift
 ;;
 --duration)
@@ -62,7 +62,7 @@ TEST_PATTERNS=("$2")
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

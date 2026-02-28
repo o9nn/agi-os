@@ -38,10 +38,10 @@ $0 --cpu-count=16 --iterations=10000
 $0 --duration=1h --cpu-count=8
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --cpu-count=*)
-CPU_COUNT="${1
+CPU_COUNT="${1#*=}"
 shift
 ;;
 --cpu-count)
@@ -49,7 +49,7 @@ CPU_COUNT="$2"
 shift 2
 ;;
 --iterations=*)
-ITERATIONS="${1
+ITERATIONS="${1#*=}"
 shift
 ;;
 --iterations)
@@ -57,7 +57,7 @@ ITERATIONS="$2"
 shift 2
 ;;
 --duration=*)
-TEST_DURATION="${1
+TEST_DURATION="${1#*=}"
 shift
 ;;
 --duration)
@@ -65,7 +65,7 @@ TEST_DURATION="$2"
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)

@@ -62,7 +62,56 @@ DEPS[vision]="atomspace"
 STAGE[vision]=8
 DEPS[opencog]="cogutil atomspace cogserver ure pln attention miner unify spacetime learn generate lg-atomese moses asmoses agi-bio vision"
 STAGE[opencog]=9
-DEPS[agi-os-unified]="cognumach hurdcog opencog"
+# Layer 0: Inferno Kernel
+DEPS[inferno-kernel]=""
+STAGE[inferno-kernel]=0
+
+# Cognitive extensions
+DEPS[atomspace-storage]="atomspace"
+STAGE[atomspace-storage]=3
+DEPS[atomspace-9p]="atomspace inferno-kernel"
+STAGE[atomspace-9p]=4
+DEPS[cognitive-grip]="cogutil atomspace atomspace-storage"
+STAGE[cognitive-grip]=5
+DEPS[cogbolt]="cogutil atomspace"
+STAGE[cogbolt]=6
+DEPS[hurdcog-atomspace-bridge]="hurdcog atomspace"
+STAGE[hurdcog-atomspace-bridge]=5
+DEPS[cognumach-cognitive-scheduler]="cognumach cogutil"
+STAGE[cognumach-cognitive-scheduler]=2
+
+# LLM and AI components
+DEPS[ggml-tensor]=""
+STAGE[ggml-tensor]=1
+DEPS[aphroditecho]="ggml-tensor atomspace"
+STAGE[aphroditecho]=7
+DEPS[node-llama-cog]="ggml-tensor"
+STAGE[node-llama-cog]=3
+DEPS[deltecho]="atomspace"
+STAGE[deltecho]=7
+
+# Distributed and external
+DEPS[das]="atomspace"
+STAGE[das]=6
+DEPS[das-atomspace]="das atomspace"
+STAGE[das-atomspace]=7
+DEPS[hyperon-metta]="atomspace"
+STAGE[hyperon-metta]=6
+DEPS[opennars-native]=""
+STAGE[opennars-native]=1
+
+# Plan 9 and kernel
+DEPS[cogplan9]="inferno-kernel"
+STAGE[cogplan9]=2
+DEPS[cogcities-kernel]="cogplan9"
+STAGE[cogcities-kernel]=3
+DEPS[d81p9p9]="inferno-kernel"
+STAGE[d81p9p9]=2
+DEPS[webvm]=""
+STAGE[webvm]=1
+
+# Unified
+DEPS[agi-os-unified]="cognumach hurdcog opencog inferno-kernel"
 STAGE[agi-os-unified]=10
 }
 is_built() {
@@ -99,7 +148,7 @@ echo "${packages[@]}"
 topo_sort() {
 local sorted=()
 local remaining=("${!DEPS[@]}")
-while [ ${
+while [ ${#remaining[@]} -gt 0 ]; do
 local found=0
 local new_remaining=()
 for pkg in "${remaining[@]}"; do
@@ -111,7 +160,7 @@ else
 new_remaining+=("$pkg")
 fi
 done
-if [ $found -eq 0 ] && [ ${
+if [ $found -eq 0 ] && [ ${#new_remaining[@]} -gt 0 ]; then
 echo -e "${RED}ERROR: Circular dependency detected!${NC}" >&2
 echo "Remaining packages: ${new_remaining[@]}" >&2
 return 1
@@ -244,7 +293,7 @@ if [ ! -d "$pkg" ]; then
 missing+=("$pkg")
 fi
 done
-if [ ${
+if [ ${#missing[@]} -gt 0 ]; then
 echo -e "${YELLOW}Missing package directories:${NC}"
 for pkg in "${missing[@]}"; do
 echo -e "  ${RED}✗${NC} $pkg"

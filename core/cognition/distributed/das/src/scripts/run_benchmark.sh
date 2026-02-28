@@ -97,7 +97,7 @@ exit 1
 fi
 }
 parse_args()  {
-while [[ $
+while [[ $# -gt 0 ]]; do
 case "$1" in
 --db)          DB="$2"; shift 2 ;;
 --rel)         REL="$2"; shift 2 ;;

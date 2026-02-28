@@ -46,7 +46,7 @@ $0 --benchmark ipc
 $0 --all-benchmarks --output-dir=/tmp/perf-results
 EOF
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --all-benchmarks)
 ALL_BENCHMARKS=true
@@ -54,7 +54,7 @@ BENCHMARK_TYPE="all"
 shift
 ;;
 --benchmark=*)
-BENCHMARK_TYPE="${1
+BENCHMARK_TYPE="${1#*=}"
 shift
 ;;
 --benchmark)
@@ -62,7 +62,7 @@ BENCHMARK_TYPE="$2"
 shift 2
 ;;
 --output-dir=*)
-OUTPUT_DIR="${1
+OUTPUT_DIR="${1#*=}"
 shift
 ;;
 --output-dir)
@@ -70,7 +70,7 @@ OUTPUT_DIR="$2"
 shift 2
 ;;
 --baseline-file=*)
-BASELINE_FILE="${1
+BASELINE_FILE="${1#*=}"
 shift
 ;;
 --baseline-file)

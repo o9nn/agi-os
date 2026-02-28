@@ -209,7 +209,7 @@ EOF
 main() {
 local no_build=false
 local clean_build=false
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --help|-h)
 show_usage

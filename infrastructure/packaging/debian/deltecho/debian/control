@@ -1,0 +1,15 @@
+Source: deltecho
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential, nodejs
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: deltecho
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: DeltEcho cognitive avatar desktop integration for AGI-OS
+ DeltEcho provides the Deep Tree Echo cognitive avatar
+ desktop environment integration, enabling embodied
+ cognitive interaction through browser and desktop interfaces.

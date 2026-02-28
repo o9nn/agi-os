@@ -1,0 +1,14 @@
+Source: cogcities-kernel
+Section: kernel
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: cogcities-kernel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: CogCities cognitive kernel for AGI-OS Plan 9 integration
+ CogCities kernel provides Plan 9 CogPlan9 cognitive city
+ infrastructure for distributed cognitive computing.

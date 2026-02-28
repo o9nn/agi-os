@@ -1,0 +1,15 @@
+Source: node-llama-cog
+Section: science
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), cmake, nodejs, build-essential
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: node-llama-cog
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nodejs
+Description: Node.js LLM cognitive bridge for AGI-OS
+ Node-llama-cog provides Node.js bindings for llama.cpp
+ with cognitive architecture integration, enabling LLM
+ inference within the AGI-OS cognitive pipeline.

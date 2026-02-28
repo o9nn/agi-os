@@ -19,7 +19,7 @@ echo "  - Command line options take precedence over environment variables"
 echo "  - Authentication is optional. If not provided, alternative validation will be performed"
 echo "  - For APPLE_PASSWORD, use an app-specific password generated at https://appleid.apple.com/account/manage"
 }
-while [[ $
+while [[ $# -gt 0 ]]; do
 case $1 in
 --help)
 print_usage
