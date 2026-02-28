@@ -89,6 +89,8 @@ DEPS[node-llama-cog]="ggml-tensor"
 STAGE[node-llama-cog]=3
 DEPS[deltecho]="atomspace"
 STAGE[deltecho]=7
+DEPS[koboldcpp-cog]="cogutil atomspace ggml-tensor"
+STAGE[koboldcpp-cog]=5
 
 # Distributed and external
 DEPS[das]="atomspace"

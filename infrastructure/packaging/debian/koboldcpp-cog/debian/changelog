@@ -1,0 +1,8 @@
+koboldcpp-cog (1.0.0-1) unstable; urgency=medium
+
+  * Initial release.
+  * KoboldCpp cognitive LLM inference bridge for AGI-OS.
+  * C++, Python, and Scheme bindings.
+  * MCP server for tool integration.
+
+ -- AGI-OS Developers <agi-os@cogpy.org>  Fri, 28 Feb 2026 00:00:00 +0000

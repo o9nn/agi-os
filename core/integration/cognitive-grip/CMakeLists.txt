@@ -27,6 +27,7 @@ set(SOURCES
     src/hurdcog_bridge.cpp
     src/cognumach_bridge.cpp
     src/cogbolt_bridge.cpp
+    src/koboldcpp_bridge.cpp
     src/unified_config.cpp
 )
 

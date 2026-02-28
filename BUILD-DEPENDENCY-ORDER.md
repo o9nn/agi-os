@@ -17,7 +17,8 @@ This document defines the canonical build dependency order for all AGI-OS compon
 │ Stage 6:  learn, generate, cogbolt, das, hyperon-metta          │
 ├─────────────────────────────────────────────────────────────────┤
 │ Stage 5:  attention, pln, miner, unify, spacetime,              │
-│           cognitive-grip, hurdcog-atomspace-bridge               │
+│           cognitive-grip, hurdcog-atomspace-bridge,              │
+│           koboldcpp-cog                                          │
 ├─────────────────────────────────────────────────────────────────┤
 │ Stage 4.5: hurdcog, hurdcog-cogkernel-core, hurdcog-machspace,  │
 │            hurdcog-occ-bridge                                    │

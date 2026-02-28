@@ -64,6 +64,9 @@ OPTION(BUILD_PLN_9P "Build PLN reasoning via 9P" ON)
 OPTION(BUILD_ECAN_9P "Build ECAN attention via 9P" ON)
 OPTION(BUILD_DISTRIBUTED_COGNITION "Build distributed cognition" ON)
 
+# Layer 3.7: LLM Inference Integration
+OPTION(BUILD_KOBOLDCPP_COG "Build KoboldCpp-Cog cognitive LLM inference bridge" ON)
+
 # Layer 4: AI-Powered Development Tools
 OPTION(BUILD_COGBOLT "Build CogBolt AI-Powered IDE Core" ON)
 
@@ -358,6 +361,22 @@ IF(BUILD_DISTRIBUTED_COGNITION AND BUILD_ATOMSPACE_9P)
 ENDIF()
 
 # ============================================================================
+# Layer 3.7: KoboldCpp-Cog (Cognitive LLM Inference Bridge)
+# ============================================================================
+
+IF(BUILD_KOBOLDCPP_COG AND BUILD_ATOMSPACE)
+    MESSAGE(STATUS "Building KoboldCpp-Cog (Cognitive LLM Inference Bridge)...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/cognition/llm/koboldcpp-cog/CMakeLists.txt")
+        add_subdirectory(core/cognition/llm/koboldcpp-cog)
+        MESSAGE(STATUS "  KoboldCpp-Cog configured")
+        MESSAGE(STATUS "  APIs: OpenAI-compatible, KoboldAI native, MCP server")
+        MESSAGE(STATUS "  Bindings: C++, Python, Scheme")
+    ELSE()
+        MESSAGE(WARNING "  KoboldCpp-Cog not found at core/cognition/llm/koboldcpp-cog/")
+    ENDIF()
+ENDIF()
+
+# ============================================================================
 # Layer 4: CogBolt AI-Powered IDE Core
 # ============================================================================
 
@@ -433,6 +452,9 @@ MESSAGE(STATUS "    AtomSpace Accelerator: ${BUILD_ATOMSPACE_ACCELERATOR}")
 MESSAGE(STATUS "    Agentic Chatbots: ${BUILD_AGENTIC_CHATBOTS}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Integration Layer: ${BUILD_INTEGRATION_LAYER}")
+MESSAGE(STATUS "")
+MESSAGE(STATUS "Layer 3.7 - LLM Inference:")
+MESSAGE(STATUS "  KoboldCpp-Cog: ${BUILD_KOBOLDCPP_COG}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Layer 4 - AI Development Tools:")
 MESSAGE(STATUS "  CogBolt IDE Core: ${BUILD_COGBOLT}")
