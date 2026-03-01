@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: echo-angel
+Source: https://github.com/o9nn/agi-os
+
+Files: *
+Copyright: 2026 OpenCog Community
+License: AGPL-3.0

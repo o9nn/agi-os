@@ -34,6 +34,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 OPTION(BUILD_INFERNO_KERNEL "Build Inferno Kernel components" ON)
 OPTION(BUILD_VORTEX_MORPHULE_EGREGORE "Build Vortex-Morphule-Egregore architecture" ON)
 
+# Layer 0.5: Cognitive Avatar
+OPTION(BUILD_ECHO_ANGEL "Build Echo Angel cognitive avatar kernel module" ON)
+
 # Layer 0: Build Tools
 OPTION(BUILD_MIG "Build MIG (Mach Interface Generator) - Build Tool" OFF)
 
@@ -124,6 +127,22 @@ IF(BUILD_VORTEX_MORPHULE_EGREGORE)
         MESSAGE(STATUS "  Deep Tree Echo integration bridge configured")
     ELSE()
         MESSAGE(WARNING "  Deep Tree Echo bridge not found at core/avatar/deep-tree-echo/bridge/")
+    ENDIF()
+
+    # Echo Angel Cognitive Avatar (9P kernel service)
+    IF(BUILD_ECHO_ANGEL)
+        IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/avatar/echo-angel/CMakeLists.txt")
+            add_subdirectory(core/avatar/echo-angel)
+            MESSAGE(STATUS "  Echo Angel cognitive avatar configured")
+        ELSE()
+            MESSAGE(WARNING "  Echo Angel not found at core/avatar/echo-angel/")
+        ENDIF()
+
+        # Echo Angel 9P Server (Inferno kernel integration)
+        IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/echo-angel-9p/CMakeLists.txt")
+            add_subdirectory(core/inferno-kernel/echo-angel-9p)
+            MESSAGE(STATUS "  Echo Angel 9P server configured")
+        ENDIF()
     ENDIF()
 ENDIF()
 
@@ -455,6 +474,9 @@ MESSAGE(STATUS "Integration Layer: ${BUILD_INTEGRATION_LAYER}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Layer 3.7 - LLM Inference:")
 MESSAGE(STATUS "  KoboldCpp-Cog: ${BUILD_KOBOLDCPP_COG}")
+MESSAGE(STATUS "")
+MESSAGE(STATUS "Layer 0.5 - Cognitive Avatar:")
+MESSAGE(STATUS "  Echo Angel: ${BUILD_ECHO_ANGEL}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Layer 4 - AI Development Tools:")
 MESSAGE(STATUS "  CogBolt IDE Core: ${BUILD_COGBOLT}")

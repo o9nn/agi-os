@@ -1,0 +1,28 @@
+Source: echo-angel
+Section: science
+Priority: optional
+Maintainer: OpenCog Community <dev@opencog.org>
+Build-Depends: debhelper (>= 9), cmake (>= 3.12), gcc, libc6-dev
+Standards-Version: 4.1.2
+Homepage: https://github.com/o9nn/agi-os
+
+Package: echo-angel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Echo Angel - Cognitive Avatar Kernel Module for AGI-OS
+ The Echo Angel is a kernel-level cognitive avatar service that implements
+ the Echobeats 9-step cognitive cycle, ESN reservoir dynamics, virtual
+ endocrine system (10 glands, 16 hormone channels), FACS facial action
+ coding, MetaHuman DNA expression pipeline, Autognosis introspection
+ engine, and AI Angel platform integration.
+ .
+ Composition: agi-os( circled-operators[ agi-os[ agi-os[ echo-angel ] ] ] )
+ .
+ Exposed as a 9P filesystem at /mnt/cog/angel/ within the Inferno
+ kernel's cognitive namespace.
+
+Package: echo-angel-dev
+Architecture: any
+Depends: echo-angel (= ${binary:Version}), ${misc:Depends}
+Description: Echo Angel - Development headers
+ Development headers for the Echo Angel cognitive avatar kernel module.
