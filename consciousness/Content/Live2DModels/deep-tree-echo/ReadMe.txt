@@ -60,6 +60,7 @@ Model Data Composition
 ------------------------------
 
   Model Data (cmo3) - Main editable model file
+  Note: the editable source file may be omitted from some clones; runtime assets in /runtime are sufficient for execution.
   Motion (can3) - Animation data
   Runtime folder - Built-in files for execution:
   ・Model data (moc3)
