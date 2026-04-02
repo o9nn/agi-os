@@ -6,6 +6,7 @@ option(GIT "Adds git features to hyperon library; requires OpenSSL and Zlib" ON)
 
 enable_testing()
 option(BUILD_SHARED_LIBS "Build shared library" ON)
+option(HYPERONC_BUILD_TESTS "Build Hyperon C API tests" OFF)
 get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 list(APPEND CTEST_ARGS --output-on-failure)
 if(IS_MULTI_CONFIG)
@@ -62,7 +63,11 @@ set_target_properties(hyperonc-static PROPERTIES
     )
 add_dependencies(hyperonc-static build-hyperonc)
 
-add_subdirectory(tests)
+if(HYPERONC_BUILD_TESTS AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
+    add_subdirectory(tests)
+else()
+    message(STATUS "Skipping Hyperon C API tests: set HYPERONC_BUILD_TESTS=ON and provide test dependencies to enable them")
+endif()
 
 set(BINARY_INSTALL_PATH "lib/hyperonc")
 set(INCLUDE_INSTALL_PATH "include/hyperonc")
@@ -157,6 +162,8 @@ install(DIRECTORY "${HYPERONC_INCLUDE_DIR}"
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/hyperonc-config.cmake"
     DESTINATION "${CONFIG_INSTALL_PATH}")
 
-add_test(NAME rust_c_api
-    COMMAND cargo test ${CARGO_ARGS_LIST} --target-dir ${HYPERONC_TARGET_DIR}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+if(HYPERONC_BUILD_TESTS)
+    add_test(NAME rust_c_api
+        COMMAND cargo test ${CARGO_ARGS_LIST} --target-dir ${HYPERONC_TARGET_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()

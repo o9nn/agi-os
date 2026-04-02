@@ -1,0 +1,20 @@
+Source: mig
+Section: devel
+Priority: optional
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), build-essential, autoconf, automake, bison, flex, gawk
+Standards-Version: 4.6.2
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+Vcs-Browser: https://github.com/o9nn/agi-os/tree/main/core/microkernel/mig
+
+Package: mig
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Mach Interface Generator used by CogNUMach and HurdCog
+ MIG is the Mach Interface Generator that translates Mach interface definition
+ files into the client and server stubs required by the GNU Mach / GNU Hurd
+ messaging model.
+ .
+ In AGI-OS, this package is the stage-0 build tool required before the
+ CogNUMach microkernel and HurdCog operating system layers can be built.

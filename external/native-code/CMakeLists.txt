@@ -47,9 +47,11 @@ if(BUILD_OPENNARS)
     )
     
     add_library(opennars STATIC ${OPENNARS_SOURCES})
-    target_include_directories(opennars PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/opennars/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/opennars/src/NetworkNAR
+    target_include_directories(opennars PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/opennars/src>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/opennars/src/NetworkNAR>
+        $<INSTALL_INTERFACE:include/agi-os/native/opennars>
+        $<INSTALL_INTERFACE:include/agi-os/native/opennars/NetworkNAR>
     )
     target_compile_definitions(opennars PRIVATE 
         _POSIX_C_SOURCE=200809L
@@ -65,10 +67,13 @@ endif()
 # ==============================================================================
 if(BUILD_GGML)
     message(STATUS "Building GGML tensor library")
-    
-    # Add GGML as subdirectory if CMakeLists.txt exists
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/ggml-core/CMakeLists.txt)
+
+    # Add GGML as subdirectory only when the vendored CMake layout is complete.
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ggml-core/CMakeLists.txt"
+       AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ggml-core/cmake/common.cmake")
         add_subdirectory(ggml-core)
+    else()
+        message(WARNING "Skipping GGML: vendored ggml-core tree is incomplete (missing cmake/common.cmake)")
     endif()
 endif()
 
@@ -77,17 +82,34 @@ endif()
 # ==============================================================================
 if(BUILD_HYPERON)
     message(STATUS "Hyperon integration configured (requires Rust/Cargo)")
-    
-    # Custom target for building Hyperon via Cargo
-    add_custom_target(hyperon-rust
-        COMMAND cargo build --release
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hyperon
-        COMMENT "Building Hyperon MeTTa implementation"
-    )
-    
+
+    find_program(AGIOS_CARGO_EXECUTABLE cargo)
+    find_program(AGIOS_CBINDGEN_EXECUTABLE cbindgen)
+
+    if(AGIOS_CARGO_EXECUTABLE)
+        # Custom target for building Hyperon via Cargo
+        add_custom_target(hyperon-rust
+            COMMAND ${AGIOS_CARGO_EXECUTABLE} build --release
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hyperon
+            COMMENT "Building Hyperon MeTTa implementation"
+        )
+    else()
+        message(WARNING "Skipping hyperon-rust target: cargo was not found")
+    endif()
+
     # C API for Hyperon
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/hyperon/c/CMakeLists.txt)
-        add_subdirectory(hyperon/c hyperon-c-api)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/hyperon/c/CMakeLists.txt")
+        if(AGIOS_CARGO_EXECUTABLE AND AGIOS_CBINDGEN_EXECUTABLE)
+            find_package(OpenSSL QUIET)
+            find_package(ZLIB QUIET)
+            if(OPENSSL_FOUND AND ZLIB_FOUND)
+                add_subdirectory(hyperon/c hyperon-c-api)
+            else()
+                message(WARNING "Skipping Hyperon C API: OpenSSL and/or ZLIB development files are unavailable")
+            endif()
+        else()
+            message(WARNING "Skipping Hyperon C API: cargo and/or cbindgen are unavailable")
+        endif()
     endif()
 endif()
 

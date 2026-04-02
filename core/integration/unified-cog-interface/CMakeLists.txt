@@ -71,6 +71,8 @@ install(FILES
 enable_testing()
 
 # Integration tests (if available)
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
     add_subdirectory(tests)
+else()
+    message(STATUS "Skipping unified-cog-interface tests: no tests/CMakeLists.txt present")
 endif()

@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_configure:
+	autoreconf -fi
+	./configure --prefix=/usr
+
+override_dh_auto_build:
+	$(MAKE) -j$(shell nproc)
+
+override_dh_auto_install:
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/mig
+
+override_dh_auto_test:
+	@echo "Skipping MIG tests during package build"

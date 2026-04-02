@@ -2,4 +2,4 @@
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
-exec "$SCRIPT_DIR/../prepare-monorepo-package.sh" "." "$@"
+exec "$SCRIPT_DIR/../prepare-monorepo-package.sh" "infrastructure/deployment/webvm" "$@"

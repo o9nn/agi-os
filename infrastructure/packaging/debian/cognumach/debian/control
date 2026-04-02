@@ -1,12 +1,12 @@
 Source: cognumach
 Section: kernel
 Priority: optional
-Maintainer: OpenCog Developers <opencog@googlegroups.com>
-Build-Depends: debhelper (>= 11), build-essential, gcc-multilib, mig, binutils, autoconf, automake, texinfo, bison, flex
+Maintainer: AGI-OS Developers <agi-os@cogpy.org>
+Build-Depends: debhelper (>= 13), build-essential, gcc-multilib, mig, binutils, autoconf, automake, texinfo, bison, flex, gawk
 Standards-Version: 4.6.2
-Homepage: https://github.com/cogpy/occ
-Vcs-Git: https://github.com/cogpy/occ.git
-Vcs-Browser: https://github.com/cogpy/occ/tree/main/cognumach
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+Vcs-Browser: https://github.com/o9nn/agi-os/tree/main/core/microkernel/cognumach
 
 Package: cognumach
 Architecture: i386
