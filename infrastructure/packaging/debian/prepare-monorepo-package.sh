@@ -10,7 +10,7 @@ SOURCE_SUBDIR="$1"
 PACKAGE_DIR="$(pwd)"
 DEBIAN_DIR="$PACKAGE_DIR/debian"
 PACKAGE_NAME="$(basename "$PACKAGE_DIR")"
-REPO_ROOT="$(cd "$PACKAGE_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$PACKAGE_DIR/../../../.." && pwd)"
 SOURCE_PATH="$REPO_ROOT/$SOURCE_SUBDIR"
 
 if [ ! -d "$DEBIAN_DIR" ]; then
