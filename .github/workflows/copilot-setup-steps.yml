@@ -1,0 +1,45 @@
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 59
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository without automatic Git LFS downloads
+        uses: actions/checkout@v5
+        with:
+          lfs: false
+          submodules: false
+
+      - name: Configure Git LFS for on-demand pulls
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git lfs version >/dev/null 2>&1; then
+            git lfs install --local --skip-smudge
+            git config --local lfs.fetchexclude "consciousness/Content/Live2DModels/deep-tree-echo/runtime/deep_tree_echo.4096/texture_00.png"
+            echo "Configured Git LFS for manual, path-scoped pulls."
+          else
+            echo "git-lfs is not available on this runner; continuing without LFS preconfiguration."
+          fi
+
+      - name: Verify repository checkout state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          test -f README.md
